@@ -10,7 +10,7 @@ const int maxDepth = 6;
 final math.Random random = math.Random(0);
 
 void main() {
-  ui.setScreenSize(3840, 2160);  // 4k
+  ui.setScreenSize(3840, 2160); // 4k
   runApp(MyApp());
 }
 
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class _LayoutWidget extends StatefulWidget {
-  _LayoutWidget(this.node, { required Key key }) : super(key: key);
+  _LayoutWidget(this.node, {required Key key}) : super(key: key);
 
   final _LayoutNode node;
 
@@ -61,9 +61,12 @@ class _LayoutWidget extends StatefulWidget {
   }
 }
 
-class _LayoutWidgetState extends State<_LayoutWidget> with SingleTickerProviderStateMixin {
-  late final Widget firstChild = _buildChild(const ValueKey<int>(1), widget.node.firstChild);
-  late final Widget secondChild = _buildChild(const ValueKey<int>(2), widget.node.secondChild);
+class _LayoutWidgetState extends State<_LayoutWidget>
+    with SingleTickerProviderStateMixin {
+  late final Widget firstChild =
+      _buildChild(const ValueKey<int>(1), widget.node.firstChild);
+  late final Widget secondChild =
+      _buildChild(const ValueKey<int>(2), widget.node.secondChild);
   late final Animation<double> _animation;
   final bool isReversed = random.nextBool();
 
@@ -76,10 +79,10 @@ class _LayoutWidgetState extends State<_LayoutWidget> with SingleTickerProviderS
       lowerBound: 0,
       upperBound: 1.0,
     )
-    ..addListener(() {
-      setState(() {});
-    })
-    ..repeat();
+      ..addListener(() {
+        setState(() {});
+      })
+      ..repeat();
   }
 
   static Widget _buildChild(ValueKey<int> key, final _Node child) {
@@ -92,7 +95,8 @@ class _LayoutWidgetState extends State<_LayoutWidget> with SingleTickerProviderS
 
   @override
   Widget build(BuildContext context) {
-    final int delta = ((_animation.value - 0.5).abs() * 3000).toInt() * (isReversed ? -1 : 1);
+    final int delta =
+        ((_animation.value - 0.5).abs() * 3000).toInt() * (isReversed ? -1 : 1);
     final List<Widget> children = <Widget>[
       Flexible(flex: 5000 + delta, child: firstChild),
       Flexible(flex: 5000 - delta, child: secondChild),
@@ -110,13 +114,13 @@ class _LayoutWidgetState extends State<_LayoutWidget> with SingleTickerProviderS
 }
 
 class _LeafWidget extends StatelessWidget {
-  _LeafWidget(this.node, { required Key key }) : super(key: key);
+  _LeafWidget(this.node, {required Key key}) : super(key: key);
 
   final _LeafNode node;
 
   @override
   Widget build(BuildContext context) {
-    switch(node.kind) {
+    switch (node.kind) {
       case _WidgetKind.button:
         return RaisedButton(
           onPressed: () {},
@@ -144,7 +148,8 @@ class _LeafWidget extends StatelessWidget {
         );
       case _WidgetKind.appBar:
         return AppBar(
-          leading: RaisedButton(elevation: 2.0, child: Text('H'), onPressed: () {}),
+          leading:
+              RaisedButton(elevation: 2.0, child: Text('H'), onPressed: () {}),
           title: Text('ello'),
           actions: <Widget>[
             RaisedButton(elevation: 2.0, child: Text('W'), onPressed: () {}),
@@ -175,8 +180,12 @@ class _LayoutNode extends _Node {
   factory _LayoutNode.generate({int depth = 0}) {
     final _LayoutNode node = _LayoutNode(
       isColumn: depth % 2 == 0,
-      firstChild: depth >= maxDepth ? _LeafNode.generate() : _LayoutNode.generate(depth: depth + 1),
-      secondChild: depth >= maxDepth ? _LeafNode.generate() : _LayoutNode.generate(depth: depth + 1),
+      firstChild: depth >= maxDepth
+          ? _LeafNode.generate()
+          : _LayoutNode.generate(depth: depth + 1),
+      secondChild: depth >= maxDepth
+          ? _LeafNode.generate()
+          : _LayoutNode.generate(depth: depth + 1),
     );
     return node;
   }

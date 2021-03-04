@@ -12,7 +12,8 @@
 import 'keyboard_key.dart';
 
 /// Maps Android-specific key codes to the matching [LogicalKeyboardKey].
-const Map<int, LogicalKeyboardKey> kAndroidToLogicalKey = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kAndroidToLogicalKey =
+    <int, LogicalKeyboardKey>{
   0: LogicalKeyboardKey.none,
   223: LogicalKeyboardKey.sleep,
   224: LogicalKeyboardKey.wakeUp,
@@ -198,7 +199,8 @@ const Map<int, LogicalKeyboardKey> kAndroidToLogicalKey = <int, LogicalKeyboardK
 };
 
 /// Maps Android-specific scan codes to the matching [PhysicalKeyboardKey].
-const Map<int, PhysicalKeyboardKey> kAndroidToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kAndroidToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   205: PhysicalKeyboardKey.suspend,
   142: PhysicalKeyboardKey.sleep,
   143: PhysicalKeyboardKey.wakeUp,
@@ -435,7 +437,8 @@ const Map<int, PhysicalKeyboardKey> kAndroidToPhysicalKey = <int, PhysicalKeyboa
 /// A map of Android key codes which have printable representations, but appear
 /// on the number pad. Used to provide different key objects for keys like
 /// KEY_EQUALS and NUMPAD_EQUALS.
-const Map<int, LogicalKeyboardKey> kAndroidNumPadMap = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kAndroidNumPadMap =
+    <int, LogicalKeyboardKey>{
   154: LogicalKeyboardKey.numpadDivide,
   155: LogicalKeyboardKey.numpadMultiply,
   156: LogicalKeyboardKey.numpadSubtract,
@@ -458,7 +461,8 @@ const Map<int, LogicalKeyboardKey> kAndroidNumPadMap = <int, LogicalKeyboardKey>
 };
 
 /// Maps Fuchsia-specific IDs to the matching [LogicalKeyboardKey].
-const Map<int, LogicalKeyboardKey> kFuchsiaToLogicalKey = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kFuchsiaToLogicalKey =
+    <int, LogicalKeyboardKey>{
   0x100000000: LogicalKeyboardKey.none,
   0x100000010: LogicalKeyboardKey.hyper,
   0x100000011: LogicalKeyboardKey.superKey,
@@ -732,7 +736,8 @@ const Map<int, LogicalKeyboardKey> kFuchsiaToLogicalKey = <int, LogicalKeyboardK
 
 /// Maps Fuchsia-specific USB HID Usage IDs to the matching
 /// [PhysicalKeyboardKey].
-const Map<int, PhysicalKeyboardKey> kFuchsiaToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kFuchsiaToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   0x00000000: PhysicalKeyboardKey.none,
   0x00000010: PhysicalKeyboardKey.hyper,
   0x00000011: PhysicalKeyboardKey.superKey,
@@ -1007,7 +1012,8 @@ const Map<int, PhysicalKeyboardKey> kFuchsiaToPhysicalKey = <int, PhysicalKeyboa
 /// Maps macOS-specific key code values representing [PhysicalKeyboardKey].
 ///
 /// MacOS doesn't provide a scan code, but a virtual keycode to represent a physical key.
-const Map<int, PhysicalKeyboardKey> kMacOsToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kMacOsToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   0x00000000: PhysicalKeyboardKey.keyA,
   0x0000000b: PhysicalKeyboardKey.keyB,
   0x00000008: PhysicalKeyboardKey.keyC,
@@ -1155,7 +1161,8 @@ const Map<int, LogicalKeyboardKey> kMacOsNumPadMap = <int, LogicalKeyboardKey>{
 
 /// A map of macOS key codes which are numbered function keys, so that they
 /// can be excluded when asking "is the Fn modifier down?".
-const Map<int, LogicalKeyboardKey> kMacOsFunctionKeyMap = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kMacOsFunctionKeyMap =
+    <int, LogicalKeyboardKey>{
   0x0000007a: LogicalKeyboardKey.f1,
   0x00000078: LogicalKeyboardKey.f2,
   0x00000063: LogicalKeyboardKey.f3,
@@ -1181,7 +1188,8 @@ const Map<int, LogicalKeyboardKey> kMacOsFunctionKeyMap = <int, LogicalKeyboardK
 /// Maps iOS-specific key code values representing [PhysicalKeyboardKey].
 ///
 /// iOS doesn't provide a scan code, but a virtual keycode to represent a physical key.
-const Map<int, PhysicalKeyboardKey> kIosToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kIosToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   0x00000000: PhysicalKeyboardKey.usbReserved,
   0x00000001: PhysicalKeyboardKey.usbErrorRollOver,
   0x00000002: PhysicalKeyboardKey.usbPostFail,
@@ -1369,7 +1377,8 @@ const Map<int, LogicalKeyboardKey> kIosNumPadMap = <int, LogicalKeyboardKey>{
 };
 
 /// Maps GLFW-specific key codes to the matching [LogicalKeyboardKey].
-const Map<int, LogicalKeyboardKey> kGlfwToLogicalKey = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kGlfwToLogicalKey =
+    <int, LogicalKeyboardKey>{
   65: LogicalKeyboardKey.keyA,
   66: LogicalKeyboardKey.keyB,
   67: LogicalKeyboardKey.keyC,
@@ -1729,7 +1738,8 @@ const Map<int, LogicalKeyboardKey> kGtkNumpadMap = <int, LogicalKeyboardKey>{
 };
 
 /// Maps XKB specific key code values representing [PhysicalKeyboardKey].
-const Map<int, PhysicalKeyboardKey> kLinuxToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kLinuxToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   0x00000281: PhysicalKeyboardKey.privacyScreenToggle,
   0x00000096: PhysicalKeyboardKey.sleep,
   0x00000097: PhysicalKeyboardKey.wakeUp,
@@ -1949,7 +1959,8 @@ const Map<int, PhysicalKeyboardKey> kLinuxToPhysicalKey = <int, PhysicalKeyboard
 };
 
 /// Maps Web KeyboardEvent codes to the matching [LogicalKeyboardKey].
-const Map<String, LogicalKeyboardKey> kWebToLogicalKey = <String, LogicalKeyboardKey>{
+const Map<String, LogicalKeyboardKey> kWebToLogicalKey =
+    <String, LogicalKeyboardKey>{
   'None': LogicalKeyboardKey.none,
   'Hyper': LogicalKeyboardKey.hyper,
   'Super': LogicalKeyboardKey.superKey,
@@ -2183,7 +2194,8 @@ const Map<String, LogicalKeyboardKey> kWebToLogicalKey = <String, LogicalKeyboar
 };
 
 /// Maps Web KeyboardEvent codes to the matching [PhysicalKeyboardKey].
-const Map<String, PhysicalKeyboardKey> kWebToPhysicalKey = <String, PhysicalKeyboardKey>{
+const Map<String, PhysicalKeyboardKey> kWebToPhysicalKey =
+    <String, PhysicalKeyboardKey>{
   'None': PhysicalKeyboardKey.none,
   'Hyper': PhysicalKeyboardKey.hyper,
   'Super': PhysicalKeyboardKey.superKey,
@@ -2419,7 +2431,8 @@ const Map<String, PhysicalKeyboardKey> kWebToPhysicalKey = <String, PhysicalKeyb
 /// A map of Web KeyboardEvent codes which have printable representations, but appear
 /// on the number pad. Used to provide different key objects for keys like
 /// KEY_EQUALS and NUMPAD_EQUALS.
-const Map<String, LogicalKeyboardKey> kWebNumPadMap = <String, LogicalKeyboardKey>{
+const Map<String, LogicalKeyboardKey> kWebNumPadMap =
+    <String, LogicalKeyboardKey>{
   'NumpadDivide': LogicalKeyboardKey.numpadDivide,
   'NumpadMultiply': LogicalKeyboardKey.numpadMultiply,
   'NumpadSubtract': LogicalKeyboardKey.numpadSubtract,
@@ -2442,7 +2455,8 @@ const Map<String, LogicalKeyboardKey> kWebNumPadMap = <String, LogicalKeyboardKe
 };
 
 /// Maps Windows KeyboardEvent codes to the matching [LogicalKeyboardKey].
-const Map<int, LogicalKeyboardKey> kWindowsToLogicalKey = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kWindowsToLogicalKey =
+    <int, LogicalKeyboardKey>{
   95: LogicalKeyboardKey.sleep,
   65: LogicalKeyboardKey.keyA,
   66: LogicalKeyboardKey.keyB,
@@ -2563,7 +2577,8 @@ const Map<int, LogicalKeyboardKey> kWindowsToLogicalKey = <int, LogicalKeyboardK
 };
 
 /// Maps Windows KeyboardEvent codes to the matching [PhysicalKeyboardKey].
-const Map<int, PhysicalKeyboardKey> kWindowsToPhysicalKey = <int, PhysicalKeyboardKey>{
+const Map<int, PhysicalKeyboardKey> kWindowsToPhysicalKey =
+    <int, PhysicalKeyboardKey>{
   0x0000e05f: PhysicalKeyboardKey.sleep,
   0x0000e063: PhysicalKeyboardKey.wakeUp,
   0x000000ff: PhysicalKeyboardKey.usbErrorRollOver,
@@ -2726,7 +2741,8 @@ const Map<int, PhysicalKeyboardKey> kWindowsToPhysicalKey = <int, PhysicalKeyboa
 /// A map of Windows KeyboardEvent codes which have printable representations, but appear
 /// on the number pad. Used to provide different key objects for keys like
 /// KEY_EQUALS and NUMPAD_EQUALS.
-const Map<int, LogicalKeyboardKey> kWindowsNumPadMap = <int, LogicalKeyboardKey>{
+const Map<int, LogicalKeyboardKey> kWindowsNumPadMap =
+    <int, LogicalKeyboardKey>{
   111: LogicalKeyboardKey.numpadDivide,
   106: LogicalKeyboardKey.numpadMultiply,
   109: LogicalKeyboardKey.numpadSubtract,

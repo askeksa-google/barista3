@@ -2,56 +2,65 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 bool _rectIsValid(Rect rect) {
-  assert(rect != null, 'Rect argument was null.'); // ignore: unnecessary_null_comparison
+  assert(rect != null,
+      'Rect argument was null.'); // ignore: unnecessary_null_comparison
   assert(!rect.hasNaN, 'Rect argument contained a NaN value.');
   return true;
 }
 
 bool _rrectIsValid(RRect rrect) {
-  assert(rrect != null, 'RRect argument was null.'); // ignore: unnecessary_null_comparison
+  assert(rrect != null,
+      'RRect argument was null.'); // ignore: unnecessary_null_comparison
   assert(!rrect.hasNaN, 'RRect argument contained a NaN value.');
   return true;
 }
 
 bool _offsetIsValid(Offset offset) {
-  assert(offset != null, 'Offset argument was null.'); // ignore: unnecessary_null_comparison
-  assert(!offset.dx.isNaN && !offset.dy.isNaN, 'Offset argument contained a NaN value.');
+  assert(offset != null,
+      'Offset argument was null.'); // ignore: unnecessary_null_comparison
+  assert(!offset.dx.isNaN && !offset.dy.isNaN,
+      'Offset argument contained a NaN value.');
   return true;
 }
 
 bool _matrix4IsValid(Float64List matrix4) {
-  assert(matrix4 != null, 'Matrix4 argument was null.'); // ignore: unnecessary_null_comparison
+  assert(matrix4 != null,
+      'Matrix4 argument was null.'); // ignore: unnecessary_null_comparison
   assert(matrix4.length == 16, 'Matrix4 must have 16 entries.');
-  assert(matrix4.every((double value) => value.isFinite), 'Matrix4 entries must be finite.');
+  assert(matrix4.every((double value) => value.isFinite),
+      'Matrix4 entries must be finite.');
   return true;
 }
 
 bool _radiusIsValid(Radius radius) {
-  assert(radius != null, 'Radius argument was null.'); // ignore: unnecessary_null_comparison
-  assert(!radius.x.isNaN && !radius.y.isNaN, 'Radius argument contained a NaN value.');
+  assert(radius != null,
+      'Radius argument was null.'); // ignore: unnecessary_null_comparison
+  assert(!radius.x.isNaN && !radius.y.isNaN,
+      'Radius argument contained a NaN value.');
   return true;
 }
 
 Color _scaleAlpha(Color a, double factor) {
   return a.withAlpha((a.alpha * factor).round().clamp(0, 255));
 }
+
 class Color {
-    const Color(int value) : value = value & 0xFFFFFFFF;
-  const Color.fromARGB(int a, int r, int g, int b) :
-    value = (((a & 0xff) << 24) |
-             ((r & 0xff) << 16) |
-             ((g & 0xff) << 8)  |
-             ((b & 0xff) << 0)) & 0xFFFFFFFF;
-  const Color.fromRGBO(int r, int g, int b, double opacity) :
-    value = ((((opacity * 0xff ~/ 1) & 0xff) << 24) |
-              ((r                    & 0xff) << 16) |
-              ((g                    & 0xff) << 8)  |
-              ((b                    & 0xff) << 0)) & 0xFFFFFFFF;
+  const Color(int value) : value = value & 0xFFFFFFFF;
+  const Color.fromARGB(int a, int r, int g, int b)
+      : value = (((a & 0xff) << 24) |
+                ((r & 0xff) << 16) |
+                ((g & 0xff) << 8) |
+                ((b & 0xff) << 0)) &
+            0xFFFFFFFF;
+  const Color.fromRGBO(int r, int g, int b, double opacity)
+      : value = ((((opacity * 0xff ~/ 1) & 0xff) << 24) |
+                ((r & 0xff) << 16) |
+                ((g & 0xff) << 8) |
+                ((b & 0xff) << 0)) &
+            0xFFFFFFFF;
   final int value;
   int get alpha => (0xff000000 & value) >> 24;
   double get opacity => alpha / 0xFF;
@@ -61,26 +70,30 @@ class Color {
   Color withAlpha(int a) {
     return Color.fromARGB(a, red, green, blue);
   }
+
   Color withOpacity(double opacity) {
     assert(opacity >= 0.0 && opacity <= 1.0);
     return withAlpha((255.0 * opacity).round());
   }
+
   Color withRed(int r) {
     return Color.fromARGB(alpha, r, green, blue);
   }
+
   Color withGreen(int g) {
     return Color.fromARGB(alpha, red, g, blue);
   }
+
   Color withBlue(int b) {
     return Color.fromARGB(alpha, red, green, b);
   }
 
   // See <https://www.w3.org/TR/WCAG20/#relativeluminancedef>
   static double _linearizeColorComponent(double component) {
-    if (component <= 0.03928)
-      return component / 12.92;
+    if (component <= 0.03928) return component / 12.92;
     return math.pow((component + 0.055) / 1.055, 2.4) as double;
   }
+
   double computeLuminance() {
     // See <https://www.w3.org/TR/WCAG20/#relativeluminancedef>
     final double R = _linearizeColorComponent(red / 0xFF);
@@ -88,6 +101,7 @@ class Color {
     final double B = _linearizeColorComponent(blue / 0xFF);
     return 0.2126 * R + 0.7152 * G + 0.0722 * B;
   }
+
   static Color? lerp(Color? a, Color? b, double t) {
     assert(t != null); // ignore: unnecessary_null_comparison
     if (b == null) {
@@ -109,21 +123,25 @@ class Color {
       }
     }
   }
+
   static Color alphaBlend(Color foreground, Color background) {
     final int alpha = foreground.alpha;
-    if (alpha == 0x00) { // Foreground completely transparent.
+    if (alpha == 0x00) {
+      // Foreground completely transparent.
       return background;
     }
     final int invAlpha = 0xff - alpha;
     int backAlpha = background.alpha;
-    if (backAlpha == 0xff) { // Opaque background case
+    if (backAlpha == 0xff) {
+      // Opaque background case
       return Color.fromARGB(
         0xff,
         (alpha * foreground.red + invAlpha * background.red) ~/ 0xff,
         (alpha * foreground.green + invAlpha * background.green) ~/ 0xff,
         (alpha * foreground.blue + invAlpha * background.blue) ~/ 0xff,
       );
-    } else { // General case
+    } else {
+      // General case
       backAlpha = (backAlpha * invAlpha) ~/ 0xff;
       final int outAlpha = alpha + backAlpha;
       assert(outAlpha != 0x00);
@@ -135,6 +153,7 @@ class Color {
       );
     }
   }
+
   static int getAlphaFromOpacity(double opacity) {
     assert(opacity != null); // ignore: unnecessary_null_comparison
     return (opacity.clamp(0.0, 1.0) * 255).round();
@@ -142,12 +161,9 @@ class Color {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is Color
-        && other.value == value;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is Color && other.value == value;
   }
 
   @override
@@ -156,6 +172,7 @@ class Color {
   @override
   String toString() => 'Color(0x${value.toRadixString(16).padLeft(8, '0')})';
 }
+
 enum BlendMode {
   // This list comes from Skia's SkXfermode.h and the values (order) should be
   // kept in sync.
@@ -176,7 +193,7 @@ enum BlendMode {
   modulate,
 
   // Following blend modes are defined in the CSS Compositing standard.
-  screen,  // The last coeff mode.
+  screen, // The last coeff mode.
   overlay,
   darken,
   lighten,
@@ -186,7 +203,7 @@ enum BlendMode {
   softLight,
   difference,
   exclusion,
-  multiply,  // The last separable mode.
+  multiply, // The last separable mode.
   hue,
   saturation,
   color,
@@ -225,6 +242,7 @@ enum Clip {
   antiAlias,
   antiAliasWithSaveLayer,
 }
+
 class Paint {
   // Paint objects are encoded in two buffers:
   //
@@ -266,7 +284,8 @@ class Paint {
   static const int _kStrokeMiterLimitOffset = _kStrokeMiterLimitIndex << 2;
   static const int _kFilterQualityOffset = _kFilterQualityIndex << 2;
   static const int _kMaskFilterOffset = _kMaskFilterIndex << 2;
-  static const int _kMaskFilterBlurStyleOffset = _kMaskFilterBlurStyleIndex << 2;
+  static const int _kMaskFilterBlurStyleOffset =
+      _kMaskFilterBlurStyleIndex << 2;
   static const int _kMaskFilterSigmaOffset = _kMaskFilterSigmaIndex << 2;
   static const int _kInvertColorOffset = _kInvertColorIndex << 2;
   static const int _kDitherOffset = _kDitherIndex << 2;
@@ -277,13 +296,15 @@ class Paint {
   List<dynamic>? _objects;
 
   List<dynamic> _ensureObjectsInitialized() {
-    return _objects ??= List<dynamic>.filled(_kObjectCount, null, growable: false);
+    return _objects ??=
+        List<dynamic>.filled(_kObjectCount, null, growable: false);
   }
 
   static const int _kShaderIndex = 0;
   static const int _kColorFilterIndex = 1;
   static const int _kImageFilterIndex = 2;
-  static const int _kObjectCount = 3; // Must be one larger than the largest index.
+  static const int _kObjectCount =
+      3; // Must be one larger than the largest index.
   Paint() {
     if (enableDithering) {
       _dither = true;
@@ -292,6 +313,7 @@ class Paint {
   bool get isAntiAlias {
     return _data.getInt32(_kIsAntiAliasOffset, _kFakeHostEndian) == 0;
   }
+
   set isAntiAlias(bool value) {
     // We encode true as zero and false as one because the default value, which
     // we always encode as zero, is true.
@@ -305,6 +327,7 @@ class Paint {
     final int encoded = _data.getInt32(_kColorOffset, _kFakeHostEndian);
     return Color(encoded ^ _kColorDefault);
   }
+
   set color(Color value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.value ^ _kColorDefault;
@@ -317,38 +340,50 @@ class Paint {
     final int encoded = _data.getInt32(_kBlendModeOffset, _kFakeHostEndian);
     return BlendMode.values[encoded ^ _kBlendModeDefault];
   }
+
   set blendMode(BlendMode value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.index ^ _kBlendModeDefault;
     _data.setInt32(_kBlendModeOffset, encoded, _kFakeHostEndian);
   }
+
   PaintingStyle get style {
-    return PaintingStyle.values[_data.getInt32(_kStyleOffset, _kFakeHostEndian)];
+    return PaintingStyle
+        .values[_data.getInt32(_kStyleOffset, _kFakeHostEndian)];
   }
+
   set style(PaintingStyle value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.index;
     _data.setInt32(_kStyleOffset, encoded, _kFakeHostEndian);
   }
+
   double get strokeWidth {
     return _data.getFloat32(_kStrokeWidthOffset, _kFakeHostEndian);
   }
+
   set strokeWidth(double value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final double encoded = value;
     _data.setFloat32(_kStrokeWidthOffset, encoded, _kFakeHostEndian);
   }
+
   StrokeCap get strokeCap {
-    return StrokeCap.values[_data.getInt32(_kStrokeCapOffset, _kFakeHostEndian)];
+    return StrokeCap
+        .values[_data.getInt32(_kStrokeCapOffset, _kFakeHostEndian)];
   }
+
   set strokeCap(StrokeCap value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.index;
     _data.setInt32(_kStrokeCapOffset, encoded, _kFakeHostEndian);
   }
+
   StrokeJoin get strokeJoin {
-    return StrokeJoin.values[_data.getInt32(_kStrokeJoinOffset, _kFakeHostEndian)];
+    return StrokeJoin
+        .values[_data.getInt32(_kStrokeJoinOffset, _kFakeHostEndian)];
   }
+
   set strokeJoin(StrokeJoin value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.index;
@@ -360,51 +395,64 @@ class Paint {
   double get strokeMiterLimit {
     return _data.getFloat32(_kStrokeMiterLimitOffset, _kFakeHostEndian);
   }
+
   set strokeMiterLimit(double value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final double encoded = value - _kStrokeMiterLimitDefault;
     _data.setFloat32(_kStrokeMiterLimitOffset, encoded, _kFakeHostEndian);
   }
+
   MaskFilter? get maskFilter {
     switch (_data.getInt32(_kMaskFilterOffset, _kFakeHostEndian)) {
       case MaskFilter._TypeNone:
         return null;
       case MaskFilter._TypeBlur:
         return MaskFilter.blur(
-          BlurStyle.values[_data.getInt32(_kMaskFilterBlurStyleOffset, _kFakeHostEndian)],
+          BlurStyle.values[
+              _data.getInt32(_kMaskFilterBlurStyleOffset, _kFakeHostEndian)],
           _data.getFloat32(_kMaskFilterSigmaOffset, _kFakeHostEndian),
         );
     }
     return null;
   }
+
   set maskFilter(MaskFilter? value) {
     if (value == null) {
-      _data.setInt32(_kMaskFilterOffset, MaskFilter._TypeNone, _kFakeHostEndian);
+      _data.setInt32(
+          _kMaskFilterOffset, MaskFilter._TypeNone, _kFakeHostEndian);
       _data.setInt32(_kMaskFilterBlurStyleOffset, 0, _kFakeHostEndian);
       _data.setFloat32(_kMaskFilterSigmaOffset, 0.0, _kFakeHostEndian);
     } else {
       // For now we only support one kind of MaskFilter, so we don't need to
       // check what the type is if it's not null.
-      _data.setInt32(_kMaskFilterOffset, MaskFilter._TypeBlur, _kFakeHostEndian);
-      _data.setInt32(_kMaskFilterBlurStyleOffset, value._style.index, _kFakeHostEndian);
+      _data.setInt32(
+          _kMaskFilterOffset, MaskFilter._TypeBlur, _kFakeHostEndian);
+      _data.setInt32(
+          _kMaskFilterBlurStyleOffset, value._style.index, _kFakeHostEndian);
       _data.setFloat32(_kMaskFilterSigmaOffset, value._sigma, _kFakeHostEndian);
     }
   }
+
   // TODO(ianh): verify that the image drawing methods actually respect this
   FilterQuality get filterQuality {
-    return FilterQuality.values[_data.getInt32(_kFilterQualityOffset, _kFakeHostEndian)];
+    return FilterQuality
+        .values[_data.getInt32(_kFilterQualityOffset, _kFakeHostEndian)];
   }
+
   set filterQuality(FilterQuality value) {
     assert(value != null); // ignore: unnecessary_null_comparison
     final int encoded = value.index;
     _data.setInt32(_kFilterQualityOffset, encoded, _kFakeHostEndian);
   }
+
   Shader? get shader {
     return _objects?[_kShaderIndex] as Shader?;
   }
+
   set shader(Shader? value) {
     _ensureObjectsInitialized()[_kShaderIndex] = value;
   }
+
   ColorFilter? get colorFilter {
     return _objects?[_kColorFilterIndex]?.creator as ColorFilter?;
   }
@@ -419,6 +467,7 @@ class Paint {
       _ensureObjectsInitialized()[_kColorFilterIndex] = nativeFilter;
     }
   }
+
   ImageFilter? get imageFilter {
     return _objects?[_kImageFilterIndex]?.creator as ImageFilter?;
   }
@@ -435,9 +484,11 @@ class Paint {
       }
     }
   }
+
   bool get invertColors {
     return _data.getInt32(_kInvertColorOffset, _kFakeHostEndian) == 1;
   }
+
   set invertColors(bool value) {
     _data.setInt32(_kInvertColorOffset, value ? 1 : 0, _kFakeHostEndian);
   }
@@ -445,9 +496,11 @@ class Paint {
   bool get _dither {
     return _data.getInt32(_kDitherOffset, _kFakeHostEndian) == 1;
   }
+
   set _dither(bool value) {
     _data.setInt32(_kDitherOffset, value ? 1 : 0, _kFakeHostEndian);
   }
+
   static bool enableDithering = false;
 
   @override
@@ -464,11 +517,11 @@ class Paint {
         result.write(' ${strokeWidth.toStringAsFixed(1)}');
       else
         result.write(' hairline');
-      if (strokeCap != StrokeCap.butt)
-        result.write(' $strokeCap');
+      if (strokeCap != StrokeCap.butt) result.write(' $strokeCap');
       if (strokeJoin == StrokeJoin.miter) {
         if (strokeMiterLimit != _kStrokeMiterLimitDefault)
-          result.write(' $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}');
+          result.write(
+              ' $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}');
       } else {
         result.write(' $strokeJoin');
       }
@@ -506,14 +559,13 @@ class Paint {
       result.write('${semicolon}imageFilter: $imageFilter');
       semicolon = '; ';
     }
-    if (invertColors)
-      result.write('${semicolon}invert: $invertColors');
-    if (_dither)
-      result.write('${semicolon}dither: $_dither');
+    if (invertColors) result.write('${semicolon}invert: $invertColors');
+    if (_dither) result.write('${semicolon}dither: $_dither');
     result.write(')');
     return result.toString();
   }
 }
+
 enum ImageByteFormat {
   rawRgba,
   rawUnmodified,
@@ -523,6 +575,7 @@ enum PixelFormat {
   rgba8888,
   bgra8888,
 }
+
 class Image {
   Image._(this._image) {
     assert(() {
@@ -533,13 +586,14 @@ class Image {
   }
 
   // C++ unit tests access this.
-    final _Image _image;
+  final _Image _image;
 
   StackTrace? _debugStack;
   int get width {
     assert(!_disposed && !_image._disposed);
     return _image.width;
   }
+
   int get height {
     assert(!_disposed && !_image._disposed);
     return _image.height;
@@ -556,38 +610,45 @@ class Image {
       _image.dispose();
     }
   }
+
   bool get debugDisposed {
     bool? disposed;
     assert(() {
       disposed = _disposed;
       return true;
     }());
-    return disposed ?? (throw StateError('Image.debugDisposed is only available when asserts are enabled.'));
+    return disposed ??
+        (throw StateError(
+            'Image.debugDisposed is only available when asserts are enabled.'));
   }
-  Future<ByteData?> toByteData({ImageByteFormat format = ImageByteFormat.rawRgba}) {
+
+  Future<ByteData?> toByteData(
+      {ImageByteFormat format = ImageByteFormat.rawRgba}) {
     assert(!_disposed && !_image._disposed);
     return _image.toByteData(format: format);
   }
+
   List<StackTrace>? debugGetOpenHandleStackTraces() {
     List<StackTrace>? stacks;
     assert(() {
-      stacks = _image._handles.map((Image handle) => handle._debugStack!).toList();
+      stacks =
+          _image._handles.map((Image handle) => handle._debugStack!).toList();
       return true;
     }());
     return stacks;
   }
+
   Image clone() {
     if (_disposed) {
-      throw StateError(
-        'Cannot clone a disposed image.\n'
-        'The clone() method of a previously-disposed Image was called. Once an '
-        'Image object has been disposed, it can no longer be used to create '
-        'handles, as the underlying data may have been released.'
-      );
+      throw StateError('Cannot clone a disposed image.\n'
+          'The clone() method of a previously-disposed Image was called. Once an '
+          'Image object has been disposed, it can no longer be used to create '
+          'handles, as the underlying data may have been released.');
     }
     assert(!_image._disposed);
     return Image._(_image);
   }
+
   bool isCloneOf(Image other) => other._image == _image;
 
   @override
@@ -606,14 +667,18 @@ class _Image {
 
   final int height;
 
-  Future<ByteData?> toByteData({ImageByteFormat format = ImageByteFormat.rawRgba}) {
+  Future<ByteData?> toByteData(
+      {ImageByteFormat format = ImageByteFormat.rawRgba}) {
     return _futurize((_Callback<ByteData> callback) {
       return _toByteData(format.index, (Uint8List? encoded) {
         callback(encoded!.buffer.asByteData());
       });
     });
   }
-  String? _toByteData(int format, _Callback<Uint8List?> callback) { throw UnimplementedError(); }
+
+  String? _toByteData(int format, _Callback<Uint8List?> callback) {
+    throw UnimplementedError();
+  }
 
   bool _disposed = false;
   void dispose() {
@@ -629,19 +694,24 @@ class _Image {
     _dispose();
   }
 
-  void _dispose() { throw UnimplementedError(); }
+  void _dispose() {
+    throw UnimplementedError();
+  }
 
   Set<Image> _handles = <Image>{};
 
   @override
   String toString() => '[$width\u00D7$height]';
 }
+
 typedef ImageDecoderCallback = void Function(Image result);
+
 class FrameInfo {
   FrameInfo._({required this.duration, required this.image});
   final Duration duration;
   final Image image;
 }
+
 class Codec {
   //
   // This class is created by the engine, and should not be instantiated
@@ -649,20 +719,27 @@ class Codec {
   //
   // To obtain an instance of the [Codec] interface, see
   // [instantiateImageCodec].
-    Codec._();
+  Codec._();
 
   int? _cachedFrameCount;
   int get frameCount => _cachedFrameCount ??= _frameCount;
-  int get _frameCount { throw UnimplementedError(); }
+  int get _frameCount {
+    throw UnimplementedError();
+  }
 
   int? _cachedRepetitionCount;
   int get repetitionCount => _cachedRepetitionCount ??= _repetitionCount;
-  int get _repetitionCount { throw UnimplementedError(); }
+  int get _repetitionCount {
+    throw UnimplementedError();
+  }
+
   Future<FrameInfo> getNextFrame() async {
     final Completer<FrameInfo> completer = Completer<FrameInfo>.sync();
-    final String? error = _getNextFrame((_Image? image, int durationMilliseconds) {
+    final String? error =
+        _getNextFrame((_Image? image, int durationMilliseconds) {
       if (image == null) {
-        throw Exception('Codec failed to produce an image, possibly due to invalid image data.');
+        throw Exception(
+            'Codec failed to produce an image, possibly due to invalid image data.');
       }
       completer.complete(FrameInfo._(
         image: Image._(image),
@@ -674,9 +751,16 @@ class Codec {
     }
     return await completer.future;
   }
-  String? _getNextFrame(void Function(_Image?, int) callback) { throw UnimplementedError(); }
-  void dispose() { throw UnimplementedError(); }
+
+  String? _getNextFrame(void Function(_Image?, int) callback) {
+    throw UnimplementedError();
+  }
+
+  void dispose() {
+    throw UnimplementedError();
+  }
 }
+
 Future<Codec> instantiateImageCodec(
   Uint8List list, {
   int? targetWidth,
@@ -698,16 +782,18 @@ Future<Codec> instantiateImageCodec(
     targetHeight: targetHeight,
   );
 }
+
 void decodeImageFromList(Uint8List list, ImageDecoderCallback callback) {
   _decodeImageFromListAsync(list, callback);
 }
 
-Future<void> _decodeImageFromListAsync(Uint8List list,
-                                       ImageDecoderCallback callback) async {
+Future<void> _decodeImageFromListAsync(
+    Uint8List list, ImageDecoderCallback callback) async {
   final Codec codec = await instantiateImageCodec(list);
   final FrameInfo frameInfo = await codec.getNextFrame();
   callback(frameInfo.image);
 }
+
 void decodeImageFromPixels(
   Uint8List pixels,
   int width,
@@ -726,26 +812,25 @@ void decodeImageFromPixels(
     assert(allowUpscaling || targetHeight <= height);
   }
 
-  ImmutableBuffer.fromUint8List(pixels)
-    .then((ImmutableBuffer buffer) {
-      final ImageDescriptor descriptor = ImageDescriptor.raw(
-        buffer,
-        width: width,
-        height: height,
-        rowBytes: rowBytes,
-        pixelFormat: format,
-      );
+  ImmutableBuffer.fromUint8List(pixels).then((ImmutableBuffer buffer) {
+    final ImageDescriptor descriptor = ImageDescriptor.raw(
+      buffer,
+      width: width,
+      height: height,
+      rowBytes: rowBytes,
+      pixelFormat: format,
+    );
 
-      if (!allowUpscaling) {
-        if (targetWidth != null && targetWidth! > descriptor.width) {
-          targetWidth = descriptor.width;
-        }
-        if (targetHeight != null && targetHeight! > descriptor.height) {
-          targetHeight = descriptor.height;
-        }
+    if (!allowUpscaling) {
+      if (targetWidth != null && targetWidth! > descriptor.width) {
+        targetWidth = descriptor.width;
       }
+      if (targetHeight != null && targetHeight! > descriptor.height) {
+        targetHeight = descriptor.height;
+      }
+    }
 
-      descriptor
+    descriptor
         .instantiateCodec(
           targetWidth: targetWidth,
           targetHeight: targetHeight,
@@ -754,6 +839,7 @@ void decodeImageFromPixels(
         .then((FrameInfo frameInfo) => callback(frameInfo.image));
   });
 }
+
 enum PathFillType {
   nonZero,
   evenOdd,
@@ -767,8 +853,7 @@ enum PathOperation {
   reverseDifference,
 }
 
-abstract class EngineLayer {
-}
+abstract class EngineLayer {}
 
 class _PathMethods {
   static const int moveTo = 0;
@@ -796,6 +881,7 @@ class _PathMethods {
   static const int close = 22;
   static const int reset = 23;
 }
+
 class Path {
   Path();
   Path._();
@@ -900,7 +986,8 @@ class Path {
     _data[_dataLength++] = f;
   }
 
-  void _addData7(double a, double b, double c, double d, double e, double f, double g) {
+  void _addData7(
+      double a, double b, double c, double d, double e, double f, double g) {
     _ensureDataLength(_dataLength + 7);
     _data[_dataLength++] = a;
     _data[_dataLength++] = b;
@@ -912,7 +999,7 @@ class Path {
   }
 
   void _addData12(double a, double b, double c, double d, double e, double f,
-                  double g, double h, double i, double j, double k, double l) {
+      double g, double h, double i, double j, double k, double l) {
     _ensureDataLength(_dataLength + 12);
     _data[_dataLength++] = a;
     _data[_dataLength++] = b;
@@ -927,6 +1014,7 @@ class Path {
     _data[_dataLength++] = k;
     _data[_dataLength++] = l;
   }
+
   factory Path.from(Path source) {
     return source.shift(Offset.zero);
   }
@@ -937,6 +1025,7 @@ class Path {
     _currentY = y;
     _updateBoundsFromCurrent();
   }
+
   void relativeMoveTo(double dx, double dy) {
     _addMethod(_PathMethods.relativeMoveTo);
     _addData2(dx, dy);
@@ -944,6 +1033,7 @@ class Path {
     _currentY += dy;
     _updateBoundsFromCurrent();
   }
+
   void lineTo(double x, double y) {
     _addMethod(_PathMethods.lineTo);
     _addData2(x, y);
@@ -952,6 +1042,7 @@ class Path {
     _currentY = y;
     _updateBoundsFromCurrent();
   }
+
   void relativeLineTo(double dx, double dy) {
     _addMethod(_PathMethods.relativeLineTo);
     _addData2(dx, dy);
@@ -960,6 +1051,7 @@ class Path {
     _currentY += dy;
     _updateBoundsFromCurrent();
   }
+
   void quadraticBezierTo(double x1, double y1, double x2, double y2) {
     _addMethod(_PathMethods.quadraticBezierTo);
     _addData4(x1, y1, x2, y2);
@@ -970,6 +1062,7 @@ class Path {
     _currentY = y2;
     _updateBoundsFromCurrent();
   }
+
   void relativeQuadraticBezierTo(double x1, double y1, double x2, double y2) {
     _addMethod(_PathMethods.relativeQuadraticBezierTo);
     _addData4(x1, y1, x2, y2);
@@ -980,7 +1073,9 @@ class Path {
     _currentY += y2;
     _updateBoundsFromCurrent();
   }
-  void cubicTo(double x1, double y1, double x2, double y2, double x3, double y3) {
+
+  void cubicTo(
+      double x1, double y1, double x2, double y2, double x3, double y3) {
     _addMethod(_PathMethods.cubicTo);
     _addData6(x1, y1, x2, y2, x3, y3);
     _currentX = x1;
@@ -993,7 +1088,9 @@ class Path {
     _currentY = y3;
     _updateBoundsFromCurrent();
   }
-  void relativeCubicTo(double x1, double y1, double x2, double y2, double x3, double y3) {
+
+  void relativeCubicTo(
+      double x1, double y1, double x2, double y2, double x3, double y3) {
     _addMethod(_PathMethods.relativeCubicTo);
     _addData6(x1, y1, x2, y2, x3, y3);
     _currentX += x1;
@@ -1006,6 +1103,7 @@ class Path {
     _currentY += y3;
     _updateBoundsFromCurrent();
   }
+
   void conicTo(double x1, double y1, double x2, double y2, double w) {
     _addMethod(_PathMethods.conicTo);
     _addData5(x1, y1, x2, y2, w);
@@ -1016,6 +1114,7 @@ class Path {
     _currentY = y2;
     _updateBoundsFromCurrent();
   }
+
   void relativeConicTo(double x1, double y1, double x2, double y2, double w) {
     _addMethod(_PathMethods.relativeConicTo);
     _addData5(x1, y1, x2, y2, w);
@@ -1026,10 +1125,13 @@ class Path {
     _currentY += y2;
     _updateBoundsFromCurrent();
   }
-  void arcTo(Rect rect, double startAngle, double sweepAngle, bool forceMoveTo) {
+
+  void arcTo(
+      Rect rect, double startAngle, double sweepAngle, bool forceMoveTo) {
     assert(_rectIsValid(rect));
     _addMethod(_PathMethods.arcTo);
-    _addData7(rect.left, rect.top, rect.right, rect.bottom, startAngle, sweepAngle, forceMoveTo ? 1 : 0);
+    _addData7(rect.left, rect.top, rect.right, rect.bottom, startAngle,
+        sweepAngle, forceMoveTo ? 1 : 0);
     _currentX = rect.left;
     _currentY = rect.top;
     _updateBoundsFromCurrent();
@@ -1037,7 +1139,9 @@ class Path {
     _currentY = rect.bottom;
     _updateBoundsFromCurrent();
   }
-  void arcToPoint(Offset arcEnd, {
+
+  void arcToPoint(
+    Offset arcEnd, {
     Radius radius = Radius.zero,
     double rotation = 0.0,
     bool largeArc = false,
@@ -1046,13 +1150,16 @@ class Path {
     assert(_offsetIsValid(arcEnd));
     assert(_radiusIsValid(radius));
     _addMethod(_PathMethods.arcToPoint);
-    _addData7(arcEnd.dx, arcEnd.dy, radius.x, radius.y, rotation, largeArc ? 1 : 0, clockwise ? 1 : 0);
+    _addData7(arcEnd.dx, arcEnd.dy, radius.x, radius.y, rotation,
+        largeArc ? 1 : 0, clockwise ? 1 : 0);
     _updateBoundsFromCurrent();
     _currentX = arcEnd.dx;
     _currentY = arcEnd.dy;
     _updateBoundsFromCurrent();
   }
-  void relativeArcToPoint(Offset arcEndDelta, {
+
+  void relativeArcToPoint(
+    Offset arcEndDelta, {
     Radius radius = Radius.zero,
     double rotation = 0.0,
     bool largeArc = false,
@@ -1061,12 +1168,14 @@ class Path {
     assert(_offsetIsValid(arcEndDelta));
     assert(_radiusIsValid(radius));
     _addMethod(_PathMethods.relativeArcToPoint);
-    _addData7(arcEndDelta.dx, arcEndDelta.dy, radius.x, radius.y, rotation, largeArc ? 1 : 0, clockwise ? 1 : 0);
+    _addData7(arcEndDelta.dx, arcEndDelta.dy, radius.x, radius.y, rotation,
+        largeArc ? 1 : 0, clockwise ? 1 : 0);
     _updateBoundsFromCurrent();
     _currentX += arcEndDelta.dx;
     _currentY += arcEndDelta.dy;
     _updateBoundsFromCurrent();
   }
+
   void addRect(Rect rect) {
     assert(_rectIsValid(rect));
     _addMethod(_PathMethods.addRect);
@@ -1078,6 +1187,7 @@ class Path {
     _currentY = rect.bottom;
     _updateBoundsFromCurrent();
   }
+
   void addOval(Rect oval) {
     assert(_rectIsValid(oval));
     _addMethod(_PathMethods.addOval);
@@ -1089,10 +1199,12 @@ class Path {
     _currentY = oval.bottom;
     _updateBoundsFromCurrent();
   }
+
   void addArc(Rect oval, double startAngle, double sweepAngle) {
     assert(_rectIsValid(oval));
     _addMethod(_PathMethods.addArc);
-    _addData6(oval.left, oval.top, oval.right, oval.bottom, startAngle, sweepAngle);
+    _addData6(
+        oval.left, oval.top, oval.right, oval.bottom, startAngle, sweepAngle);
     _currentX = oval.left;
     _currentY = oval.top;
     _updateBoundsFromCurrent();
@@ -1100,6 +1212,7 @@ class Path {
     _currentY = oval.bottom;
     _updateBoundsFromCurrent();
   }
+
   void addPolygon(List<Offset> points, bool close) {
     assert(points != null); // ignore: unnecessary_null_comparison
     _addMethod(_PathMethods.addPolygon);
@@ -1112,6 +1225,7 @@ class Path {
       _updateBoundsFromCurrent();
     }
   }
+
   void addRRect(RRect rrect) {
     assert(_rrectIsValid(rrect));
     _addMethod(_PathMethods.addRRect);
@@ -1136,6 +1250,7 @@ class Path {
     _currentY = rrect.bottom;
     _updateBoundsFromCurrent();
   }
+
   void addPath(Path path, Offset offset, {Float64List? matrix4}) {
     // ignore: unnecessary_null_comparison
     assert(path != null); // path is checked on the engine side
@@ -1155,6 +1270,7 @@ class Path {
     _updateBounds(otherBounds.left, otherBounds.top);
     _updateBounds(otherBounds.right, otherBounds.bottom);
   }
+
   void extendWithPath(Path path, Offset offset, {Float64List? matrix4}) {
     // ignore: unnecessary_null_comparison
     assert(path != null); // path is checked on the engine side
@@ -1174,16 +1290,20 @@ class Path {
     _updateBounds(otherBounds.left, otherBounds.top);
     _updateBounds(otherBounds.right, otherBounds.bottom);
   }
+
   void close() {
     _addMethod(_PathMethods.close);
   }
+
   void reset() {
     _addMethod(_PathMethods.reset);
   }
+
   bool contains(Offset point) {
     assert(_offsetIsValid(point));
     return getBounds().contains(point);
   }
+
   Path shift(Offset offset) {
     assert(_offsetIsValid(offset));
     // This is a dummy implementation.
@@ -1203,6 +1323,7 @@ class Path {
     shifted.fillType = fillType;
     return shifted;
   }
+
   Path transform(Float64List matrix4) {
     assert(_matrix4IsValid(matrix4));
     // This is a dummy implementation.
@@ -1224,10 +1345,12 @@ class Path {
     transformed.fillType = fillType;
     return transformed;
   }
+
   // see https://skia.org/user/api/SkPath_Reference#SkPath_getBounds
   Rect getBounds() {
     return Rect.fromLTRB(_left, _top, _right, _bottom);
   }
+
   static Path combine(PathOperation operation, Path path1, Path path2) {
     assert(path1 != null); // ignore: unnecessary_null_comparison
     assert(path2 != null); // ignore: unnecessary_null_comparison
@@ -1257,14 +1380,16 @@ class Path {
     combined.fillType = path1.fillType;
     return combined;
   }
+
   PathMetrics computeMetrics({bool forceClosed = false}) {
     return PathMetrics._(this, forceClosed);
   }
 }
+
 class Tangent {
   const Tangent(this.position, this.vector)
-    : assert(position != null), // ignore: unnecessary_null_comparison
-      assert(vector != null); // ignore: unnecessary_null_comparison
+      : assert(position != null), // ignore: unnecessary_null_comparison
+        assert(vector != null); // ignore: unnecessary_null_comparison
   factory Tangent.fromAngle(Offset position, double angle) {
     return Tangent(position, Offset(math.cos(angle), math.sin(angle)));
   }
@@ -1273,17 +1398,20 @@ class Tangent {
   // flip the sign to be consistent with [Path.arcTo]'s `sweepAngle`
   double get angle => -math.atan2(vector.dy, vector.dx);
 }
+
 class PathMetrics extends collection.IterableBase<PathMetric> {
-  PathMetrics._(Path path, bool forceClosed) :
-    _iterator = PathMetricIterator._(_PathMeasure(path, forceClosed));
+  PathMetrics._(Path path, bool forceClosed)
+      : _iterator = PathMetricIterator._(_PathMeasure(path, forceClosed));
 
   final Iterator<PathMetric> _iterator;
 
   @override
   Iterator<PathMetric> get iterator => _iterator;
 }
+
 class PathMetricIterator implements Iterator<PathMetric> {
-  PathMetricIterator._(this._pathMeasure) : assert(_pathMeasure != null); // ignore: unnecessary_null_comparison
+  PathMetricIterator._(this._pathMeasure)
+      : assert(_pathMeasure != null); // ignore: unnecessary_null_comparison
 
   PathMetric? _pathMetric;
   _PathMeasure _pathMeasure;
@@ -1293,10 +1421,9 @@ class PathMetricIterator implements Iterator<PathMetric> {
     final PathMetric? currentMetric = _pathMetric;
     if (currentMetric == null) {
       throw RangeError(
-        'PathMetricIterator is not pointing to a PathMetric. This can happen in two situations:\n'
-        '- The iteration has not started yet. If so, call "moveNext" to start iteration.'
-        '- The iterator ran out of elements. If so, check that "moveNext" returns true prior to calling "current".'
-      );
+          'PathMetricIterator is not pointing to a PathMetric. This can happen in two situations:\n'
+          '- The iteration has not started yet. If so, call "moveNext" to start iteration.'
+          '- The iterator ran out of elements. If so, check that "moveNext" returns true prior to calling "current".');
     }
     return currentMetric;
   }
@@ -1311,12 +1438,13 @@ class PathMetricIterator implements Iterator<PathMetric> {
     return false;
   }
 }
+
 class PathMetric {
   PathMetric._(this._measure)
-    : assert(_measure != null), // ignore: unnecessary_null_comparison
-      length = _measure.length(_measure.currentContourIndex),
-      isClosed = _measure.isClosed(_measure.currentContourIndex),
-      contourIndex = _measure.currentContourIndex;
+      : assert(_measure != null), // ignore: unnecessary_null_comparison
+        length = _measure.length(_measure.currentContourIndex),
+        isClosed = _measure.isClosed(_measure.currentContourIndex),
+        contourIndex = _measure.currentContourIndex;
   final double length;
   final bool isClosed;
   final int contourIndex;
@@ -1325,54 +1453,76 @@ class PathMetric {
   Tangent? getTangentForOffset(double distance) {
     return _measure.getTangentForOffset(contourIndex, distance);
   }
+
   Path extractPath(double start, double end, {bool startWithMoveTo = true}) {
-    return _measure.extractPath(contourIndex, start, end, startWithMoveTo: startWithMoveTo);
+    return _measure.extractPath(contourIndex, start, end,
+        startWithMoveTo: startWithMoveTo);
   }
 
   @override
-  String toString() => '$runtimeType{length: $length, isClosed: $isClosed, contourIndex:$contourIndex}';
+  String toString() =>
+      '$runtimeType{length: $length, isClosed: $isClosed, contourIndex:$contourIndex}';
 }
 
 class _PathMeasure {
   _PathMeasure(Path path, bool forceClosed) {
     _constructor(path, forceClosed);
   }
-  void _constructor(Path path, bool forceClosed) { throw UnimplementedError(); }
+  void _constructor(Path path, bool forceClosed) {
+    throw UnimplementedError();
+  }
 
   double length(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, 'Iterator must be advanced before index $contourIndex can be used.');
+    assert(contourIndex <= currentContourIndex,
+        'Iterator must be advanced before index $contourIndex can be used.');
     return _length(contourIndex);
   }
-  double _length(int contourIndex) { throw UnimplementedError(); }
+
+  double _length(int contourIndex) {
+    throw UnimplementedError();
+  }
 
   Tangent? getTangentForOffset(int contourIndex, double distance) {
-    assert(contourIndex <= currentContourIndex, 'Iterator must be advanced before index $contourIndex can be used.');
+    assert(contourIndex <= currentContourIndex,
+        'Iterator must be advanced before index $contourIndex can be used.');
     final Float32List posTan = _getPosTan(contourIndex, distance);
     // first entry == 0 indicates that Skia returned false
     if (posTan[0] == 0.0) {
       return null;
     } else {
       return Tangent(
-        Offset(posTan[1], posTan[2]),
-        Offset(posTan[3], posTan[4])
-      );
+          Offset(posTan[1], posTan[2]), Offset(posTan[3], posTan[4]));
     }
   }
-  Float32List _getPosTan(int contourIndex, double distance) { throw UnimplementedError(); }
 
-  Path extractPath(int contourIndex, double start, double end, {bool startWithMoveTo = true}) {
-    assert(contourIndex <= currentContourIndex, 'Iterator must be advanced before index $contourIndex can be used.');
+  Float32List _getPosTan(int contourIndex, double distance) {
+    throw UnimplementedError();
+  }
+
+  Path extractPath(int contourIndex, double start, double end,
+      {bool startWithMoveTo = true}) {
+    assert(contourIndex <= currentContourIndex,
+        'Iterator must be advanced before index $contourIndex can be used.');
     final Path path = Path._();
-    _extractPath(path, contourIndex, start, end, startWithMoveTo: startWithMoveTo);
+    _extractPath(path, contourIndex, start, end,
+        startWithMoveTo: startWithMoveTo);
     return path;
   }
-  void _extractPath(Path outPath, int contourIndex, double start, double end, {bool startWithMoveTo = true}) { throw UnimplementedError(); }
+
+  void _extractPath(Path outPath, int contourIndex, double start, double end,
+      {bool startWithMoveTo = true}) {
+    throw UnimplementedError();
+  }
 
   bool isClosed(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, 'Iterator must be advanced before index $contourIndex can be used.');
+    assert(contourIndex <= currentContourIndex,
+        'Iterator must be advanced before index $contourIndex can be used.');
     return _isClosed(contourIndex);
   }
-  bool _isClosed(int contourIndex) { throw UnimplementedError(); }
+
+  bool _isClosed(int contourIndex) {
+    throw UnimplementedError();
+  }
 
   // Move to the next contour in the path.
   //
@@ -1385,9 +1535,14 @@ class _PathMeasure {
     }
     return next;
   }
-  bool _nativeNextContour() { throw UnimplementedError(); }
+
+  bool _nativeNextContour() {
+    throw UnimplementedError();
+  }
+
   int currentContourIndex = -1;
 }
+
 // These enum values must be kept in sync with SkBlurStyle.
 enum BlurStyle {
   // These mirror SkBlurStyle and must be kept in sync.
@@ -1396,12 +1551,13 @@ enum BlurStyle {
   outer,
   inner,
 }
+
 class MaskFilter {
   const MaskFilter.blur(
     this._style,
     this._sigma,
-  ) : assert(_style != null), // ignore: unnecessary_null_comparison
-      assert(_sigma != null); // ignore: unnecessary_null_comparison
+  )   : assert(_style != null), // ignore: unnecessary_null_comparison
+        assert(_sigma != null); // ignore: unnecessary_null_comparison
 
   final BlurStyle _style;
   final double _sigma;
@@ -1413,9 +1569,9 @@ class MaskFilter {
 
   @override
   bool operator ==(Object other) {
-    return other is MaskFilter
-        && other._style == _style
-        && other._sigma == _sigma;
+    return other is MaskFilter &&
+        other._style == _style &&
+        other._sigma == _sigma;
   }
 
   @override
@@ -1424,6 +1580,7 @@ class MaskFilter {
   @override
   String toString() => 'MaskFilter.blur($_style, ${_sigma.toStringAsFixed(1)})';
 }
+
 class ColorFilter implements ImageFilter {
   const ColorFilter.mode(Color color, BlendMode blendMode)
       : _color = color,
@@ -1485,13 +1642,12 @@ class ColorFilter implements ImageFilter {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is ColorFilter
-        && other._type == _type
-        && _listEquals<double>(other._matrix, _matrix)
-        && other._color == _color
-        && other._blendMode == _blendMode;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ColorFilter &&
+        other._type == _type &&
+        _listEquals<double>(other._matrix, _matrix) &&
+        other._color == _color &&
+        other._blendMode == _blendMode;
   }
 
   @override
@@ -1529,58 +1685,81 @@ class ColorFilter implements ImageFilter {
     }
   }
 }
+
 class _ColorFilter {
   _ColorFilter.mode(this.creator)
-    : assert(creator != null), // ignore: unnecessary_null_comparison
-      assert(creator._type == ColorFilter._kTypeMode) {
+      : assert(creator != null), // ignore: unnecessary_null_comparison
+        assert(creator._type == ColorFilter._kTypeMode) {
     _constructor();
     _initMode(creator._color!.value, creator._blendMode!.index);
   }
 
   _ColorFilter.matrix(this.creator)
-    : assert(creator != null), // ignore: unnecessary_null_comparison
-      assert(creator._type == ColorFilter._kTypeMatrix) {
+      : assert(creator != null), // ignore: unnecessary_null_comparison
+        assert(creator._type == ColorFilter._kTypeMatrix) {
     _constructor();
     _initMatrix(Float32List.fromList(creator._matrix!));
   }
   _ColorFilter.linearToSrgbGamma(this.creator)
-    : assert(creator != null), // ignore: unnecessary_null_comparison
-      assert(creator._type == ColorFilter._kTypeLinearToSrgbGamma) {
+      : assert(creator != null), // ignore: unnecessary_null_comparison
+        assert(creator._type == ColorFilter._kTypeLinearToSrgbGamma) {
     _constructor();
     _initLinearToSrgbGamma();
   }
 
   _ColorFilter.srgbToLinearGamma(this.creator)
-    : assert(creator != null), // ignore: unnecessary_null_comparison
-      assert(creator._type == ColorFilter._kTypeSrgbToLinearGamma) {
+      : assert(creator != null), // ignore: unnecessary_null_comparison
+        assert(creator._type == ColorFilter._kTypeSrgbToLinearGamma) {
     _constructor();
     _initSrgbToLinearGamma();
   }
   final ColorFilter creator;
 
-  void _constructor() { throw UnimplementedError(); }
-  void _initMode(int color, int blendMode) { throw UnimplementedError(); }
-  void _initMatrix(Float32List matrix) { throw UnimplementedError(); }
-  void _initLinearToSrgbGamma() { throw UnimplementedError(); }
-  void _initSrgbToLinearGamma() { throw UnimplementedError(); }
+  void _constructor() {
+    throw UnimplementedError();
+  }
+
+  void _initMode(int color, int blendMode) {
+    throw UnimplementedError();
+  }
+
+  void _initMatrix(Float32List matrix) {
+    throw UnimplementedError();
+  }
+
+  void _initLinearToSrgbGamma() {
+    throw UnimplementedError();
+  }
+
+  void _initSrgbToLinearGamma() {
+    throw UnimplementedError();
+  }
 }
+
 abstract class ImageFilter {
-  factory ImageFilter.blur({ double sigmaX = 0.0, double sigmaY = 0.0, TileMode tileMode = TileMode.clamp }) {
+  factory ImageFilter.blur(
+      {double sigmaX = 0.0,
+      double sigmaY = 0.0,
+      TileMode tileMode = TileMode.clamp}) {
     assert(sigmaX != null); // ignore: unnecessary_null_comparison
     assert(sigmaY != null); // ignore: unnecessary_null_comparison
     assert(tileMode != null); // ignore: unnecessary_null_comparison
-    return _GaussianBlurImageFilter(sigmaX: sigmaX, sigmaY: sigmaY, tileMode: tileMode);
+    return _GaussianBlurImageFilter(
+        sigmaX: sigmaX, sigmaY: sigmaY, tileMode: tileMode);
   }
   factory ImageFilter.matrix(Float64List matrix4,
-                     { FilterQuality filterQuality = FilterQuality.low }) {
-    assert(matrix4 != null);       // ignore: unnecessary_null_comparison
+      {FilterQuality filterQuality = FilterQuality.low}) {
+    assert(matrix4 != null); // ignore: unnecessary_null_comparison
     assert(filterQuality != null); // ignore: unnecessary_null_comparison
     if (matrix4.length != 16)
       throw ArgumentError('"matrix4" must have 16 entries.');
-    return _MatrixImageFilter(data: Float64List.fromList(matrix4), filterQuality: filterQuality);
+    return _MatrixImageFilter(
+        data: Float64List.fromList(matrix4), filterQuality: filterQuality);
   }
-  factory ImageFilter.compose({ required ImageFilter outer, required ImageFilter inner }) {
-    assert (inner != null && outer != null);  // ignore: unnecessary_null_comparison
+  factory ImageFilter.compose(
+      {required ImageFilter outer, required ImageFilter inner}) {
+    assert(
+        inner != null && outer != null); // ignore: unnecessary_null_comparison
     return _ComposeImageFilter(innerFilter: inner, outerFilter: outer);
   }
 
@@ -1594,7 +1773,7 @@ abstract class ImageFilter {
 }
 
 class _MatrixImageFilter implements ImageFilter {
-  _MatrixImageFilter({ required this.data, required this.filterQuality });
+  _MatrixImageFilter({required this.data, required this.filterQuality});
 
   final Float64List data;
   final FilterQuality filterQuality;
@@ -1612,11 +1791,10 @@ class _MatrixImageFilter implements ImageFilter {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is _MatrixImageFilter
-        && other.filterQuality == filterQuality
-        && _listEquals<double>(other.data, data);
+    if (other.runtimeType != runtimeType) return false;
+    return other is _MatrixImageFilter &&
+        other.filterQuality == filterQuality &&
+        _listEquals<double>(other.data, data);
   }
 
   @override
@@ -1624,7 +1802,8 @@ class _MatrixImageFilter implements ImageFilter {
 }
 
 class _GaussianBlurImageFilter implements ImageFilter {
-  _GaussianBlurImageFilter({ required this.sigmaX, required this.sigmaY, required this.tileMode });
+  _GaussianBlurImageFilter(
+      {required this.sigmaX, required this.sigmaY, required this.tileMode});
 
   final double sigmaX;
   final double sigmaY;
@@ -1636,11 +1815,15 @@ class _GaussianBlurImageFilter implements ImageFilter {
   _ImageFilter _toNativeImageFilter() => nativeFilter;
 
   String get _modeString {
-    switch(tileMode) {
-      case TileMode.clamp: return 'clamp';
-      case TileMode.mirror: return 'mirror';
-      case TileMode.repeated: return 'repeated';
-      case TileMode.decal: return 'decal';
+    switch (tileMode) {
+      case TileMode.clamp:
+        return 'clamp';
+      case TileMode.mirror:
+        return 'mirror';
+      case TileMode.repeated:
+        return 'repeated';
+      case TileMode.decal:
+        return 'decal';
     }
   }
 
@@ -1652,12 +1835,11 @@ class _GaussianBlurImageFilter implements ImageFilter {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is _GaussianBlurImageFilter
-        && other.sigmaX == sigmaX
-        && other.sigmaY == sigmaY
-        && other.tileMode == tileMode;
+    if (other.runtimeType != runtimeType) return false;
+    return other is _GaussianBlurImageFilter &&
+        other.sigmaX == sigmaX &&
+        other.sigmaY == sigmaY &&
+        other.tileMode == tileMode;
   }
 
   @override
@@ -1665,7 +1847,7 @@ class _GaussianBlurImageFilter implements ImageFilter {
 }
 
 class _ComposeImageFilter implements ImageFilter {
-  _ComposeImageFilter({ required this.innerFilter, required this.outerFilter });
+  _ComposeImageFilter({required this.innerFilter, required this.outerFilter});
 
   final ImageFilter innerFilter;
   final ImageFilter outerFilter;
@@ -1676,63 +1858,88 @@ class _ComposeImageFilter implements ImageFilter {
   _ImageFilter _toNativeImageFilter() => nativeFilter;
 
   @override
-  String get _shortDescription => '${innerFilter._shortDescription} -> ${outerFilter._shortDescription}';
+  String get _shortDescription =>
+      '${innerFilter._shortDescription} -> ${outerFilter._shortDescription}';
 
   @override
-  String toString() => 'ImageFilter.compose(source -> $_shortDescription -> result)';
+  String toString() =>
+      'ImageFilter.compose(source -> $_shortDescription -> result)';
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is _ComposeImageFilter
-        && other.innerFilter == innerFilter
-        && other.outerFilter == outerFilter;
+    if (other.runtimeType != runtimeType) return false;
+    return other is _ComposeImageFilter &&
+        other.innerFilter == innerFilter &&
+        other.outerFilter == outerFilter;
   }
 
   @override
   int get hashCode => hashValues(innerFilter, outerFilter);
 }
+
 class _ImageFilter {
-  void _constructor() { throw UnimplementedError(); }
+  void _constructor() {
+    throw UnimplementedError();
+  }
+
   _ImageFilter.blur(_GaussianBlurImageFilter filter)
-    : assert(filter != null), // ignore: unnecessary_null_comparison
-      creator = filter {    // ignore: prefer_initializing_formals
+      : assert(filter != null), // ignore: unnecessary_null_comparison
+        creator = filter {
+    // ignore: prefer_initializing_formals
     _constructor();
     _initBlur(filter.sigmaX, filter.sigmaY, filter.tileMode.index);
   }
-  void _initBlur(double sigmaX, double sigmaY, int tileMode) { throw UnimplementedError(); }
+  void _initBlur(double sigmaX, double sigmaY, int tileMode) {
+    throw UnimplementedError();
+  }
+
   _ImageFilter.matrix(_MatrixImageFilter filter)
-    : assert(filter != null), // ignore: unnecessary_null_comparison
-      creator = filter {    // ignore: prefer_initializing_formals
+      : assert(filter != null), // ignore: unnecessary_null_comparison
+        creator = filter {
+    // ignore: prefer_initializing_formals
     if (filter.data.length != 16)
       throw ArgumentError('"matrix4" must have 16 entries.');
     _constructor();
     _initMatrix(filter.data, filter.filterQuality.index);
   }
-  void _initMatrix(Float64List matrix4, int filterQuality) { throw UnimplementedError(); }
+  void _initMatrix(Float64List matrix4, int filterQuality) {
+    throw UnimplementedError();
+  }
+
   _ImageFilter.fromColorFilter(ColorFilter filter)
-    : assert(filter != null), // ignore: unnecessary_null_comparison
-      creator = filter {    // ignore: prefer_initializing_formals
+      : assert(filter != null), // ignore: unnecessary_null_comparison
+        creator = filter {
+    // ignore: prefer_initializing_formals
     _constructor();
     final _ColorFilter? nativeFilter = filter._toNativeColorFilter();
     _initColorFilter(nativeFilter);
   }
-  void _initColorFilter(_ColorFilter? colorFilter) { throw UnimplementedError(); }
-  _ImageFilter.composed(_ComposeImageFilter filter)
-    : assert(filter != null), // ignore: unnecessary_null_comparison
-      creator = filter {    // ignore: prefer_initializing_formals
-    _constructor();
-    final _ImageFilter nativeFilterInner = filter.innerFilter._toNativeImageFilter();
-    final _ImageFilter nativeFilterOuter = filter.outerFilter._toNativeImageFilter();
-    _initComposed(nativeFilterOuter,  nativeFilterInner);
+  void _initColorFilter(_ColorFilter? colorFilter) {
+    throw UnimplementedError();
   }
-  void _initComposed(_ImageFilter outerFilter, _ImageFilter innerFilter) { throw UnimplementedError(); }
+
+  _ImageFilter.composed(_ComposeImageFilter filter)
+      : assert(filter != null), // ignore: unnecessary_null_comparison
+        creator = filter {
+    // ignore: prefer_initializing_formals
+    _constructor();
+    final _ImageFilter nativeFilterInner =
+        filter.innerFilter._toNativeImageFilter();
+    final _ImageFilter nativeFilterOuter =
+        filter.outerFilter._toNativeImageFilter();
+    _initComposed(nativeFilterOuter, nativeFilterInner);
+  }
+  void _initComposed(_ImageFilter outerFilter, _ImageFilter innerFilter) {
+    throw UnimplementedError();
+  }
+
   final ImageFilter creator;
 }
+
 class Shader {
-    Shader._();
+  Shader._();
 }
+
 // These enum values must be kept in sync with SkTileMode.
 enum TileMode {
   clamp,
@@ -1744,8 +1951,7 @@ enum TileMode {
 Int32List _encodeColorList(List<Color> colors) {
   final int colorCount = colors.length;
   final Int32List result = Int32List(colorCount);
-  for (int i = 0; i < colorCount; ++i)
-    result[i] = colors[i].value;
+  for (int i = 0; i < colorCount; ++i) result[i] = colors[i].value;
   return result;
 }
 
@@ -1774,9 +1980,12 @@ Float32List _encodeTwoPoints(Offset pointA, Offset pointB) {
   result[3] = pointB.dy;
   return result;
 }
-class Gradient extends Shader {
 
-  void _constructor() { throw UnimplementedError(); }
+class Gradient extends Shader {
+  void _constructor() {
+    throw UnimplementedError();
+  }
+
   Gradient.linear(
     Offset from,
     Offset to,
@@ -1784,51 +1993,82 @@ class Gradient extends Shader {
     List<double>? colorStops,
     TileMode tileMode = TileMode.clamp,
     Float64List? matrix4,
-  ]) : assert(_offsetIsValid(from)),
-       assert(_offsetIsValid(to)),
-       assert(colors != null), // ignore: unnecessary_null_comparison
-       assert(tileMode != null), // ignore: unnecessary_null_comparison
-       assert(matrix4 == null || _matrix4IsValid(matrix4)), // ignore: unnecessary_null_comparison
-       super._() {
+  ])  : assert(_offsetIsValid(from)),
+        assert(_offsetIsValid(to)),
+        assert(colors != null), // ignore: unnecessary_null_comparison
+        assert(tileMode != null), // ignore: unnecessary_null_comparison
+        assert(matrix4 == null ||
+            _matrix4IsValid(matrix4)), // ignore: unnecessary_null_comparison
+        super._() {
     _validateColorStops(colors, colorStops);
     final Float32List endPointsBuffer = _encodeTwoPoints(from, to);
     final Int32List colorsBuffer = _encodeColorList(colors);
-    final Float32List? colorStopsBuffer = colorStops == null ? null : Float32List.fromList(colorStops);
+    final Float32List? colorStopsBuffer =
+        colorStops == null ? null : Float32List.fromList(colorStops);
     _constructor();
-    _initLinear(endPointsBuffer, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+    _initLinear(endPointsBuffer, colorsBuffer, colorStopsBuffer, tileMode.index,
+        matrix4);
   }
-  void _initLinear(Float32List endPoints, Int32List colors, Float32List? colorStops, int tileMode, Float64List? matrix4) { throw UnimplementedError(); }
-  Gradient.radial(
-    Offset center,
-    double radius,
-    List<Color> colors, [
-    List<double>? colorStops,
-    TileMode tileMode = TileMode.clamp,
-    Float64List? matrix4,
-    Offset? focal,
-    double focalRadius = 0.0
-  ]) : assert(_offsetIsValid(center)),
-       assert(colors != null), // ignore: unnecessary_null_comparison
-       assert(tileMode != null), // ignore: unnecessary_null_comparison
-       assert(matrix4 == null || _matrix4IsValid(matrix4)),
-       super._() {
+  void _initLinear(Float32List endPoints, Int32List colors,
+      Float32List? colorStops, int tileMode, Float64List? matrix4) {
+    throw UnimplementedError();
+  }
+
+  Gradient.radial(Offset center, double radius, List<Color> colors,
+      [List<double>? colorStops,
+      TileMode tileMode = TileMode.clamp,
+      Float64List? matrix4,
+      Offset? focal,
+      double focalRadius = 0.0])
+      : assert(_offsetIsValid(center)),
+        assert(colors != null), // ignore: unnecessary_null_comparison
+        assert(tileMode != null), // ignore: unnecessary_null_comparison
+        assert(matrix4 == null || _matrix4IsValid(matrix4)),
+        super._() {
     _validateColorStops(colors, colorStops);
     final Int32List colorsBuffer = _encodeColorList(colors);
-    final Float32List? colorStopsBuffer = colorStops == null ? null : Float32List.fromList(colorStops);
+    final Float32List? colorStopsBuffer =
+        colorStops == null ? null : Float32List.fromList(colorStops);
 
     // If focal is null or focal radius is null, this should be treated as a regular radial gradient
     // If focal == center and the focal radius is 0.0, it's still a regular radial gradient
     if (focal == null || (focal == center && focalRadius == 0.0)) {
       _constructor();
-      _initRadial(center.dx, center.dy, radius, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+      _initRadial(center.dx, center.dy, radius, colorsBuffer, colorStopsBuffer,
+          tileMode.index, matrix4);
     } else {
-      assert(center != Offset.zero || focal != Offset.zero); // will result in exception(s) in Skia side
+      assert(center != Offset.zero ||
+          focal != Offset.zero); // will result in exception(s) in Skia side
       _constructor();
-      _initConical(focal.dx, focal.dy, focalRadius, center.dx, center.dy, radius, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+      _initConical(focal.dx, focal.dy, focalRadius, center.dx, center.dy,
+          radius, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
     }
   }
-  void _initRadial(double centerX, double centerY, double radius, Int32List colors, Float32List? colorStops, int tileMode, Float64List? matrix4) { throw UnimplementedError(); }
-  void _initConical(double startX, double startY, double startRadius, double endX, double endY, double endRadius, Int32List colors, Float32List? colorStops, int tileMode, Float64List? matrix4) { throw UnimplementedError(); }
+  void _initRadial(
+      double centerX,
+      double centerY,
+      double radius,
+      Int32List colors,
+      Float32List? colorStops,
+      int tileMode,
+      Float64List? matrix4) {
+    throw UnimplementedError();
+  }
+
+  void _initConical(
+      double startX,
+      double startY,
+      double startRadius,
+      double endX,
+      double endY,
+      double endRadius,
+      Int32List colors,
+      Float32List? colorStops,
+      int tileMode,
+      Float64List? matrix4) {
+    throw UnimplementedError();
+  }
+
   Gradient.sweep(
     Offset center,
     List<Color> colors, [
@@ -1837,54 +2077,78 @@ class Gradient extends Shader {
     double startAngle = 0.0,
     double endAngle = math.pi * 2,
     Float64List? matrix4,
-  ]) : assert(_offsetIsValid(center)),
-       assert(colors != null), // ignore: unnecessary_null_comparison
-       assert(tileMode != null), // ignore: unnecessary_null_comparison
-       assert(startAngle != null), // ignore: unnecessary_null_comparison
-       assert(endAngle != null), // ignore: unnecessary_null_comparison
-       assert(startAngle < endAngle),
-       assert(matrix4 == null || _matrix4IsValid(matrix4)),
-       super._() {
+  ])  : assert(_offsetIsValid(center)),
+        assert(colors != null), // ignore: unnecessary_null_comparison
+        assert(tileMode != null), // ignore: unnecessary_null_comparison
+        assert(startAngle != null), // ignore: unnecessary_null_comparison
+        assert(endAngle != null), // ignore: unnecessary_null_comparison
+        assert(startAngle < endAngle),
+        assert(matrix4 == null || _matrix4IsValid(matrix4)),
+        super._() {
     _validateColorStops(colors, colorStops);
     final Int32List colorsBuffer = _encodeColorList(colors);
-    final Float32List? colorStopsBuffer = colorStops == null ? null : Float32List.fromList(colorStops);
+    final Float32List? colorStopsBuffer =
+        colorStops == null ? null : Float32List.fromList(colorStops);
     _constructor();
-    _initSweep(center.dx, center.dy, colorsBuffer, colorStopsBuffer, tileMode.index, startAngle, endAngle, matrix4);
+    _initSweep(center.dx, center.dy, colorsBuffer, colorStopsBuffer,
+        tileMode.index, startAngle, endAngle, matrix4);
   }
-  void _initSweep(double centerX, double centerY, Int32List colors, Float32List? colorStops, int tileMode, double startAngle, double endAngle, Float64List? matrix) { throw UnimplementedError(); }
+  void _initSweep(
+      double centerX,
+      double centerY,
+      Int32List colors,
+      Float32List? colorStops,
+      int tileMode,
+      double startAngle,
+      double endAngle,
+      Float64List? matrix) {
+    throw UnimplementedError();
+  }
 
-  static void _validateColorStops(List<Color> colors, List<double>? colorStops) {
+  static void _validateColorStops(
+      List<Color> colors, List<double>? colorStops) {
     if (colorStops == null) {
       if (colors.length != 2)
-        throw ArgumentError('"colors" must have length 2 if "colorStops" is omitted.');
+        throw ArgumentError(
+            '"colors" must have length 2 if "colorStops" is omitted.');
     } else {
       if (colors.length != colorStops.length)
-        throw ArgumentError('"colors" and "colorStops" arguments must have equal length.');
+        throw ArgumentError(
+            '"colors" and "colorStops" arguments must have equal length.');
     }
   }
 }
+
 class ImageShader extends Shader {
-    ImageShader(Image image, TileMode tmx, TileMode tmy, Float64List matrix4) :
-    // ignore: unnecessary_null_comparison
-    assert(image != null), // image is checked on the engine side
-    assert(tmx != null), // ignore: unnecessary_null_comparison
-    assert(tmy != null), // ignore: unnecessary_null_comparison
-    assert(matrix4 != null), // ignore: unnecessary_null_comparison
-    super._() {
+  ImageShader(Image image, TileMode tmx, TileMode tmy, Float64List matrix4)
+      :
+        // ignore: unnecessary_null_comparison
+        assert(image != null), // image is checked on the engine side
+        assert(tmx != null), // ignore: unnecessary_null_comparison
+        assert(tmy != null), // ignore: unnecessary_null_comparison
+        assert(matrix4 != null), // ignore: unnecessary_null_comparison
+        super._() {
     if (matrix4.length != 16)
       throw ArgumentError('"matrix4" must have 16 entries.');
     _constructor();
     _initWithImage(image._image, tmx.index, tmy.index, matrix4);
   }
-  void _constructor() { throw UnimplementedError(); }
-  void _initWithImage(_Image image, int tmx, int tmy, Float64List matrix4) { throw UnimplementedError(); }
+  void _constructor() {
+    throw UnimplementedError();
+  }
+
+  void _initWithImage(_Image image, int tmx, int tmy, Float64List matrix4) {
+    throw UnimplementedError();
+  }
 }
+
 // These enum values must be kept in sync with SkVertices::VertexMode.
 enum VertexMode {
   triangles,
   triangleStrip,
   triangleFan,
 }
+
 class Vertices {
   Vertices(
     VertexMode mode,
@@ -1892,27 +2156,31 @@ class Vertices {
     List<Offset>? textureCoordinates,
     List<Color>? colors,
     List<int>? indices,
-  }) : assert(mode != null), // ignore: unnecessary_null_comparison
-       assert(positions != null) { // ignore: unnecessary_null_comparison
-    if (textureCoordinates != null && textureCoordinates.length != positions.length)
-      throw ArgumentError('"positions" and "textureCoordinates" lengths must match.');
+  })  : assert(mode != null), // ignore: unnecessary_null_comparison
+        assert(positions != null) {
+    // ignore: unnecessary_null_comparison
+    if (textureCoordinates != null &&
+        textureCoordinates.length != positions.length)
+      throw ArgumentError(
+          '"positions" and "textureCoordinates" lengths must match.');
     if (colors != null && colors.length != positions.length)
       throw ArgumentError('"positions" and "colors" lengths must match.');
-    if (indices != null && indices.any((int i) => i < 0 || i >= positions.length))
-      throw ArgumentError('"indices" values must be valid indices in the positions list.');
+    if (indices != null &&
+        indices.any((int i) => i < 0 || i >= positions.length))
+      throw ArgumentError(
+          '"indices" values must be valid indices in the positions list.');
 
     final Float32List encodedPositions = _encodePointList(positions);
     final Float32List? encodedTextureCoordinates = (textureCoordinates != null)
-      ? _encodePointList(textureCoordinates)
-      : null;
-    final Int32List? encodedColors = colors != null
-      ? _encodeColorList(colors)
-      : null;
-    final Uint16List? encodedIndices = indices != null
-      ? Uint16List.fromList(indices)
-      : null;
+        ? _encodePointList(textureCoordinates)
+        : null;
+    final Int32List? encodedColors =
+        colors != null ? _encodeColorList(colors) : null;
+    final Uint16List? encodedIndices =
+        indices != null ? Uint16List.fromList(indices) : null;
 
-    if (!_init(this, mode.index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices))
+    if (!_init(this, mode.index, encodedPositions, encodedTextureCoordinates,
+        encodedColors, encodedIndices))
       throw ArgumentError('Invalid configuration for vertices.');
   }
   Vertices.raw(
@@ -1921,26 +2189,31 @@ class Vertices {
     Float32List? textureCoordinates,
     Int32List? colors,
     Uint16List? indices,
-  }) : assert(mode != null), // ignore: unnecessary_null_comparison
-       assert(positions != null) { // ignore: unnecessary_null_comparison
-    if (textureCoordinates != null && textureCoordinates.length != positions.length)
-      throw ArgumentError('"positions" and "textureCoordinates" lengths must match.');
+  })  : assert(mode != null), // ignore: unnecessary_null_comparison
+        assert(positions != null) {
+    // ignore: unnecessary_null_comparison
+    if (textureCoordinates != null &&
+        textureCoordinates.length != positions.length)
+      throw ArgumentError(
+          '"positions" and "textureCoordinates" lengths must match.');
     if (colors != null && colors.length * 2 != positions.length)
       throw ArgumentError('"positions" and "colors" lengths must match.');
-    if (indices != null && indices.any((int i) => i < 0 || i >= positions.length))
-      throw ArgumentError('"indices" values must be valid indices in the positions list.');
+    if (indices != null &&
+        indices.any((int i) => i < 0 || i >= positions.length))
+      throw ArgumentError(
+          '"indices" values must be valid indices in the positions list.');
 
-    if (!_init(this, mode.index, positions, textureCoordinates, colors, indices))
+    if (!_init(
+        this, mode.index, positions, textureCoordinates, colors, indices))
       throw ArgumentError('Invalid configuration for vertices.');
   }
 
-  bool _init(Vertices outVertices,
-             int mode,
-             Float32List positions,
-             Float32List? textureCoordinates,
-             Int32List? colors,
-             Uint16List? indices) { throw UnimplementedError(); }
+  bool _init(Vertices outVertices, int mode, Float32List positions,
+      Float32List? textureCoordinates, Int32List? colors, Uint16List? indices) {
+    throw UnimplementedError();
+  }
 }
+
 // ignore: deprecated_member_use
 // These enum values must be kept in sync with SkCanvas::PointMode.
 enum PointMode {
@@ -1985,10 +2258,15 @@ class _CanvasMethods {
   static const int drawAtlas = 28;
   static const int drawShadow = 29;
 }
+
 class Canvas {
-  Canvas(this._recorder, [ Rect? cullRect ]) : _cullRect = cullRect ?? Rect.largest, assert(_recorder != null) { // ignore: unnecessary_null_comparison
+  Canvas(this._recorder, [Rect? cullRect])
+      : _cullRect = cullRect ?? Rect.largest,
+        assert(_recorder != null) {
+    // ignore: unnecessary_null_comparison
     if (_recorder!.isRecording)
-      throw ArgumentError('"recorder" must not already be associated with another Canvas.');
+      throw ArgumentError(
+          '"recorder" must not already be associated with another Canvas.');
     _recorder!._canvas = this;
   }
 
@@ -2103,7 +2381,8 @@ class Canvas {
     _data[_dataLength++] = f;
   }
 
-  void _addData7(double a, double b, double c, double d, double e, double f, double g) {
+  void _addData7(
+      double a, double b, double c, double d, double e, double f, double g) {
     _ensureDataLength(_dataLength + 7);
     _data[_dataLength++] = a;
     _data[_dataLength++] = b;
@@ -2115,7 +2394,7 @@ class Canvas {
   }
 
   void _addData12(double a, double b, double c, double d, double e, double f,
-                  double g, double h, double i, double j, double k, double l) {
+      double g, double h, double i, double j, double k, double l) {
     _ensureDataLength(_dataLength + 12);
     _data[_dataLength++] = a;
     _data[_dataLength++] = b;
@@ -2135,6 +2414,7 @@ class Canvas {
     _addMethod(_CanvasMethods.save);
     _saveCount += 1;
   }
+
   void saveLayer(Rect? bounds, Paint paint) {
     assert(paint != null); // ignore: unnecessary_null_comparison
     _addMethod(_CanvasMethods.saveLayer);
@@ -2181,12 +2461,14 @@ class Canvas {
     _addObject(matrix4);
   }
 
-  void clipRect(Rect rect, { ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true }) {
+  void clipRect(Rect rect,
+      {ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true}) {
     assert(_rectIsValid(rect));
     assert(clipOp != null); // ignore: unnecessary_null_comparison
     assert(doAntiAlias != null); // ignore: unnecessary_null_comparison
     _addMethod(_CanvasMethods.clipRect);
-    _addData6(rect.left, rect.top, rect.right, rect.bottom, clipOp.index.toDouble(), doAntiAlias ? 1 : 0);
+    _addData6(rect.left, rect.top, rect.right, rect.bottom,
+        clipOp.index.toDouble(), doAntiAlias ? 1 : 0);
   }
 
   void clipRRect(RRect rrect, {bool doAntiAlias = true}) {
@@ -2326,13 +2608,14 @@ class Canvas {
     _addData1(radius);
   }
 
-  void drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter, Paint paint) {
+  void drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter,
+      Paint paint) {
     assert(_rectIsValid(rect));
     assert(paint != null); // ignore: unnecessary_null_comparison
     _addMethod(_CanvasMethods.drawArc);
     _addObject(paint);
     _addData7(rect.left, rect.top, rect.right, rect.bottom, startAngle,
-             sweepAngle, useCenter ? 1 : 0);
+        sweepAngle, useCenter ? 1 : 0);
   }
 
   void drawPath(Path path, Paint paint) {
@@ -2452,13 +2735,8 @@ class Canvas {
     _addData1(blendMode.index.toDouble());
   }
 
-  void drawAtlas(Image atlas,
-                 List<RSTransform> transforms,
-                 List<Rect> rects,
-                 List<Color>? colors,
-                 BlendMode? blendMode,
-                 Rect? cullRect,
-                 Paint paint) {
+  void drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> rects,
+      List<Color>? colors, BlendMode? blendMode, Rect? cullRect, Paint paint) {
     // ignore: unnecessary_null_comparison
     assert(atlas != null); // atlas is checked on the engine side
     assert(transforms != null); // ignore: unnecessary_null_comparison
@@ -2470,7 +2748,8 @@ class Canvas {
     if (transforms.length != rectCount)
       throw ArgumentError('"transforms" and "rects" lengths must match.');
     if (colors != null && colors.isNotEmpty && colors.length != rectCount)
-      throw ArgumentError('If non-null, "colors" length must match that of "transforms" and "rects".');
+      throw ArgumentError(
+          'If non-null, "colors" length must match that of "transforms" and "rects".');
 
     final Float32List rstTransformBuffer = Float32List(rectCount * 4);
     final Float32List rectBuffer = Float32List(rectCount * 4);
@@ -2493,20 +2772,22 @@ class Canvas {
       rectBuffer[index3] = rect.bottom;
     }
 
-    final Int32List? colorBuffer = (colors == null || colors.isEmpty) ? null : _encodeColorList(colors);
+    final Int32List? colorBuffer =
+        (colors == null || colors.isEmpty) ? null : _encodeColorList(colors);
 
     _drawAtlas(
-      paint, atlas._image, rstTransformBuffer, rectBuffer,
-      colorBuffer, (blendMode ?? BlendMode.src).index, cullRect ?? Rect.largest,
+      paint,
+      atlas._image,
+      rstTransformBuffer,
+      rectBuffer,
+      colorBuffer,
+      (blendMode ?? BlendMode.src).index,
+      cullRect ?? Rect.largest,
     );
   }
-  void drawRawAtlas(Image atlas,
-                    Float32List rstTransforms,
-                    Float32List rects,
-                    Int32List? colors,
-                    BlendMode? blendMode,
-                    Rect? cullRect,
-                    Paint paint) {
+
+  void drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List rects,
+      Int32List? colors, BlendMode? blendMode, Rect? cullRect, Paint paint) {
     // ignore: unnecessary_null_comparison
     assert(atlas != null); // atlas is checked on the engine side
     assert(rstTransforms != null); // ignore: unnecessary_null_comparison
@@ -2518,13 +2799,20 @@ class Canvas {
     if (rstTransforms.length != rectCount)
       throw ArgumentError('"rstTransforms" and "rects" lengths must match.');
     if (rectCount % 4 != 0)
-      throw ArgumentError('"rstTransforms" and "rects" lengths must be a multiple of four.');
+      throw ArgumentError(
+          '"rstTransforms" and "rects" lengths must be a multiple of four.');
     if (colors != null && colors.length * 4 != rectCount)
-      throw ArgumentError('If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects".');
+      throw ArgumentError(
+          'If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects".');
 
     _drawAtlas(
-      paint, atlas._image, rstTransforms, rects,
-      colors, (blendMode ?? BlendMode.src).index, cullRect ?? Rect.largest,
+      paint,
+      atlas._image,
+      rstTransforms,
+      rects,
+      colors,
+      (blendMode ?? BlendMode.src).index,
+      cullRect ?? Rect.largest,
     );
   }
 
@@ -2551,7 +2839,8 @@ class Canvas {
     );
   }
 
-  void drawShadow(Path path, Color color, double elevation, bool transparentOccluder) {
+  void drawShadow(
+      Path path, Color color, double elevation, bool transparentOccluder) {
     // ignore: unnecessary_null_comparison
     assert(path != null); // path is checked on the engine side
     assert(color != null); // ignore: unnecessary_null_comparison
@@ -2564,15 +2853,19 @@ class Canvas {
 }
 
 class Picture {
-    Picture._();
+  Picture._();
   Future<Image> toImage(int width, int height) async {
-    if (width <= 0 || height <= 0)
-      throw Exception('Invalid image dimensions.');
+    if (width <= 0 || height <= 0) throw Exception('Invalid image dimensions.');
     return Image._(_Image._(width, height));
   }
 
-  void dispose() { throw UnimplementedError(); }
-  int get approximateBytesUsed { throw UnimplementedError(); }
+  void dispose() {
+    throw UnimplementedError();
+  }
+
+  int get approximateBytesUsed {
+    throw UnimplementedError();
+  }
 }
 
 class PictureRecorder {
@@ -2589,14 +2882,18 @@ class PictureRecorder {
 
   Canvas? _canvas;
 }
+
 class Shadow {
   const Shadow({
     this.color = const Color(_kColorDefault),
     this.offset = Offset.zero,
     this.blurRadius = 0.0,
-  }) : assert(color != null, 'Text shadow color was null.'), // ignore: unnecessary_null_comparison
-       assert(offset != null, 'Text shadow offset was null.'), // ignore: unnecessary_null_comparison
-       assert(blurRadius >= 0.0, 'Text shadow blur radius should be non-negative.');
+  })  : assert(color != null,
+            'Text shadow color was null.'), // ignore: unnecessary_null_comparison
+        assert(offset != null,
+            'Text shadow offset was null.'), // ignore: unnecessary_null_comparison
+        assert(blurRadius >= 0.0,
+            'Text shadow blur radius should be non-negative.');
 
   static const int _kColorDefault = 0xFF000000;
   // Constants for shadow encoding.
@@ -2613,12 +2910,14 @@ class Shadow {
   static double convertRadiusToSigma(double radius) {
     return radius * 0.57735 + 0.5;
   }
+
   double get blurSigma => convertRadiusToSigma(blurRadius);
   Paint toPaint() {
     return Paint()
       ..color = color
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, blurSigma);
   }
+
   Shadow scale(double factor) {
     return Shadow(
       color: color,
@@ -2626,6 +2925,7 @@ class Shadow {
       blurRadius: blurRadius * factor,
     );
   }
+
   static Shadow? lerp(Shadow? a, Shadow? b, double t) {
     assert(t != null); // ignore: unnecessary_null_comparison
     if (b == null) {
@@ -2646,10 +2946,10 @@ class Shadow {
       }
     }
   }
+
   static List<Shadow>? lerpList(List<Shadow>? a, List<Shadow>? b, double t) {
     assert(t != null); // ignore: unnecessary_null_comparison
-    if (a == null && b == null)
-      return null;
+    if (a == null && b == null) return null;
     a ??= <Shadow>[];
     b ??= <Shadow>[];
     final List<Shadow> result = <Shadow>[];
@@ -2658,19 +2958,17 @@ class Shadow {
       result.add(Shadow.lerp(a[i], b[i], t)!);
     for (int i = commonLength; i < a.length; i += 1)
       result.add(a[i].scale(1.0 - t));
-    for (int i = commonLength; i < b.length; i += 1)
-      result.add(b[i].scale(t));
+    for (int i = commonLength; i < b.length; i += 1) result.add(b[i].scale(t));
     return result;
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    return other is Shadow
-        && other.color == color
-        && other.offset == offset
-        && other.blurRadius == blurRadius;
+    if (identical(this, other)) return true;
+    return other is Shadow &&
+        other.color == color &&
+        other.offset == offset &&
+        other.blurRadius == blurRadius;
   }
 
   @override
@@ -2680,8 +2978,7 @@ class Shadow {
   // the beginning indicating the number of shadows, followed by _kBytesPerShadow
   // bytes for each shadow.
   static ByteData _encodeShadows(List<Shadow>? shadows) {
-    if (shadows == null)
-      return ByteData(0);
+    if (shadows == null) return ByteData(0);
 
     final int byteCount = shadows.length * _kBytesPerShadow;
     final ByteData shadowsData = ByteData(byteCount);
@@ -2697,16 +2994,16 @@ class Shadow {
         shadowOffset = shadowIndex * _kBytesPerShadow;
 
         shadowsData.setInt32(_kColorOffset + shadowOffset,
-          shadow.color.value ^ Shadow._kColorDefault, _kFakeHostEndian);
+            shadow.color.value ^ Shadow._kColorDefault, _kFakeHostEndian);
 
-        shadowsData.setFloat32(_kXOffset + shadowOffset,
-          shadow.offset.dx, _kFakeHostEndian);
+        shadowsData.setFloat32(
+            _kXOffset + shadowOffset, shadow.offset.dx, _kFakeHostEndian);
 
-        shadowsData.setFloat32(_kYOffset + shadowOffset,
-          shadow.offset.dy, _kFakeHostEndian);
+        shadowsData.setFloat32(
+            _kYOffset + shadowOffset, shadow.offset.dy, _kFakeHostEndian);
 
-        shadowsData.setFloat32(_kBlurOffset + shadowOffset,
-          shadow.blurRadius, _kFakeHostEndian);
+        shadowsData.setFloat32(
+            _kBlurOffset + shadowOffset, shadow.blurRadius, _kFakeHostEndian);
       }
     }
 
@@ -2716,6 +3013,7 @@ class Shadow {
   @override
   String toString() => 'TextShadow($color, $offset, $blurRadius)';
 }
+
 class ImmutableBuffer {
   ImmutableBuffer._(this.length);
   static Future<ImmutableBuffer> fromUint8List(Uint8List list) {
@@ -2724,10 +3022,17 @@ class ImmutableBuffer {
       instance._init(list, callback);
     }).then((_) => instance);
   }
-  void _init(Uint8List list, _Callback<void> callback) { throw UnimplementedError(); }
+
+  void _init(Uint8List list, _Callback<void> callback) {
+    throw UnimplementedError();
+  }
+
   final int length;
-  void dispose() { throw UnimplementedError(); }
+  void dispose() {
+    throw UnimplementedError();
+  }
 }
+
 class ImageDescriptor {
   ImageDescriptor._();
   static Future<ImageDescriptor> encoded(ImmutableBuffer buffer) {
@@ -2736,7 +3041,11 @@ class ImageDescriptor {
       return descriptor._initEncoded(buffer, callback);
     }).then((_) => descriptor);
   }
-  String? _initEncoded(ImmutableBuffer buffer, _Callback<void> callback) { throw UnimplementedError(); }
+
+  String? _initEncoded(ImmutableBuffer buffer, _Callback<void> callback) {
+    throw UnimplementedError();
+  }
+
   // Not async because there's no expensive work to do here.
   ImageDescriptor.raw(
     ImmutableBuffer buffer, {
@@ -2751,20 +3060,35 @@ class ImageDescriptor {
     _bytesPerPixel = 4;
     _initRaw(this, buffer, width, height, rowBytes ?? -1, pixelFormat.index);
   }
-  void _initRaw(ImageDescriptor outDescriptor, ImmutableBuffer buffer, int width, int height, int rowBytes, int pixelFormat) { throw UnimplementedError(); }
+  void _initRaw(ImageDescriptor outDescriptor, ImmutableBuffer buffer,
+      int width, int height, int rowBytes, int pixelFormat) {
+    throw UnimplementedError();
+  }
 
   int? _width;
-  int _getWidth() { throw UnimplementedError(); }
+  int _getWidth() {
+    throw UnimplementedError();
+  }
+
   int get width => _width ??= _getWidth();
 
   int? _height;
-  int _getHeight() { throw UnimplementedError(); }
+  int _getHeight() {
+    throw UnimplementedError();
+  }
+
   int get height => _height ??= _getHeight();
 
   int? _bytesPerPixel;
-  int _getBytesPerPixel() { throw UnimplementedError(); }
+  int _getBytesPerPixel() {
+    throw UnimplementedError();
+  }
+
   int get bytesPerPixel => _bytesPerPixel ??= _getBytesPerPixel();
-  void dispose() { throw UnimplementedError(); }
+  void dispose() {
+    throw UnimplementedError();
+  }
+
   Future<Codec> instantiateCodec({int? targetWidth, int? targetHeight}) async {
     if (targetWidth != null && targetWidth <= 0) {
       targetWidth = null;
@@ -2790,8 +3114,12 @@ class ImageDescriptor {
     _instantiateCodec(codec, targetWidth!, targetHeight!);
     return codec;
   }
-  void _instantiateCodec(Codec outCodec, int targetWidth, int targetHeight) { throw UnimplementedError(); }
+
+  void _instantiateCodec(Codec outCodec, int targetWidth, int targetHeight) {
+    throw UnimplementedError();
+  }
 }
+
 typedef _Callback<T> = void Function(T result);
 typedef _Callbacker<T> = String? Function(_Callback<T> callback);
 Future<T> _futurize<T>(_Callbacker<T> callbacker) {
@@ -2803,7 +3131,6 @@ Future<T> _futurize<T>(_Callbacker<T> callbacker) {
       completer.complete(t);
     }
   });
-  if (error != null)
-    throw Exception(error);
+  if (error != null) throw Exception(error);
   return completer.future;
 }

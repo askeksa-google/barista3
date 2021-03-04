@@ -28,7 +28,6 @@ import 'theme.dart';
 ///    application.
 @immutable
 class DividerThemeData with Diagnosticable {
-
   /// Creates a theme that can be used for [DividerTheme] or
   /// [ThemeData.dividerTheme].
   const DividerThemeData({
@@ -83,7 +82,8 @@ class DividerThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static DividerThemeData lerp(DividerThemeData? a, DividerThemeData? b, double t) {
+  static DividerThemeData lerp(
+      DividerThemeData? a, DividerThemeData? b, double t) {
     assert(t != null);
     return DividerThemeData(
       color: Color.lerp(a?.color, b?.color, t),
@@ -107,16 +107,14 @@ class DividerThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is DividerThemeData
-        && other.color == color
-        && other.space == space
-        && other.thickness == thickness
-        && other.indent == indent
-        && other.endIndent == endIndent;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is DividerThemeData &&
+        other.color == color &&
+        other.space == space &&
+        other.thickness == thickness &&
+        other.indent == indent &&
+        other.endIndent == endIndent;
   }
 
   @override
@@ -141,8 +139,8 @@ class DividerTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  }) : assert(data != null),
-       super(key: key, child: child);
+  })   : assert(data != null),
+        super(key: key, child: child);
 
   /// The properties for descendant [Divider]s, [VerticalDivider]s, dividers
   /// between [ListTile]s, and dividers between rows in [DataTable]s.
@@ -160,7 +158,8 @@ class DividerTheme extends InheritedTheme {
   /// DividerThemeData theme = DividerTheme.of(context);
   /// ```
   static DividerThemeData of(BuildContext context) {
-    final DividerTheme? dividerTheme = context.dependOnInheritedWidgetOfExactType<DividerTheme>();
+    final DividerTheme? dividerTheme =
+        context.dependOnInheritedWidgetOfExactType<DividerTheme>();
     return dividerTheme?.data ?? Theme.of(context).dividerTheme;
   }
 

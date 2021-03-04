@@ -49,8 +49,10 @@ mixin MouseTrackerCursorMixin on BaseMouseTracker {
   // The return value is never null.
   MouseCursor _findFirstCursor(Iterable<MouseTrackerAnnotation> annotations) {
     return _DeferringMouseCursor.firstNonDeferred(
-      annotations.map((MouseTrackerAnnotation annotation) => annotation.cursor),
-    ) ?? SystemMouseCursors.basic;
+          annotations
+              .map((MouseTrackerAnnotation annotation) => annotation.cursor),
+        ) ??
+        SystemMouseCursors.basic;
   }
 
   // Handles device update and changes mouse cursors.
@@ -63,9 +65,9 @@ mixin MouseTrackerCursorMixin on BaseMouseTracker {
     }
 
     final MouseCursorSession? lastSession = _lastSession[device];
-    final MouseCursor nextCursor = _findFirstCursor(details.nextAnnotations.keys);
-    if (lastSession?.cursor == nextCursor)
-      return;
+    final MouseCursor nextCursor =
+        _findFirstCursor(details.nextAnnotations.keys);
+    if (lastSession?.cursor == nextCursor) return;
 
     final MouseCursorSession nextSession = nextCursor.createSession(device);
     _lastSession[device] = nextSession;
@@ -99,8 +101,8 @@ abstract class MouseCursorSession {
   ///
   /// All arguments must be non-null.
   MouseCursorSession(this.cursor, this.device)
-    : assert(cursor != null),
-      assert(device != null);
+      : assert(cursor != null),
+        assert(device != null);
 
   /// The cursor that created this session.
   final MouseCursor cursor;
@@ -225,8 +227,8 @@ abstract class MouseCursor with Diagnosticable {
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     final String debugDescription = this.debugDescription;
-    if (minLevel.index >= DiagnosticLevel.info.index && debugDescription != null)
-      return debugDescription;
+    if (minLevel.index >= DiagnosticLevel.info.index &&
+        debugDescription != null) return debugDescription;
     return super.toString(minLevel: minLevel);
   }
 
@@ -272,8 +274,7 @@ class _DeferringMouseCursor extends MouseCursor {
   static MouseCursor? firstNonDeferred(Iterable<MouseCursor> cursors) {
     for (final MouseCursor cursor in cursors) {
       assert(cursor != null);
-      if (cursor != MouseCursor.defer)
-        return cursor;
+      if (cursor != MouseCursor.defer) return cursor;
     }
     return null;
   }
@@ -281,13 +282,13 @@ class _DeferringMouseCursor extends MouseCursor {
 
 class _NoopMouseCursorSession extends MouseCursorSession {
   _NoopMouseCursorSession(_NoopMouseCursor cursor, int device)
-    : super(cursor, device);
+      : super(cursor, device);
 
   @override
-  Future<void> activate() async { /* Nothing */ }
+  Future<void> activate() async {/* Nothing */}
 
   @override
-  void dispose() { /* Nothing */ }
+  void dispose() {/* Nothing */}
 }
 
 /// A mouse cursor that doesn't change the cursor when activated.
@@ -306,7 +307,8 @@ class _NoopMouseCursor extends MouseCursor {
 
   @override
   @protected
-  _NoopMouseCursorSession createSession(int device) => _NoopMouseCursorSession(this, device);
+  _NoopMouseCursorSession createSession(int device) =>
+      _NoopMouseCursorSession(this, device);
 
   @override
   String get debugDescription => 'uncontrolled';
@@ -314,7 +316,7 @@ class _NoopMouseCursor extends MouseCursor {
 
 class _SystemMouseCursorSession extends MouseCursorSession {
   _SystemMouseCursorSession(SystemMouseCursor cursor, int device)
-    : super(cursor, device);
+      : super(cursor, device);
 
   @override
   SystemMouseCursor get cursor => super.cursor as SystemMouseCursor;
@@ -331,7 +333,7 @@ class _SystemMouseCursorSession extends MouseCursorSession {
   }
 
   @override
-  void dispose() { /* Nothing */ }
+  void dispose() {/* Nothing */}
 }
 
 /// A mouse cursor that is natively supported on the platform that the
@@ -375,18 +377,18 @@ class SystemMouseCursor extends MouseCursor {
   final String kind;
 
   @override
-  String get debugDescription => '${objectRuntimeType(this, 'SystemMouseCursor')}($kind)';
+  String get debugDescription =>
+      '${objectRuntimeType(this, 'SystemMouseCursor')}($kind)';
 
   @override
   @protected
-  _SystemMouseCursorSession createSession(int device) => _SystemMouseCursorSession(this, device);
+  _SystemMouseCursorSession createSession(int device) =>
+      _SystemMouseCursorSession(this, device);
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is SystemMouseCursor
-        && other.kind == kind;
+    if (other.runtimeType != runtimeType) return false;
+    return other is SystemMouseCursor && other.kind == kind;
   }
 
   @override
@@ -395,7 +397,8 @@ class SystemMouseCursor extends MouseCursor {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<String>('kind', kind, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<String>('kind', kind,
+        level: DiagnosticLevel.debug));
   }
 }
 
@@ -426,13 +429,11 @@ class SystemMouseCursors {
   // * Linux: shell/platform/linux/fl_mouse_cursor_plugin.cc
   // * macOS: shell/platform/darwin/macos/framework/Source/FlutterMouseCursorPlugin.mm
 
-
   /// Hide the cursor.
   ///
   /// Any cursor other than [none] or [MouseCursor.uncontrolled] unhides the
   /// cursor.
   static const SystemMouseCursor none = SystemMouseCursor._(kind: 'none');
-
 
   // STATUS
 
@@ -479,7 +480,8 @@ class SystemMouseCursors {
   ///
   ///  * [noDrop], which indicates somewhere that the current item may not be
   ///    dropped.
-  static const SystemMouseCursor forbidden = SystemMouseCursor._(kind: 'forbidden');
+  static const SystemMouseCursor forbidden =
+      SystemMouseCursor._(kind: 'forbidden');
 
   /// A cursor indicating the status that the program is busy and therefore
   /// can not be interacted with.
@@ -519,7 +521,8 @@ class SystemMouseCursors {
   ///
   ///  * [wait], which is similar to [progress] but the program can not be
   ///    interacted with.
-  static const SystemMouseCursor progress = SystemMouseCursor._(kind: 'progress');
+  static const SystemMouseCursor progress =
+      SystemMouseCursor._(kind: 'progress');
 
   /// A cursor indicating somewhere the user can trigger a context menu.
   ///
@@ -531,7 +534,8 @@ class SystemMouseCursors {
   ///  * Web: context-menu
   ///  * Linux: context-menu
   ///  * macOS: contextualMenuCursor
-  static const SystemMouseCursor contextMenu = SystemMouseCursor._(kind: 'contextMenu');
+  static const SystemMouseCursor contextMenu =
+      SystemMouseCursor._(kind: 'contextMenu');
 
   /// A cursor indicating help information.
   ///
@@ -544,7 +548,6 @@ class SystemMouseCursors {
   ///  * Web: help
   ///  * Linux: help
   static const SystemMouseCursor help = SystemMouseCursor._(kind: 'help');
-
 
   // SELECTION
 
@@ -572,7 +575,8 @@ class SystemMouseCursors {
   ///  * Web: vertical-text
   ///  * Linux: vertical-text
   ///  * macOS: IBeamCursorForVerticalLayout
-  static const SystemMouseCursor verticalText = SystemMouseCursor._(kind: 'verticalText');
+  static const SystemMouseCursor verticalText =
+      SystemMouseCursor._(kind: 'verticalText');
 
   /// A cursor indicating selectable table cells.
   ///
@@ -598,7 +602,6 @@ class SystemMouseCursors {
   ///  * Linux: crosshair
   ///  * macOS: crosshairCursor
   static const SystemMouseCursor precise = SystemMouseCursor._(kind: 'precise');
-
 
   // DRAG-AND-DROP
 
@@ -636,7 +639,8 @@ class SystemMouseCursors {
   ///  * Web: grabbing
   ///  * Linux: grabbing
   ///  * macOS: closedHandCursor
-  static const SystemMouseCursor grabbing = SystemMouseCursor._(kind: 'grabbing');
+  static const SystemMouseCursor grabbing =
+      SystemMouseCursor._(kind: 'grabbing');
 
   /// A cursor indicating somewhere that the current item may not be dropped.
   ///
@@ -689,8 +693,8 @@ class SystemMouseCursors {
   /// Corresponds to:
   ///
   ///  * macOS: disappearingItemCursor
-  static const SystemMouseCursor disappearing = SystemMouseCursor._(kind: 'disappearing');
-
+  static const SystemMouseCursor disappearing =
+      SystemMouseCursor._(kind: 'disappearing');
 
   // RESIZING AND SCROLLING
 
@@ -708,7 +712,8 @@ class SystemMouseCursors {
   /// See also:
   ///
   ///  * [move], which indicates moving in any direction.
-  static const SystemMouseCursor allScroll = SystemMouseCursor._(kind: 'allScroll');
+  static const SystemMouseCursor allScroll =
+      SystemMouseCursor._(kind: 'allScroll');
 
   /// A cursor indicating resizing an object bidirectionally from its left or
   /// right edge.
@@ -722,7 +727,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZEWE
   ///  * Linux: ew-resize
   ///  * macOS: resizeLeftRightCursor
-  static const SystemMouseCursor resizeLeftRight = SystemMouseCursor._(kind: 'resizeLeftRight');
+  static const SystemMouseCursor resizeLeftRight =
+      SystemMouseCursor._(kind: 'resizeLeftRight');
 
   /// A cursor indicating resizing an object bidirectionally from its top or
   /// bottom edge.
@@ -736,7 +742,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZENS
   ///  * Linux: ns-resize
   ///  * macOS: resizeUpDownCursor
-  static const SystemMouseCursor resizeUpDown = SystemMouseCursor._(kind: 'resizeUpDown');
+  static const SystemMouseCursor resizeUpDown =
+      SystemMouseCursor._(kind: 'resizeUpDown');
 
   /// A cursor indicating resizing an object bidirectionally from its top left or
   /// bottom right corner.
@@ -749,7 +756,8 @@ class SystemMouseCursors {
   ///  * Web: nwse-resize
   ///  * Windows: IDC_SIZENWSE
   ///  * Linux: nwse-resize
-  static const SystemMouseCursor resizeUpLeftDownRight = SystemMouseCursor._(kind: 'resizeUpLeftDownRight');
+  static const SystemMouseCursor resizeUpLeftDownRight =
+      SystemMouseCursor._(kind: 'resizeUpLeftDownRight');
 
   /// A cursor indicating resizing an object bidirectionally from its top right or
   /// bottom left corner.
@@ -762,7 +770,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZENESW
   ///  * Web: nesw-resize
   ///  * Linux: nesw-resize
-  static const SystemMouseCursor resizeUpRightDownLeft = SystemMouseCursor._(kind: 'resizeUpRightDownLeft');
+  static const SystemMouseCursor resizeUpRightDownLeft =
+      SystemMouseCursor._(kind: 'resizeUpRightDownLeft');
 
   /// A cursor indicating resizing an object from its top edge.
   ///
@@ -775,7 +784,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZENS
   ///  * Linux: n-resize
   ///  * macOS: resizeUpCursor
-  static const SystemMouseCursor resizeUp = SystemMouseCursor._(kind: 'resizeUp');
+  static const SystemMouseCursor resizeUp =
+      SystemMouseCursor._(kind: 'resizeUp');
 
   /// A cursor indicating resizing an object from its bottom edge.
   ///
@@ -788,7 +798,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZENS
   ///  * Linux: s-resize
   ///  * macOS: resizeDownCursor
-  static const SystemMouseCursor resizeDown = SystemMouseCursor._(kind: 'resizeDown');
+  static const SystemMouseCursor resizeDown =
+      SystemMouseCursor._(kind: 'resizeDown');
 
   /// A cursor indicating resizing an object from its left edge.
   ///
@@ -801,7 +812,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZEWE
   ///  * Linux: w-resize
   ///  * macOS: resizeLeftCursor
-  static const SystemMouseCursor resizeLeft = SystemMouseCursor._(kind: 'resizeLeft');
+  static const SystemMouseCursor resizeLeft =
+      SystemMouseCursor._(kind: 'resizeLeft');
 
   /// A cursor indicating resizing an object from its right edge.
   ///
@@ -814,7 +826,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZEWE
   ///  * Linux: e-resize
   ///  * macOS: resizeRightCursor
-  static const SystemMouseCursor resizeRight = SystemMouseCursor._(kind: 'resizeRight');
+  static const SystemMouseCursor resizeRight =
+      SystemMouseCursor._(kind: 'resizeRight');
 
   /// A cursor indicating resizing an object from its top-left corner.
   ///
@@ -826,7 +839,8 @@ class SystemMouseCursors {
   ///  * Web: nw-resize
   ///  * Windows: IDC_SIZENWSE
   ///  * Linux: nw-resize
-  static const SystemMouseCursor resizeUpLeft = SystemMouseCursor._(kind: 'resizeUpLeft');
+  static const SystemMouseCursor resizeUpLeft =
+      SystemMouseCursor._(kind: 'resizeUpLeft');
 
   /// A cursor indicating resizing an object from its top-right corner.
   ///
@@ -838,7 +852,8 @@ class SystemMouseCursors {
   ///  * Web: ne-resize
   ///  * Windows: IDC_SIZENESW
   ///  * Linux: ne-resize
-  static const SystemMouseCursor resizeUpRight = SystemMouseCursor._(kind: 'resizeUpRight');
+  static const SystemMouseCursor resizeUpRight =
+      SystemMouseCursor._(kind: 'resizeUpRight');
 
   /// A cursor indicating resizing an object from its bottom-left corner.
   ///
@@ -850,7 +865,8 @@ class SystemMouseCursors {
   ///  * Web: sw-resize
   ///  * Windows: IDC_SIZENESW
   ///  * Linux: sw-resize
-  static const SystemMouseCursor resizeDownLeft = SystemMouseCursor._(kind: 'resizeDownLeft');
+  static const SystemMouseCursor resizeDownLeft =
+      SystemMouseCursor._(kind: 'resizeDownLeft');
 
   /// A cursor indicating resizing an object from its bottom-right corner.
   ///
@@ -862,7 +878,8 @@ class SystemMouseCursors {
   ///  * Web: se-resize
   ///  * Windows: IDC_SIZENWSE
   ///  * Linux: se-resize
-  static const SystemMouseCursor resizeDownRight = SystemMouseCursor._(kind: 'resizeDownRight');
+  static const SystemMouseCursor resizeDownRight =
+      SystemMouseCursor._(kind: 'resizeDownRight');
 
   /// A cursor indicating resizing a column, or an item horizontally.
   ///
@@ -876,7 +893,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZEWE
   ///  * Linux: col-resize
   ///  * macOS: resizeLeftRightCursor
-  static const SystemMouseCursor resizeColumn = SystemMouseCursor._(kind: 'resizeColumn');
+  static const SystemMouseCursor resizeColumn =
+      SystemMouseCursor._(kind: 'resizeColumn');
 
   /// A cursor indicating resizing a row, or an item vertically.
   ///
@@ -890,8 +908,8 @@ class SystemMouseCursors {
   ///  * Windows: IDC_SIZENS
   ///  * Linux: row-resize
   ///  * macOS: resizeUpDownCursor
-  static const SystemMouseCursor resizeRow = SystemMouseCursor._(kind: 'resizeRow');
-
+  static const SystemMouseCursor resizeRow =
+      SystemMouseCursor._(kind: 'resizeRow');
 
   // OTHER OPERATIONS
 

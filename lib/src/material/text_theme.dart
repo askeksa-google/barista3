@@ -125,72 +125,77 @@ class TextTheme with Diagnosticable {
     this.button,
     this.overline,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display4,
+        'This is the term used in the 2014 version of material design. The modern term is headline1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display4,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display3,
+        'This is the term used in the 2014 version of material design. The modern term is headline2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display3,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline3. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display2,
+        'This is the term used in the 2014 version of material design. The modern term is headline3. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display2,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline4. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display1,
+        'This is the term used in the 2014 version of material design. The modern term is headline4. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display1,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline5. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? headline,
+        'This is the term used in the 2014 version of material design. The modern term is headline5. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? headline,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline6. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? title,
+        'This is the term used in the 2014 version of material design. The modern term is headline6. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? title,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? subhead,
+        'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? subhead,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? subtitle,
+        'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? subtitle,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? body2,
+        'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? body2,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? body1,
-  }) : assert(
-         (headline1 == null && headline2 == null && headline3 == null && headline4 == null && headline5 == null && headline6 == null &&
-          subtitle1 == null && subtitle2 == null &&
-          bodyText1 == null && bodyText2 == null) ||
-         (display4 == null && display3 == null && display2 == null && display1 == null && headline == null && title == null &&
-          subhead == null && subtitle == null &&
-          body2 == null && body1 == null), 'Cannot mix 2014 and 2018 terms in call to TextTheme() constructor.'),
-       headline1 = headline1 ?? display4,
-       headline2 = headline2 ?? display3,
-       headline3 = headline3 ?? display2,
-       headline4 = headline4 ?? display1,
-       headline5 = headline5 ?? headline,
-       headline6 = headline6 ?? title,
-       subtitle1 = subtitle1 ?? subhead,
-       subtitle2 = subtitle2 ?? subtitle,
-       bodyText1 = bodyText1 ?? body2,
-       bodyText2 = bodyText2 ?? body1;
+        'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? body1,
+  })  : assert(
+            (headline1 == null &&
+                    headline2 == null &&
+                    headline3 == null &&
+                    headline4 == null &&
+                    headline5 == null &&
+                    headline6 == null &&
+                    subtitle1 == null &&
+                    subtitle2 == null &&
+                    bodyText1 == null &&
+                    bodyText2 == null) ||
+                (display4 == null &&
+                    display3 == null &&
+                    display2 == null &&
+                    display1 == null &&
+                    headline == null &&
+                    title == null &&
+                    subhead == null &&
+                    subtitle == null &&
+                    body2 == null &&
+                    body1 == null),
+            'Cannot mix 2014 and 2018 terms in call to TextTheme() constructor.'),
+        headline1 = headline1 ?? display4,
+        headline2 = headline2 ?? display3,
+        headline3 = headline3 ?? display2,
+        headline4 = headline4 ?? display1,
+        headline5 = headline5 ?? headline,
+        headline6 = headline6 ?? title,
+        subtitle1 = subtitle1 ?? subhead,
+        subtitle2 = subtitle2 ?? subtitle,
+        bodyText1 = bodyText1 ?? body2,
+        bodyText2 = bodyText2 ?? body1;
 
   /// Extremely large text.
   final TextStyle? headline1;
@@ -242,9 +247,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline1].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline1. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline1. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get display4 => headline1;
 
   /// Very, very large text.
@@ -252,9 +256,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline2].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline2. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline2. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get display3 => headline2;
 
   /// Very large text.
@@ -262,9 +265,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline3].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline3. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline3. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get display2 => headline3;
 
   /// Large text.
@@ -272,9 +274,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline4].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline4. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline4. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get display1 => headline4;
 
   /// Used for large text in dialogs.
@@ -282,9 +283,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline5].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline5. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline5. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get headline => headline5;
 
   /// Used for the primary text in app bars and dialogs.
@@ -292,9 +292,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [headline6].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is headline6. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is headline6. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get title => headline6;
 
   /// Used for the primary text in lists (e.g., [ListTile.title]).
@@ -302,9 +301,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [subtitle1].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get subhead => subtitle1;
 
   /// For medium emphasis text that's a little smaller than [subhead].
@@ -312,9 +310,8 @@ class TextTheme with Diagnosticable {
   /// This was the name used in the material design 2014 specification. The new
   /// specification calls this [subtitle2].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get subtitle => subtitle2;
 
   /// Used for emphasizing text that would otherwise be [body1].
@@ -323,9 +320,8 @@ class TextTheme with Diagnosticable {
   /// specification calls this `body1`, and it is exposed in this API as
   /// [bodyText1].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get body2 => bodyText1;
 
   /// Used for the default text style for [Material].
@@ -334,11 +330,9 @@ class TextTheme with Diagnosticable {
   /// specification calls this `body2`, and it is exposed in this API as
   /// [bodyText2].
   @Deprecated(
-    'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
-    'This feature was deprecated after v1.13.8.'
-  )
+      'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
+      'This feature was deprecated after v1.13.8.')
   TextStyle? get body1 => bodyText2;
-
 
   /// Creates a copy of this text theme but with the given fields replaced with
   /// the new values.
@@ -395,63 +389,68 @@ class TextTheme with Diagnosticable {
     TextStyle? button,
     TextStyle? overline,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display4,
+        'This is the term used in the 2014 version of material design. The modern term is headline1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display4,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display3,
+        'This is the term used in the 2014 version of material design. The modern term is headline2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display3,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline3. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display2,
+        'This is the term used in the 2014 version of material design. The modern term is headline3. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display2,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline4. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? display1,
+        'This is the term used in the 2014 version of material design. The modern term is headline4. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? display1,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline5. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? headline,
+        'This is the term used in the 2014 version of material design. The modern term is headline5. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? headline,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is headline6. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? title,
+        'This is the term used in the 2014 version of material design. The modern term is headline6. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? title,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? subhead,
+        'This is the term used in the 2014 version of material design. The modern term is subtitle1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? subhead,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? subtitle,
+        'This is the term used in the 2014 version of material design. The modern term is subtitle2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? subtitle,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? body2,
+        'This is the term used in the 2014 version of material design. The modern term is bodyText1. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? body2,
     @Deprecated(
-      'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
-      'This feature was deprecated after v1.13.8.'
-    )
-    TextStyle? body1,
+        'This is the term used in the 2014 version of material design. The modern term is bodyText2. '
+        'This feature was deprecated after v1.13.8.')
+        TextStyle? body1,
   }) {
     assert(
-      (headline1 == null && headline2 == null && headline3 == null && headline4 == null && headline5 == null && headline6 == null &&
-       subtitle1 == null && subtitle2 == null &&
-       bodyText1 == null && bodyText2 == null) ||
-      (display4 == null && display3 == null && display2 == null && display1 == null && headline == null && title == null &&
-       subhead == null && subtitle == null &&
-       body2 == null && body1 == null), 'Cannot mix 2014 and 2018 terms in call to TextTheme.copyWith().');
+        (headline1 == null &&
+                headline2 == null &&
+                headline3 == null &&
+                headline4 == null &&
+                headline5 == null &&
+                headline6 == null &&
+                subtitle1 == null &&
+                subtitle2 == null &&
+                bodyText1 == null &&
+                bodyText2 == null) ||
+            (display4 == null &&
+                display3 == null &&
+                display2 == null &&
+                display1 == null &&
+                headline == null &&
+                title == null &&
+                subhead == null &&
+                subtitle == null &&
+                body2 == null &&
+                body1 == null),
+        'Cannot mix 2014 and 2018 terms in call to TextTheme.copyWith().');
     return TextTheme(
       headline1: headline1 ?? display4 ?? this.headline1,
       headline2: headline2 ?? display3 ?? this.headline2,
@@ -521,8 +520,7 @@ class TextTheme with Diagnosticable {
   ///    individual fields in the [TextTheme] instead of merging all of the
   ///    fields of two [TextTheme]s.
   TextTheme merge(TextTheme? other) {
-    if (other == null)
-      return this;
+    if (other == null) return this;
     return copyWith(
       headline1: headline1?.merge(other.headline1) ?? other.headline1,
       headline2: headline2?.merge(other.headline2) ?? other.headline2,
@@ -705,24 +703,22 @@ class TextTheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TextTheme
-      && headline1 == other.headline1
-      && headline2 == other.headline2
-      && headline3 == other.headline3
-      && headline4 == other.headline4
-      && headline5 == other.headline5
-      && headline6 == other.headline6
-      && subtitle1 == other.subtitle1
-      && subtitle2 == other.subtitle2
-      && bodyText1 == other.bodyText1
-      && bodyText2 == other.bodyText2
-      && caption == other.caption
-      && button == other.button
-      && overline == other.overline;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TextTheme &&
+        headline1 == other.headline1 &&
+        headline2 == other.headline2 &&
+        headline3 == other.headline3 &&
+        headline4 == other.headline4 &&
+        headline5 == other.headline5 &&
+        headline6 == other.headline6 &&
+        subtitle1 == other.subtitle1 &&
+        subtitle2 == other.subtitle2 &&
+        bodyText1 == other.bodyText1 &&
+        bodyText2 == other.bodyText2 &&
+        caption == other.caption &&
+        button == other.button &&
+        overline == other.overline;
   }
 
   @override
@@ -748,19 +744,33 @@ class TextTheme with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    final TextTheme defaultTheme = Typography.material2018(platform: defaultTargetPlatform).black;
-    properties.add(DiagnosticsProperty<TextStyle>('headline1', headline1, defaultValue: defaultTheme.headline1));
-    properties.add(DiagnosticsProperty<TextStyle>('headline2', headline2, defaultValue: defaultTheme.headline2));
-    properties.add(DiagnosticsProperty<TextStyle>('headline3', headline3, defaultValue: defaultTheme.headline3));
-    properties.add(DiagnosticsProperty<TextStyle>('headline4', headline4, defaultValue: defaultTheme.headline4));
-    properties.add(DiagnosticsProperty<TextStyle>('headline5', headline5, defaultValue: defaultTheme.headline5));
-    properties.add(DiagnosticsProperty<TextStyle>('headline6', headline6, defaultValue: defaultTheme.headline6));
-    properties.add(DiagnosticsProperty<TextStyle>('subtitle1', subtitle1, defaultValue: defaultTheme.subtitle1));
-    properties.add(DiagnosticsProperty<TextStyle>('subtitle2', subtitle2, defaultValue: defaultTheme.subtitle2));
-    properties.add(DiagnosticsProperty<TextStyle>('bodyText1', bodyText1, defaultValue: defaultTheme.bodyText1));
-    properties.add(DiagnosticsProperty<TextStyle>('bodyText2', bodyText2, defaultValue: defaultTheme.bodyText2));
-    properties.add(DiagnosticsProperty<TextStyle>('caption', caption, defaultValue: defaultTheme.caption));
-    properties.add(DiagnosticsProperty<TextStyle>('button', button, defaultValue: defaultTheme.button));
-    properties.add(DiagnosticsProperty<TextStyle>('overline', overline, defaultValue: defaultTheme.overline));
+    final TextTheme defaultTheme =
+        Typography.material2018(platform: defaultTargetPlatform).black;
+    properties.add(DiagnosticsProperty<TextStyle>('headline1', headline1,
+        defaultValue: defaultTheme.headline1));
+    properties.add(DiagnosticsProperty<TextStyle>('headline2', headline2,
+        defaultValue: defaultTheme.headline2));
+    properties.add(DiagnosticsProperty<TextStyle>('headline3', headline3,
+        defaultValue: defaultTheme.headline3));
+    properties.add(DiagnosticsProperty<TextStyle>('headline4', headline4,
+        defaultValue: defaultTheme.headline4));
+    properties.add(DiagnosticsProperty<TextStyle>('headline5', headline5,
+        defaultValue: defaultTheme.headline5));
+    properties.add(DiagnosticsProperty<TextStyle>('headline6', headline6,
+        defaultValue: defaultTheme.headline6));
+    properties.add(DiagnosticsProperty<TextStyle>('subtitle1', subtitle1,
+        defaultValue: defaultTheme.subtitle1));
+    properties.add(DiagnosticsProperty<TextStyle>('subtitle2', subtitle2,
+        defaultValue: defaultTheme.subtitle2));
+    properties.add(DiagnosticsProperty<TextStyle>('bodyText1', bodyText1,
+        defaultValue: defaultTheme.bodyText1));
+    properties.add(DiagnosticsProperty<TextStyle>('bodyText2', bodyText2,
+        defaultValue: defaultTheme.bodyText2));
+    properties.add(DiagnosticsProperty<TextStyle>('caption', caption,
+        defaultValue: defaultTheme.caption));
+    properties.add(DiagnosticsProperty<TextStyle>('button', button,
+        defaultValue: defaultTheme.button));
+    properties.add(DiagnosticsProperty<TextStyle>('overline', overline,
+        defaultValue: defaultTheme.overline));
   }
 }

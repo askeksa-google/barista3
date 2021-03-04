@@ -221,15 +221,16 @@ class SingleChildScrollView extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.clipBehavior = Clip.hardEdge,
     this.restorationId,
-  }) : assert(scrollDirection != null),
-       assert(dragStartBehavior != null),
-       assert(clipBehavior != null),
-       assert(!(controller != null && primary == true),
-          'Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. '
-          'You cannot both set primary to true and pass an explicit controller.'
-       ),
-       primary = primary ?? controller == null && identical(scrollDirection, Axis.vertical),
-       super(key: key);
+  })  : assert(scrollDirection != null),
+        assert(dragStartBehavior != null),
+        assert(clipBehavior != null),
+        assert(
+            !(controller != null && primary == true),
+            'Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. '
+            'You cannot both set primary to true and pass an explicit controller.'),
+        primary = primary ??
+            controller == null && identical(scrollDirection, Axis.vertical),
+        super(key: key);
 
   /// The axis along which the scroll view scrolls.
   ///
@@ -307,18 +308,17 @@ class SingleChildScrollView extends StatelessWidget {
   final String? restorationId;
 
   AxisDirection _getDirection(BuildContext context) {
-    return getAxisDirectionFromAxisReverseAndDirectionality(context, scrollDirection, reverse);
+    return getAxisDirectionFromAxisReverseAndDirectionality(
+        context, scrollDirection, reverse);
   }
 
   @override
   Widget build(BuildContext context) {
     final AxisDirection axisDirection = _getDirection(context);
     Widget? contents = child;
-    if (padding != null)
-      contents = Padding(padding: padding!, child: contents);
-    final ScrollController? scrollController = primary
-        ? PrimaryScrollController.of(context)
-        : controller;
+    if (padding != null) contents = Padding(padding: padding!, child: contents);
+    final ScrollController? scrollController =
+        primary ? PrimaryScrollController.of(context) : controller;
     final Scrollable scrollable = Scrollable(
       dragStartBehavior: dragStartBehavior,
       axisDirection: axisDirection,
@@ -335,8 +335,8 @@ class SingleChildScrollView extends StatelessWidget {
       },
     );
     return primary && scrollController != null
-      ? PrimaryScrollController.none(child: scrollable)
-      : scrollable;
+        ? PrimaryScrollController.none(child: scrollable)
+        : scrollable;
   }
 }
 
@@ -347,9 +347,9 @@ class _SingleChildViewport extends SingleChildRenderObjectWidget {
     required this.offset,
     Widget? child,
     required this.clipBehavior,
-  }) : assert(axisDirection != null),
-       assert(clipBehavior != null),
-       super(key: key, child: child);
+  })   : assert(axisDirection != null),
+        assert(clipBehavior != null),
+        super(key: key, child: child);
 
   final AxisDirection axisDirection;
   final ViewportOffset offset;
@@ -365,7 +365,8 @@ class _SingleChildViewport extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderSingleChildViewport renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderSingleChildViewport renderObject) {
     // Order dependency: The offset setter reads the axis direction.
     renderObject
       ..axisDirection = axisDirection
@@ -374,21 +375,23 @@ class _SingleChildViewport extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMixin<RenderBox> implements RenderAbstractViewport {
+class _RenderSingleChildViewport extends RenderBox
+    with RenderObjectWithChildMixin<RenderBox>
+    implements RenderAbstractViewport {
   _RenderSingleChildViewport({
     AxisDirection axisDirection = AxisDirection.down,
     required ViewportOffset offset,
     double cacheExtent = RenderAbstractViewport.defaultCacheExtent,
     RenderBox? child,
     required Clip clipBehavior,
-  }) : assert(axisDirection != null),
-       assert(offset != null),
-       assert(cacheExtent != null),
-       assert(clipBehavior != null),
-       _axisDirection = axisDirection,
-       _offset = offset,
-       _cacheExtent = cacheExtent,
-       _clipBehavior = clipBehavior {
+  })   : assert(axisDirection != null),
+        assert(offset != null),
+        assert(cacheExtent != null),
+        assert(clipBehavior != null),
+        _axisDirection = axisDirection,
+        _offset = offset,
+        _cacheExtent = cacheExtent,
+        _clipBehavior = clipBehavior {
     this.child = child;
   }
 
@@ -396,8 +399,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   AxisDirection _axisDirection;
   set axisDirection(AxisDirection value) {
     assert(value != null);
-    if (value == _axisDirection)
-      return;
+    if (value == _axisDirection) return;
     _axisDirection = value;
     markNeedsLayout();
   }
@@ -408,13 +410,10 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   ViewportOffset _offset;
   set offset(ViewportOffset value) {
     assert(value != null);
-    if (value == _offset)
-      return;
-    if (attached)
-      _offset.removeListener(_hasScrolled);
+    if (value == _offset) return;
+    if (attached) _offset.removeListener(_hasScrolled);
     _offset = value;
-    if (attached)
-      _offset.addListener(_hasScrolled);
+    if (attached) _offset.addListener(_hasScrolled);
     markNeedsLayout();
   }
 
@@ -423,8 +422,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   double _cacheExtent;
   set cacheExtent(double value) {
     assert(value != null);
-    if (value == _cacheExtent)
-      return;
+    if (value == _cacheExtent) return;
     _cacheExtent = value;
     markNeedsLayout();
   }
@@ -452,8 +450,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   void setupParentData(RenderObject child) {
     // We don't actually use the offset argument in BoxParentData, so let's
     // avoid allocating it at all.
-    if (child.parentData is! ParentData)
-      child.parentData = ParentData();
+    if (child.parentData is! ParentData) child.parentData = ParentData();
   }
 
   @override
@@ -488,8 +485,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
 
   double get _maxScrollExtent {
     assert(hasSize);
-    if (child == null)
-      return 0.0;
+    if (child == null) return 0.0;
     switch (axis) {
       case Axis.horizontal:
         return math.max(0.0, child!.size.width - size.width);
@@ -509,29 +505,25 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    if (child != null)
-      return child!.getMinIntrinsicWidth(height);
+    if (child != null) return child!.getMinIntrinsicWidth(height);
     return 0.0;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    if (child != null)
-      return child!.getMaxIntrinsicWidth(height);
+    if (child != null) return child!.getMaxIntrinsicWidth(height);
     return 0.0;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    if (child != null)
-      return child!.getMinIntrinsicHeight(width);
+    if (child != null) return child!.getMinIntrinsicHeight(width);
     return 0.0;
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    if (child != null)
-      return child!.getMaxIntrinsicHeight(width);
+    if (child != null) return child!.getMaxIntrinsicHeight(width);
     return 0.0;
   }
 
@@ -545,7 +537,8 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
     if (child == null) {
       return constraints.smallest;
     }
-    final Size childSize = child!.getDryLayout(_getInnerConstraints(constraints));
+    final Size childSize =
+        child!.getDryLayout(_getInnerConstraints(constraints));
     return constraints.constrain(childSize);
   }
 
@@ -582,9 +575,9 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   bool _shouldClipAtPaintOffset(Offset paintOffset) {
     assert(child != null);
     return paintOffset.dx < 0 ||
-      paintOffset.dy < 0 ||
-      paintOffset.dx + child!.size.width > size.width ||
-      paintOffset.dy + child!.size.height > size.height;
+        paintOffset.dy < 0 ||
+        paintOffset.dx + child!.size.width > size.width ||
+        paintOffset.dy + child!.size.height > size.height;
   }
 
   @override
@@ -597,7 +590,8 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
       }
 
       if (_shouldClipAtPaintOffset(paintOffset) && clipBehavior != Clip.none) {
-        _clipRectLayer = context.pushClipRect(needsCompositing, offset, Offset.zero & size, paintContents,
+        _clipRectLayer = context.pushClipRect(
+            needsCompositing, offset, Offset.zero & size, paintContents,
             clipBehavior: clipBehavior, oldLayer: _clipRectLayer);
       } else {
         _clipRectLayer = null;
@@ -622,7 +616,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, { required Offset position }) {
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     if (child != null) {
       return result.addWithPaintOffset(
         offset: _paintOffset,
@@ -637,7 +631,8 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   }
 
   @override
-  RevealedOffset getOffsetToReveal(RenderObject target, double alignment, { Rect? rect }) {
+  RevealedOffset getOffsetToReveal(RenderObject target, double alignment,
+      {Rect? rect}) {
     rect ??= target.paintBounds;
     if (target is! RenderBox)
       return RevealedOffset(offset: offset.pixels, rect: rect);
@@ -675,7 +670,8 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
         break;
     }
 
-    final double targetOffset = leadingScrollOffset - (mainAxisExtent - targetMainAxisExtent) * alignment;
+    final double targetOffset = leadingScrollOffset -
+        (mainAxisExtent - targetMainAxisExtent) * alignment;
     final Rect targetRect = bounds.shift(_paintOffsetForPosition(targetOffset));
     return RevealedOffset(offset: targetOffset, rect: targetRect);
   }

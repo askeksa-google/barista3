@@ -62,23 +62,23 @@ class CupertinoScrollbar extends RawScrollbar {
     this.thicknessWhileDragging = defaultThicknessWhileDragging,
     Radius radius = defaultRadius,
     this.radiusWhileDragging = defaultRadiusWhileDragging,
-  }) : assert(thickness != null),
-       assert(thickness < double.infinity),
-       assert(thicknessWhileDragging != null),
-       assert(thicknessWhileDragging < double.infinity),
-       assert(radius != null),
-       assert(radiusWhileDragging != null),
-       super(
-         key: key,
-         child: child,
-         controller: controller,
-         isAlwaysShown: isAlwaysShown,
-         thickness: thickness,
-         radius: radius,
-         fadeDuration: _kScrollbarFadeDuration,
-         timeToFade: _kScrollbarTimeToFade,
-         pressDuration: const Duration(milliseconds: 100),
-       );
+  })  : assert(thickness != null),
+        assert(thickness < double.infinity),
+        assert(thicknessWhileDragging != null),
+        assert(thicknessWhileDragging < double.infinity),
+        assert(radius != null),
+        assert(radiusWhileDragging != null),
+        super(
+          key: key,
+          child: child,
+          controller: controller,
+          isAlwaysShown: isAlwaysShown,
+          thickness: thickness,
+          radius: radius,
+          fadeDuration: _kScrollbarFadeDuration,
+          timeToFade: _kScrollbarTimeToFade,
+          pressDuration: const Duration(milliseconds: 100),
+        );
 
   /// Default value for [thickness] if it's not specified in [CupertinoScrollbar].
   static const double defaultThickness = 3;
@@ -117,11 +117,14 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
   late AnimationController _thicknessAnimationController;
 
   double get _thickness {
-    return widget.thickness! + _thicknessAnimationController.value * (widget.thicknessWhileDragging - widget.thickness!);
+    return widget.thickness! +
+        _thicknessAnimationController.value *
+            (widget.thicknessWhileDragging - widget.thickness!);
   }
 
   Radius get _radius {
-    return Radius.lerp(widget.radius, widget.radiusWhileDragging, _thicknessAnimationController.value)!;
+    return Radius.lerp(widget.radius, widget.radiusWhileDragging,
+        _thicknessAnimationController.value)!;
   }
 
   @override
@@ -177,7 +180,7 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
     super.handleThumbPress();
     _thicknessAnimationController.forward().then<void>(
           (_) => HapticFeedback.mediumImpact(),
-    );
+        );
   }
 
   @override
@@ -188,16 +191,16 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
     }
     _thicknessAnimationController.reverse();
     super.handleThumbPressEnd(localPosition, velocity);
-    switch(direction) {
+    switch (direction) {
       case Axis.vertical:
         if (velocity.pixelsPerSecond.dy.abs() < 10 &&
-          (localPosition.dy - _pressStartAxisPosition).abs() > 0) {
+            (localPosition.dy - _pressStartAxisPosition).abs() > 0) {
           HapticFeedback.mediumImpact();
         }
         break;
       case Axis.horizontal:
         if (velocity.pixelsPerSecond.dx.abs() < 10 &&
-          (localPosition.dx - _pressStartAxisPosition).abs() > 0) {
+            (localPosition.dx - _pressStartAxisPosition).abs() > 0) {
           HapticFeedback.mediumImpact();
         }
         break;

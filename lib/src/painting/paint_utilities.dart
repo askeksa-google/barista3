@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:math' as math;
 
 import 'basic_types.dart';
@@ -21,7 +20,8 @@ import 'basic_types.dart';
 /// a negative `width`.
 ///
 /// The line is drawn using the provided `paint` on the provided `canvas`.
-void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs, double width) {
+void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs,
+    double width) {
   assert(zigs.isFinite);
   assert(zigs > 0);
   canvas.save();
@@ -30,8 +30,7 @@ void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs,
   canvas.rotate(math.atan2(end.dy, end.dx));
   final double length = end.distance;
   final double spacing = length / (zigs * 2.0);
-  final Path path = Path()
-    ..moveTo(0.0, 0.0);
+  final Path path = Path()..moveTo(0.0, 0.0);
   for (int index = 0; index < zigs; index += 1) {
     final double x = (index * 2.0 + 1.0) * spacing;
     final double y = width * ((index % 2.0) * 2.0 - 1.0);

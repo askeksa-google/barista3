@@ -42,5 +42,6 @@ class Tolerance {
   final double velocity;
 
   @override
-  String toString() => 'Tolerance(distance: ±$distance, time: ±$time, velocity: ±$velocity)';
+  String toString() =>
+      'Tolerance(distance: ±$distance, time: ±$time, velocity: ±$velocity)';
 }

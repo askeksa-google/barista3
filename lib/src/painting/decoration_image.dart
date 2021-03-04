@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:developer' as developer;
 import 'package:flute/ui.dart' as ui show Image;
 
@@ -42,21 +41,21 @@ class DecorationImage {
   ///
   /// The [image], [alignment], [repeat], and [matchTextDirection] arguments
   /// must not be null.
-  const DecorationImage({
-    required this.image,
-    this.onError,
-    this.colorFilter,
-    this.fit,
-    this.alignment = Alignment.center,
-    this.centerSlice,
-    this.repeat = ImageRepeat.noRepeat,
-    this.matchTextDirection = false,
-    this.scale = 1.0
-  }) : assert(image != null),
-       assert(alignment != null),
-       assert(repeat != null),
-       assert(matchTextDirection != null),
-       assert(scale != null);
+  const DecorationImage(
+      {required this.image,
+      this.onError,
+      this.colorFilter,
+      this.fit,
+      this.alignment = Alignment.center,
+      this.centerSlice,
+      this.repeat = ImageRepeat.noRepeat,
+      this.matchTextDirection = false,
+      this.scale = 1.0})
+      : assert(image != null),
+        assert(alignment != null),
+        assert(repeat != null),
+        assert(matchTextDirection != null),
+        assert(scale != null);
 
   /// The image to be painted into the decoration.
   ///
@@ -153,41 +152,36 @@ class DecorationImage {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is DecorationImage
-        && other.image == image
-        && other.colorFilter == colorFilter
-        && other.fit == fit
-        && other.alignment == alignment
-        && other.centerSlice == centerSlice
-        && other.repeat == repeat
-        && other.matchTextDirection == matchTextDirection
-        && other.scale == scale;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is DecorationImage &&
+        other.image == image &&
+        other.colorFilter == colorFilter &&
+        other.fit == fit &&
+        other.alignment == alignment &&
+        other.centerSlice == centerSlice &&
+        other.repeat == repeat &&
+        other.matchTextDirection == matchTextDirection &&
+        other.scale == scale;
   }
 
   @override
-  int get hashCode => hashValues(image, colorFilter, fit, alignment, centerSlice, repeat, matchTextDirection, scale);
+  int get hashCode => hashValues(image, colorFilter, fit, alignment,
+      centerSlice, repeat, matchTextDirection, scale);
 
   @override
   String toString() {
     final List<String> properties = <String>[
       '$image',
-      if (colorFilter != null)
-        '$colorFilter',
+      if (colorFilter != null) '$colorFilter',
       if (fit != null &&
           !(fit == BoxFit.fill && centerSlice != null) &&
           !(fit == BoxFit.scaleDown && centerSlice == null))
         '$fit',
       '$alignment',
-      if (centerSlice != null)
-        'centerSlice: $centerSlice',
-      if (repeat != ImageRepeat.noRepeat)
-        '$repeat',
-      if (matchTextDirection)
-        'match text direction',
+      if (centerSlice != null) 'centerSlice: $centerSlice',
+      if (repeat != ImageRepeat.noRepeat) '$repeat',
+      if (matchTextDirection) 'match text direction',
       'scale: $scale'
     ];
     return '${objectRuntimeType(this, 'DecorationImage')}(${properties.join(", ")})';
@@ -206,7 +200,8 @@ class DecorationImage {
 /// This object should be disposed using the [dispose] method when it is no
 /// longer needed.
 class DecorationImagePainter {
-  DecorationImagePainter._(this._details, this._onChanged) : assert(_details != null);
+  DecorationImagePainter._(this._details, this._onChanged)
+      : assert(_details != null);
 
   final DecorationImage _details;
   final VoidCallback _onChanged;
@@ -228,7 +223,8 @@ class DecorationImagePainter {
   /// because it had not yet been loaded the first time this method was called,
   /// then the `onChanged` callback passed to [DecorationImage.createPainter]
   /// will be called.
-  void paint(Canvas canvas, Rect rect, Path? clipPath, ImageConfiguration configuration) {
+  void paint(Canvas canvas, Rect rect, Path? clipPath,
+      ImageConfiguration configuration) {
     assert(canvas != null);
     assert(rect != null);
     assert(configuration != null);
@@ -240,13 +236,17 @@ class DecorationImagePainter {
         // when the image is ready.
         if (configuration.textDirection == null) {
           throw FlutterError.fromParts(<DiagnosticsNode>[
-            ErrorSummary('DecorationImage.matchTextDirection can only be used when a TextDirection is available.'),
+            ErrorSummary(
+                'DecorationImage.matchTextDirection can only be used when a TextDirection is available.'),
             ErrorDescription(
-              'When DecorationImagePainter.paint() was called, there was no text direction provided '
-              'in the ImageConfiguration object to match.'
-            ),
-            DiagnosticsProperty<DecorationImage>('The DecorationImage was', _details, style: DiagnosticsTreeStyle.errorProperty),
-            DiagnosticsProperty<ImageConfiguration>('The ImageConfiguration was', configuration, style: DiagnosticsTreeStyle.errorProperty),
+                'When DecorationImagePainter.paint() was called, there was no text direction provided '
+                'in the ImageConfiguration object to match.'),
+            DiagnosticsProperty<DecorationImage>(
+                'The DecorationImage was', _details,
+                style: DiagnosticsTreeStyle.errorProperty),
+            DiagnosticsProperty<ImageConfiguration>(
+                'The ImageConfiguration was', configuration,
+                style: DiagnosticsTreeStyle.errorProperty),
           ]);
         }
         return true;
@@ -265,8 +265,7 @@ class DecorationImagePainter {
       _imageStream = newImageStream;
       _imageStream!.addListener(listener);
     }
-    if (_image == null)
-      return;
+    if (_image == null) return;
 
     if (clipPath != null) {
       canvas.save();
@@ -288,13 +287,11 @@ class DecorationImagePainter {
       filterQuality: FilterQuality.low,
     );
 
-    if (clipPath != null)
-      canvas.restore();
+    if (clipPath != null) canvas.restore();
   }
 
   void _handleImage(ImageInfo value, bool synchronousCall) {
-    if (_image == value)
-      return;
+    if (_image == value) return;
     if (_image != null && _image!.isCloneOf(value)) {
       value.dispose();
       return;
@@ -302,8 +299,7 @@ class DecorationImagePainter {
     _image?.dispose();
     _image = value;
     assert(_onChanged != null);
-    if (!synchronousCall)
-      _onChanged();
+    if (!synchronousCall) _onChanged();
   }
 
   /// Releases the resources used by this painter.
@@ -437,13 +433,11 @@ void paintImage({
   assert(flipHorizontally != null);
   assert(isAntiAlias != null);
   assert(
-    image.debugGetOpenHandleStackTraces()?.isNotEmpty ?? true,
-    'Cannot paint an image that is disposed.\n'
-    'The caller of paintImage is expected to wait to dispose the image until '
-    'after painting has completed.'
-  );
-  if (rect.isEmpty)
-    return;
+      image.debugGetOpenHandleStackTraces()?.isNotEmpty ?? true,
+      'Cannot paint an image that is disposed.\n'
+      'The caller of paintImage is expected to wait to dispose the image until '
+      'after painting has completed.');
+  if (rect.isEmpty) return;
   Size outputSize = rect.size;
   Size inputSize = Size(image.width.toDouble(), image.height.toDouble());
   Offset? sliceBorder;
@@ -454,7 +448,8 @@ void paintImage({
   }
   fit ??= centerSlice == null ? BoxFit.scaleDown : BoxFit.fill;
   assert(centerSlice == null || (fit != BoxFit.none && fit != BoxFit.cover));
-  final FittedSizes fittedSizes = applyBoxFit(fit, inputSize / scale, outputSize);
+  final FittedSizes fittedSizes =
+      applyBoxFit(fit, inputSize / scale, outputSize);
   final Size sourceSize = fittedSizes.source * scale;
   Size destinationSize = fittedSizes.destination;
   if (centerSlice != null) {
@@ -462,7 +457,8 @@ void paintImage({
     destinationSize += sliceBorder;
     // We don't have the ability to draw a subset of the image at the same time
     // as we apply a nine-patch stretch.
-    assert(sourceSize == inputSize, 'centerSlice was used with a BoxFit that does not guarantee that the image is fully visible.');
+    assert(sourceSize == inputSize,
+        'centerSlice was used with a BoxFit that does not guarantee that the image is fully visible.');
   }
 
   if (repeat != ImageRepeat.noRepeat && destinationSize == outputSize) {
@@ -471,15 +467,17 @@ void paintImage({
     repeat = ImageRepeat.noRepeat;
   }
   final Paint paint = Paint()..isAntiAlias = isAntiAlias;
-  if (colorFilter != null)
-    paint.colorFilter = colorFilter;
+  if (colorFilter != null) paint.colorFilter = colorFilter;
   if (sourceSize != destinationSize) {
     paint.filterQuality = filterQuality;
   }
   paint.invertColors = invertColors;
-  final double halfWidthDelta = (outputSize.width - destinationSize.width) / 2.0;
-  final double halfHeightDelta = (outputSize.height - destinationSize.height) / 2.0;
-  final double dx = halfWidthDelta + (flipHorizontally ? -alignment.x : alignment.x) * halfWidthDelta;
+  final double halfWidthDelta =
+      (outputSize.width - destinationSize.width) / 2.0;
+  final double halfHeightDelta =
+      (outputSize.height - destinationSize.height) / 2.0;
+  final double dx = halfWidthDelta +
+      (flipHorizontally ? -alignment.x : alignment.x) * halfWidthDelta;
   final double dy = halfHeightDelta + alignment.y * halfHeightDelta;
   final Offset destinationPosition = rect.topLeft.translate(dx, dy);
   final Rect destinationRect = destinationPosition & destinationSize;
@@ -490,36 +488,56 @@ void paintImage({
   if (!kReleaseMode) {
     final ImageSizeInfo sizeInfo = ImageSizeInfo(
       // Some ImageProvider implementations may not have given this.
-      source: debugImageLabel ?? '<Unknown Image(${image.width}×${image.height})>',
+      source:
+          debugImageLabel ?? '<Unknown Image(${image.width}×${image.height})>',
       imageSize: Size(image.width.toDouble(), image.height.toDouble()),
       displaySize: outputSize,
     );
     assert(() {
       if (debugInvertOversizedImages &&
-          sizeInfo.decodedSizeInBytes > sizeInfo.displaySizeInBytes + debugImageOverheadAllowance) {
-        final int overheadInKilobytes = (sizeInfo.decodedSizeInBytes - sizeInfo.displaySizeInBytes) ~/ 1024;
+          sizeInfo.decodedSizeInBytes >
+              sizeInfo.displaySizeInBytes + debugImageOverheadAllowance) {
+        final int overheadInKilobytes =
+            (sizeInfo.decodedSizeInBytes - sizeInfo.displaySizeInBytes) ~/ 1024;
         final int outputWidth = outputSize.width.toInt();
         final int outputHeight = outputSize.height.toInt();
         FlutterError.reportError(FlutterErrorDetails(
           exception: 'Image $debugImageLabel has a display size of '
-            '$outputWidth×$outputHeight but a decode size of '
-            '${image.width}×${image.height}, which uses an additional '
-            '${overheadInKilobytes}kb.\n\n'
-            'Consider resizing the asset ahead of time, supplying a cacheWidth '
-            'parameter of $outputWidth, a cacheHeight parameter of '
-            '$outputHeight, or using a ResizeImage.',
+              '$outputWidth×$outputHeight but a decode size of '
+              '${image.width}×${image.height}, which uses an additional '
+              '${overheadInKilobytes}kb.\n\n'
+              'Consider resizing the asset ahead of time, supplying a cacheWidth '
+              'parameter of $outputWidth, a cacheHeight parameter of '
+              '$outputHeight, or using a ResizeImage.',
           library: 'painting library',
           context: ErrorDescription('while painting an image'),
         ));
         // Invert the colors of the canvas.
         canvas.saveLayer(
           destinationRect,
-          Paint()..colorFilter = const ColorFilter.matrix(<double>[
-            -1,  0,  0, 0, 255,
-             0, -1,  0, 0, 255,
-             0,  0, -1, 0, 255,
-             0,  0,  0, 1,   0,
-          ]),
+          Paint()
+            ..colorFilter = const ColorFilter.matrix(<double>[
+              -1,
+              0,
+              0,
+              0,
+              255,
+              0,
+              -1,
+              0,
+              0,
+              255,
+              0,
+              0,
+              -1,
+              0,
+              255,
+              0,
+              0,
+              0,
+              1,
+              0,
+            ]),
         );
         // Flip the canvas vertically.
         final double dy = -(rect.top + rect.height / 2.0);
@@ -532,8 +550,10 @@ void paintImage({
     }());
     // Avoid emitting events that are the same as those emitted in the last frame.
     if (!_lastFrameImageSizeInfo.contains(sizeInfo)) {
-      final ImageSizeInfo? existingSizeInfo = _pendingImageSizeInfo[sizeInfo.source];
-      if (existingSizeInfo == null || existingSizeInfo.displaySizeInBytes < sizeInfo.displaySizeInBytes) {
+      final ImageSizeInfo? existingSizeInfo =
+          _pendingImageSizeInfo[sizeInfo.source];
+      if (existingSizeInfo == null ||
+          existingSizeInfo.displaySizeInBytes < sizeInfo.displaySizeInBytes) {
         _pendingImageSizeInfo[sizeInfo.source!] = sizeInfo;
       }
       if (debugOnPaintImage != null) {
@@ -556,11 +576,10 @@ void paintImage({
     }
   }
 
-  final bool needSave = centerSlice != null || repeat != ImageRepeat.noRepeat || flipHorizontally;
-  if (needSave)
-    canvas.save();
-  if (repeat != ImageRepeat.noRepeat)
-    canvas.clipRect(rect);
+  final bool needSave =
+      centerSlice != null || repeat != ImageRepeat.noRepeat || flipHorizontally;
+  if (needSave) canvas.save();
+  if (repeat != ImageRepeat.noRepeat) canvas.clipRect(rect);
   if (flipHorizontally) {
     final double dx = -(rect.left + rect.width / 2.0);
     canvas.translate(-dx, 0.0);
@@ -569,32 +588,37 @@ void paintImage({
   }
   if (centerSlice == null) {
     final Rect sourceRect = alignment.inscribe(
-      sourceSize, Offset.zero & inputSize,
+      sourceSize,
+      Offset.zero & inputSize,
     );
     if (repeat == ImageRepeat.noRepeat) {
       canvas.drawImageRect(image, sourceRect, destinationRect, paint);
     } else {
-      for (final Rect tileRect in _generateImageTileRects(rect, destinationRect, repeat))
+      for (final Rect tileRect
+          in _generateImageTileRects(rect, destinationRect, repeat))
         canvas.drawImageRect(image, sourceRect, tileRect, paint);
     }
   } else {
     canvas.scale(1 / scale);
     if (repeat == ImageRepeat.noRepeat) {
-      canvas.drawImageNine(image, _scaleRect(centerSlice, scale), _scaleRect(destinationRect, scale), paint);
+      canvas.drawImageNine(image, _scaleRect(centerSlice, scale),
+          _scaleRect(destinationRect, scale), paint);
     } else {
-      for (final Rect tileRect in _generateImageTileRects(rect, destinationRect, repeat))
-        canvas.drawImageNine(image, _scaleRect(centerSlice, scale), _scaleRect(tileRect, scale), paint);
+      for (final Rect tileRect
+          in _generateImageTileRects(rect, destinationRect, repeat))
+        canvas.drawImageNine(image, _scaleRect(centerSlice, scale),
+            _scaleRect(tileRect, scale), paint);
     }
   }
-  if (needSave)
-    canvas.restore();
+  if (needSave) canvas.restore();
 
   if (invertedCanvas) {
     canvas.restore();
   }
 }
 
-Iterable<Rect> _generateImageTileRects(Rect outputRect, Rect fundamentalRect, ImageRepeat repeat) sync* {
+Iterable<Rect> _generateImageTileRects(
+    Rect outputRect, Rect fundamentalRect, ImageRepeat repeat) sync* {
   int startX = 0;
   int startY = 0;
   int stopX = 0;
@@ -618,4 +642,5 @@ Iterable<Rect> _generateImageTileRects(Rect outputRect, Rect fundamentalRect, Im
   }
 }
 
-Rect _scaleRect(Rect rect, double scale) => Rect.fromLTRB(rect.left * scale, rect.top * scale, rect.right * scale, rect.bottom * scale);
+Rect _scaleRect(Rect rect, double scale) => Rect.fromLTRB(rect.left * scale,
+    rect.top * scale, rect.right * scale, rect.bottom * scale);

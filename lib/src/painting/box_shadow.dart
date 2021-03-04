@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:math' as math;
 import 'package:flute/ui.dart' as ui show Shadow, lerpDouble;
 
@@ -53,8 +52,7 @@ class BoxShadow extends ui.Shadow {
       ..color = color
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, blurSigma);
     assert(() {
-      if (debugDisableShadows)
-        result.maskFilter = null;
+      if (debugDisableShadows) result.maskFilter = null;
       return true;
     }());
     return result;
@@ -80,12 +78,9 @@ class BoxShadow extends ui.Shadow {
   /// {@macro dart.ui.shadow.lerp}
   static BoxShadow? lerp(BoxShadow? a, BoxShadow? b, double t) {
     assert(t != null);
-    if (a == null && b == null)
-      return null;
-    if (a == null)
-      return b!.scale(t);
-    if (b == null)
-      return a.scale(1.0 - t);
+    if (a == null && b == null) return null;
+    if (a == null) return b!.scale(t);
+    if (b == null) return a.scale(1.0 - t);
     return BoxShadow(
       color: Color.lerp(a.color, b.color, t)!,
       offset: Offset.lerp(a.offset, b.offset, t)!,
@@ -99,10 +94,10 @@ class BoxShadow extends ui.Shadow {
   /// If the lists differ in length, excess items are lerped with null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static List<BoxShadow>? lerpList(List<BoxShadow>? a, List<BoxShadow>? b, double t) {
+  static List<BoxShadow>? lerpList(
+      List<BoxShadow>? a, List<BoxShadow>? b, double t) {
     assert(t != null);
-    if (a == null && b == null)
-      return null;
+    if (a == null && b == null) return null;
     a ??= <BoxShadow>[];
     b ??= <BoxShadow>[];
     final int commonLength = math.min(a.length, b.length);
@@ -115,20 +110,19 @@ class BoxShadow extends ui.Shadow {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is BoxShadow
-        && other.color == color
-        && other.offset == offset
-        && other.blurRadius == blurRadius
-        && other.spreadRadius == spreadRadius;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is BoxShadow &&
+        other.color == color &&
+        other.offset == offset &&
+        other.blurRadius == blurRadius &&
+        other.spreadRadius == spreadRadius;
   }
 
   @override
   int get hashCode => hashValues(color, offset, blurRadius, spreadRadius);
 
   @override
-  String toString() => 'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)})';
+  String toString() =>
+      'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)})';
 }

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 /// Linearly interpolate between two numbers, `a` and `b`, by an extrapolation
@@ -13,8 +11,7 @@ part of dart.ui;
 /// `a`, `b`, and `t` are required to be finite or null, and the result of `a +
 /// (b - a) * t` is returned, where nulls are defaulted to 0.0.
 double? lerpDouble(num? a, num? b, double t) {
-  if (a == b || (a?.isNaN == true) && (b?.isNaN == true))
-    return a?.toDouble();
+  if (a == b || (a?.isNaN == true) && (b?.isNaN == true)) return a?.toDouble();
   a ??= 0.0;
   b ??= 0.0;
   assert(a.isFinite, 'Cannot interpolate between finite and non-finite values');

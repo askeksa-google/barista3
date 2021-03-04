@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/foundation.dart';
 
 import 'animation.dart';
@@ -25,8 +24,7 @@ mixin AnimationLazyListenerMixin {
   ///    [didStartListening] again.
   void didRegisterListener() {
     assert(_listenerCounter >= 0);
-    if (_listenerCounter == 0)
-      didStartListening();
+    if (_listenerCounter == 0) didStartListening();
     _listenerCounter += 1;
   }
 
@@ -39,8 +37,7 @@ mixin AnimationLazyListenerMixin {
   void didUnregisterListener() {
     assert(_listenerCounter >= 1);
     _listenerCounter -= 1;
-    if (_listenerCounter == 0)
-      didStopListening();
+    if (_listenerCounter == 0) didStopListening();
   }
 
   /// Called when the number of listeners changes from zero to one.
@@ -63,15 +60,15 @@ mixin AnimationLazyListenerMixin {
 /// [AnimationLocalListenersMixin] and [AnimationLocalStatusListenersMixin].
 mixin AnimationEagerListenerMixin {
   /// This implementation ignores listener registrations.
-  void didRegisterListener() { }
+  void didRegisterListener() {}
 
   /// This implementation ignores listener registrations.
-  void didUnregisterListener() { }
+  void didUnregisterListener() {}
 
   /// Release the resources used by this object. The object is no longer usable
   /// after this method is called.
   @mustCallSuper
-  void dispose() { }
+  void dispose() {}
 }
 
 /// A mixin that implements the [addListener]/[removeListener] protocol and notifies
@@ -118,7 +115,8 @@ mixin AnimationLocalListenersMixin {
   /// If listeners are added or removed during this function, the modifications
   /// will not change which listeners are called during this iteration.
   void notifyListeners() {
-    final List<VoidCallback> localListeners = List<VoidCallback>.from(_listeners);
+    final List<VoidCallback> localListeners =
+        List<VoidCallback>.from(_listeners);
     for (final VoidCallback listener in localListeners) {
       InformationCollector? collector;
       assert(() {
@@ -132,14 +130,14 @@ mixin AnimationLocalListenersMixin {
         return true;
       }());
       try {
-        if (_listeners.contains(listener))
-          listener();
+        if (_listeners.contains(listener)) listener();
       } catch (exception, stack) {
         FlutterError.reportError(FlutterErrorDetails(
           exception: exception,
           stack: stack,
           library: 'animation library',
-          context: ErrorDescription('while notifying listeners for $runtimeType'),
+          context:
+              ErrorDescription('while notifying listeners for $runtimeType'),
           informationCollector: collector,
         ));
       }
@@ -155,7 +153,8 @@ mixin AnimationLocalListenersMixin {
 /// and [didUnregisterListener]. Implementations of these methods can be obtained
 /// by mixing in another mixin from this library, such as [AnimationLazyListenerMixin].
 mixin AnimationLocalStatusListenersMixin {
-  final ObserverList<AnimationStatusListener> _statusListeners = ObserverList<AnimationStatusListener>();
+  final ObserverList<AnimationStatusListener> _statusListeners =
+      ObserverList<AnimationStatusListener>();
 
   /// Called immediately before a status listener is added via [addStatusListener].
   ///
@@ -192,11 +191,11 @@ mixin AnimationLocalStatusListenersMixin {
   /// If listeners are added or removed during this function, the modifications
   /// will not change which listeners are called during this iteration.
   void notifyStatusListeners(AnimationStatus status) {
-    final List<AnimationStatusListener> localListeners = List<AnimationStatusListener>.from(_statusListeners);
+    final List<AnimationStatusListener> localListeners =
+        List<AnimationStatusListener>.from(_statusListeners);
     for (final AnimationStatusListener listener in localListeners) {
       try {
-        if (_statusListeners.contains(listener))
-          listener(status);
+        if (_statusListeners.contains(listener)) listener(status);
       } catch (exception, stack) {
         InformationCollector? collector;
         assert(() {
@@ -210,12 +209,12 @@ mixin AnimationLocalStatusListenersMixin {
           return true;
         }());
         FlutterError.reportError(FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'animation library',
-          context: ErrorDescription('while notifying status listeners for $runtimeType'),
-          informationCollector: collector
-        ));
+            exception: exception,
+            stack: stack,
+            library: 'animation library',
+            context: ErrorDescription(
+                'while notifying status listeners for $runtimeType'),
+            informationCollector: collector));
       }
     }
   }

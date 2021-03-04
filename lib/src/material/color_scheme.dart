@@ -32,19 +32,19 @@ class ColorScheme with Diagnosticable {
     required this.onBackground,
     required this.onError,
     required this.brightness,
-  }) : assert(primary != null),
-       assert(primaryVariant != null),
-       assert(secondary != null),
-       assert(secondaryVariant != null),
-       assert(surface != null),
-       assert(background != null),
-       assert(error != null),
-       assert(onPrimary != null),
-       assert(onSecondary != null),
-       assert(onSurface != null),
-       assert(onBackground != null),
-       assert(onError != null),
-       assert(brightness != null);
+  })   : assert(primary != null),
+        assert(primaryVariant != null),
+        assert(secondary != null),
+        assert(secondaryVariant != null),
+        assert(surface != null),
+        assert(background != null),
+        assert(error != null),
+        assert(onPrimary != null),
+        assert(onSecondary != null),
+        assert(onSurface != null),
+        assert(onBackground != null),
+        assert(onError != null),
+        assert(brightness != null);
 
   /// Create a ColorScheme based on a purple primary color that matches the
   /// [baseline Material color scheme](https://material.io/design/color/the-color-system.html#color-theme-creation).
@@ -62,19 +62,19 @@ class ColorScheme with Diagnosticable {
     this.onBackground = Colors.black,
     this.onError = Colors.white,
     this.brightness = Brightness.light,
-  }) : assert(primary != null),
-       assert(primaryVariant != null),
-       assert(secondary != null),
-       assert(secondaryVariant != null),
-       assert(surface != null),
-       assert(background != null),
-       assert(error != null),
-       assert(onPrimary != null),
-       assert(onSecondary != null),
-       assert(onSurface != null),
-       assert(onBackground != null),
-       assert(onError != null),
-       assert(brightness != null);
+  })  : assert(primary != null),
+        assert(primaryVariant != null),
+        assert(secondary != null),
+        assert(secondaryVariant != null),
+        assert(surface != null),
+        assert(background != null),
+        assert(error != null),
+        assert(onPrimary != null),
+        assert(onSecondary != null),
+        assert(onSurface != null),
+        assert(onBackground != null),
+        assert(onError != null),
+        assert(brightness != null);
 
   /// Create the recommended dark color scheme that matches the
   /// [baseline Material color scheme](https://material.io/design/color/dark-theme.html#ui-application).
@@ -92,20 +92,19 @@ class ColorScheme with Diagnosticable {
     this.onBackground = Colors.white,
     this.onError = Colors.black,
     this.brightness = Brightness.dark,
-  }) : assert(primary != null),
-       assert(primaryVariant != null),
-       assert(secondary != null),
-       assert(secondaryVariant != null),
-       assert(surface != null),
-       assert(background != null),
-       assert(error != null),
-       assert(onPrimary != null),
-       assert(onSecondary != null),
-       assert(onSurface != null),
-       assert(onBackground != null),
-       assert(onError != null),
-       assert(brightness != null);
-
+  })  : assert(primary != null),
+        assert(primaryVariant != null),
+        assert(secondary != null),
+        assert(secondaryVariant != null),
+        assert(surface != null),
+        assert(background != null),
+        assert(error != null),
+        assert(onPrimary != null),
+        assert(onSecondary != null),
+        assert(onSurface != null),
+        assert(onBackground != null),
+        assert(onError != null),
+        assert(brightness != null);
 
   /// Create a high contrast ColorScheme based on a purple primary color that
   /// matches the [baseline Material color scheme](https://material.io/design/color/the-color-system.html#color-theme-creation).
@@ -123,7 +122,7 @@ class ColorScheme with Diagnosticable {
     this.onBackground = Colors.black,
     this.onError = Colors.white,
     this.brightness = Brightness.light,
-  }) : assert(primary != null),
+  })  : assert(primary != null),
         assert(primaryVariant != null),
         assert(secondary != null),
         assert(secondaryVariant != null),
@@ -153,7 +152,7 @@ class ColorScheme with Diagnosticable {
     this.onBackground = Colors.white,
     this.onError = Colors.black,
     this.brightness = Brightness.dark,
-  }) : assert(primary != null),
+  })  : assert(primary != null),
         assert(primaryVariant != null),
         assert(secondary != null),
         assert(secondaryVariant != null),
@@ -185,16 +184,19 @@ class ColorScheme with Diagnosticable {
 
     final bool isDark = brightness == Brightness.dark;
     final bool primaryIsDark = _brightnessFor(primarySwatch) == Brightness.dark;
-    final Color secondary = accentColor ?? (isDark ? Colors.tealAccent[200]! : primarySwatch);
+    final Color secondary =
+        accentColor ?? (isDark ? Colors.tealAccent[200]! : primarySwatch);
     final bool secondaryIsDark = _brightnessFor(secondary) == Brightness.dark;
 
     return ColorScheme(
       primary: primarySwatch,
-      primaryVariant: primaryColorDark ?? (isDark ? Colors.black : primarySwatch[700]!),
+      primaryVariant:
+          primaryColorDark ?? (isDark ? Colors.black : primarySwatch[700]!),
       secondary: secondary,
       secondaryVariant: isDark ? Colors.tealAccent[700]! : primarySwatch[700]!,
       surface: cardColor ?? (isDark ? Colors.grey[800]! : Colors.white),
-      background: backgroundColor ?? (isDark ? Colors.grey[700]! : primarySwatch[200]!),
+      background:
+          backgroundColor ?? (isDark ? Colors.grey[700]! : primarySwatch[200]!),
       error: errorColor ?? Colors.red[700]!,
       onPrimary: primaryIsDark ? Colors.white : Colors.black,
       onSecondary: secondaryIsDark ? Colors.white : Colors.black,
@@ -205,7 +207,8 @@ class ColorScheme with Diagnosticable {
     );
   }
 
-  static Brightness _brightnessFor(Color color) => ThemeData.estimateBrightnessForColor(color);
+  static Brightness _brightnessFor(Color color) =>
+      ThemeData.estimateBrightnessForColor(color);
 
   /// The color displayed most frequently across your app’s screens and components.
   final Color primary;
@@ -325,24 +328,22 @@ class ColorScheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is ColorScheme
-        && other.primary == primary
-        && other.primaryVariant == primaryVariant
-        && other.secondary == secondary
-        && other.secondaryVariant == secondaryVariant
-        && other.surface == surface
-        && other.background == background
-        && other.error == error
-        && other.onPrimary == onPrimary
-        && other.onSecondary == onSecondary
-        && other.onSurface == onSurface
-        && other.onBackground == onBackground
-        && other.onError == onError
-        && other.brightness == brightness;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ColorScheme &&
+        other.primary == primary &&
+        other.primaryVariant == primaryVariant &&
+        other.secondary == secondary &&
+        other.secondaryVariant == secondaryVariant &&
+        other.surface == surface &&
+        other.background == background &&
+        other.error == error &&
+        other.onPrimary == onPrimary &&
+        other.onSecondary == onSecondary &&
+        other.onSurface == onSurface &&
+        other.onBackground == onBackground &&
+        other.onError == onError &&
+        other.brightness == brightness;
   }
 
   @override
@@ -368,18 +369,31 @@ class ColorScheme with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     const ColorScheme defaultScheme = ColorScheme.light();
-    properties.add(ColorProperty('primary', primary, defaultValue: defaultScheme.primary));
-    properties.add(ColorProperty('primaryVariant', primaryVariant, defaultValue: defaultScheme.primaryVariant));
-    properties.add(ColorProperty('secondary', secondary, defaultValue: defaultScheme.secondary));
-    properties.add(ColorProperty('secondaryVariant', secondaryVariant, defaultValue: defaultScheme.secondaryVariant));
-    properties.add(ColorProperty('surface', surface, defaultValue: defaultScheme.surface));
-    properties.add(ColorProperty('background', background, defaultValue: defaultScheme.background));
-    properties.add(ColorProperty('error', error, defaultValue: defaultScheme.error));
-    properties.add(ColorProperty('onPrimary', onPrimary, defaultValue: defaultScheme.onPrimary));
-    properties.add(ColorProperty('onSecondary', onSecondary, defaultValue: defaultScheme.onSecondary));
-    properties.add(ColorProperty('onSurface', onSurface, defaultValue: defaultScheme.onSurface));
-    properties.add(ColorProperty('onBackground', onBackground, defaultValue: defaultScheme.onBackground));
-    properties.add(ColorProperty('onError', onError, defaultValue: defaultScheme.onError));
-    properties.add(DiagnosticsProperty<Brightness>('brightness', brightness, defaultValue: defaultScheme.brightness));
+    properties.add(
+        ColorProperty('primary', primary, defaultValue: defaultScheme.primary));
+    properties.add(ColorProperty('primaryVariant', primaryVariant,
+        defaultValue: defaultScheme.primaryVariant));
+    properties.add(ColorProperty('secondary', secondary,
+        defaultValue: defaultScheme.secondary));
+    properties.add(ColorProperty('secondaryVariant', secondaryVariant,
+        defaultValue: defaultScheme.secondaryVariant));
+    properties.add(
+        ColorProperty('surface', surface, defaultValue: defaultScheme.surface));
+    properties.add(ColorProperty('background', background,
+        defaultValue: defaultScheme.background));
+    properties
+        .add(ColorProperty('error', error, defaultValue: defaultScheme.error));
+    properties.add(ColorProperty('onPrimary', onPrimary,
+        defaultValue: defaultScheme.onPrimary));
+    properties.add(ColorProperty('onSecondary', onSecondary,
+        defaultValue: defaultScheme.onSecondary));
+    properties.add(ColorProperty('onSurface', onSurface,
+        defaultValue: defaultScheme.onSurface));
+    properties.add(ColorProperty('onBackground', onBackground,
+        defaultValue: defaultScheme.onBackground));
+    properties.add(
+        ColorProperty('onError', onError, defaultValue: defaultScheme.onError));
+    properties.add(DiagnosticsProperty<Brightness>('brightness', brightness,
+        defaultValue: defaultScheme.brightness));
   }
 }

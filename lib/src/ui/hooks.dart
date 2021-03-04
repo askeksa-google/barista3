@@ -4,8 +4,6 @@
 
 // TODO(dnfield): Remove unused_import ignores when https://github.com/dart-lang/sdk/issues/35164 is resolved.
 
-
-
 part of dart.ui;
 
 // ignore: unused_element
@@ -50,7 +48,8 @@ void _updateWindowMetrics(
 typedef _LocaleClosure = String Function();
 
 // ignore: unused_element
-_LocaleClosure? _getLocaleClosure() => PlatformDispatcher.instance._localeClosure;
+_LocaleClosure? _getLocaleClosure() =>
+    PlatformDispatcher.instance._localeClosure;
 
 // ignore: unused_element
 void _updateLocales(List<String> locales) {
@@ -111,9 +110,8 @@ void _drawFrame() {
 typedef _ListStringArgFunction(List<String> args);
 
 // ignore: unused_element
-void _runMainZoned(Function startMainIsolateFunction,
-                   Function userMainFunction,
-                   List<String> args) {
+void _runMainZoned(Function startMainIsolateFunction, Function userMainFunction,
+    List<String> args) {
   startMainIsolateFunction(() {
     runZonedGuarded<void>(() {
       if (userMainFunction is _ListStringArgFunction) {
@@ -127,7 +125,9 @@ void _runMainZoned(Function startMainIsolateFunction,
   }, null);
 }
 
-void _reportUnhandledException(String error, String stackTrace) { throw UnimplementedError(); }
+void _reportUnhandledException(String error, String stackTrace) {
+  throw UnimplementedError();
+}
 
 /// Invokes [callback] inside the given [zone].
 void _invoke(void Function()? callback, Zone zone) {
@@ -168,7 +168,8 @@ void _invoke1<A>(void Function(A a)? callback, Zone zone, A arg) {
 /// The 2 in the name refers to the number of arguments expected by
 /// the callback (and thus passed to this function, in addition to the
 /// callback itself and the zone in which the callback is executed).
-void _invoke2<A1, A2>(void Function(A1 a1, A2 a2)? callback, Zone zone, A1 arg1, A2 arg2) {
+void _invoke2<A1, A2>(
+    void Function(A1 a1, A2 a2)? callback, Zone zone, A1 arg1, A2 arg2) {
   if (callback == null) {
     return;
   }
@@ -189,7 +190,8 @@ void _invoke2<A1, A2>(void Function(A1 a1, A2 a2)? callback, Zone zone, A1 arg1,
 /// The 3 in the name refers to the number of arguments expected by
 /// the callback (and thus passed to this function, in addition to the
 /// callback itself and the zone in which the callback is executed).
-void _invoke3<A1, A2, A3>(void Function(A1 a1, A2 a2, A3 a3)? callback, Zone zone, A1 arg1, A2 arg2, A3 arg3) {
+void _invoke3<A1, A2, A3>(void Function(A1 a1, A2 a2, A3 a3)? callback,
+    Zone zone, A1 arg1, A2 arg2, A3 arg3) {
   if (callback == null) {
     return;
   }

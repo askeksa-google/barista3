@@ -75,12 +75,14 @@ class CupertinoApp extends StatefulWidget {
     this.navigatorKey,
     this.home,
     this.theme,
-    Map<String, Widget Function(BuildContext)> this.routes = const <String, WidgetBuilder>{},
+    Map<String, Widget Function(BuildContext)> this.routes =
+        const <String, WidgetBuilder>{},
     this.initialRoute,
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
-    List<NavigatorObserver> this.navigatorObservers = const <NavigatorObserver>[],
+    List<NavigatorObserver> this.navigatorObservers =
+        const <NavigatorObserver>[],
     this.builder,
     this.title = '',
     this.onGenerateTitle,
@@ -98,19 +100,19 @@ class CupertinoApp extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-  }) : assert(routes != null),
-       assert(navigatorObservers != null),
-       assert(title != null),
-       assert(showPerformanceOverlay != null),
-       assert(checkerboardRasterCacheImages != null),
-       assert(checkerboardOffscreenLayers != null),
-       assert(showSemanticsDebugger != null),
-       assert(debugShowCheckedModeBanner != null),
-       routeInformationProvider = null,
-       routeInformationParser = null,
-       routerDelegate = null,
-       backButtonDispatcher = null,
-       super(key: key);
+  })  : assert(routes != null),
+        assert(navigatorObservers != null),
+        assert(title != null),
+        assert(showPerformanceOverlay != null),
+        assert(checkerboardRasterCacheImages != null),
+        assert(checkerboardOffscreenLayers != null),
+        assert(showSemanticsDebugger != null),
+        assert(debugShowCheckedModeBanner != null),
+        routeInformationProvider = null,
+        routeInformationParser = null,
+        routerDelegate = null,
+        backButtonDispatcher = null,
+        super(key: key);
 
   /// Creates a [CupertinoApp] that uses the [Router] instead of a [Navigator].
   const CupertinoApp.router({
@@ -137,21 +139,21 @@ class CupertinoApp extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-  }) : assert(title != null),
-       assert(showPerformanceOverlay != null),
-       assert(checkerboardRasterCacheImages != null),
-       assert(checkerboardOffscreenLayers != null),
-       assert(showSemanticsDebugger != null),
-       assert(debugShowCheckedModeBanner != null),
-       navigatorObservers = null,
-       navigatorKey = null,
-       onGenerateRoute = null,
-       home = null,
-       onGenerateInitialRoutes = null,
-       onUnknownRoute = null,
-       routes = null,
-       initialRoute = null,
-       super(key: key);
+  })  : assert(title != null),
+        assert(showPerformanceOverlay != null),
+        assert(checkerboardRasterCacheImages != null),
+        assert(checkerboardOffscreenLayers != null),
+        assert(showSemanticsDebugger != null),
+        assert(debugShowCheckedModeBanner != null),
+        navigatorObservers = null,
+        navigatorKey = null,
+        onGenerateRoute = null,
+        home = null,
+        onGenerateInitialRoutes = null,
+        onUnknownRoute = null,
+        routes = null,
+        initialRoute = null,
+        super(key: key);
 
   /// {@macro flutter.widgets.widgetsApp.navigatorKey}
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -335,7 +337,8 @@ class CupertinoApp extends StatefulWidget {
 
 class _AlwaysCupertinoScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     // Never build any overscroll glow indicators.
     return child;
   }
@@ -367,7 +370,8 @@ class _CupertinoAppState extends State<CupertinoApp> {
     yield DefaultCupertinoLocalizations.delegate;
   }
 
-  Widget _inspectorSelectButtonBuilder(BuildContext context, VoidCallback onPressed) {
+  Widget _inspectorSelectButtonBuilder(
+      BuildContext context, VoidCallback onPressed) {
     return CupertinoButton.filled(
       child: const Icon(
         CupertinoIcons.search,
@@ -381,7 +385,8 @@ class _CupertinoAppState extends State<CupertinoApp> {
 
   WidgetsApp _buildWidgetApp(BuildContext context) {
     final CupertinoThemeData effectiveThemeData = CupertinoTheme.of(context);
-    final Color color = CupertinoDynamicColor.resolve(widget.color ?? effectiveThemeData.primaryColor, context);
+    final Color color = CupertinoDynamicColor.resolve(
+        widget.color ?? effectiveThemeData.primaryColor, context);
 
     if (_usesRouter) {
       return WidgetsApp.router(
@@ -448,7 +453,8 @@ class _CupertinoAppState extends State<CupertinoApp> {
 
   @override
   Widget build(BuildContext context) {
-    final CupertinoThemeData effectiveThemeData = widget.theme ?? const CupertinoThemeData();
+    final CupertinoThemeData effectiveThemeData =
+        widget.theme ?? const CupertinoThemeData();
 
     return ScrollConfiguration(
       behavior: _AlwaysCupertinoScrollBehavior(),

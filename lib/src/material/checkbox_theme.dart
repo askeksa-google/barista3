@@ -102,7 +102,8 @@ class CheckboxThemeData with Diagnosticable {
       checkColor: checkColor ?? this.checkColor,
       overlayColor: overlayColor ?? this.overlayColor,
       splashRadius: splashRadius ?? this.splashRadius,
-      materialTapTargetSize: materialTapTargetSize ?? this.materialTapTargetSize,
+      materialTapTargetSize:
+          materialTapTargetSize ?? this.materialTapTargetSize,
       visualDensity: visualDensity ?? this.visualDensity,
     );
   }
@@ -110,14 +111,19 @@ class CheckboxThemeData with Diagnosticable {
   /// Linearly interpolate between two [CheckboxThemeData]s.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static CheckboxThemeData lerp(CheckboxThemeData? a, CheckboxThemeData? b, double t) {
+  static CheckboxThemeData lerp(
+      CheckboxThemeData? a, CheckboxThemeData? b, double t) {
     return CheckboxThemeData(
       mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
-      fillColor: _lerpProperties<Color?>(a?.fillColor, b?.fillColor, t, Color.lerp),
-      checkColor: _lerpProperties<Color?>(a?.checkColor, b?.checkColor, t, Color.lerp),
-      overlayColor: _lerpProperties<Color?>(a?.overlayColor, b?.overlayColor, t, Color.lerp),
+      fillColor:
+          _lerpProperties<Color?>(a?.fillColor, b?.fillColor, t, Color.lerp),
+      checkColor:
+          _lerpProperties<Color?>(a?.checkColor, b?.checkColor, t, Color.lerp),
+      overlayColor: _lerpProperties<Color?>(
+          a?.overlayColor, b?.overlayColor, t, Color.lerp),
       splashRadius: lerpDouble(a?.splashRadius, b?.splashRadius, t),
-      materialTapTargetSize: t < 0.5 ? a?.materialTapTargetSize : b?.materialTapTargetSize,
+      materialTapTargetSize:
+          t < 0.5 ? a?.materialTapTargetSize : b?.materialTapTargetSize,
       visualDensity: t < 0.5 ? a?.visualDensity : b?.visualDensity,
     );
   }
@@ -137,30 +143,41 @@ class CheckboxThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is CheckboxThemeData
-      && other.mouseCursor == mouseCursor
-      && other.fillColor == fillColor
-      && other.checkColor == checkColor
-      && other.overlayColor == overlayColor
-      && other.splashRadius == splashRadius
-      && other.materialTapTargetSize == materialTapTargetSize
-      && other.visualDensity == visualDensity;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is CheckboxThemeData &&
+        other.mouseCursor == mouseCursor &&
+        other.fillColor == fillColor &&
+        other.checkColor == checkColor &&
+        other.overlayColor == overlayColor &&
+        other.splashRadius == splashRadius &&
+        other.materialTapTargetSize == materialTapTargetSize &&
+        other.visualDensity == visualDensity;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>('mouseCursor', mouseCursor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('fillColor', fillColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('checkColor', checkColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('overlayColor', overlayColor, defaultValue: null));
-    properties.add(DoubleProperty('splashRadius', splashRadius, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialTapTargetSize>('materialTapTargetSize', materialTapTargetSize, defaultValue: null));
-    properties.add(DiagnosticsProperty<VisualDensity>('visualDensity', visualDensity, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>(
+        'mouseCursor', mouseCursor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>(
+        'fillColor', fillColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>(
+        'checkColor', checkColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>(
+        'overlayColor', overlayColor,
+        defaultValue: null));
+    properties
+        .add(DoubleProperty('splashRadius', splashRadius, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialTapTargetSize>(
+        'materialTapTargetSize', materialTapTargetSize,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<VisualDensity>(
+        'visualDensity', visualDensity,
+        defaultValue: null));
   }
 
   static MaterialStateProperty<T>? _lerpProperties<T>(
@@ -170,8 +187,7 @@ class CheckboxThemeData with Diagnosticable {
     T Function(T?, T?, double) lerpFunction,
   ) {
     // Avoid creating a _LerpProperties object for a common case.
-    if (a == null && b == null)
-      return null;
+    if (a == null && b == null) return null;
     return _LerpProperties<T>(a, b, t, lerpFunction);
   }
 }
@@ -226,7 +242,8 @@ class CheckboxTheme extends InheritedWidget {
   /// CheckboxThemeData theme = CheckboxTheme.of(context);
   /// ```
   static CheckboxThemeData of(BuildContext context) {
-    final CheckboxTheme? checkboxTheme = context.dependOnInheritedWidgetOfExactType<CheckboxTheme>();
+    final CheckboxTheme? checkboxTheme =
+        context.dependOnInheritedWidgetOfExactType<CheckboxTheme>();
     return checkboxTheme?.data ?? Theme.of(context).checkboxTheme;
   }
 

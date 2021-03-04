@@ -41,25 +41,27 @@ abstract class RenderToggleable extends RenderConstrainedBox {
     required TickerProvider vsync,
     bool hasFocus = false,
     bool hovering = false,
-  }) : assert(tristate != null),
-       assert(tristate || value != null),
-       assert(activeColor != null),
-       assert(inactiveColor != null),
-       assert(vsync != null),
-       _value = value,
-       _tristate = tristate,
-       _activeColor = activeColor,
-       _inactiveColor = inactiveColor,
-       _hoverColor = hoverColor ?? activeColor.withAlpha(kRadialReactionAlpha),
-       _focusColor = focusColor ?? activeColor.withAlpha(kRadialReactionAlpha),
-       _reactionColor = reactionColor ?? activeColor.withAlpha(kRadialReactionAlpha),
-       _inactiveReactionColor = inactiveReactionColor ?? activeColor.withAlpha(kRadialReactionAlpha),
-       _splashRadius = splashRadius,
-       _onChanged = onChanged,
-       _hasFocus = hasFocus,
-       _hovering = hovering,
-       _vsync = vsync,
-       super(additionalConstraints: additionalConstraints) {
+  })  : assert(tristate != null),
+        assert(tristate || value != null),
+        assert(activeColor != null),
+        assert(inactiveColor != null),
+        assert(vsync != null),
+        _value = value,
+        _tristate = tristate,
+        _activeColor = activeColor,
+        _inactiveColor = inactiveColor,
+        _hoverColor = hoverColor ?? activeColor.withAlpha(kRadialReactionAlpha),
+        _focusColor = focusColor ?? activeColor.withAlpha(kRadialReactionAlpha),
+        _reactionColor =
+            reactionColor ?? activeColor.withAlpha(kRadialReactionAlpha),
+        _inactiveReactionColor = inactiveReactionColor ??
+            activeColor.withAlpha(kRadialReactionAlpha),
+        _splashRadius = splashRadius,
+        _onChanged = onChanged,
+        _hasFocus = hasFocus,
+        _hovering = hovering,
+        _vsync = vsync,
+        super(additionalConstraints: additionalConstraints) {
     _tap = TapGestureRecognizer()
       ..onTapDown = _handleTapDown
       ..onTap = _handleTap
@@ -146,7 +148,8 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   /// Subclasses should call [paintRadialReaction] to actually paint the radial
   /// reaction.
   @protected
-  AnimationController get reactionFocusFadeController => _reactionFocusFadeController;
+  AnimationController get reactionFocusFadeController =>
+      _reactionFocusFadeController;
   late AnimationController _reactionFocusFadeController;
   late Animation<double> _reactionFocusFade;
 
@@ -160,7 +163,8 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   /// Subclasses should call [paintRadialReaction] to actually paint the radial
   /// reaction.
   @protected
-  AnimationController get reactionHoverFadeController => _reactionHoverFadeController;
+  AnimationController get reactionHoverFadeController =>
+      _reactionHoverFadeController;
   late AnimationController _reactionHoverFadeController;
   late Animation<double> _reactionHoverFade;
 
@@ -169,8 +173,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   bool _hasFocus;
   set hasFocus(bool value) {
     assert(value != null);
-    if (value == _hasFocus)
-      return;
+    if (value == _hasFocus) return;
     _hasFocus = value;
     if (_hasFocus) {
       _reactionFocusFadeController.forward();
@@ -185,8 +188,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   bool _hovering;
   set hovering(bool value) {
     assert(value != null);
-    if (value == _hovering)
-      return;
+    if (value == _hovering) return;
     _hovering = value;
     if (_hovering) {
       _reactionHoverFadeController.forward();
@@ -201,8 +203,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   TickerProvider _vsync;
   set vsync(TickerProvider value) {
     assert(value != null);
-    if (value == _vsync)
-      return;
+    if (value == _vsync) return;
     _vsync = value;
     positionController.resync(vsync);
     reactionController.resync(vsync);
@@ -221,16 +222,14 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   bool? _value;
   set value(bool? value) {
     assert(tristate || value != null);
-    if (value == _value)
-      return;
+    if (value == _value) return;
     _value = value;
     markNeedsSemanticsUpdate();
     _position
       ..curve = Curves.easeIn
       ..reverseCurve = Curves.easeOut;
     if (tristate) {
-      if (value == null)
-        _positionController.value = 0.0;
+      if (value == null) _positionController.value = 0.0;
       if (value != false)
         _positionController.forward();
       else
@@ -252,8 +251,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   bool _tristate;
   set tristate(bool value) {
     assert(tristate != null);
-    if (value == _tristate)
-      return;
+    if (value == _tristate) return;
     _tristate = value;
     markNeedsSemanticsUpdate();
   }
@@ -265,8 +263,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color _activeColor;
   set activeColor(Color value) {
     assert(value != null);
-    if (value == _activeColor)
-      return;
+    if (value == _activeColor) return;
     _activeColor = value;
     markNeedsPaint();
   }
@@ -278,8 +275,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color _inactiveColor;
   set inactiveColor(Color value) {
     assert(value != null);
-    if (value == _inactiveColor)
-      return;
+    if (value == _inactiveColor) return;
     _inactiveColor = value;
     markNeedsPaint();
   }
@@ -294,8 +290,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color _hoverColor;
   set hoverColor(Color value) {
     assert(value != null);
-    if (value == _hoverColor)
-      return;
+    if (value == _hoverColor) return;
     _hoverColor = value;
     markNeedsPaint();
   }
@@ -310,8 +305,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color _focusColor;
   set focusColor(Color value) {
     assert(value != null);
-    if (value == _focusColor)
-      return;
+    if (value == _focusColor) return;
     _focusColor = value;
     markNeedsPaint();
   }
@@ -327,8 +321,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color? _reactionColor;
   set reactionColor(Color? value) {
     assert(value != null);
-    if (value == _reactionColor)
-      return;
+    if (value == _reactionColor) return;
     _reactionColor = value;
     markNeedsPaint();
   }
@@ -344,8 +337,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   Color? _inactiveReactionColor;
   set inactiveReactionColor(Color? value) {
     assert(value != null);
-    if (value == _inactiveReactionColor)
-      return;
+    if (value == _inactiveReactionColor) return;
     _inactiveReactionColor = value;
     markNeedsPaint();
   }
@@ -354,8 +346,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   double get splashRadius => _splashRadius;
   double _splashRadius;
   set splashRadius(double value) {
-    if (value == _splashRadius)
-      return;
+    if (value == _splashRadius) return;
     _splashRadius = value;
     markNeedsPaint();
   }
@@ -372,8 +363,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   ValueChanged<bool?>? get onChanged => _onChanged;
   ValueChanged<bool?>? _onChanged;
   set onChanged(ValueChanged<bool?>? value) {
-    if (value == _onChanged)
-      return;
+    if (value == _onChanged) return;
     final bool wasInteractive = isInteractive;
     _onChanged = value;
     if (wasInteractive != isInteractive) {
@@ -433,8 +423,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   }
 
   void _handleTap() {
-    if (!isInteractive)
-      return;
+    if (!isInteractive) return;
     switch (value) {
       case false:
         onChanged!(true);
@@ -451,14 +440,12 @@ abstract class RenderToggleable extends RenderConstrainedBox {
 
   void _handleTapUp(TapUpDetails details) {
     _downPosition = null;
-    if (isInteractive)
-      _reactionController.reverse();
+    if (isInteractive) _reactionController.reverse();
   }
 
   void _handleTapCancel() {
     _downPosition = null;
-    if (isInteractive)
-      _reactionController.reverse();
+    if (isInteractive) _reactionController.reverse();
   }
 
   @override
@@ -467,8 +454,7 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   @override
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     assert(debugHandleEvent(event, entry));
-    if (event is PointerDownEvent && isInteractive)
-      _tap.addPointer(event);
+    if (event is PointerDownEvent && isInteractive) _tap.addPointer(event);
   }
 
   /// Used by subclasses to paint the radial ink reaction for this control.
@@ -478,7 +464,9 @@ abstract class RenderToggleable extends RenderConstrainedBox {
   /// point at which the user interacted with the control, which is handled
   /// automatically).
   void paintRadialReaction(Canvas canvas, Offset offset, Offset origin) {
-    if (!_reaction.isDismissed || !_reactionFocusFade.isDismissed || !_reactionHoverFade.isDismissed) {
+    if (!_reaction.isDismissed ||
+        !_reactionFocusFade.isDismissed ||
+        !_reactionHoverFade.isDismissed) {
       final Paint reactionPaint = Paint()
         ..color = Color.lerp(
           Color.lerp(
@@ -489,7 +477,8 @@ abstract class RenderToggleable extends RenderConstrainedBox {
           focusColor,
           _reactionFocusFade.value,
         )!;
-      final Offset center = Offset.lerp(_downPosition ?? origin, origin, _reaction.value)!;
+      final Offset center =
+          Offset.lerp(_downPosition ?? origin, origin, _reaction.value)!;
       final Animatable<double> radialReactionRadiusTween = Tween<double>(
         begin: 0.0,
         end: splashRadius,
@@ -508,14 +497,18 @@ abstract class RenderToggleable extends RenderConstrainedBox {
     super.describeSemanticsConfiguration(config);
 
     config.isEnabled = isInteractive;
-    if (isInteractive)
-      config.onTap = _handleTap;
+    if (isInteractive) config.onTap = _handleTap;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(FlagProperty('value', value: value, ifTrue: 'checked', ifFalse: 'unchecked', showName: true));
-    properties.add(FlagProperty('isInteractive', value: isInteractive, ifTrue: 'enabled', ifFalse: 'disabled', defaultValue: true));
+    properties.add(FlagProperty('value',
+        value: value, ifTrue: 'checked', ifFalse: 'unchecked', showName: true));
+    properties.add(FlagProperty('isInteractive',
+        value: isInteractive,
+        ifTrue: 'enabled',
+        ifFalse: 'disabled',
+        defaultValue: true));
   }
 }

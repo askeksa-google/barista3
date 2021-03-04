@@ -112,32 +112,32 @@ class OutlineButton extends MaterialButton {
     bool autofocus = false,
     MaterialTapTargetSize? materialTapTargetSize,
     Widget? child,
-  }) : assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(clipBehavior != null),
-       assert(autofocus != null),
-       super(
-         key: key,
-         onPressed: onPressed,
-         onLongPress: onLongPress,
-         mouseCursor: mouseCursor,
-         textTheme: textTheme,
-         textColor: textColor,
-         disabledTextColor: disabledTextColor,
-         color: color,
-         focusColor: focusColor,
-         hoverColor: hoverColor,
-         highlightColor: highlightColor,
-         splashColor: splashColor,
-         highlightElevation: highlightElevation,
-         padding: padding,
-         visualDensity: visualDensity,
-         shape: shape,
-         clipBehavior: clipBehavior,
-         focusNode: focusNode,
-         materialTapTargetSize: materialTapTargetSize,
-         autofocus: autofocus,
-         child: child,
-       );
+  })  : assert(highlightElevation == null || highlightElevation >= 0.0),
+        assert(clipBehavior != null),
+        assert(autofocus != null),
+        super(
+          key: key,
+          onPressed: onPressed,
+          onLongPress: onLongPress,
+          mouseCursor: mouseCursor,
+          textTheme: textTheme,
+          textColor: textColor,
+          disabledTextColor: disabledTextColor,
+          color: color,
+          focusColor: focusColor,
+          hoverColor: hoverColor,
+          highlightColor: highlightColor,
+          splashColor: splashColor,
+          highlightElevation: highlightElevation,
+          padding: padding,
+          visualDensity: visualDensity,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          materialTapTargetSize: materialTapTargetSize,
+          autofocus: autofocus,
+          child: child,
+        );
 
   /// Create an outline button from a pair of widgets that serve as the button's
   /// [icon] and [label].
@@ -225,7 +225,8 @@ class OutlineButton extends MaterialButton {
       highlightElevation: buttonTheme.getHighlightElevation(this),
       borderSide: borderSide,
       disabledBorderColor: disabledBorderColor,
-      highlightedBorderColor: highlightedBorderColor ?? buttonTheme.colorScheme!.primary,
+      highlightedBorderColor:
+          highlightedBorderColor ?? buttonTheme.colorScheme!.primary,
       padding: buttonTheme.getPadding(this),
       visualDensity: visualDensity,
       shape: buttonTheme.getShape(this),
@@ -239,9 +240,13 @@ class OutlineButton extends MaterialButton {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<BorderSide>('borderSide', borderSide, defaultValue: null));
-    properties.add(ColorProperty('disabledBorderColor', disabledBorderColor, defaultValue: null));
-    properties.add(ColorProperty('highlightedBorderColor', highlightedBorderColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<BorderSide>('borderSide', borderSide,
+        defaultValue: null));
+    properties.add(ColorProperty('disabledBorderColor', disabledBorderColor,
+        defaultValue: null));
+    properties.add(ColorProperty(
+        'highlightedBorderColor', highlightedBorderColor,
+        defaultValue: null));
   }
 }
 
@@ -249,7 +254,8 @@ class OutlineButton extends MaterialButton {
 //
 // This class only exists to give OutlineButtons created with OutlineButton.icon
 // a distinct class for the sake of ButtonTheme. It can not be instantiated.
-class _OutlineButtonWithIcon extends OutlineButton with MaterialButtonWithIconMixin {
+class _OutlineButtonWithIcon extends OutlineButton
+    with MaterialButtonWithIconMixin {
   _OutlineButtonWithIcon({
     Key? key,
     required VoidCallback? onPressed,
@@ -276,44 +282,44 @@ class _OutlineButtonWithIcon extends OutlineButton with MaterialButtonWithIconMi
     MaterialTapTargetSize? materialTapTargetSize,
     required Widget icon,
     required Widget label,
-  }) : assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(clipBehavior != null),
-       assert(autofocus != null),
-       assert(icon != null),
-       assert(label != null),
-       super(
-         key: key,
-         onPressed: onPressed,
-         onLongPress: onLongPress,
-         mouseCursor: mouseCursor,
-         textTheme: textTheme,
-         textColor: textColor,
-         disabledTextColor: disabledTextColor,
-         color: color,
-         focusColor: focusColor,
-         hoverColor: hoverColor,
-         highlightColor: highlightColor,
-         splashColor: splashColor,
-         highlightElevation: highlightElevation,
-         disabledBorderColor: disabledBorderColor,
-         highlightedBorderColor: highlightedBorderColor,
-         borderSide: borderSide,
-         padding: padding,
-         visualDensity: visualDensity,
-         shape: shape,
-         clipBehavior: clipBehavior,
-         focusNode: focusNode,
-         autofocus: autofocus,
-         materialTapTargetSize: materialTapTargetSize,
-         child: Row(
-           mainAxisSize: MainAxisSize.min,
-           children: <Widget>[
-             icon,
-             const SizedBox(width: 8.0),
-             label,
-           ],
-         ),
-       );
+  })   : assert(highlightElevation == null || highlightElevation >= 0.0),
+        assert(clipBehavior != null),
+        assert(autofocus != null),
+        assert(icon != null),
+        assert(label != null),
+        super(
+          key: key,
+          onPressed: onPressed,
+          onLongPress: onLongPress,
+          mouseCursor: mouseCursor,
+          textTheme: textTheme,
+          textColor: textColor,
+          disabledTextColor: disabledTextColor,
+          color: color,
+          focusColor: focusColor,
+          hoverColor: hoverColor,
+          highlightColor: highlightColor,
+          splashColor: splashColor,
+          highlightElevation: highlightElevation,
+          disabledBorderColor: disabledBorderColor,
+          highlightedBorderColor: highlightedBorderColor,
+          borderSide: borderSide,
+          padding: padding,
+          visualDensity: visualDensity,
+          shape: shape,
+          clipBehavior: clipBehavior,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          materialTapTargetSize: materialTapTargetSize,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              icon,
+              const SizedBox(width: 8.0),
+              label,
+            ],
+          ),
+        );
 }
 
 class _OutlineButton extends StatefulWidget {
@@ -343,11 +349,11 @@ class _OutlineButton extends StatefulWidget {
     this.autofocus = false,
     this.child,
     this.materialTapTargetSize,
-  }) : assert(highlightElevation != null && highlightElevation >= 0.0),
-       assert(highlightedBorderColor != null),
-       assert(clipBehavior != null),
-       assert(autofocus != null),
-       super(key: key);
+  })  : assert(highlightElevation != null && highlightElevation >= 0.0),
+        assert(highlightedBorderColor != null),
+        assert(clipBehavior != null),
+        assert(autofocus != null),
+        super(key: key);
 
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
@@ -380,8 +386,8 @@ class _OutlineButton extends StatefulWidget {
   _OutlineButtonState createState() => _OutlineButtonState();
 }
 
-
-class _OutlineButtonState extends State<_OutlineButton> with SingleTickerProviderStateMixin {
+class _OutlineButtonState extends State<_OutlineButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fillAnimation;
   late Animation<double> _elevationAnimation;
@@ -405,7 +411,9 @@ class _OutlineButtonState extends State<_OutlineButton> with SingleTickerProvide
     );
     _fillAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.0, 0.5,
+      curve: const Interval(
+        0.0,
+        0.5,
         curve: Curves.fastOutSlowIn,
       ),
     );
@@ -426,8 +434,7 @@ class _OutlineButtonState extends State<_OutlineButton> with SingleTickerProvide
   }
 
   void _handleHighlightChanged(bool value) {
-    if (_pressed == value)
-      return;
+    if (_pressed == value) return;
     setState(() {
       _pressed = value;
       if (value)
@@ -459,18 +466,16 @@ class _OutlineButtonState extends State<_OutlineButton> with SingleTickerProvide
     // states, otherwise we determine the outline color in the current state.
     if (widget.borderSide?.color is MaterialStateProperty<Color?>)
       return widget.borderSide!.color;
-    if (!widget.enabled)
-      return widget.disabledBorderColor;
-    if (_pressed)
-      return widget.highlightedBorderColor;
+    if (!widget.enabled) return widget.disabledBorderColor;
+    if (_pressed) return widget.highlightedBorderColor;
     return widget.borderSide?.color;
   }
 
   BorderSide _getOutline() {
-    if (widget.borderSide?.style == BorderStyle.none)
-      return widget.borderSide!;
+    if (widget.borderSide?.style == BorderStyle.none) return widget.borderSide!;
 
-    final Color themeColor = Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
+    final Color themeColor =
+        Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
 
     return BorderSide(
       color: _outlineColor ?? themeColor,
@@ -532,12 +537,13 @@ class _OutlineButtonState extends State<_OutlineButton> with SingleTickerProvide
 
 // Render the button's outline border using using the OutlineButton's
 // border parameters and the button or buttonTheme's shape.
-class _OutlineBorder extends ShapeBorder implements MaterialStateProperty<ShapeBorder>{
+class _OutlineBorder extends ShapeBorder
+    implements MaterialStateProperty<ShapeBorder> {
   const _OutlineBorder({
     required this.shape,
     required this.side,
-  }) : assert(shape != null),
-       assert(side != null);
+  })   : assert(shape != null),
+        assert(side != null);
 
   final ShapeBorder shape;
   final BorderSide side;
@@ -580,34 +586,34 @@ class _OutlineBorder extends ShapeBorder implements MaterialStateProperty<ShapeB
   }
 
   @override
-  Path getInnerPath(Rect rect, { TextDirection? textDirection }) {
-    return shape.getInnerPath(rect.deflate(side.width), textDirection: textDirection);
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    return shape.getInnerPath(rect.deflate(side.width),
+        textDirection: textDirection);
   }
 
   @override
-  Path getOuterPath(Rect rect, { TextDirection? textDirection }) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     return shape.getOuterPath(rect, textDirection: textDirection);
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, { TextDirection? textDirection }) {
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     switch (side.style) {
       case BorderStyle.none:
         break;
       case BorderStyle.solid:
-        canvas.drawPath(shape.getOuterPath(rect, textDirection: textDirection), side.toPaint());
+        canvas.drawPath(shape.getOuterPath(rect, textDirection: textDirection),
+            side.toPaint());
     }
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is _OutlineBorder
-        && other.side == side
-        && other.shape == shape;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is _OutlineBorder &&
+        other.side == side &&
+        other.shape == shape;
   }
 
   @override
@@ -616,8 +622,9 @@ class _OutlineBorder extends ShapeBorder implements MaterialStateProperty<ShapeB
   @override
   ShapeBorder resolve(Set<MaterialState> states) {
     return _OutlineBorder(
-      shape: shape,
-      side: side.copyWith(color: MaterialStateProperty.resolveAs<Color>(side.color, states),
-    ));
+        shape: shape,
+        side: side.copyWith(
+          color: MaterialStateProperty.resolveAs<Color>(side.color, states),
+        ));
   }
 }

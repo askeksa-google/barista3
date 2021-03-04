@@ -174,7 +174,8 @@ class MaterialApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
-    List<NavigatorObserver> this.navigatorObservers = const <NavigatorObserver>[],
+    List<NavigatorObserver> this.navigatorObservers =
+        const <NavigatorObserver>[],
     this.builder,
     this.title = '',
     this.onGenerateTitle,
@@ -198,20 +199,20 @@ class MaterialApp extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-  }) : assert(routes != null),
-       assert(navigatorObservers != null),
-       assert(title != null),
-       assert(debugShowMaterialGrid != null),
-       assert(showPerformanceOverlay != null),
-       assert(checkerboardRasterCacheImages != null),
-       assert(checkerboardOffscreenLayers != null),
-       assert(showSemanticsDebugger != null),
-       assert(debugShowCheckedModeBanner != null),
-       routeInformationProvider = null,
-       routeInformationParser = null,
-       routerDelegate = null,
-       backButtonDispatcher = null,
-       super(key: key);
+  })  : assert(routes != null),
+        assert(navigatorObservers != null),
+        assert(title != null),
+        assert(debugShowMaterialGrid != null),
+        assert(showPerformanceOverlay != null),
+        assert(checkerboardRasterCacheImages != null),
+        assert(checkerboardOffscreenLayers != null),
+        assert(showSemanticsDebugger != null),
+        assert(debugShowCheckedModeBanner != null),
+        routeInformationProvider = null,
+        routeInformationParser = null,
+        routerDelegate = null,
+        backButtonDispatcher = null,
+        super(key: key);
 
   /// Creates a [MaterialApp] that uses the [Router] instead of a [Navigator].
   const MaterialApp.router({
@@ -244,24 +245,24 @@ class MaterialApp extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-  }) : assert(routeInformationParser != null),
-       assert(routerDelegate != null),
-       assert(title != null),
-       assert(debugShowMaterialGrid != null),
-       assert(showPerformanceOverlay != null),
-       assert(checkerboardRasterCacheImages != null),
-       assert(checkerboardOffscreenLayers != null),
-       assert(showSemanticsDebugger != null),
-       assert(debugShowCheckedModeBanner != null),
-       navigatorObservers = null,
-       navigatorKey = null,
-       onGenerateRoute = null,
-       home = null,
-       onGenerateInitialRoutes = null,
-       onUnknownRoute = null,
-       routes = null,
-       initialRoute = null,
-       super(key: key);
+  })  : assert(routeInformationParser != null),
+        assert(routerDelegate != null),
+        assert(title != null),
+        assert(debugShowMaterialGrid != null),
+        assert(showPerformanceOverlay != null),
+        assert(checkerboardRasterCacheImages != null),
+        assert(checkerboardOffscreenLayers != null),
+        assert(showSemanticsDebugger != null),
+        assert(debugShowCheckedModeBanner != null),
+        navigatorObservers = null,
+        navigatorKey = null,
+        onGenerateRoute = null,
+        home = null,
+        onGenerateInitialRoutes = null,
+        onUnknownRoute = null,
+        routes = null,
+        initialRoute = null,
+        super(key: key);
 
   /// {@macro flutter.widgets.widgetsApp.navigatorKey}
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -666,7 +667,8 @@ class _MaterialScrollBehavior extends ScrollBehavior {
   }
 
   @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     // When modifying this function, consider modifying the implementation in
     // the base class as well.
     switch (getPlatform(context)) {
@@ -709,7 +711,8 @@ class _MaterialAppState extends State<MaterialApp> {
     yield DefaultCupertinoLocalizations.delegate;
   }
 
-  Widget _inspectorSelectButtonBuilder(BuildContext context, VoidCallback onPressed) {
+  Widget _inspectorSelectButtonBuilder(
+      BuildContext context, VoidCallback onPressed) {
     return FloatingActionButton(
       child: const Icon(Icons.search),
       onPressed: onPressed,
@@ -720,9 +723,10 @@ class _MaterialAppState extends State<MaterialApp> {
   Widget _materialBuilder(BuildContext context, Widget? child) {
     // Resolve which theme to use based on brightness and high contrast.
     final ThemeMode mode = widget.themeMode ?? ThemeMode.system;
-    final Brightness platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final bool useDarkTheme = mode == ThemeMode.dark
-      || (mode == ThemeMode.system && platformBrightness == ui.Brightness.dark);
+    final Brightness platformBrightness =
+        MediaQuery.platformBrightnessOf(context);
+    final bool useDarkTheme = mode == ThemeMode.dark ||
+        (mode == ThemeMode.system && platformBrightness == ui.Brightness.dark);
     final bool highContrast = MediaQuery.highContrastOf(context);
     ThemeData? theme;
 
@@ -736,29 +740,28 @@ class _MaterialAppState extends State<MaterialApp> {
     theme ??= widget.theme ?? ThemeData.light();
 
     return ScaffoldMessenger(
-      key: widget.scaffoldMessengerKey,
-      child: AnimatedTheme(
-        data: theme,
-        child: widget.builder != null
-          ? Builder(
-              builder: (BuildContext context) {
-                // Why are we surrounding a builder with a builder?
-                //
-                // The widget.builder may contain code that invokes
-                // Theme.of(), which should return the theme we selected
-                // above in AnimatedTheme. However, if we invoke
-                // widget.builder() directly as the child of AnimatedTheme
-                // then there is no Context separating them, and the
-                // widget.builder() will not find the theme. Therefore, we
-                // surround widget.builder with yet another builder so that
-                // a context separates them and Theme.of() correctly
-                // resolves to the theme we passed to AnimatedTheme.
-                return widget.builder!(context, child);
-              },
-            )
-          : child!,
-      )
-    );
+        key: widget.scaffoldMessengerKey,
+        child: AnimatedTheme(
+          data: theme,
+          child: widget.builder != null
+              ? Builder(
+                  builder: (BuildContext context) {
+                    // Why are we surrounding a builder with a builder?
+                    //
+                    // The widget.builder may contain code that invokes
+                    // Theme.of(), which should return the theme we selected
+                    // above in AnimatedTheme. However, if we invoke
+                    // widget.builder() directly as the child of AnimatedTheme
+                    // then there is no Context separating them, and the
+                    // widget.builder() will not find the theme. Therefore, we
+                    // surround widget.builder with yet another builder so that
+                    // a context separates them and Theme.of() correctly
+                    // resolves to the theme we passed to AnimatedTheme.
+                    return widget.builder!(context, child);
+                  },
+                )
+              : child!,
+        ));
   }
 
   Widget _buildWidgetApp(BuildContext context) {
@@ -769,7 +772,8 @@ class _MaterialAppState extends State<MaterialApp> {
     // Android's switcher UI.
     //
     // blue is the primary color of the default theme.
-    final Color materialColor = widget.color ?? widget.theme?.primaryColor ?? Colors.blue;
+    final Color materialColor =
+        widget.color ?? widget.theme?.primaryColor ?? Colors.blue;
     if (_usesRouter) {
       return WidgetsApp.router(
         key: GlobalObjectKey(this),
@@ -852,11 +856,10 @@ class _MaterialAppState extends State<MaterialApp> {
     }());
 
     return ScrollConfiguration(
-      behavior: _MaterialScrollBehavior(),
-      child: HeroControllerScope(
-        controller: _heroController,
-        child: result,
-      )
-    );
+        behavior: _MaterialScrollBehavior(),
+        child: HeroControllerScope(
+          controller: _heroController,
+          child: result,
+        ));
   }
 }

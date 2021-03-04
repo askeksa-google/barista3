@@ -124,10 +124,10 @@ class FloatingActionButtonThemeData with Diagnosticable {
   /// If both arguments are null then null is returned.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static FloatingActionButtonThemeData? lerp(FloatingActionButtonThemeData? a, FloatingActionButtonThemeData? b, double t) {
+  static FloatingActionButtonThemeData? lerp(FloatingActionButtonThemeData? a,
+      FloatingActionButtonThemeData? b, double t) {
     assert(t != null);
-    if (a == null && b == null)
-      return null;
+    if (a == null && b == null) return null;
     return FloatingActionButtonThemeData(
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
@@ -137,8 +137,10 @@ class FloatingActionButtonThemeData with Diagnosticable {
       elevation: lerpDouble(a?.elevation, b?.elevation, t),
       focusElevation: lerpDouble(a?.focusElevation, b?.focusElevation, t),
       hoverElevation: lerpDouble(a?.hoverElevation, b?.hoverElevation, t),
-      disabledElevation: lerpDouble(a?.disabledElevation, b?.disabledElevation, t),
-      highlightElevation: lerpDouble(a?.highlightElevation, b?.highlightElevation, t),
+      disabledElevation:
+          lerpDouble(a?.disabledElevation, b?.disabledElevation, t),
+      highlightElevation:
+          lerpDouble(a?.highlightElevation, b?.highlightElevation, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
     );
   }
@@ -162,39 +164,49 @@ class FloatingActionButtonThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is FloatingActionButtonThemeData
-        && other.foregroundColor == foregroundColor
-        && other.backgroundColor == backgroundColor
-        && other.focusColor == focusColor
-        && other.hoverColor == hoverColor
-        && other.splashColor == splashColor
-        && other.elevation == elevation
-        && other.focusElevation == focusElevation
-        && other.hoverElevation == hoverElevation
-        && other.disabledElevation == disabledElevation
-        && other.highlightElevation == highlightElevation
-        && other.shape == shape;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is FloatingActionButtonThemeData &&
+        other.foregroundColor == foregroundColor &&
+        other.backgroundColor == backgroundColor &&
+        other.focusColor == focusColor &&
+        other.hoverColor == hoverColor &&
+        other.splashColor == splashColor &&
+        other.elevation == elevation &&
+        other.focusElevation == focusElevation &&
+        other.hoverElevation == hoverElevation &&
+        other.disabledElevation == disabledElevation &&
+        other.highlightElevation == highlightElevation &&
+        other.shape == shape;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    const FloatingActionButtonThemeData defaultData = FloatingActionButtonThemeData();
+    const FloatingActionButtonThemeData defaultData =
+        FloatingActionButtonThemeData();
 
-    properties.add(ColorProperty('foregroundColor', foregroundColor, defaultValue: defaultData.foregroundColor));
-    properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: defaultData.backgroundColor));
-    properties.add(ColorProperty('focusColor', focusColor, defaultValue: defaultData.focusColor));
-    properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: defaultData.hoverColor));
-    properties.add(ColorProperty('splashColor', splashColor, defaultValue: defaultData.splashColor));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: defaultData.elevation));
-    properties.add(DoubleProperty('focusElevation', focusElevation, defaultValue: defaultData.focusElevation));
-    properties.add(DoubleProperty('hoverElevation', hoverElevation, defaultValue: defaultData.hoverElevation));
-    properties.add(DoubleProperty('disabledElevation', disabledElevation, defaultValue: defaultData.disabledElevation));
-    properties.add(DoubleProperty('highlightElevation', highlightElevation, defaultValue: defaultData.highlightElevation));
-    properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: defaultData.shape));
+    properties.add(ColorProperty('foregroundColor', foregroundColor,
+        defaultValue: defaultData.foregroundColor));
+    properties.add(ColorProperty('backgroundColor', backgroundColor,
+        defaultValue: defaultData.backgroundColor));
+    properties.add(ColorProperty('focusColor', focusColor,
+        defaultValue: defaultData.focusColor));
+    properties.add(ColorProperty('hoverColor', hoverColor,
+        defaultValue: defaultData.hoverColor));
+    properties.add(ColorProperty('splashColor', splashColor,
+        defaultValue: defaultData.splashColor));
+    properties.add(DoubleProperty('elevation', elevation,
+        defaultValue: defaultData.elevation));
+    properties.add(DoubleProperty('focusElevation', focusElevation,
+        defaultValue: defaultData.focusElevation));
+    properties.add(DoubleProperty('hoverElevation', hoverElevation,
+        defaultValue: defaultData.hoverElevation));
+    properties.add(DoubleProperty('disabledElevation', disabledElevation,
+        defaultValue: defaultData.disabledElevation));
+    properties.add(DoubleProperty('highlightElevation', highlightElevation,
+        defaultValue: defaultData.highlightElevation));
+    properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape,
+        defaultValue: defaultData.shape));
   }
 }

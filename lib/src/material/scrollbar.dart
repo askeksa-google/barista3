@@ -62,16 +62,16 @@ class Scrollbar extends RawScrollbar {
     double? thickness,
     Radius? radius,
   }) : super(
-         key: key,
-         child: child,
-         controller: controller,
-         isAlwaysShown: isAlwaysShown,
-         thickness: thickness ?? _kScrollbarThickness,
-         radius: radius,
-         fadeDuration: _kScrollbarFadeDuration,
-         timeToFade: _kScrollbarTimeToFade,
-         pressDuration: Duration.zero,
-       );
+          key: key,
+          child: child,
+          controller: controller,
+          isAlwaysShown: isAlwaysShown,
+          thickness: thickness ?? _kScrollbarThickness,
+          radius: radius,
+          fadeDuration: _kScrollbarFadeDuration,
+          timeToFade: _kScrollbarTimeToFade,
+          pressDuration: Duration.zero,
+        );
 
   /// Controls if the track will show on hover and remain, including during drag.
   ///
@@ -95,9 +95,9 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
   late ColorScheme _colorScheme;
 
   Set<MaterialState> get _states => <MaterialState>{
-    if (_dragIsActive) MaterialState.dragged,
-    if (_hoverIsActive) MaterialState.hovered,
-  };
+        if (_dragIsActive) MaterialState.dragged,
+        if (_hoverIsActive) MaterialState.hovered,
+      };
 
   MaterialStateProperty<Color> get _thumbColor {
     final Color onSurface = _colorScheme.onSurface;
@@ -119,8 +119,7 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
     }
 
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.dragged))
-        return dragColor;
+      if (states.contains(MaterialState.dragged)) return dragColor;
 
       // If the track is visible, the thumb color hover animation is ignored and
       // changes immediately.
@@ -141,8 +140,8 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.hovered) && widget.showTrackOnHover) {
         return brightness == Brightness.light
-          ? onSurface.withOpacity(0.03)
-          : onSurface.withOpacity(0.05);
+            ? onSurface.withOpacity(0.03)
+            : onSurface.withOpacity(0.05);
       }
       return const Color(0x00000000);
     });
@@ -154,8 +153,8 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.hovered) && widget.showTrackOnHover) {
         return brightness == Brightness.light
-          ? onSurface.withOpacity(0.1)
-          : onSurface.withOpacity(0.25);
+            ? onSurface.withOpacity(0.1)
+            : onSurface.withOpacity(0.25);
       }
       return const Color(0x00000000);
     });
@@ -199,13 +198,17 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
   @override
   void handleThumbPressStart(Offset localPosition) {
     super.handleThumbPressStart(localPosition);
-    setState(() { _dragIsActive = true; });
+    setState(() {
+      _dragIsActive = true;
+    });
   }
 
   @override
   void handleThumbPressEnd(Offset localPosition, Velocity velocity) {
     super.handleThumbPressEnd(localPosition, velocity);
-    setState(() { _dragIsActive = false; });
+    setState(() {
+      _dragIsActive = false;
+    });
   }
 
   @override
@@ -214,11 +217,15 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
     // Check if the position of the pointer falls over the painted scrollbar
     if (isPointerOverScrollbar(event.position)) {
       // Pointer is hovering over the scrollbar
-      setState(() { _hoverIsActive = true; });
+      setState(() {
+        _hoverIsActive = true;
+      });
       _hoverAnimationController.forward();
     } else if (_hoverIsActive) {
       // Pointer was, but is no longer over painted scrollbar.
-      setState(() { _hoverIsActive = false; });
+      setState(() {
+        _hoverIsActive = false;
+      });
       _hoverAnimationController.reverse();
     }
   }
@@ -226,7 +233,9 @@ class _ScrollbarState extends RawScrollbarState<Scrollbar> {
   @override
   void handleHoverExit(PointerExitEvent event) {
     super.handleHoverExit(event);
-    setState(() { _hoverIsActive = false; });
+    setState(() {
+      _hoverIsActive = false;
+    });
     _hoverAnimationController.reverse();
   }
 

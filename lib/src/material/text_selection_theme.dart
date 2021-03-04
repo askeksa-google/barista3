@@ -65,14 +65,15 @@ class TextSelectionThemeData with Diagnosticable {
   /// If both arguments are null, then null is returned.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static TextSelectionThemeData? lerp(TextSelectionThemeData? a, TextSelectionThemeData? b, double t) {
-    if (a == null && b == null)
-      return null;
+  static TextSelectionThemeData? lerp(
+      TextSelectionThemeData? a, TextSelectionThemeData? b, double t) {
+    if (a == null && b == null) return null;
     assert(t != null);
     return TextSelectionThemeData(
       cursorColor: Color.lerp(a?.cursorColor, b?.cursorColor, t),
       selectionColor: Color.lerp(a?.selectionColor, b?.selectionColor, t),
-      selectionHandleColor: Color.lerp(a?.selectionHandleColor, b?.selectionHandleColor, t),
+      selectionHandleColor:
+          Color.lerp(a?.selectionHandleColor, b?.selectionHandleColor, t),
     );
   }
 
@@ -86,23 +87,24 @@ class TextSelectionThemeData with Diagnosticable {
   }
 
   @override
-  bool operator==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TextSelectionThemeData
-      && other.cursorColor == cursorColor
-      && other.selectionColor == selectionColor
-      && other.selectionHandleColor == selectionHandleColor;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TextSelectionThemeData &&
+        other.cursorColor == cursorColor &&
+        other.selectionColor == selectionColor &&
+        other.selectionHandleColor == selectionHandleColor;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
-    properties.add(ColorProperty('selectionColor', selectionColor, defaultValue: null));
-    properties.add(ColorProperty('selectionHandleColor', selectionHandleColor, defaultValue: null));
+    properties
+        .add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
+    properties.add(
+        ColorProperty('selectionColor', selectionColor, defaultValue: null));
+    properties.add(ColorProperty('selectionHandleColor', selectionHandleColor,
+        defaultValue: null));
   }
 }
 
@@ -136,7 +138,8 @@ class TextSelectionTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  }) : assert(data != null), super(key: key, child: child);
+  })   : assert(data != null),
+        super(key: key, child: child);
 
   /// The properties for descendant [TextField] and [SelectableText] widgets.
   final TextSelectionThemeData data;
@@ -151,7 +154,8 @@ class TextSelectionTheme extends InheritedTheme {
   /// TextSelectionThemeData theme = TextSelectionTheme.of(context);
   /// ```
   static TextSelectionThemeData of(BuildContext context) {
-    final TextSelectionTheme? selectionTheme = context.dependOnInheritedWidgetOfExactType<TextSelectionTheme>();
+    final TextSelectionTheme? selectionTheme =
+        context.dependOnInheritedWidgetOfExactType<TextSelectionTheme>();
     return selectionTheme?.data ?? Theme.of(context).textSelectionTheme;
   }
 
@@ -161,5 +165,6 @@ class TextSelectionTheme extends InheritedTheme {
   }
 
   @override
-  bool updateShouldNotify(TextSelectionTheme oldWidget) => data != oldWidget.data;
+  bool updateShouldNotify(TextSelectionTheme oldWidget) =>
+      data != oldWidget.data;
 }

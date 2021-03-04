@@ -24,19 +24,20 @@ class IconThemeData with Diagnosticable {
   ///
   /// The opacity applies to both explicit and default icon colors. The value
   /// is clamped between 0.0 and 1.0.
-  const IconThemeData({this.color, double? opacity, this.size}) : _opacity = opacity;
+  const IconThemeData({this.color, double? opacity, this.size})
+      : _opacity = opacity;
 
   /// Creates an icon them with some reasonable default values.
   ///
   /// The [color] is black, the [opacity] is 1.0, and the [size] is 24.0.
   const IconThemeData.fallback()
-    : color = const Color(0xFF000000),
-      _opacity = 1.0,
-      size = 24.0;
+      : color = const Color(0xFF000000),
+        _opacity = 1.0,
+        size = 24.0;
 
   /// Creates a copy of this icon theme but with the given fields replaced with
   /// the new values.
-  IconThemeData copyWith({ Color? color, double? opacity, double? size }) {
+  IconThemeData copyWith({Color? color, double? opacity, double? size}) {
     return IconThemeData(
       color: color ?? this.color,
       opacity: opacity ?? this.opacity,
@@ -48,8 +49,7 @@ class IconThemeData with Diagnosticable {
   /// replaced by the non-null parameters of the given icon theme. If the given
   /// icon theme is null, simply returns this icon theme.
   IconThemeData merge(IconThemeData? other) {
-    if (other == null)
-      return this;
+    if (other == null) return this;
     return copyWith(
       color: other.color,
       opacity: other.opacity,
@@ -102,12 +102,11 @@ class IconThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is IconThemeData
-        && other.color == color
-        && other.opacity == opacity
-        && other.size == size;
+    if (other.runtimeType != runtimeType) return false;
+    return other is IconThemeData &&
+        other.color == color &&
+        other.opacity == opacity &&
+        other.size == size;
   }
 
   @override

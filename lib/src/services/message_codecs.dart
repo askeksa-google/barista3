@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -40,15 +39,14 @@ class StringCodec implements MessageCodec<String?> {
 
   @override
   String? decodeMessage(ByteData? message) {
-    if (message == null)
-      return null;
-    return utf8.decoder.convert(message.buffer.asUint8List(message.offsetInBytes, message.lengthInBytes));
+    if (message == null) return null;
+    return utf8.decoder.convert(message.buffer
+        .asUint8List(message.offsetInBytes, message.lengthInBytes));
   }
 
   @override
   ByteData? encodeMessage(String? message) {
-    if (message == null)
-      return null;
+    if (message == null) return null;
     final Uint8List encoded = utf8.encoder.convert(message);
     return encoded.buffer.asByteData();
   }
@@ -82,15 +80,13 @@ class JSONMessageCodec implements MessageCodec<dynamic> {
 
   @override
   ByteData? encodeMessage(dynamic message) {
-    if (message == null)
-      return null;
+    if (message == null) return null;
     return const StringCodec().encodeMessage(json.encode(message));
   }
 
   @override
   dynamic decodeMessage(ByteData? message) {
-    if (message == null)
-      return message;
+    if (message == null) return message;
     return json.decode(const StringCodec().decodeMessage(message)!);
   }
 }
@@ -132,8 +128,7 @@ class JSONMethodCodec implements MethodCodec {
       throw FormatException('Expected method call Map, got $decoded');
     final dynamic method = decoded['method'];
     final dynamic arguments = decoded['args'];
-    if (method is String)
-      return MethodCall(method, arguments);
+    if (method is String) return MethodCall(method, arguments);
     throw FormatException('Invalid method call: $decoded');
   }
 
@@ -142,20 +137,19 @@ class JSONMethodCodec implements MethodCodec {
     final dynamic decoded = const JSONMessageCodec().decodeMessage(envelope);
     if (decoded is! List)
       throw FormatException('Expected envelope List, got $decoded');
-    if (decoded.length == 1)
-      return decoded[0];
-    if (decoded.length == 3
-        && decoded[0] is String
-        && (decoded[1] == null || decoded[1] is String))
+    if (decoded.length == 1) return decoded[0];
+    if (decoded.length == 3 &&
+        decoded[0] is String &&
+        (decoded[1] == null || decoded[1] is String))
       throw PlatformException(
         code: decoded[0] as String,
         message: decoded[1] as String,
         details: decoded[2],
       );
-    if (decoded.length == 4
-        && decoded[0] is String
-        && (decoded[1] == null || decoded[1] is String)
-        && (decoded[3] == null || decoded[3] is String))
+    if (decoded.length == 4 &&
+        decoded[0] is String &&
+        (decoded[1] == null || decoded[1] is String) &&
+        (decoded[3] == null || decoded[3] is String))
       throw PlatformException(
         code: decoded[0] as String,
         message: decoded[1] as String,
@@ -171,9 +165,11 @@ class JSONMethodCodec implements MethodCodec {
   }
 
   @override
-  ByteData encodeErrorEnvelope({ required String code, String? message, dynamic details}) {
+  ByteData encodeErrorEnvelope(
+      {required String code, String? message, dynamic details}) {
     assert(code != null);
-    return const JSONMessageCodec().encodeMessage(<dynamic>[code, message, details])!;
+    return const JSONMessageCodec()
+        .encodeMessage(<dynamic>[code, message, details])!;
   }
 }
 
@@ -291,8 +287,7 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
 
   @override
   ByteData? encodeMessage(dynamic message) {
-    if (message == null)
-      return null;
+    if (message == null) return null;
     final WriteBuffer buffer = WriteBuffer();
     writeValue(buffer, message);
     return buffer.done();
@@ -300,12 +295,10 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
 
   @override
   dynamic decodeMessage(ByteData? message) {
-    if (message == null)
-      return null;
+    if (message == null) return null;
     final ReadBuffer buffer = ReadBuffer(message);
     final dynamic result = readValue(buffer);
-    if (buffer.hasRemaining)
-      throw const FormatException('Message corrupted');
+    if (buffer.hasRemaining) throw const FormatException('Message corrupted');
     return result;
   }
 
@@ -350,12 +343,13 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
       buffer.putUint8(_valueNull);
     } else if (value is bool) {
       buffer.putUint8(value ? _valueTrue : _valueFalse);
-    } else if (value is double) {  // Double precedes int because in JS everything is a double.
-                                   // Therefore in JS, both `is int` and `is double` always
-                                   // return `true`. If we check int first, we'll end up treating
-                                   // all numbers as ints and attempt the int32/int64 conversion,
-                                   // which is wrong. This precedence rule is irrelevant when
-                                   // decoding because we use tags to detect the type of value.
+    } else if (value is double) {
+      // Double precedes int because in JS everything is a double.
+      // Therefore in JS, both `is int` and `is double` always
+      // return `true`. If we check int first, we'll end up treating
+      // all numbers as ints and attempt the int32/int64 conversion,
+      // which is wrong. This precedence rule is irrelevant when
+      // decoding because we use tags to detect the type of value.
       buffer.putUint8(_valueFloat64);
       buffer.putFloat64(value);
     } else if (value is int) {
@@ -410,8 +404,7 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
   /// This method is intended for use by subclasses overriding
   /// [readValueOfType].
   dynamic readValue(ReadBuffer buffer) {
-    if (!buffer.hasRemaining)
-      throw const FormatException('Message corrupted');
+    if (!buffer.hasRemaining) throw const FormatException('Message corrupted');
     final int type = buffer.getUint8();
     return readValueOfType(type, buffer);
   }
@@ -453,9 +446,9 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
         return buffer.getFloat64List(length);
       case _valueList:
         final int length = readSize(buffer);
-        final List<dynamic> result = List<dynamic>.filled(length, null, growable: false);
-        for (int i = 0; i < length; i++)
-          result[i] = readValue(buffer);
+        final List<dynamic> result =
+            List<dynamic>.filled(length, null, growable: false);
+        for (int i = 0; i < length; i++) result[i] = readValue(buffer);
         return result;
       case _valueMap:
         final int length = readSize(buffer);
@@ -463,7 +456,8 @@ class StandardMessageCodec implements MessageCodec<dynamic> {
         for (int i = 0; i < length; i++)
           result[readValue(buffer)] = readValue(buffer);
         return result;
-      default: throw const FormatException('Message corrupted');
+      default:
+        throw const FormatException('Message corrupted');
     }
   }
 
@@ -557,7 +551,8 @@ class StandardMethodCodec implements MethodCodec {
   }
 
   @override
-  ByteData encodeErrorEnvelope({ required String code, String? message, dynamic details}) {
+  ByteData encodeErrorEnvelope(
+      {required String code, String? message, dynamic details}) {
     final WriteBuffer buffer = WriteBuffer();
     buffer.putUint8(1);
     messageCodec.writeValue(buffer, code);
@@ -572,14 +567,20 @@ class StandardMethodCodec implements MethodCodec {
     if (envelope.lengthInBytes == 0)
       throw const FormatException('Expected envelope, got nothing');
     final ReadBuffer buffer = ReadBuffer(envelope);
-    if (buffer.getUint8() == 0)
-      return messageCodec.readValue(buffer);
+    if (buffer.getUint8() == 0) return messageCodec.readValue(buffer);
     final dynamic errorCode = messageCodec.readValue(buffer);
     final dynamic errorMessage = messageCodec.readValue(buffer);
     final dynamic errorDetails = messageCodec.readValue(buffer);
-    final String? errorStacktrace = (buffer.hasRemaining) ? messageCodec.readValue(buffer) as String : null;
-    if (errorCode is String && (errorMessage == null || errorMessage is String) && !buffer.hasRemaining)
-      throw PlatformException(code: errorCode, message: errorMessage as String?, details: errorDetails, stacktrace: errorStacktrace);
+    final String? errorStacktrace =
+        (buffer.hasRemaining) ? messageCodec.readValue(buffer) as String : null;
+    if (errorCode is String &&
+        (errorMessage == null || errorMessage is String) &&
+        !buffer.hasRemaining)
+      throw PlatformException(
+          code: errorCode,
+          message: errorMessage as String?,
+          details: errorDetails,
+          stacktrace: errorStacktrace);
     else
       throw const FormatException('Invalid envelope');
   }

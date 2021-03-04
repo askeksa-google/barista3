@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/ui.dart' as ui show PlaceholderAlignment;
 
 import 'package:flute/foundation.dart';
@@ -39,7 +38,9 @@ abstract class PlaceholderSpan extends InlineSpan {
     this.alignment = ui.PlaceholderAlignment.bottom,
     this.baseline,
     TextStyle? style,
-  }) : super(style: style,);
+  }) : super(
+          style: style,
+        );
 
   /// How the placeholder aligns vertically with the text.
   ///
@@ -55,26 +56,27 @@ abstract class PlaceholderSpan extends InlineSpan {
   /// [PlaceholderSpan]s are flattened to a `0xFFFC` object replacement character in the
   /// plain text representation when `includePlaceholders` is true.
   @override
-  void computeToPlainText(StringBuffer buffer, {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
+  void computeToPlainText(StringBuffer buffer,
+      {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
     if (includePlaceholders) {
       buffer.write('\uFFFC');
     }
   }
 
   @override
-  void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector) {
+  void computeSemanticsInformation(
+      List<InlineSpanSemanticsInformation> collector) {
     collector.add(InlineSpanSemanticsInformation.placeholder);
   }
 
   // TODO(garyq): Remove this after next stable release.
   /// The [visitTextSpan] method is invalid on [PlaceholderSpan]s.
   @override
-  @Deprecated(
-    'Use to visitChildren instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
+  @Deprecated('Use to visitChildren instead. '
+      'This feature was deprecated after v1.7.3.')
   bool visitTextSpan(bool visitor(TextSpan span)) {
-    assert(false, 'visitTextSpan is deprecated. Use visitChildren to support InlineSpans');
+    assert(false,
+        'visitTextSpan is deprecated. Use visitChildren to support InlineSpans');
     return false;
   }
 
@@ -86,7 +88,8 @@ abstract class PlaceholderSpan extends InlineSpan {
   ///
   /// Null is added to `semanticsElements` for [PlaceholderSpan]s.
   @override
-  void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements) {
+  void describeSemantics(Accumulator offset, List<int> semanticsOffsets,
+      List<dynamic> semanticsElements) {
     semanticsOffsets.add(offset.value);
     semanticsOffsets.add(offset.value + 1);
     semanticsElements.add(null); // null indicates this is a placeholder.
@@ -97,7 +100,9 @@ abstract class PlaceholderSpan extends InlineSpan {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
 
-    properties.add(EnumProperty<ui.PlaceholderAlignment>('alignment', alignment, defaultValue: null));
-    properties.add(EnumProperty<TextBaseline>('baseline', baseline, defaultValue: null));
+    properties.add(EnumProperty<ui.PlaceholderAlignment>('alignment', alignment,
+        defaultValue: null));
+    properties.add(
+        EnumProperty<TextBaseline>('baseline', baseline, defaultValue: null));
   }
 }

@@ -28,7 +28,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -44,10 +45,10 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       vsync: this,
       duration: const Duration(hours: 5),
     )
-    ..addListener(() {
-      _incrementCounter();
-    })
-    ..forward();
+      ..addListener(() {
+        _incrementCounter();
+      })
+      ..forward();
   }
 
   @override

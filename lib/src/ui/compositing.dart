@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 part of dart.ui;
 
 /// An opaque object representing a composited scene.
@@ -91,7 +90,8 @@ class _PictureLayer extends _EngineLayerWrapper {
 /// {@endtemplate}
 class TransformEngineLayer extends _EngineLayerWrapper {
   TransformEngineLayer._(Float64List matrix4)
-    : this.matrix4 = Float64List.fromList(matrix4), super._();
+      : this.matrix4 = Float64List.fromList(matrix4),
+        super._();
 
   final Float64List matrix4;
 }
@@ -114,7 +114,9 @@ class OffsetEngineLayer extends _EngineLayerWrapper {
 ///
 /// {@macro dart.ui.sceneBuilder.oldLayerCompatibility}
 class ClipRectEngineLayer extends _EngineLayerWrapper {
-  ClipRectEngineLayer._(this.left, this.right, this.top, this.bottom, this.clipBehavior) : super._();
+  ClipRectEngineLayer._(
+      this.left, this.right, this.top, this.bottom, this.clipBehavior)
+      : super._();
 
   final double left;
   final double top;
@@ -269,7 +271,8 @@ class SceneBuilder {
     return true;
   }
 
-  bool _debugCheckCanBeUsedAsOldLayer(_EngineLayerWrapper? layer, String methodName) {
+  bool _debugCheckCanBeUsedAsOldLayer(
+      _EngineLayerWrapper? layer, String methodName) {
     assert(() {
       if (layer == null) {
         return true;
@@ -349,7 +352,7 @@ class SceneBuilder {
     OffsetEngineLayer? oldLayer,
   }) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, 'pushOffset'));
-    final OffsetEngineLayer layer = OffsetEngineLayer._(dx ,dy);
+    final OffsetEngineLayer layer = OffsetEngineLayer._(dx, dy);
     _pushLayer(layer);
     return layer;
   }
@@ -372,7 +375,8 @@ class SceneBuilder {
     assert(clipBehavior != null); // ignore: unnecessary_null_comparison
     assert(clipBehavior != Clip.none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, 'pushClipRect'));
-    final ClipRectEngineLayer layer = ClipRectEngineLayer._(rect.left, rect.right, rect.top, rect.bottom, clipBehavior.index);
+    final ClipRectEngineLayer layer = ClipRectEngineLayer._(
+        rect.left, rect.right, rect.top, rect.bottom, clipBehavior.index);
     _pushLayer(layer);
     return layer;
   }
@@ -395,7 +399,8 @@ class SceneBuilder {
     assert(clipBehavior != null); // ignore: unnecessary_null_comparison
     assert(clipBehavior != Clip.none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, 'pushClipRRect'));
-    final ClipRRectEngineLayer layer = ClipRRectEngineLayer._(rrect._value32, clipBehavior.index);
+    final ClipRRectEngineLayer layer =
+        ClipRRectEngineLayer._(rrect._value32, clipBehavior.index);
     _pushLayer(layer);
     return layer;
   }
@@ -441,7 +446,8 @@ class SceneBuilder {
     OpacityEngineLayer? oldLayer,
   }) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, 'pushOpacity'));
-    final OpacityEngineLayer layer = OpacityEngineLayer._(alpha, offset!.dx, offset.dy);
+    final OpacityEngineLayer layer =
+        OpacityEngineLayer._(alpha, offset!.dx, offset.dy);
     _pushLayer(layer);
     return layer;
   }
@@ -507,7 +513,8 @@ class SceneBuilder {
     BackdropFilterEngineLayer? oldLayer,
   }) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, 'pushBackdropFilter'));
-    final BackdropFilterEngineLayer layer = BackdropFilterEngineLayer._(filter._toNativeImageFilter());
+    final BackdropFilterEngineLayer layer =
+        BackdropFilterEngineLayer._(filter._toNativeImageFilter());
     _pushLayer(layer);
     return layer;
   }
@@ -651,7 +658,8 @@ class SceneBuilder {
   /// for more details.
   // Values above must match constants in //engine/src/sky/compositor/performance_overlay_layer.h
   void addPerformanceOverlay(int enabledOptions, Rect bounds) {
-    _addPerformanceOverlay(enabledOptions, bounds.left, bounds.right, bounds.top, bounds.bottom);
+    _addPerformanceOverlay(
+        enabledOptions, bounds.left, bounds.right, bounds.top, bounds.bottom);
   }
 
   void _addPerformanceOverlay(
@@ -660,7 +668,9 @@ class SceneBuilder {
     double right,
     double top,
     double bottom,
-  ) { throw UnimplementedError(); }
+  ) {
+    throw UnimplementedError();
+  }
 
   /// Adds a [Picture] to the scene.
   ///
@@ -672,7 +682,8 @@ class SceneBuilder {
     bool willChangeHint = false,
   }) {
     final int hints = (isComplexHint ? 1 : 0) | (willChangeHint ? 2 : 0);
-    final _PictureLayer layer = _PictureLayer(offset.dx, offset.dy, picture, hints);
+    final _PictureLayer layer =
+        _PictureLayer(offset.dx, offset.dy, picture, hints);
     _pushLayer(layer);
   }
 
@@ -695,12 +706,16 @@ class SceneBuilder {
     bool freeze = false,
     FilterQuality filterQuality = FilterQuality.low,
   }) {
-    assert(offset != null, 'Offset argument was null'); // ignore: unnecessary_null_comparison
-    _addTexture(offset.dx, offset.dy, width, height, textureId, freeze, filterQuality.index);
+    assert(offset != null,
+        'Offset argument was null'); // ignore: unnecessary_null_comparison
+    _addTexture(offset.dx, offset.dy, width, height, textureId, freeze,
+        filterQuality.index);
   }
 
-  void _addTexture(double dx, double dy, double width, double height, int textureId, bool freeze,
-      int filterQuality) { throw UnimplementedError(); }
+  void _addTexture(double dx, double dy, double width, double height,
+      int textureId, bool freeze, int filterQuality) {
+    throw UnimplementedError();
+  }
 
   /// Adds a platform view (e.g an iOS UIView) to the scene.
   ///
@@ -724,12 +739,15 @@ class SceneBuilder {
     double width = 0.0,
     double height = 0.0,
   }) {
-    assert(offset != null, 'Offset argument was null'); // ignore: unnecessary_null_comparison
+    assert(offset != null,
+        'Offset argument was null'); // ignore: unnecessary_null_comparison
     _addPlatformView(offset.dx, offset.dy, width, height, viewId);
   }
 
-  void _addPlatformView(double dx, double dy, double width, double height, int viewId)
-      { throw UnimplementedError(); }
+  void _addPlatformView(
+      double dx, double dy, double width, double height, int viewId) {
+    throw UnimplementedError();
+  }
 
   /// (Fuchsia-only) Adds a scene rendered by another application to the scene
   /// for this application.
@@ -743,8 +761,10 @@ class SceneBuilder {
     _addChildScene(offset.dx, offset.dy, width, height, sceneHost, hitTestable);
   }
 
-  void _addChildScene(double dx, double dy, double width, double height, SceneHost sceneHost,
-      bool hitTestable) { throw UnimplementedError(); }
+  void _addChildScene(double dx, double dy, double width, double height,
+      SceneHost sceneHost, bool hitTestable) {
+    throw UnimplementedError();
+  }
 
   /// Sets a threshold after which additional debugging information should be recorded.
   ///
@@ -752,8 +772,9 @@ class SceneBuilder {
   /// interested in using this feature, please contact [flutter-dev](https://groups.google.com/forum/#!forum/flutter-dev).
   /// We'll hopefully be able to figure out how to make this feature more useful
   /// to you.
-  void setRasterizerTracingThreshold(int frameInterval)
-      { throw UnimplementedError(); }
+  void setRasterizerTracingThreshold(int frameInterval) {
+    throw UnimplementedError();
+  }
 
   /// Sets whether the raster cache should checkerboard cached entries. This is
   /// only useful for debugging purposes.
@@ -770,15 +791,17 @@ class SceneBuilder {
   ///
   /// Currently this interface is difficult to use by end-developers. If you're
   /// interested in using this feature, please contact [flutter-dev](https://groups.google.com/forum/#!forum/flutter-dev).
-  void setCheckerboardRasterCacheImages(bool checkerboard)
-      { throw UnimplementedError(); }
+  void setCheckerboardRasterCacheImages(bool checkerboard) {
+    throw UnimplementedError();
+  }
 
   /// Sets whether the compositor should checkerboard layers that are rendered
   /// to offscreen bitmaps.
   ///
   /// This is only useful for debugging purposes.
-  void setCheckerboardOffscreenLayers(bool checkerboard)
-      { throw UnimplementedError(); }
+  void setCheckerboardOffscreenLayers(bool checkerboard) {
+    throw UnimplementedError();
+  }
 
   /// Finishes building the scene.
   ///
@@ -813,8 +836,8 @@ class SceneHost {
     void Function()? viewDisconnectedCallback,
     void Function(bool)? viewStateChangedCallback,
   ) {
-    _constructor(
-        viewHolderToken, viewConnectedCallback, viewDisconnectedCallback, viewStateChangedCallback);
+    _constructor(viewHolderToken, viewConnectedCallback,
+        viewDisconnectedCallback, viewStateChangedCallback);
   }
 
   void _constructor(
@@ -822,12 +845,16 @@ class SceneHost {
     void Function()? viewConnectedCallback,
     void Function()? viewDisconnectedCallback,
     void Function(bool)? viewStateChangedCallbac,
-  ) { throw UnimplementedError(); }
+  ) {
+    throw UnimplementedError();
+  }
 
   /// Releases the resources associated with the SceneHost.
   ///
   /// After calling this function, the SceneHost cannot be used further.
-  void dispose() { throw UnimplementedError(); }
+  void dispose() {
+    throw UnimplementedError();
+  }
 
   /// Set properties on the linked scene.  These properties include its bounds,
   /// as well as whether it can be the target of focus events or not.
@@ -839,5 +866,7 @@ class SceneHost {
     double insetBottom,
     double insetLeft,
     bool focusable,
-  ) { throw UnimplementedError(); }
+  ) {
+    throw UnimplementedError();
+  }
 }

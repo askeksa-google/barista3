@@ -76,7 +76,8 @@ enum _TextSelectionHandlePosition { start, end }
 /// This signature is different from [GestureDragUpdateCallback] to make it
 /// easier for various text fields to use [TextSelectionGestureDetector] without
 /// having to store the start position.
-typedef DragSelectionUpdateCallback = void Function(DragStartDetails startDetails, DragUpdateDetails updateDetails);
+typedef DragSelectionUpdateCallback = void Function(
+    DragStartDetails startDetails, DragUpdateDetails updateDetails);
 
 /// ParentData that determines whether or not to paint the corresponding child.
 ///
@@ -103,7 +104,8 @@ abstract class TextSelectionControls {
   ///
   /// The top left corner of this widget is positioned at the bottom of the
   /// selection position.
-  Widget buildHandle(BuildContext context, TextSelectionHandleType type, double textLineHeight);
+  Widget buildHandle(BuildContext context, TextSelectionHandleType type,
+      double textLineHeight);
 
   /// Get the anchor point of the handle relative to itself. The anchor point is
   /// the point that is aligned with a specific point in the text. A handle
@@ -145,7 +147,8 @@ abstract class TextSelectionControls {
   /// Subclasses can use this to decide if they should expose the cut
   /// functionality to the user.
   bool canCut(TextSelectionDelegate delegate) {
-    return delegate.cutEnabled && !delegate.textEditingValue.selection.isCollapsed;
+    return delegate.cutEnabled &&
+        !delegate.textEditingValue.selection.isCollapsed;
   }
 
   /// Whether the current selection of the text field managed by the given
@@ -156,7 +159,8 @@ abstract class TextSelectionControls {
   /// Subclasses can use this to decide if they should expose the copy
   /// functionality to the user.
   bool canCopy(TextSelectionDelegate delegate) {
-    return delegate.copyEnabled && !delegate.textEditingValue.selection.isCollapsed;
+    return delegate.copyEnabled &&
+        !delegate.textEditingValue.selection.isCollapsed;
   }
 
   /// Whether the text field managed by the given `delegate` supports pasting
@@ -179,7 +183,9 @@ abstract class TextSelectionControls {
   /// Subclasses can use this to decide if they should expose the select all
   /// functionality to the user.
   bool canSelectAll(TextSelectionDelegate delegate) {
-    return delegate.selectAllEnabled && delegate.textEditingValue.text.isNotEmpty && delegate.textEditingValue.selection.isCollapsed;
+    return delegate.selectAllEnabled &&
+        delegate.textEditingValue.text.isNotEmpty &&
+        delegate.textEditingValue.selection.isCollapsed;
   }
 
   /// Copy the current selection of the text field managed by the given
@@ -194,11 +200,9 @@ abstract class TextSelectionControls {
       text: value.selection.textInside(value.text),
     ));
     delegate.textEditingValue = TextEditingValue(
-      text: value.selection.textBefore(value.text)
-          + value.selection.textAfter(value.text),
-      selection: TextSelection.collapsed(
-        offset: value.selection.start
-      ),
+      text: value.selection.textBefore(value.text) +
+          value.selection.textAfter(value.text),
+      selection: TextSelection.collapsed(offset: value.selection.start),
     );
     delegate.bringIntoView(delegate.textEditingValue.selection.extent);
     delegate.hideToolbar();
@@ -210,7 +214,8 @@ abstract class TextSelectionControls {
   ///
   /// This is called by subclasses when their copy affordance is activated by
   /// the user.
-  void handleCopy(TextSelectionDelegate delegate, ClipboardStatusNotifier? clipboardStatus) {
+  void handleCopy(TextSelectionDelegate delegate,
+      ClipboardStatusNotifier? clipboardStatus) {
     final TextEditingValue value = delegate.textEditingValue;
     Clipboard.setData(ClipboardData(
       text: value.selection.textInside(value.text),
@@ -236,16 +241,16 @@ abstract class TextSelectionControls {
   /// implemented.
   // TODO(ianh): https://github.com/flutter/flutter/issues/11427
   Future<void> handlePaste(TextSelectionDelegate delegate) async {
-    final TextEditingValue value = delegate.textEditingValue; // Snapshot the input before using `await`.
+    final TextEditingValue value =
+        delegate.textEditingValue; // Snapshot the input before using `await`.
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
     if (data != null) {
       delegate.textEditingValue = TextEditingValue(
-        text: value.selection.textBefore(value.text)
-            + data.text!
-            + value.selection.textAfter(value.text),
+        text: value.selection.textBefore(value.text) +
+            data.text! +
+            value.selection.textAfter(value.text),
         selection: TextSelection.collapsed(
-          offset: value.selection.start + data.text!.length
-        ),
+            offset: value.selection.start + data.text!.length),
       );
     }
     delegate.bringIntoView(delegate.textEditingValue.selection.extent);
@@ -293,17 +298,19 @@ class TextSelectionOverlay {
     this.dragStartBehavior = DragStartBehavior.start,
     this.onSelectionHandleTapped,
     this.clipboardStatus,
-  }) : assert(value != null),
-       assert(context != null),
-       assert(handlesVisible != null),
-       _handlesVisible = handlesVisible,
-       _value = value {
+  })  : assert(value != null),
+        assert(context != null),
+        assert(handlesVisible != null),
+        _handlesVisible = handlesVisible,
+        _value = value {
     final OverlayState? overlay = Overlay.of(context, rootOverlay: true);
-    assert(overlay != null,
-      'No Overlay widget exists above $context.\n'
-      'Usually the Navigator created by WidgetsApp provides the overlay. Perhaps your '
-      'app content was created above the Navigator with the WidgetsApp builder parameter.');
-    _toolbarController = AnimationController(duration: fadeDuration, vsync: overlay!);
+    assert(
+        overlay != null,
+        'No Overlay widget exists above $context.\n'
+        'Usually the Navigator created by WidgetsApp provides the overlay. Perhaps your '
+        'app content was created above the Navigator with the WidgetsApp builder parameter.');
+    _toolbarController =
+        AnimationController(duration: fadeDuration, vsync: overlay!);
   }
 
   /// The context in which the selection handles should appear.
@@ -410,12 +417,12 @@ class TextSelectionOverlay {
   bool _handlesVisible = false;
   set handlesVisible(bool visible) {
     assert(visible != null);
-    if (_handlesVisible == visible)
-      return;
+    if (_handlesVisible == visible) return;
     _handlesVisible = visible;
     // If we are in build state, it will be too late to update visibility.
     // We will need to schedule the build in next frame.
-    if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+    if (SchedulerBinding.instance!.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance!.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
@@ -426,11 +433,16 @@ class TextSelectionOverlay {
   void showHandles() {
     assert(_handles == null);
     _handles = <OverlayEntry>[
-      OverlayEntry(builder: (BuildContext context) => _buildHandle(context, _TextSelectionHandlePosition.start)),
-      OverlayEntry(builder: (BuildContext context) => _buildHandle(context, _TextSelectionHandlePosition.end)),
+      OverlayEntry(
+          builder: (BuildContext context) =>
+              _buildHandle(context, _TextSelectionHandlePosition.start)),
+      OverlayEntry(
+          builder: (BuildContext context) =>
+              _buildHandle(context, _TextSelectionHandlePosition.end)),
     ];
 
-    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!.insertAll(_handles!);
+    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!
+        .insertAll(_handles!);
   }
 
   /// Destroys the handles by removing them from overlay.
@@ -446,7 +458,8 @@ class TextSelectionOverlay {
   void showToolbar() {
     assert(_toolbar == null);
     _toolbar = OverlayEntry(builder: _buildToolbar);
-    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!.insert(_toolbar!);
+    Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)!
+        .insert(_toolbar!);
     _toolbarController.forward(from: 0.0);
   }
 
@@ -460,10 +473,10 @@ class TextSelectionOverlay {
   /// that if you do call this during a build, the UI will not update until the
   /// next frame (i.e. many milliseconds later).
   void update(TextEditingValue newValue) {
-    if (_value == newValue)
-      return;
+    if (_value == newValue) return;
     _value = newValue;
-    if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+    if (SchedulerBinding.instance!.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance!.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
@@ -478,7 +491,7 @@ class TextSelectionOverlay {
     _markNeedsBuild();
   }
 
-  void _markNeedsBuild([ Duration? duration ]) {
+  void _markNeedsBuild([Duration? duration]) {
     if (_handles != null) {
       _handles![0].markNeedsBuild();
       _handles![1].markNeedsBuild();
@@ -520,28 +533,31 @@ class TextSelectionOverlay {
     _toolbarController.dispose();
   }
 
-  Widget _buildHandle(BuildContext context, _TextSelectionHandlePosition position) {
-    if ((_selection.isCollapsed && position == _TextSelectionHandlePosition.end) ||
-         selectionControls == null)
+  Widget _buildHandle(
+      BuildContext context, _TextSelectionHandlePosition position) {
+    if ((_selection.isCollapsed &&
+            position == _TextSelectionHandlePosition.end) ||
+        selectionControls == null)
       return Container(); // hide the second handle when collapsed
     return Visibility(
-      visible: handlesVisible,
-      child: _TextSelectionHandleOverlay(
-        onSelectionHandleChanged: (TextSelection newSelection) { _handleSelectionHandleChanged(newSelection, position); },
-        onSelectionHandleTapped: onSelectionHandleTapped,
-        startHandleLayerLink: startHandleLayerLink,
-        endHandleLayerLink: endHandleLayerLink,
-        renderObject: renderObject,
-        selection: _selection,
-        selectionControls: selectionControls,
-        position: position,
-        dragStartBehavior: dragStartBehavior,
-    ));
+        visible: handlesVisible,
+        child: _TextSelectionHandleOverlay(
+          onSelectionHandleChanged: (TextSelection newSelection) {
+            _handleSelectionHandleChanged(newSelection, position);
+          },
+          onSelectionHandleTapped: onSelectionHandleTapped,
+          startHandleLayerLink: startHandleLayerLink,
+          endHandleLayerLink: endHandleLayerLink,
+          renderObject: renderObject,
+          selection: _selection,
+          selectionControls: selectionControls,
+          position: position,
+          dragStartBehavior: dragStartBehavior,
+        ));
   }
 
   Widget _buildToolbar(BuildContext context) {
-    if (selectionControls == null)
-      return Container();
+    if (selectionControls == null) return Container();
 
     // Find the horizontal midpoint, just above the selected text.
     final List<TextSelectionPoint> endpoints =
@@ -552,14 +568,15 @@ class TextSelectionOverlay {
       renderObject.localToGlobal(renderObject.size.bottomRight(Offset.zero)),
     );
 
-    final bool isMultiline = endpoints.last.point.dy - endpoints.first.point.dy >
-          renderObject.preferredLineHeight / 2;
+    final bool isMultiline =
+        endpoints.last.point.dy - endpoints.first.point.dy >
+            renderObject.preferredLineHeight / 2;
 
     // If the selected text spans more than 1 line, horizontally center the toolbar.
     // Derived from both iOS and Android.
     final double midX = isMultiline
-      ? editingRegion.width / 2
-      : (endpoints.first.point.dx + endpoints.last.point.dx) / 2;
+        ? editingRegion.width / 2
+        : (endpoints.first.point.dx + endpoints.last.point.dx) / 2;
 
     final Offset midpoint = Offset(
       midX,
@@ -593,17 +610,19 @@ class TextSelectionOverlay {
     );
   }
 
-  void _handleSelectionHandleChanged(TextSelection newSelection, _TextSelectionHandlePosition position) {
+  void _handleSelectionHandleChanged(
+      TextSelection newSelection, _TextSelectionHandlePosition position) {
     final TextPosition textPosition;
     switch (position) {
       case _TextSelectionHandlePosition.start:
         textPosition = newSelection.base;
         break;
       case _TextSelectionHandlePosition.end:
-        textPosition =newSelection.extent;
+        textPosition = newSelection.extent;
         break;
     }
-    selectionDelegate!.textEditingValue = _value.copyWith(selection: newSelection, composing: TextRange.empty);
+    selectionDelegate!.textEditingValue =
+        _value.copyWith(selection: newSelection, composing: TextRange.empty);
     selectionDelegate!.bringIntoView(textPosition);
   }
 }
@@ -634,7 +653,8 @@ class _TextSelectionHandleOverlay extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
 
   @override
-  _TextSelectionHandleOverlayState createState() => _TextSelectionHandleOverlayState();
+  _TextSelectionHandleOverlayState createState() =>
+      _TextSelectionHandleOverlayState();
 
   ValueListenable<bool> get _visibility {
     switch (position) {
@@ -647,7 +667,8 @@ class _TextSelectionHandleOverlay extends StatefulWidget {
 }
 
 class _TextSelectionHandleOverlayState
-    extends State<_TextSelectionHandleOverlay> with SingleTickerProviderStateMixin {
+    extends State<_TextSelectionHandleOverlay>
+    with SingleTickerProviderStateMixin {
   late Offset _dragPosition;
 
   late AnimationController _controller;
@@ -657,7 +678,8 @@ class _TextSelectionHandleOverlayState
   void initState() {
     super.initState();
 
-    _controller = AnimationController(duration: TextSelectionOverlay.fadeDuration, vsync: this);
+    _controller = AnimationController(
+        duration: TextSelectionOverlay.fadeDuration, vsync: this);
 
     _handleVisibilityChanged();
     widget._visibility.addListener(_handleVisibilityChanged);
@@ -695,7 +717,8 @@ class _TextSelectionHandleOverlayState
 
   void _handleDragUpdate(DragUpdateDetails details) {
     _dragPosition += details.delta;
-    final TextPosition position = widget.renderObject.getPositionForPoint(_dragPosition);
+    final TextPosition position =
+        widget.renderObject.getPositionForPoint(_dragPosition);
 
     if (widget.selection.isCollapsed) {
       widget.onSelectionHandleChanged(TextSelection.fromPosition(position));
@@ -772,7 +795,8 @@ class _TextSelectionHandleOverlayState
 
     // Make sure the GestureDetector is big enough to be easily interactive.
     final Rect interactiveRect = handleRect.expandToInclude(
-      Rect.fromCircle(center: handleRect.center, radius: kMinInteractiveDimension/ 2),
+      Rect.fromCircle(
+          center: handleRect.center, radius: kMinInteractiveDimension / 2),
     );
     final RelativeRect padding = RelativeRect.fromLTRB(
       math.max((interactiveRect.width - handleRect.width) / 2, 0),
@@ -821,8 +845,7 @@ class _TextSelectionHandleOverlayState
     TextSelectionHandleType ltrType,
     TextSelectionHandleType rtlType,
   ) {
-    if (widget.selection.isCollapsed)
-      return TextSelectionHandleType.collapsed;
+    if (widget.selection.isCollapsed) return TextSelectionHandleType.collapsed;
 
     assert(textDirection != null);
     switch (textDirection) {
@@ -928,9 +951,9 @@ class TextSelectionGestureDetectorBuilder {
     // trigger the selection overlay.
     // For backwards-compatibility, we treat a null kind the same as touch.
     final PointerDeviceKind? kind = details.kind;
-    _shouldShowSelectionToolbar = kind == null
-      || kind == PointerDeviceKind.touch
-      || kind == PointerDeviceKind.stylus;
+    _shouldShowSelectionToolbar = kind == null ||
+        kind == PointerDeviceKind.touch ||
+        kind == PointerDeviceKind.stylus;
   }
 
   /// Handler for [TextSelectionGestureDetector.onForcePressStart].
@@ -974,8 +997,7 @@ class TextSelectionGestureDetectorBuilder {
       from: details.globalPosition,
       cause: SelectionChangedCause.forcePress,
     );
-    if (shouldShowSelectionToolbar)
-      editableText.showToolbar();
+    if (shouldShowSelectionToolbar) editableText.showToolbar();
   }
 
   /// Handler for [TextSelectionGestureDetector.onSingleTapUp].
@@ -1002,7 +1024,9 @@ class TextSelectionGestureDetectorBuilder {
   ///  * [TextSelectionGestureDetector.onSingleTapCancel], which triggers
   ///    this callback.
   @protected
-  void onSingleTapCancel() {/* Subclass should override this method if needed. */}
+  void onSingleTapCancel() {
+    /* Subclass should override this method if needed. */
+  }
 
   /// Handler for [TextSelectionGestureDetector.onSingleLongTapStart].
   ///
@@ -1052,8 +1076,7 @@ class TextSelectionGestureDetectorBuilder {
   ///    callback.
   @protected
   void onSingleLongTapEnd(LongPressEndDetails details) {
-    if (shouldShowSelectionToolbar)
-      editableText.showToolbar();
+    if (shouldShowSelectionToolbar) editableText.showToolbar();
   }
 
   /// Handler for [TextSelectionGestureDetector.onDoubleTapDown].
@@ -1069,8 +1092,7 @@ class TextSelectionGestureDetectorBuilder {
   void onDoubleTapDown(TapDownDetails details) {
     if (delegate.selectionEnabled) {
       renderEditable.selectWord(cause: SelectionChangedCause.tap);
-      if (shouldShowSelectionToolbar)
-        editableText.showToolbar();
+      if (shouldShowSelectionToolbar) editableText.showToolbar();
     }
   }
 
@@ -1085,9 +1107,9 @@ class TextSelectionGestureDetectorBuilder {
   @protected
   void onDragSelectionStart(DragStartDetails details) {
     final PointerDeviceKind? kind = details.kind;
-    _shouldShowSelectionToolbar = kind == null
-      || kind == PointerDeviceKind.touch
-      || kind == PointerDeviceKind.stylus;
+    _shouldShowSelectionToolbar = kind == null ||
+        kind == PointerDeviceKind.touch ||
+        kind == PointerDeviceKind.stylus;
 
     renderEditable.selectPositionAt(
       from: details.globalPosition,
@@ -1105,7 +1127,8 @@ class TextSelectionGestureDetectorBuilder {
   ///  * [TextSelectionGestureDetector.onDragSelectionUpdate], which triggers
   ///    this callback./lib/src/material/text_field.dart
   @protected
-  void onDragSelectionUpdate(DragStartDetails startDetails, DragUpdateDetails updateDetails) {
+  void onDragSelectionUpdate(
+      DragStartDetails startDetails, DragUpdateDetails updateDetails) {
     renderEditable.selectPositionAt(
       from: startDetails.globalPosition,
       to: updateDetails.globalPosition,
@@ -1122,7 +1145,9 @@ class TextSelectionGestureDetectorBuilder {
   ///  * [TextSelectionGestureDetector.onDragSelectionEnd], which triggers this
   ///    callback.
   @protected
-  void onDragSelectionEnd(DragEndDetails details) {/* Subclass should override this method if needed. */}
+  void onDragSelectionEnd(DragEndDetails details) {
+    /* Subclass should override this method if needed. */
+  }
 
   /// Returns a [TextSelectionGestureDetector] configured with the handlers
   /// provided by this builder.
@@ -1186,8 +1211,8 @@ class TextSelectionGestureDetector extends StatefulWidget {
     this.onDragSelectionEnd,
     this.behavior,
     required this.child,
-  }) : assert(child != null),
-       super(key: key);
+  })   : assert(child != null),
+        super(key: key);
 
   /// Called for every tap down including every tap down that's part of a
   /// double click or a long press, except touches that include enough movement
@@ -1253,7 +1278,8 @@ class TextSelectionGestureDetector extends StatefulWidget {
   State<StatefulWidget> createState() => _TextSelectionGestureDetectorState();
 }
 
-class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetector> {
+class _TextSelectionGestureDetectorState
+    extends State<TextSelectionGestureDetector> {
   // Counts down for a short duration after a previous tap. Null otherwise.
   Timer? _doubleTapTimer;
   Offset? _lastTapOffset;
@@ -1278,7 +1304,8 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
     // because it's 2 single taps, each of which may do different things depending
     // on whether it's a single tap, the first tap of a double tap, the second
     // tap held down, a clean double tap etc.
-    if (_doubleTapTimer != null && _isWithinDoubleTapTolerance(details.globalPosition)) {
+    if (_doubleTapTimer != null &&
+        _isWithinDoubleTapTolerance(details.globalPosition)) {
       // If there was already a previous tap, the second down hold/tap is a
       // double tap down.
       if (widget.onDoubleTapDown != null) {
@@ -1323,7 +1350,8 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
   void _handleDragUpdate(DragUpdateDetails details) {
     _lastDragUpdateDetails = details;
     // Only schedule a new timer if there's no one pending.
-    _dragUpdateThrottleTimer ??= Timer(_kDragSelectionUpdateThrottle, _handleDragUpdateThrottled);
+    _dragUpdateThrottleTimer ??=
+        Timer(_kDragSelectionUpdateThrottle, _handleDragUpdateThrottled);
   }
 
   /// Drag updates are being throttled to avoid excessive text layouts in text
@@ -1336,7 +1364,8 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
     assert(_lastDragStartDetails != null);
     assert(_lastDragUpdateDetails != null);
     if (widget.onDragSelectionUpdate != null) {
-      widget.onDragSelectionUpdate!(_lastDragStartDetails!, _lastDragUpdateDetails!);
+      widget.onDragSelectionUpdate!(
+          _lastDragStartDetails!, _lastDragUpdateDetails!);
     }
     _dragUpdateThrottleTimer = null;
     _lastDragUpdateDetails = null;
@@ -1361,13 +1390,11 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
   void _forcePressStarted(ForcePressDetails details) {
     _doubleTapTimer?.cancel();
     _doubleTapTimer = null;
-    if (widget.onForcePressStart != null)
-      widget.onForcePressStart!(details);
+    if (widget.onForcePressStart != null) widget.onForcePressStart!(details);
   }
 
   void _forcePressEnded(ForcePressDetails details) {
-    if (widget.onForcePressEnd != null)
-      widget.onForcePressEnd!(details);
+    if (widget.onForcePressEnd != null) widget.onForcePressEnd!(details);
   }
 
   void _handleLongPressStart(LongPressStartDetails details) {
@@ -1406,12 +1433,14 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
 
   @override
   Widget build(BuildContext context) {
-    final Map<Type, GestureRecognizerFactory> gestures = <Type, GestureRecognizerFactory>{};
+    final Map<Type, GestureRecognizerFactory> gestures =
+        <Type, GestureRecognizerFactory>{};
 
     // Use _TransparentTapGestureRecognizer so that TextSelectionGestureDetector
     // can receive the same tap events that a selection handle placed visually
     // on top of it also receives.
-    gestures[_TransparentTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<_TransparentTapGestureRecognizer>(
+    gestures[_TransparentTapGestureRecognizer] =
+        GestureRecognizerFactoryWithHandlers<_TransparentTapGestureRecognizer>(
       () => _TransparentTapGestureRecognizer(debugOwner: this),
       (_TransparentTapGestureRecognizer instance) {
         instance
@@ -1424,8 +1453,10 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
     if (widget.onSingleLongTapStart != null ||
         widget.onSingleLongTapMoveUpdate != null ||
         widget.onSingleLongTapEnd != null) {
-      gestures[LongPressGestureRecognizer] = GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
-        () => LongPressGestureRecognizer(debugOwner: this, kind: PointerDeviceKind.touch),
+      gestures[LongPressGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
+        () => LongPressGestureRecognizer(
+            debugOwner: this, kind: PointerDeviceKind.touch),
         (LongPressGestureRecognizer instance) {
           instance
             ..onLongPressStart = _handleLongPressStart
@@ -1440,8 +1471,10 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
         widget.onDragSelectionEnd != null) {
       // TODO(mdebbar): Support dragging in any direction (for multiline text).
       // https://github.com/flutter/flutter/issues/28676
-      gestures[HorizontalDragGestureRecognizer] = GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
-        () => HorizontalDragGestureRecognizer(debugOwner: this, kind: PointerDeviceKind.mouse),
+      gestures[HorizontalDragGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
+        () => HorizontalDragGestureRecognizer(
+            debugOwner: this, kind: PointerDeviceKind.mouse),
         (HorizontalDragGestureRecognizer instance) {
           instance
             // Text selection should start from the position of the first pointer
@@ -1455,11 +1488,13 @@ class _TextSelectionGestureDetectorState extends State<TextSelectionGestureDetec
     }
 
     if (widget.onForcePressStart != null || widget.onForcePressEnd != null) {
-      gestures[ForcePressGestureRecognizer] = GestureRecognizerFactoryWithHandlers<ForcePressGestureRecognizer>(
+      gestures[ForcePressGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<ForcePressGestureRecognizer>(
         () => ForcePressGestureRecognizer(debugOwner: this),
         (ForcePressGestureRecognizer instance) {
           instance
-            ..onStart = widget.onForcePressStart != null ? _forcePressStarted : null
+            ..onStart =
+                widget.onForcePressStart != null ? _forcePressStarted : null
             ..onEnd = widget.onForcePressEnd != null ? _forcePressEnded : null;
         },
       );
@@ -1509,13 +1544,15 @@ class _TransparentTapGestureRecognizer extends TapGestureRecognizer {
 /// The contents of the clipboard can only be read asynchronously, via
 /// [Clipboard.getData], so this maintains a value that can be used
 /// synchronously. Call [update] to asynchronously update value if needed.
-class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus> with WidgetsBindingObserver {
+class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus>
+    with WidgetsBindingObserver {
   /// Create a new ClipboardStatusNotifier.
   ClipboardStatusNotifier({
     ClipboardStatus value = ClipboardStatus.unknown,
   }) : super(value);
 
   bool _disposed = false;
+
   /// True iff this instance has been disposed.
   bool get disposed => _disposed;
 
@@ -1553,9 +1590,10 @@ class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus> with Widget
       return;
     }
 
-    final ClipboardStatus clipboardStatus = data != null && data.text != null && data.text!.isNotEmpty
-        ? ClipboardStatus.pasteable
-        : ClipboardStatus.notPasteable;
+    final ClipboardStatus clipboardStatus =
+        data != null && data.text != null && data.text!.isNotEmpty
+            ? ClipboardStatus.pasteable
+            : ClipboardStatus.notPasteable;
     if (_disposed || clipboardStatus == value) {
       return;
     }
@@ -1590,7 +1628,7 @@ class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus> with Widget
       case AppLifecycleState.detached:
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-        // Nothing to do.
+      // Nothing to do.
     }
   }
 

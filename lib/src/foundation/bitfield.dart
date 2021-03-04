@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '_bitfield_io.dart'
-  if (dart.library.html) '_bitfield_web.dart' as _bitfield;
+import '_bitfield_io.dart' if (dart.library.html) '_bitfield_web.dart'
+    as _bitfield;
 
 /// The largest SMI value.
 ///
@@ -29,7 +29,8 @@ abstract class BitField<T extends dynamic> {
   /// the bits are filled with zeros.
   ///
   /// The given length must be at most 62.
-  factory BitField.filled(int length, bool value) = _bitfield.BitField<T>.filled;
+  factory BitField.filled(int length, bool value) =
+      _bitfield.BitField<T>.filled;
 
   /// Returns whether the bit with the given index is set to one.
   bool operator [](T index);
@@ -44,5 +45,5 @@ abstract class BitField<T extends dynamic> {
   ///
   /// If the value is true, the bits are all set to one. Otherwise, the bits are
   /// all set to zero. Defaults to setting all the bits to zero.
-  void reset([ bool value = false ]);
+  void reset([bool value = false]);
 }

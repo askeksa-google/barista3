@@ -25,7 +25,6 @@ import 'theme.dart';
 ///    application.
 @immutable
 class MaterialBannerThemeData with Diagnosticable {
-
   /// Creates a theme that can be used for [MaterialBannerTheme] or
   /// [ThemeData.bannerTheme].
   const MaterialBannerThemeData({
@@ -69,13 +68,16 @@ class MaterialBannerThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static MaterialBannerThemeData lerp(MaterialBannerThemeData? a, MaterialBannerThemeData? b, double t) {
+  static MaterialBannerThemeData lerp(
+      MaterialBannerThemeData? a, MaterialBannerThemeData? b, double t) {
     assert(t != null);
     return MaterialBannerThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      contentTextStyle: TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
+      contentTextStyle:
+          TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      leadingPadding: EdgeInsetsGeometry.lerp(a?.leadingPadding, b?.leadingPadding, t),
+      leadingPadding:
+          EdgeInsetsGeometry.lerp(a?.leadingPadding, b?.leadingPadding, t),
     );
   }
 
@@ -91,24 +93,28 @@ class MaterialBannerThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is MaterialBannerThemeData
-        && other.backgroundColor == backgroundColor
-        && other.contentTextStyle == contentTextStyle
-        && other.padding == padding
-        && other.leadingPadding == leadingPadding;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is MaterialBannerThemeData &&
+        other.backgroundColor == backgroundColor &&
+        other.contentTextStyle == contentTextStyle &&
+        other.padding == padding &&
+        other.leadingPadding == leadingPadding;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('contentTextStyle', contentTextStyle, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('leadingPadding', leadingPadding, defaultValue: null));
+    properties.add(
+        ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle>(
+        'contentTextStyle', contentTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>(
+        'leadingPadding', leadingPadding,
+        defaultValue: null));
   }
 }
 
@@ -141,7 +147,8 @@ class MaterialBannerTheme extends InheritedTheme {
   /// MaterialBannerThemeData theme = MaterialBannerTheme.of(context);
   /// ```
   static MaterialBannerThemeData of(BuildContext context) {
-    final MaterialBannerTheme? bannerTheme = context.dependOnInheritedWidgetOfExactType<MaterialBannerTheme>();
+    final MaterialBannerTheme? bannerTheme =
+        context.dependOnInheritedWidgetOfExactType<MaterialBannerTheme>();
     return bannerTheme?.data ?? Theme.of(context).bannerTheme;
   }
 
@@ -151,5 +158,6 @@ class MaterialBannerTheme extends InheritedTheme {
   }
 
   @override
-  bool updateShouldNotify(MaterialBannerTheme oldWidget) => data != oldWidget.data;
+  bool updateShouldNotify(MaterialBannerTheme oldWidget) =>
+      data != oldWidget.data;
 }

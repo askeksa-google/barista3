@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/ui.dart' as ui show ParagraphBuilder;
 
 import 'package:flute/foundation.dart';
@@ -30,6 +29,7 @@ class Accumulator {
     _value += addend;
   }
 }
+
 /// Called on each span as [InlineSpan.visitChildren] walks the [InlineSpan] tree.
 ///
 /// Returns true when the walk should continue, and false to stop visiting further
@@ -57,13 +57,15 @@ class InlineSpanSemanticsInformation {
     this.isPlaceholder = false,
     this.semanticsLabel,
     this.recognizer,
-  }) : assert(text != null),
-       assert(isPlaceholder != null),
-       assert(isPlaceholder == false || (text == '\uFFFC' && semanticsLabel == null && recognizer == null)),
-       requiresOwnNode = isPlaceholder || recognizer != null;
+  })  : assert(text != null),
+        assert(isPlaceholder != null),
+        assert(isPlaceholder == false ||
+            (text == '\uFFFC' && semanticsLabel == null && recognizer == null)),
+        requiresOwnNode = isPlaceholder || recognizer != null;
 
   /// The text info for a [PlaceholderSpan].
-  static const InlineSpanSemanticsInformation placeholder = InlineSpanSemanticsInformation('\uFFFC', isPlaceholder: true);
+  static const InlineSpanSemanticsInformation placeholder =
+      InlineSpanSemanticsInformation('\uFFFC', isPlaceholder: true);
 
   /// The text value, if any.  For [PlaceholderSpan]s, this will be the unicode
   /// placeholder value.
@@ -86,18 +88,20 @@ class InlineSpanSemanticsInformation {
 
   @override
   bool operator ==(Object other) {
-    return other is InlineSpanSemanticsInformation
-        && other.text == text
-        && other.semanticsLabel == semanticsLabel
-        && other.recognizer == recognizer
-        && other.isPlaceholder == isPlaceholder;
+    return other is InlineSpanSemanticsInformation &&
+        other.text == text &&
+        other.semanticsLabel == semanticsLabel &&
+        other.recognizer == recognizer &&
+        other.isPlaceholder == isPlaceholder;
   }
 
   @override
-  int get hashCode => hashValues(text, semanticsLabel, recognizer, isPlaceholder);
+  int get hashCode =>
+      hashValues(text, semanticsLabel, recognizer, isPlaceholder);
 
   @override
-  String toString() => '${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}';
+  String toString() =>
+      '${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}';
 }
 
 /// An immutable span of inline content which forms part of a paragraph.
@@ -160,26 +164,23 @@ abstract class InlineSpan extends DiagnosticableTree {
   /// Returns the text associated with this span if this is an instance of [TextSpan],
   /// otherwise returns null.
   @Deprecated(
-    'InlineSpan does not innately have text. Use TextSpan.text instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
+      'InlineSpan does not innately have text. Use TextSpan.text instead. '
+      'This feature was deprecated after v1.7.3.')
   String? get text => null;
 
   // TODO(garyq): Remove the deprecated visitTextSpan, text, and children.
   /// Returns the [InlineSpan] children list associated with this span if this is an
   /// instance of [TextSpan], otherwise returns null.
   @Deprecated(
-    'InlineSpan does not innately have children. Use TextSpan.children instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
+      'InlineSpan does not innately have children. Use TextSpan.children instead. '
+      'This feature was deprecated after v1.7.3.')
   List<InlineSpan>? get children => null;
 
   /// Returns the [GestureRecognizer] associated with this span if this is an
   /// instance of [TextSpan], otherwise returns null.
   @Deprecated(
-    'InlineSpan does not innately have a recognizer. Use TextSpan.recognizer instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
+      'InlineSpan does not innately have a recognizer. Use TextSpan.recognizer instead. '
+      'This feature was deprecated after v1.7.3.')
   GestureRecognizer? get recognizer => null;
 
   /// Apply the properties of this object to the given [ParagraphBuilder], from
@@ -194,7 +195,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   /// in the same order as defined in the [InlineSpan] tree.
   ///
   /// [Paragraph] objects can be drawn on [Canvas] objects.
-  void build(ui.ParagraphBuilder builder, { double textScaleFactor = 1.0, List<PlaceholderDimensions>? dimensions });
+  void build(ui.ParagraphBuilder builder,
+      {double textScaleFactor = 1.0, List<PlaceholderDimensions>? dimensions});
 
   // TODO(garyq): Remove the deprecated visitTextSpan, text, and children.
   /// Walks this [TextSpan] and any descendants in pre-order and calls `visitor`
@@ -202,10 +204,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   ///
   /// When `visitor` returns true, the walk will continue. When `visitor` returns
   /// false, then the walk will end.
-  @Deprecated(
-    'Use visitChildren instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
+  @Deprecated('Use visitChildren instead. '
+      'This feature was deprecated after v1.7.3.')
   bool visitTextSpan(bool visitor(TextSpan span));
 
   /// Walks this [InlineSpan] and any descendants in pre-order and calls `visitor`
@@ -236,7 +236,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   ///
   /// This method should not be directly called. Use [getSpanForPosition] instead.
   @protected
-  InlineSpan? getSpanForPositionVisitor(TextPosition position, Accumulator offset);
+  InlineSpan? getSpanForPositionVisitor(
+      TextPosition position, Accumulator offset);
 
   /// Flattens the [InlineSpan] tree into a single string.
   ///
@@ -246,9 +247,12 @@ abstract class InlineSpan extends DiagnosticableTree {
   ///
   /// When `includePlaceholders` is true, [PlaceholderSpan]s in the tree will be
   /// represented as a 0xFFFC 'object replacement character'.
-  String toPlainText({bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
+  String toPlainText(
+      {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
     final StringBuffer buffer = StringBuffer();
-    computeToPlainText(buffer, includeSemanticsLabels: includeSemanticsLabels, includePlaceholders: includePlaceholders);
+    computeToPlainText(buffer,
+        includeSemanticsLabels: includeSemanticsLabels,
+        includePlaceholders: includePlaceholders);
     return buffer.toString();
   }
 
@@ -258,7 +262,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   /// [PlaceholderSpan]s in the tree will be represented with a
   /// [InlineSpanSemanticsInformation.placeholder] value.
   List<InlineSpanSemanticsInformation> getSemanticsInformation() {
-    final List<InlineSpanSemanticsInformation> collector = <InlineSpanSemanticsInformation>[];
+    final List<InlineSpanSemanticsInformation> collector =
+        <InlineSpanSemanticsInformation>[];
     computeSemanticsInformation(collector);
     return collector;
   }
@@ -272,7 +277,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   /// [PlaceholderSpan]s in the tree will be represented with a
   /// [InlineSpanSemanticsInformation.placeholder] value.
   @protected
-  void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
+  void computeSemanticsInformation(
+      List<InlineSpanSemanticsInformation> collector);
 
   /// Walks the [InlineSpan] tree and writes the plain text representation to `buffer`.
   ///
@@ -289,7 +295,8 @@ abstract class InlineSpan extends DiagnosticableTree {
   /// This method will then recursively call [computeToPlainText] on its children
   /// [InlineSpan]s if available.
   @protected
-  void computeToPlainText(StringBuffer buffer, {bool includeSemanticsLabels = true, bool includePlaceholders = true});
+  void computeToPlainText(StringBuffer buffer,
+      {bool includeSemanticsLabels = true, bool includePlaceholders = true});
 
   /// Returns the UTF-16 code unit at the given `index` in the flattened string.
   ///
@@ -297,8 +304,7 @@ abstract class InlineSpan extends DiagnosticableTree {
   ///
   /// Returns null if the `index` is out of bounds.
   int? codeUnitAt(int index) {
-    if (index < 0)
-      return null;
+    if (index < 0) return null;
     final Accumulator offset = Accumulator();
     int? result;
     visitChildren((InlineSpan span) {
@@ -328,11 +334,10 @@ abstract class InlineSpan extends DiagnosticableTree {
   ///
   /// Any [GestureRecognizer]s are added to `semanticsElements`. Null is added to
   /// `semanticsElements` for [PlaceholderSpan]s.
-  @Deprecated(
-    'Implement computeSemanticsInformation instead. '
-    'This feature was deprecated after v1.7.3.'
-  )
-  void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements);
+  @Deprecated('Implement computeSemanticsInformation instead. '
+      'This feature was deprecated after v1.7.3.')
+  void describeSemantics(Accumulator offset, List<int> semanticsOffsets,
+      List<dynamic> semanticsElements);
 
   /// In checked mode, throws an exception if the object is not in a
   /// valid configuration. Otherwise, returns true.
@@ -357,12 +362,9 @@ abstract class InlineSpan extends DiagnosticableTree {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is InlineSpan
-        && other.style == style;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is InlineSpan && other.style == style;
   }
 
   @override

@@ -65,11 +65,11 @@ class OverlayEntry extends ChangeNotifier {
     required this.builder,
     bool opaque = false,
     bool maintainState = false,
-  }) : assert(builder != null),
-       assert(opaque != null),
-       assert(maintainState != null),
-       _opaque = opaque,
-       _maintainState = maintainState;
+  })  : assert(builder != null),
+        assert(opaque != null),
+        assert(maintainState != null),
+        _opaque = opaque,
+        _maintainState = maintainState;
 
   /// This entry will include the widget built by this builder in the overlay at
   /// the entry's position.
@@ -86,8 +86,7 @@ class OverlayEntry extends ChangeNotifier {
   bool get opaque => _opaque;
   bool _opaque;
   set opaque(bool value) {
-    if (_opaque == value)
-      return;
+    if (_opaque == value) return;
     _opaque = value;
     _overlay?._didChangeEntryOpacity();
   }
@@ -110,8 +109,7 @@ class OverlayEntry extends ChangeNotifier {
   bool _maintainState;
   set maintainState(bool value) {
     assert(_maintainState != null);
-    if (_maintainState == value)
-      return;
+    if (_maintainState == value) return;
     _maintainState = value;
     assert(_overlay != null);
     _overlay!._didChangeEntryOpacity();
@@ -131,7 +129,8 @@ class OverlayEntry extends ChangeNotifier {
   }
 
   OverlayState? _overlay;
-  final GlobalKey<_OverlayEntryWidgetState> _key = GlobalKey<_OverlayEntryWidgetState>();
+  final GlobalKey<_OverlayEntryWidgetState> _key =
+      GlobalKey<_OverlayEntryWidgetState>();
 
   /// Remove this entry from the overlay.
   ///
@@ -147,11 +146,11 @@ class OverlayEntry extends ChangeNotifier {
     assert(_overlay != null);
     final OverlayState overlay = _overlay!;
     _overlay = null;
-    if (!overlay.mounted)
-      return;
+    if (!overlay.mounted) return;
 
     overlay._entries.remove(this);
-    if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+    if (SchedulerBinding.instance!.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
         overlay._markDirty();
       });
@@ -168,7 +167,8 @@ class OverlayEntry extends ChangeNotifier {
   }
 
   @override
-  String toString() => '${describeIdentity(this)}(opaque: $opaque; maintainState: $maintainState)';
+  String toString() =>
+      '${describeIdentity(this)}(opaque: $opaque; maintainState: $maintainState)';
 }
 
 class _OverlayEntryWidget extends StatefulWidget {
@@ -176,10 +176,10 @@ class _OverlayEntryWidget extends StatefulWidget {
     required Key key,
     required this.entry,
     this.tickerEnabled = true,
-  }) : assert(key != null),
-       assert(entry != null),
-       assert(tickerEnabled != null),
-       super(key: key);
+  })  : assert(key != null),
+        assert(entry != null),
+        assert(tickerEnabled != null),
+        super(key: key);
 
   final OverlayEntry entry;
   final bool tickerEnabled;
@@ -210,7 +210,7 @@ class _OverlayEntryWidgetState extends State<_OverlayEntryWidget> {
   }
 
   void _markNeedsBuild() {
-    setState(() { /* the state that changed is in the builder */ });
+    setState(() {/* the state that changed is in the builder */});
   }
 }
 
@@ -243,9 +243,9 @@ class Overlay extends StatefulWidget {
     Key? key,
     this.initialEntries = const <OverlayEntry>[],
     this.clipBehavior = Clip.hardEdge,
-  }) : assert(initialEntries != null),
-       assert(clipBehavior != null),
-       super(key: key);
+  })  : assert(initialEntries != null),
+        assert(clipBehavior != null),
+        super(key: key);
 
   /// The entries to include in the overlay initially.
   ///
@@ -296,11 +296,17 @@ class Overlay extends StatefulWidget {
       if (debugRequiredFor != null && result == null) {
         final List<DiagnosticsNode> information = <DiagnosticsNode>[
           ErrorSummary('No Overlay widget found.'),
-          ErrorDescription('${debugRequiredFor.runtimeType} widgets require an Overlay widget ancestor for correct operation.'),
-          ErrorHint('The most common way to add an Overlay to an application is to include a MaterialApp or Navigator widget in the runApp() call.'),
-          DiagnosticsProperty<Widget>('The specific widget that failed to find an overlay was', debugRequiredFor, style: DiagnosticsTreeStyle.errorProperty),
+          ErrorDescription(
+              '${debugRequiredFor.runtimeType} widgets require an Overlay widget ancestor for correct operation.'),
+          ErrorHint(
+              'The most common way to add an Overlay to an application is to include a MaterialApp or Navigator widget in the runApp() call.'),
+          DiagnosticsProperty<Widget>(
+              'The specific widget that failed to find an overlay was',
+              debugRequiredFor,
+              style: DiagnosticsTreeStyle.errorProperty),
           if (context.widget != debugRequiredFor)
-            context.describeElement('The context from which that widget was searching for an overlay was')
+            context.describeElement(
+                'The context from which that widget was searching for an overlay was')
         ];
 
         throw FlutterError.fromParts(information);
@@ -329,10 +335,8 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
 
   int _insertionIndex(OverlayEntry? below, OverlayEntry? above) {
     assert(above == null || below == null);
-    if (below != null)
-      return _entries.indexOf(below);
-    if (above != null)
-      return _entries.indexOf(above) + 1;
+    if (below != null) return _entries.indexOf(below);
+    if (above != null) return _entries.indexOf(above) + 1;
     return _entries.length;
   }
 
@@ -343,10 +347,12 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
   /// Otherwise, the entry is inserted on top.
   ///
   /// It is an error to specify both `above` and `below`.
-  void insert(OverlayEntry entry, { OverlayEntry? below, OverlayEntry? above }) {
+  void insert(OverlayEntry entry, {OverlayEntry? below, OverlayEntry? above}) {
     assert(_debugVerifyInsertPosition(above, below));
-    assert(!_entries.contains(entry), 'The specified entry is already present in the Overlay.');
-    assert(entry._overlay == null, 'The specified entry is already present in another Overlay.');
+    assert(!_entries.contains(entry),
+        'The specified entry is already present in the Overlay.');
+    assert(entry._overlay == null,
+        'The specified entry is already present in another Overlay.');
     entry._overlay = this;
     setState(() {
       _entries.insert(_insertionIndex(below, above), entry);
@@ -360,18 +366,14 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
   /// Otherwise, the entries are inserted on top.
   ///
   /// It is an error to specify both `above` and `below`.
-  void insertAll(Iterable<OverlayEntry> entries, { OverlayEntry? below, OverlayEntry? above }) {
+  void insertAll(Iterable<OverlayEntry> entries,
+      {OverlayEntry? below, OverlayEntry? above}) {
     assert(_debugVerifyInsertPosition(above, below));
-    assert(
-      entries.every((OverlayEntry entry) => !_entries.contains(entry)),
-      'One or more of the specified entries are already present in the Overlay.'
-    );
-    assert(
-      entries.every((OverlayEntry entry) => entry._overlay == null),
-      'One or more of the specified entries are already present in another Overlay.'
-    );
-    if (entries.isEmpty)
-      return;
+    assert(entries.every((OverlayEntry entry) => !_entries.contains(entry)),
+        'One or more of the specified entries are already present in the Overlay.');
+    assert(entries.every((OverlayEntry entry) => entry._overlay == null),
+        'One or more of the specified entries are already present in another Overlay.');
+    if (entries.isEmpty) return;
     for (final OverlayEntry entry in entries) {
       assert(entry._overlay == null);
       entry._overlay = this;
@@ -381,17 +383,24 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
     });
   }
 
-  bool _debugVerifyInsertPosition(OverlayEntry? above, OverlayEntry? below, { Iterable<OverlayEntry>? newEntries }) {
+  bool _debugVerifyInsertPosition(OverlayEntry? above, OverlayEntry? below,
+      {Iterable<OverlayEntry>? newEntries}) {
     assert(
       above == null || below == null,
       'Only one of `above` and `below` may be specified.',
     );
     assert(
-      above == null || (above._overlay == this && _entries.contains(above) && (newEntries?.contains(above) ?? true)),
+      above == null ||
+          (above._overlay == this &&
+              _entries.contains(above) &&
+              (newEntries?.contains(above) ?? true)),
       'The provided entry used for `above` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}.',
     );
     assert(
-      below == null || (below._overlay == this && _entries.contains(below) && (newEntries?.contains(below) ?? true)),
+      below == null ||
+          (below._overlay == this &&
+              _entries.contains(below) &&
+              (newEntries?.contains(below) ?? true)),
       'The provided entry used for `below` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}.',
     );
     return true;
@@ -414,22 +423,25 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
   /// below.
   ///
   /// It is an error to specify both `above` and `below`.
-  void rearrange(Iterable<OverlayEntry> newEntries, { OverlayEntry? below, OverlayEntry? above }) {
-    final List<OverlayEntry> newEntriesList = newEntries is List<OverlayEntry> ? newEntries : newEntries.toList(growable: false);
-    assert(_debugVerifyInsertPosition(above, below, newEntries: newEntriesList));
+  void rearrange(Iterable<OverlayEntry> newEntries,
+      {OverlayEntry? below, OverlayEntry? above}) {
+    final List<OverlayEntry> newEntriesList = newEntries is List<OverlayEntry>
+        ? newEntries
+        : newEntries.toList(growable: false);
     assert(
-      newEntriesList.every((OverlayEntry entry) => entry._overlay == null || entry._overlay == this),
-      'One or more of the specified entries are already present in another Overlay.'
-    );
+        _debugVerifyInsertPosition(above, below, newEntries: newEntriesList));
     assert(
-      newEntriesList.every((OverlayEntry entry) => _entries.indexOf(entry) == _entries.lastIndexOf(entry)),
-      'One or more of the specified entries are specified multiple times.'
-    );
-    if (newEntriesList.isEmpty)
-      return;
-    if (listEquals(_entries, newEntriesList))
-      return;
-    final LinkedHashSet<OverlayEntry> old = LinkedHashSet<OverlayEntry>.from(_entries);
+        newEntriesList.every((OverlayEntry entry) =>
+            entry._overlay == null || entry._overlay == this),
+        'One or more of the specified entries are already present in another Overlay.');
+    assert(
+        newEntriesList.every((OverlayEntry entry) =>
+            _entries.indexOf(entry) == _entries.lastIndexOf(entry)),
+        'One or more of the specified entries are specified multiple times.');
+    if (newEntriesList.isEmpty) return;
+    if (listEquals(_entries, newEntriesList)) return;
+    final LinkedHashSet<OverlayEntry> old =
+        LinkedHashSet<OverlayEntry>.from(_entries);
     for (final OverlayEntry entry in newEntriesList) {
       entry._overlay ??= this;
     }
@@ -463,8 +475,7 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
           result = true;
           break;
         }
-        if (candidate.opaque)
-          break;
+        if (candidate.opaque) break;
       }
       return true;
     }());
@@ -493,8 +504,7 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
           key: entry._key,
           entry: entry,
         ));
-        if (entry.opaque)
-          onstage = false;
+        if (entry.opaque) onstage = false;
       } else if (entry.maintainState) {
         children.add(_OverlayEntryWidget(
           key: entry._key,
@@ -515,7 +525,8 @@ class OverlayState extends State<Overlay> with TickerProviderStateMixin {
     super.debugFillProperties(properties);
     // TODO(jacobr): use IterableProperty instead as that would
     // provide a slightly more consistent string summary of the List.
-    properties.add(DiagnosticsProperty<List<OverlayEntry>>('entries', _entries));
+    properties
+        .add(DiagnosticsProperty<List<OverlayEntry>>('entries', _entries));
   }
 }
 
@@ -529,12 +540,12 @@ class _Theatre extends MultiChildRenderObjectWidget {
     this.skipCount = 0,
     this.clipBehavior = Clip.hardEdge,
     List<Widget> children = const <Widget>[],
-  }) : assert(skipCount != null),
-       assert(skipCount >= 0),
-       assert(children != null),
-       assert(children.length >= skipCount),
-       assert(clipBehavior != null),
-       super(key: key, children: children);
+  })  : assert(skipCount != null),
+        assert(skipCount >= 0),
+        assert(children != null),
+        assert(children.length >= skipCount),
+        assert(clipBehavior != null),
+        super(key: key, children: children);
 
   final int skipCount;
 
@@ -583,19 +594,20 @@ class _TheatreElement extends MultiChildRenderObjectElement {
   }
 }
 
-class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox, StackParentData> {
+class _RenderTheatre extends RenderBox
+    with ContainerRenderObjectMixin<RenderBox, StackParentData> {
   _RenderTheatre({
     List<RenderBox>? children,
     required TextDirection textDirection,
     int skipCount = 0,
     Clip clipBehavior = Clip.hardEdge,
-  }) : assert(skipCount != null),
-       assert(skipCount >= 0),
-       assert(textDirection != null),
-       assert(clipBehavior != null),
-       _textDirection = textDirection,
-       _skipCount = skipCount,
-       _clipBehavior = clipBehavior {
+  })  : assert(skipCount != null),
+        assert(skipCount >= 0),
+        assert(textDirection != null),
+        assert(clipBehavior != null),
+        _textDirection = textDirection,
+        _skipCount = skipCount,
+        _clipBehavior = clipBehavior {
     addAll(children);
   }
 
@@ -610,8 +622,7 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
   Alignment? _resolvedAlignment;
 
   void _resolve() {
-    if (_resolvedAlignment != null)
-      return;
+    if (_resolvedAlignment != null) return;
     _resolvedAlignment = AlignmentDirectional.topStart.resolve(textDirection);
   }
 
@@ -623,8 +634,7 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
   TextDirection get textDirection => _textDirection;
   TextDirection _textDirection;
   set textDirection(TextDirection value) {
-    if (_textDirection == value)
-      return;
+    if (_textDirection == value) return;
     _textDirection = value;
     _markNeedResolution();
   }
@@ -659,35 +669,41 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
     }
     RenderBox? child = super.firstChild;
     for (int toSkip = skipCount; toSkip > 0; toSkip--) {
-      final StackParentData childParentData = child!.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child!.parentData! as StackParentData;
       child = childParentData.nextSibling;
       assert(child != null);
     }
     return child;
   }
 
-  RenderBox? get _lastOnstageChild => skipCount == super.childCount ? null : lastChild;
+  RenderBox? get _lastOnstageChild =>
+      skipCount == super.childCount ? null : lastChild;
 
   int get _onstageChildCount => childCount - skipCount;
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return RenderStack.getIntrinsicDimension(_firstOnstageChild, (RenderBox child) => child.getMinIntrinsicWidth(height));
+    return RenderStack.getIntrinsicDimension(_firstOnstageChild,
+        (RenderBox child) => child.getMinIntrinsicWidth(height));
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return RenderStack.getIntrinsicDimension(_firstOnstageChild, (RenderBox child) => child.getMaxIntrinsicWidth(height));
+    return RenderStack.getIntrinsicDimension(_firstOnstageChild,
+        (RenderBox child) => child.getMaxIntrinsicWidth(height));
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    return RenderStack.getIntrinsicDimension(_firstOnstageChild, (RenderBox child) => child.getMinIntrinsicHeight(width));
+    return RenderStack.getIntrinsicDimension(_firstOnstageChild,
+        (RenderBox child) => child.getMinIntrinsicHeight(width));
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    return RenderStack.getIntrinsicDimension(_firstOnstageChild, (RenderBox child) => child.getMaxIntrinsicHeight(width));
+    return RenderStack.getIntrinsicDimension(_firstOnstageChild,
+        (RenderBox child) => child.getMaxIntrinsicHeight(width));
   }
 
   @override
@@ -697,7 +713,8 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
     RenderBox? child = _firstOnstageChild;
     while (child != null) {
       assert(!child.debugNeedsLayout);
-      final StackParentData childParentData = child.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child.parentData! as StackParentData;
       double? candidate = child.getDistanceToActualBaseline(baseline);
       if (candidate != null) {
         candidate += childParentData.offset.dy;
@@ -733,17 +750,22 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
     assert(_resolvedAlignment != null);
 
     // Same BoxConstraints as used by RenderStack for StackFit.expand.
-    final BoxConstraints nonPositionedConstraints = BoxConstraints.tight(constraints.biggest);
+    final BoxConstraints nonPositionedConstraints =
+        BoxConstraints.tight(constraints.biggest);
 
     RenderBox? child = _firstOnstageChild;
     while (child != null) {
-      final StackParentData childParentData = child.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child.parentData! as StackParentData;
 
       if (!childParentData.isPositioned) {
         child.layout(nonPositionedConstraints, parentUsesSize: true);
-        childParentData.offset = _resolvedAlignment!.alongOffset(size - child.size as Offset);
+        childParentData.offset =
+            _resolvedAlignment!.alongOffset(size - child.size as Offset);
       } else {
-        _hasVisualOverflow = RenderStack.layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
+        _hasVisualOverflow = RenderStack.layoutPositionedChild(
+                child, childParentData, size, _resolvedAlignment!) ||
+            _hasVisualOverflow;
       }
 
       assert(child.parentData == childParentData);
@@ -752,11 +774,12 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, { required Offset position }) {
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     RenderBox? child = _lastOnstageChild;
     for (int i = 0; i < _onstageChildCount; i++) {
       assert(child != null);
-      final StackParentData childParentData = child!.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child!.parentData! as StackParentData;
       final bool isHit = result.addWithPaintOffset(
         offset: childParentData.offset,
         position: position,
@@ -765,8 +788,7 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
           return child!.hitTest(result, position: transformed!);
         },
       );
-      if (isHit)
-        return true;
+      if (isHit) return true;
       child = childParentData.previousSibling;
     }
     return false;
@@ -776,7 +798,8 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
   void paintStack(PaintingContext context, Offset offset) {
     RenderBox? child = _firstOnstageChild;
     while (child != null) {
-      final StackParentData childParentData = child.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child.parentData! as StackParentData;
       context.paintChild(child, childParentData.offset + offset);
       child = childParentData.nextSibling;
     }
@@ -785,7 +808,8 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     if (_hasVisualOverflow && clipBehavior != Clip.none) {
-      _clipRectLayer = context.pushClipRect(needsCompositing, offset, Offset.zero & size, paintStack,
+      _clipRectLayer = context.pushClipRect(
+          needsCompositing, offset, Offset.zero & size, paintStack,
           clipBehavior: clipBehavior, oldLayer: _clipRectLayer);
     } else {
       _clipRectLayer = null;
@@ -800,13 +824,15 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
     RenderBox? child = _firstOnstageChild;
     while (child != null) {
       visitor(child);
-      final StackParentData childParentData = child.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child.parentData! as StackParentData;
       child = childParentData.nextSibling;
     }
   }
 
   @override
-  Rect? describeApproximatePaintClip(RenderObject child) => _hasVisualOverflow ? Offset.zero & size : null;
+  Rect? describeApproximatePaintClip(RenderObject child) =>
+      _hasVisualOverflow ? Offset.zero & size : null;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -845,7 +871,8 @@ class _RenderTheatre extends RenderBox with ContainerRenderObjectMixin<RenderBox
         );
       }
 
-      final StackParentData childParentData = child.parentData! as StackParentData;
+      final StackParentData childParentData =
+          child.parentData! as StackParentData;
       child = childParentData.nextSibling;
       count += 1;
     }

@@ -15,6 +15,7 @@ class Unicode {
   // prevents instantiation and extension.
   // ignore: unused_element
   Unicode._();
+
   /// `U+202A LEFT-TO-RIGHT EMBEDDING`
   ///
   /// Treat the following text as embedded left-to-right.

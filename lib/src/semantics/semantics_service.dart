@@ -2,13 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/ui.dart' show TextDirection;
 
 import 'package:flute/services.dart' show SystemChannels;
 
-import 'semantics_event.dart' show AnnounceSemanticsEvent, TooltipSemanticsEvent;
-
+import 'semantics_event.dart'
+    show AnnounceSemanticsEvent, TooltipSemanticsEvent;
 
 /// Allows access to the platform's accessibility services.
 ///
@@ -30,8 +29,10 @@ class SemanticsService {
   ///
   /// For example a camera application can use this method to make accessibility
   /// announcements regarding objects in the viewfinder.
-  static Future<void> announce(String message, TextDirection textDirection) async {
-    final AnnounceSemanticsEvent event = AnnounceSemanticsEvent(message, textDirection);
+  static Future<void> announce(
+      String message, TextDirection textDirection) async {
+    final AnnounceSemanticsEvent event =
+        AnnounceSemanticsEvent(message, textDirection);
     await SystemChannels.accessibility.send(event.toMap());
   }
 

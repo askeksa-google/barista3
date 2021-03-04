@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 /// Whether to slant the glyphs in the font
@@ -57,7 +55,15 @@ class FontWeight {
 
   /// A list of all the font weights.
   static const List<FontWeight> values = <FontWeight>[
-    w100, w200, w300, w400, w500, w600, w700, w800, w900
+    w100,
+    w200,
+    w300,
+    w400,
+    w500,
+    w600,
+    w700,
+    w800,
+    w900
   ];
 
   /// Linearly interpolates between two font weights.
@@ -83,9 +89,10 @@ class FontWeight {
   /// an [AnimationController].
   static FontWeight? lerp(FontWeight? a, FontWeight? b, double t) {
     assert(t != null); // ignore: unnecessary_null_comparison
-    if (a == null && b == null)
-      return null;
-    return values[_lerpInt((a ?? normal).index, (b ?? normal).index, t).round().clamp(0, 8)];
+    if (a == null && b == null) return null;
+    return values[_lerpInt((a ?? normal).index, (b ?? normal).index, t)
+        .round()
+        .clamp(0, 8)];
   }
 
   @override
@@ -189,7 +196,11 @@ class FontFeature {
   ///
   /// See <https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags>
   // ignore: unnecessary_null_comparison
-  const FontFeature(this.feature, [ this.value = 1 ]) : assert(feature != null), assert(feature.length == 4), assert(value != null), assert(value >= 0);
+  const FontFeature(this.feature, [this.value = 1])
+      : assert(feature != null),
+        assert(feature.length == 4),
+        assert(value != null),
+        assert(value >= 0);
 
   /// Create a [FontFeature] object that enables the feature with the given tag.
   const FontFeature.enable(String feature) : this(feature, 1);
@@ -207,7 +218,9 @@ class FontFeature {
   /// See also:
   ///
   ///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#rand>
-  const FontFeature.randomize() : feature = 'rand', value = 1;
+  const FontFeature.randomize()
+      : feature = 'rand',
+        value = 1;
 
   /// Select a stylistic set.
   ///
@@ -232,7 +245,9 @@ class FontFeature {
   /// See also:
   ///
   ///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/features_uz#zero>
-  const FontFeature.slashedZero() : feature = 'zero', value = 1;
+  const FontFeature.slashedZero()
+      : feature = 'zero',
+        value = 1;
 
   /// Use oldstyle figures.
   ///
@@ -245,7 +260,9 @@ class FontFeature {
   /// See also:
   ///
   ///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/features_ko#onum>
-  const FontFeature.oldstyleFigures() : feature = 'onum', value = 1;
+  const FontFeature.oldstyleFigures()
+      : feature = 'onum',
+        value = 1;
 
   /// Use proportional (varying width) figures.
   ///
@@ -259,7 +276,9 @@ class FontFeature {
   /// See also:
   ///
   ///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#pnum>
-  const FontFeature.proportionalFigures() : feature = 'pnum', value = 1;
+  const FontFeature.proportionalFigures()
+      : feature = 'pnum',
+        value = 1;
 
   /// Use tabular (monospace) figures.
   ///
@@ -273,7 +292,9 @@ class FontFeature {
   /// See also:
   ///
   ///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#tnum>
-  const FontFeature.tabularFigures() : feature = 'tnum', value = 1;
+  const FontFeature.tabularFigures()
+      : feature = 'tnum',
+        value = 1;
 
   /// The tag that identifies the effect of this feature.  Must consist of 4
   /// ASCII characters (typically lowercase letters).
@@ -299,13 +320,11 @@ class FontFeature {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is FontFeature
-        && other.feature == feature
-        && other.value == value;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is FontFeature &&
+        other.feature == feature &&
+        other.value == value;
   }
 
   @override
@@ -364,8 +383,7 @@ class TextDecoration {
   /// Creates a decoration that paints the union of all the given decorations.
   factory TextDecoration.combine(List<TextDecoration> decorations) {
     int mask = 0;
-    for (TextDecoration decoration in decorations)
-      mask |= decoration._mask;
+    for (TextDecoration decoration in decorations) mask |= decoration._mask;
     return TextDecoration._(mask);
   }
 
@@ -390,8 +408,7 @@ class TextDecoration {
 
   @override
   bool operator ==(Object other) {
-    return other is TextDecoration
-        && other._mask == _mask;
+    return other is TextDecoration && other._mask == _mask;
   }
 
   @override
@@ -399,17 +416,12 @@ class TextDecoration {
 
   @override
   String toString() {
-    if (_mask == 0)
-      return 'TextDecoration.none';
+    if (_mask == 0) return 'TextDecoration.none';
     final List<String> values = <String>[];
-    if (_mask & underline._mask != 0)
-      values.add('underline');
-    if (_mask & overline._mask != 0)
-      values.add('overline');
-    if (_mask & lineThrough._mask != 0)
-      values.add('lineThrough');
-    if (values.length == 1)
-      return 'TextDecoration.${values[0]}';
+    if (_mask & underline._mask != 0) values.add('underline');
+    if (_mask & overline._mask != 0) values.add('overline');
+    if (_mask & lineThrough._mask != 0) values.add('lineThrough');
+    if (values.length == 1) return 'TextDecoration.${values[0]}';
     return 'TextDecoration.combine([${values.join(", ")}])';
   }
 }
@@ -442,7 +454,6 @@ enum TextDecorationStyle {
 /// default ascent will be used.
 /// {@endtemplate}
 class TextHeightBehavior {
-
   /// Creates a new TextHeightBehavior object.
   ///
   ///  * applyHeightToFirstAscent: When true, the [TextStyle.height] modifier
@@ -462,9 +473,8 @@ class TextHeightBehavior {
   ///
   /// See [encode] for the creation of the encoded form.
   const TextHeightBehavior.fromEncoded(int encoded)
-    : applyHeightToFirstAscent = (encoded & 0x1) == 0,
-      applyHeightToLastDescent = (encoded & 0x2) == 0;
-
+      : applyHeightToFirstAscent = (encoded & 0x1) == 0,
+        applyHeightToLastDescent = (encoded & 0x2) == 0;
 
   /// Whether to apply the [TextStyle.height] modifier to the ascent of the first
   /// line in the paragraph.
@@ -492,16 +502,16 @@ class TextHeightBehavior {
 
   /// Returns an encoded int representation of this object.
   int encode() {
-    return (applyHeightToFirstAscent ? 0 : 1 << 0) | (applyHeightToLastDescent ? 0 : 1 << 1);
+    return (applyHeightToFirstAscent ? 0 : 1 << 0) |
+        (applyHeightToLastDescent ? 0 : 1 << 1);
   }
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TextHeightBehavior
-        && other.applyHeightToFirstAscent == applyHeightToFirstAscent
-        && other.applyHeightToLastDescent == applyHeightToLastDescent;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TextHeightBehavior &&
+        other.applyHeightToFirstAscent == applyHeightToFirstAscent &&
+        other.applyHeightToLastDescent == applyHeightToLastDescent;
   }
 
   @override
@@ -515,9 +525,9 @@ class TextHeightBehavior {
   @override
   String toString() {
     return 'TextHeightBehavior('
-             'applyHeightToFirstAscent: $applyHeightToFirstAscent, '
-             'applyHeightToLastDescent: $applyHeightToLastDescent'
-           ')';
+        'applyHeightToFirstAscent: $applyHeightToFirstAscent, '
+        'applyHeightToLastDescent: $applyHeightToLastDescent'
+        ')';
   }
 }
 
@@ -527,13 +537,10 @@ class TextHeightBehavior {
 /// the same length, and contain the same elements in the same order. Returns
 /// false otherwise.
 bool _listEquals<T>(List<T>? a, List<T>? b) {
-  if (a == null)
-    return b == null;
-  if (b == null || a.length != b.length)
-    return false;
+  if (a == null) return b == null;
+  if (b == null || a.length != b.length) return false;
   for (int index = 0; index < a.length; index += 1) {
-    if (a[index] != b[index])
-      return false;
+    if (a[index] != b[index]) return false;
   }
   return true;
 }
@@ -616,7 +623,8 @@ Int32List _encodeTextStyle(
   if (decorationThickness != null) {
     result[0] |= 1 << 8;
   }
-  if (fontFamily != null || (fontFamilyFallback != null && fontFamilyFallback.isNotEmpty)) {
+  if (fontFamily != null ||
+      (fontFamilyFallback != null && fontFamilyFallback.isNotEmpty)) {
     result[0] |= 1 << 9;
     // Passed separately to native.
   }
@@ -714,50 +722,50 @@ class TextStyle {
     Paint? foreground,
     List<Shadow>? shadows,
     List<FontFeature>? fontFeatures,
-  }) : assert(color == null || foreground == null,
-         'Cannot provide both a color and a foreground\n'
-         'The color argument is just a shorthand for "foreground: Paint()..color = color".'
-       ),
-       _encoded = _encodeTextStyle(
-         color,
-         decoration,
-         decorationColor,
-         decorationStyle,
-         decorationThickness,
-         fontWeight,
-         fontStyle,
-         textBaseline,
-         fontFamily,
-         fontFamilyFallback,
-         fontSize,
-         letterSpacing,
-         wordSpacing,
-         height,
-         locale,
-         background,
-         foreground,
-         shadows,
-         fontFeatures,
-       ),
-       _color = color,
-       _decoration = decoration,
-       _decorationColor = decorationColor,
-       _decorationStyle = decorationStyle,
-       _decorationThickness = decorationThickness,
-       _fontFamily = fontFamily,
-       _fontFamilyFallback = fontFamilyFallback,
-       _fontSize = fontSize,
-       _fontWeight = fontWeight,
-       _fontStyle = fontStyle,
-       _textBaseline = textBaseline,
-       _letterSpacing = letterSpacing,
-       _wordSpacing = wordSpacing,
-       _height = height,
-       _locale = locale,
-       _background = background,
-       _foreground = foreground,
-       _shadows = shadows,
-       _fontFeatures = fontFeatures;
+  })  : assert(
+            color == null || foreground == null,
+            'Cannot provide both a color and a foreground\n'
+            'The color argument is just a shorthand for "foreground: Paint()..color = color".'),
+        _encoded = _encodeTextStyle(
+          color,
+          decoration,
+          decorationColor,
+          decorationStyle,
+          decorationThickness,
+          fontWeight,
+          fontStyle,
+          textBaseline,
+          fontFamily,
+          fontFamilyFallback,
+          fontSize,
+          letterSpacing,
+          wordSpacing,
+          height,
+          locale,
+          background,
+          foreground,
+          shadows,
+          fontFeatures,
+        ),
+        _color = color,
+        _decoration = decoration,
+        _decorationColor = decorationColor,
+        _decorationStyle = decorationStyle,
+        _decorationThickness = decorationThickness,
+        _fontFamily = fontFamily,
+        _fontFamilyFallback = fontFamilyFallback,
+        _fontSize = fontSize,
+        _fontWeight = fontWeight,
+        _fontStyle = fontStyle,
+        _textBaseline = textBaseline,
+        _letterSpacing = letterSpacing,
+        _wordSpacing = wordSpacing,
+        _height = height,
+        _locale = locale,
+        _background = background,
+        _foreground = foreground,
+        _shadows = shadows,
+        _fontFeatures = fontFeatures;
 
   final Int32List _encoded;
   final String? _fontFamily;
@@ -780,7 +788,6 @@ class TextStyle {
   final FontStyle? _fontStyle;
   final TextBaseline? _textBaseline;
 
-
   TextStyle _mergeInto(TextStyle other) {
     return TextStyle(
       color: _color ?? other._color,
@@ -801,72 +808,81 @@ class TextStyle {
       background: _background ?? other._background,
       foreground: _foreground ?? other._foreground,
       shadows: _shadows == null
-        ? other._shadows == null
-          ? null
-          : other._shadows
-        : other._shadows == null
-          ? _shadows
-          : <Shadow>[..._shadows!, ...other._shadows!],
+          ? other._shadows == null
+              ? null
+              : other._shadows
+          : other._shadows == null
+              ? _shadows
+              : <Shadow>[..._shadows!, ...other._shadows!],
       fontFeatures: _fontFeatures == null
-        ? other._fontFeatures == null
-          ? null
-          : other._fontFeatures
-        : other._fontFeatures == null
-          ? _fontFeatures
-          : <FontFeature>[..._fontFeatures!, ...other._fontFeatures!],
+          ? other._fontFeatures == null
+              ? null
+              : other._fontFeatures
+          : other._fontFeatures == null
+              ? _fontFeatures
+              : <FontFeature>[..._fontFeatures!, ...other._fontFeatures!],
     );
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    return other is TextStyle
-        && other._fontFamily == _fontFamily
-        && other._fontSize == _fontSize
-        && other._letterSpacing == _letterSpacing
-        && other._wordSpacing == _wordSpacing
-        && other._height == _height
-        && other._decorationThickness == _decorationThickness
-        && other._locale == _locale
-        && other._background == _background
-        && other._foreground == _foreground
-        && _listEquals<int>(other._encoded, _encoded)
-        && _listEquals<Shadow>(other._shadows, _shadows)
-        && _listEquals<String>(other._fontFamilyFallback, _fontFamilyFallback)
-        && _listEquals<FontFeature>(other._fontFeatures, _fontFeatures);
+    if (identical(this, other)) return true;
+    return other is TextStyle &&
+        other._fontFamily == _fontFamily &&
+        other._fontSize == _fontSize &&
+        other._letterSpacing == _letterSpacing &&
+        other._wordSpacing == _wordSpacing &&
+        other._height == _height &&
+        other._decorationThickness == _decorationThickness &&
+        other._locale == _locale &&
+        other._background == _background &&
+        other._foreground == _foreground &&
+        _listEquals<int>(other._encoded, _encoded) &&
+        _listEquals<Shadow>(other._shadows, _shadows) &&
+        _listEquals<String>(other._fontFamilyFallback, _fontFamilyFallback) &&
+        _listEquals<FontFeature>(other._fontFeatures, _fontFeatures);
   }
 
   @override
-  int get hashCode => hashValues(hashList(_encoded), _fontFamily, _fontFamilyFallback, _fontSize, _letterSpacing, _wordSpacing, _height, _locale, _background, _foreground, hashList(_shadows), _decorationThickness, hashList(_fontFeatures));
+  int get hashCode => hashValues(
+      hashList(_encoded),
+      _fontFamily,
+      _fontFamilyFallback,
+      _fontSize,
+      _letterSpacing,
+      _wordSpacing,
+      _height,
+      _locale,
+      _background,
+      _foreground,
+      hashList(_shadows),
+      _decorationThickness,
+      hashList(_fontFeatures));
 
   @override
   String toString() {
     return 'TextStyle('
-             'color: ${              _encoded[0] & 0x00002 == 0x00002  ? Color(_encoded[1])                  : "unspecified"}, '
-             'decoration: ${         _encoded[0] & 0x00004 == 0x00004  ? TextDecoration._(_encoded[2])       : "unspecified"}, '
-             'decorationColor: ${    _encoded[0] & 0x00008 == 0x00008  ? Color(_encoded[3])                  : "unspecified"}, '
-             'decorationStyle: ${    _encoded[0] & 0x00010 == 0x00010  ? TextDecorationStyle.values[_encoded[4]] : "unspecified"}, '
-             // The decorationThickness is not in encoded order in order to keep it near the other decoration properties.
-             'decorationThickness: ${_encoded[0] & 0x00100 == 0x00100  ? _decorationThickness                    : "unspecified"}, '
-             'fontWeight: ${         _encoded[0] & 0x00020 == 0x00020  ? FontWeight.values[_encoded[5]]          : "unspecified"}, '
-             'fontStyle: ${          _encoded[0] & 0x00040 == 0x00040  ? FontStyle.values[_encoded[6]]           : "unspecified"}, '
-             'textBaseline: ${       _encoded[0] & 0x00080 == 0x00080  ? TextBaseline.values[_encoded[7]]        : "unspecified"}, '
-             'fontFamily: ${         _encoded[0] & 0x00200 == 0x00200
-                                     && _fontFamily != ''              ? _fontFamily                             : "unspecified"}, '
-             'fontFamilyFallback: ${ _encoded[0] & 0x00200 == 0x00200
-                                     && _fontFamilyFallback != null
-                                     && _fontFamilyFallback!.isNotEmpty ? _fontFamilyFallback                     : "unspecified"}, '
-             'fontSize: ${           _encoded[0] & 0x00400 == 0x00400  ? _fontSize                               : "unspecified"}, '
-             'letterSpacing: ${      _encoded[0] & 0x00800 == 0x00800  ? "${_letterSpacing}x"                    : "unspecified"}, '
-             'wordSpacing: ${        _encoded[0] & 0x01000 == 0x01000  ? "${_wordSpacing}x"                      : "unspecified"}, '
-             'height: ${             _encoded[0] & 0x02000 == 0x02000  ? "${_height}x"                           : "unspecified"}, '
-             'locale: ${             _encoded[0] & 0x04000 == 0x04000  ? _locale                                 : "unspecified"}, '
-             'background: ${         _encoded[0] & 0x08000 == 0x08000  ? _background                             : "unspecified"}, '
-             'foreground: ${         _encoded[0] & 0x10000 == 0x10000  ? _foreground                             : "unspecified"}, '
-             'shadows: ${            _encoded[0] & 0x20000 == 0x20000  ? _shadows                                : "unspecified"}, '
-             'fontFeatures: ${       _encoded[0] & 0x40000 == 0x40000  ? _fontFeatures                           : "unspecified"}'
-           ')';
+        'color: ${_encoded[0] & 0x00002 == 0x00002 ? Color(_encoded[1]) : "unspecified"}, '
+        'decoration: ${_encoded[0] & 0x00004 == 0x00004 ? TextDecoration._(_encoded[2]) : "unspecified"}, '
+        'decorationColor: ${_encoded[0] & 0x00008 == 0x00008 ? Color(_encoded[3]) : "unspecified"}, '
+        'decorationStyle: ${_encoded[0] & 0x00010 == 0x00010 ? TextDecorationStyle.values[_encoded[4]] : "unspecified"}, '
+        // The decorationThickness is not in encoded order in order to keep it near the other decoration properties.
+        'decorationThickness: ${_encoded[0] & 0x00100 == 0x00100 ? _decorationThickness : "unspecified"}, '
+        'fontWeight: ${_encoded[0] & 0x00020 == 0x00020 ? FontWeight.values[_encoded[5]] : "unspecified"}, '
+        'fontStyle: ${_encoded[0] & 0x00040 == 0x00040 ? FontStyle.values[_encoded[6]] : "unspecified"}, '
+        'textBaseline: ${_encoded[0] & 0x00080 == 0x00080 ? TextBaseline.values[_encoded[7]] : "unspecified"}, '
+        'fontFamily: ${_encoded[0] & 0x00200 == 0x00200 && _fontFamily != '' ? _fontFamily : "unspecified"}, '
+        'fontFamilyFallback: ${_encoded[0] & 0x00200 == 0x00200 && _fontFamilyFallback != null && _fontFamilyFallback!.isNotEmpty ? _fontFamilyFallback : "unspecified"}, '
+        'fontSize: ${_encoded[0] & 0x00400 == 0x00400 ? _fontSize : "unspecified"}, '
+        'letterSpacing: ${_encoded[0] & 0x00800 == 0x00800 ? "${_letterSpacing}x" : "unspecified"}, '
+        'wordSpacing: ${_encoded[0] & 0x01000 == 0x01000 ? "${_wordSpacing}x" : "unspecified"}, '
+        'height: ${_encoded[0] & 0x02000 == 0x02000 ? "${_height}x" : "unspecified"}, '
+        'locale: ${_encoded[0] & 0x04000 == 0x04000 ? _locale : "unspecified"}, '
+        'background: ${_encoded[0] & 0x08000 == 0x08000 ? _background : "unspecified"}, '
+        'foreground: ${_encoded[0] & 0x10000 == 0x10000 ? _foreground : "unspecified"}, '
+        'shadows: ${_encoded[0] & 0x20000 == 0x20000 ? _shadows : "unspecified"}, '
+        'fontFeatures: ${_encoded[0] & 0x40000 == 0x40000 ? _fontFeatures : "unspecified"}'
+        ')';
   }
 }
 
@@ -966,7 +982,7 @@ class ParagraphStyle {
   ///   paragraph. If the last line is ellipsized (see `ellipsis` below), the
   ///   alignment is applied to that line after it has been truncated but before
   ///   the ellipsis has been added.
-   //   See: https://github.com/flutter/flutter/issues/9819
+  //   See: https://github.com/flutter/flutter/issues/9819
   ///
   /// * `textDirection`: The directionality of the text, left-to-right (e.g.
   ///   Norwegian) or right-to-left (e.g. Hebrew). This controls the overall
@@ -1028,32 +1044,32 @@ class ParagraphStyle {
     StrutStyle? strutStyle,
     String? ellipsis,
     Locale? locale,
-  }) : _encoded = _encodeParagraphStyle(
-         textAlign,
-         textDirection,
-         maxLines,
-         fontFamily,
-         fontSize,
-         height,
-         textHeightBehavior,
-         fontWeight,
-         fontStyle,
-         strutStyle,
-         ellipsis,
-         locale,
-       ),
-       _textAlign = textAlign ?? TextAlign.start,
-       _textDirection = textDirection ?? TextDirection.ltr,
-       _maxLines = maxLines,
-       _fontFamily = fontFamily,
-       _fontSize = fontSize,
-       _height = height,
-       _textHeightBehavior = textHeightBehavior ?? const TextHeightBehavior(),
-       _fontWeight = fontWeight ?? FontWeight.normal,
-       _fontStyle = fontStyle ?? FontStyle.normal,
-       _strutStyle = strutStyle,
-       _ellipsis = ellipsis,
-       _locale = locale;
+  })  : _encoded = _encodeParagraphStyle(
+          textAlign,
+          textDirection,
+          maxLines,
+          fontFamily,
+          fontSize,
+          height,
+          textHeightBehavior,
+          fontWeight,
+          fontStyle,
+          strutStyle,
+          ellipsis,
+          locale,
+        ),
+        _textAlign = textAlign ?? TextAlign.start,
+        _textDirection = textDirection ?? TextDirection.ltr,
+        _maxLines = maxLines,
+        _fontFamily = fontFamily,
+        _fontSize = fontSize,
+        _height = height,
+        _textHeightBehavior = textHeightBehavior ?? const TextHeightBehavior(),
+        _fontWeight = fontWeight ?? FontWeight.normal,
+        _fontStyle = fontStyle ?? FontStyle.normal,
+        _strutStyle = strutStyle,
+        _ellipsis = ellipsis,
+        _locale = locale;
 
   final Int32List _encoded;
   final TextAlign _textAlign;
@@ -1081,40 +1097,37 @@ class ParagraphStyle {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is ParagraphStyle
-        && other._fontFamily == _fontFamily
-        && other._fontSize == _fontSize
-        && other._height == _height
-        && other._strutStyle == _strutStyle
-        && other._ellipsis == _ellipsis
-        && other._locale == _locale
-        && _listEquals<int>(other._encoded, _encoded);
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ParagraphStyle &&
+        other._fontFamily == _fontFamily &&
+        other._fontSize == _fontSize &&
+        other._height == _height &&
+        other._strutStyle == _strutStyle &&
+        other._ellipsis == _ellipsis &&
+        other._locale == _locale &&
+        _listEquals<int>(other._encoded, _encoded);
   }
 
   @override
-  int get hashCode => hashValues(hashList(_encoded), _fontFamily, _fontSize, _height, _ellipsis, _locale);
+  int get hashCode => hashValues(
+      hashList(_encoded), _fontFamily, _fontSize, _height, _ellipsis, _locale);
 
   @override
   String toString() {
     return 'ParagraphStyle('
-             'textAlign: ${     _encoded[0] & 0x002 == 0x002 ? TextAlign.values[_encoded[1]]     : "unspecified"}, '
-             'textDirection: ${ _encoded[0] & 0x004 == 0x004 ? TextDirection.values[_encoded[2]] : "unspecified"}, '
-             'fontWeight: ${    _encoded[0] & 0x008 == 0x008 ? FontWeight.values[_encoded[3]]    : "unspecified"}, '
-             'fontStyle: ${     _encoded[0] & 0x010 == 0x010 ? FontStyle.values[_encoded[4]]     : "unspecified"}, '
-             'maxLines: ${      _encoded[0] & 0x020 == 0x020 ? _encoded[5]                       : "unspecified"}, '
-             'textHeightBehavior: ${
-                                _encoded[0] & 0x040 == 0x040 ?
-                                          TextHeightBehavior.fromEncoded(_encoded[6]).toString() : "unspecified"}, '
-             'fontFamily: ${    _encoded[0] & 0x080 == 0x080 ? _fontFamily                       : "unspecified"}, '
-             'fontSize: ${      _encoded[0] & 0x100 == 0x100 ? _fontSize                         : "unspecified"}, '
-             'height: ${        _encoded[0] & 0x200 == 0x200 ? "${_height}x"                     : "unspecified"}, '
-             'ellipsis: ${      _encoded[0] & 0x400 == 0x400 ? "\"$_ellipsis\""                  : "unspecified"}, '
-             'locale: ${        _encoded[0] & 0x800 == 0x800 ? _locale                           : "unspecified"}'
-           ')';
+        'textAlign: ${_encoded[0] & 0x002 == 0x002 ? TextAlign.values[_encoded[1]] : "unspecified"}, '
+        'textDirection: ${_encoded[0] & 0x004 == 0x004 ? TextDirection.values[_encoded[2]] : "unspecified"}, '
+        'fontWeight: ${_encoded[0] & 0x008 == 0x008 ? FontWeight.values[_encoded[3]] : "unspecified"}, '
+        'fontStyle: ${_encoded[0] & 0x010 == 0x010 ? FontStyle.values[_encoded[4]] : "unspecified"}, '
+        'maxLines: ${_encoded[0] & 0x020 == 0x020 ? _encoded[5] : "unspecified"}, '
+        'textHeightBehavior: ${_encoded[0] & 0x040 == 0x040 ? TextHeightBehavior.fromEncoded(_encoded[6]).toString() : "unspecified"}, '
+        'fontFamily: ${_encoded[0] & 0x080 == 0x080 ? _fontFamily : "unspecified"}, '
+        'fontSize: ${_encoded[0] & 0x100 == 0x100 ? _fontSize : "unspecified"}, '
+        'height: ${_encoded[0] & 0x200 == 0x200 ? "${_height}x" : "unspecified"}, '
+        'ellipsis: ${_encoded[0] & 0x400 == 0x400 ? "\"$_ellipsis\"" : "unspecified"}, '
+        'locale: ${_encoded[0] & 0x800 == 0x800 ? _locale : "unspecified"}'
+        ')';
   }
 }
 
@@ -1128,22 +1141,21 @@ class ParagraphStyle {
 // much more likely that the strut is empty/null and we wish to add
 // minimal overhead for non-strut cases.
 ByteData _encodeStrut(
-  String? fontFamily,
-  List<String>? fontFamilyFallback,
-  double? fontSize,
-  double? height,
-  double? leading,
-  FontWeight? fontWeight,
-  FontStyle? fontStyle,
-  bool? forceStrutHeight) {
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    double? fontSize,
+    double? height,
+    double? leading,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    bool? forceStrutHeight) {
   if (fontFamily == null &&
-    fontSize == null &&
-    height == null &&
-    leading == null &&
-    fontWeight == null &&
-    fontStyle == null &&
-    forceStrutHeight == null)
-    return ByteData(0);
+      fontSize == null &&
+      height == null &&
+      leading == null &&
+      fontWeight == null &&
+      fontStyle == null &&
+      forceStrutHeight == null) return ByteData(0);
 
   final ByteData data = ByteData(15); // Max size is 15 bytes
   int bitmask = 0; // 8 bit mask
@@ -1158,7 +1170,8 @@ ByteData _encodeStrut(
     data.setInt8(byteCount, fontStyle.index);
     byteCount += 1;
   }
-  if (fontFamily != null || (fontFamilyFallback != null && fontFamilyFallback.isNotEmpty)){
+  if (fontFamily != null ||
+      (fontFamilyFallback != null && fontFamilyFallback.isNotEmpty)) {
     bitmask |= 1 << 2;
     // passed separately to native
   }
@@ -1186,7 +1199,7 @@ ByteData _encodeStrut(
 
   data.setInt8(0, bitmask);
 
-  return ByteData.view(data.buffer, 0,  byteCount);
+  return ByteData.view(data.buffer, 0, byteCount);
 }
 
 /// See also:
@@ -1240,39 +1253,37 @@ class StrutStyle {
     FontWeight? fontWeight,
     FontStyle? fontStyle,
     bool? forceStrutHeight,
-  }) : _encoded = _encodeStrut(
-         fontFamily,
-         fontFamilyFallback,
-         fontSize,
-         height,
-         leading,
-         fontWeight,
-         fontStyle,
-         forceStrutHeight,
-       ),
-       _fontFamily = fontFamily,
-       _fontFamilyFallback = fontFamilyFallback;
+  })  : _encoded = _encodeStrut(
+          fontFamily,
+          fontFamilyFallback,
+          fontSize,
+          height,
+          leading,
+          fontWeight,
+          fontStyle,
+          forceStrutHeight,
+        ),
+        _fontFamily = fontFamily,
+        _fontFamilyFallback = fontFamilyFallback;
 
   final ByteData _encoded; // Most of the data for strut is encoded.
   final String? _fontFamily;
   final List<String>? _fontFamilyFallback;
 
-
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is StrutStyle
-        && other._fontFamily == _fontFamily
-        && _listEquals<String>(other._fontFamilyFallback, _fontFamilyFallback)
-        && _listEquals<int>(other._encoded.buffer.asInt8List(), _encoded.buffer.asInt8List());
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is StrutStyle &&
+        other._fontFamily == _fontFamily &&
+        _listEquals<String>(other._fontFamilyFallback, _fontFamilyFallback) &&
+        _listEquals<int>(
+            other._encoded.buffer.asInt8List(), _encoded.buffer.asInt8List());
   }
 
   @override
-  int get hashCode => hashValues(hashList(_encoded.buffer.asInt8List()), _fontFamily);
-
+  int get hashCode =>
+      hashValues(hashList(_encoded.buffer.asInt8List()), _fontFamily);
 }
 
 /// A direction in which text flows.
@@ -1423,23 +1434,22 @@ class TextBox {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TextBox
-        && other.left == left
-        && other.top == top
-        && other.right == right
-        && other.bottom == bottom
-        && other.direction == direction;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TextBox &&
+        other.left == left &&
+        other.top == top &&
+        other.right == right &&
+        other.bottom == bottom &&
+        other.direction == direction;
   }
 
   @override
   int get hashCode => hashValues(left, top, right, bottom, direction);
 
   @override
-  String toString() => 'TextBox.fromLTRBD(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}, $direction)';
+  String toString() =>
+      'TextBox.fromLTRBD(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}, $direction)';
 }
 
 /// A way to disambiguate a [TextPosition] when its offset could match two
@@ -1513,8 +1523,8 @@ class TextPosition {
   const TextPosition({
     required this.offset,
     this.affinity = TextAffinity.downstream,
-  }) : assert(offset != null), // ignore: unnecessary_null_comparison
-       assert(affinity != null); // ignore: unnecessary_null_comparison
+  })  : assert(offset != null), // ignore: unnecessary_null_comparison
+        assert(affinity != null); // ignore: unnecessary_null_comparison
 
   /// The index of the character that immediately follows the position in the
   /// string representation of the text.
@@ -1535,11 +1545,10 @@ class TextPosition {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TextPosition
-        && other.offset == offset
-        && other.affinity == affinity;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TextPosition &&
+        other.offset == offset &&
+        other.affinity == affinity;
   }
 
   @override
@@ -1566,14 +1575,16 @@ class TextRange {
   const TextRange({
     required this.start,
     required this.end,
-  }) : assert(start != null && start >= -1), // ignore: unnecessary_null_comparison
+  })   : assert(start != null &&
+            start >= -1), // ignore: unnecessary_null_comparison
         assert(end != null && end >= -1); // ignore: unnecessary_null_comparison
 
   /// A text range that starts and ends at offset.
   ///
   /// The [offset] argument must be non-null and greater than or equal to -1.
   const TextRange.collapsed(int offset)
-      : assert(offset != null && offset >= -1), // ignore: unnecessary_null_comparison
+      : assert(offset != null &&
+            offset >= -1), // ignore: unnecessary_null_comparison
         start = offset,
         end = offset;
 
@@ -1619,18 +1630,15 @@ class TextRange {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    return other is TextRange
-        && other.start == start
-        && other.end == end;
+    if (identical(this, other)) return true;
+    return other is TextRange && other.start == start && other.end == end;
   }
 
   @override
   int get hashCode => hashValues(
-    start.hashCode,
-    end.hashCode,
-  );
+        start.hashCode,
+        end.hashCode,
+      );
 
   @override
   String toString() => 'TextRange(start: $start, end: $end)';
@@ -1671,10 +1679,8 @@ class ParagraphConstraints {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is ParagraphConstraints
-        && other.width == width;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ParagraphConstraints && other.width == width;
   }
 
   @override
@@ -1900,32 +1906,33 @@ class LineMetrics {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is LineMetrics
-        && other.hardBreak == hardBreak
-        && other.ascent == ascent
-        && other.descent == descent
-        && other.unscaledAscent == unscaledAscent
-        && other.height == height
-        && other.width == width
-        && other.left == left
-        && other.baseline == baseline
-        && other.lineNumber == lineNumber;
+    return other is LineMetrics &&
+        other.hardBreak == hardBreak &&
+        other.ascent == ascent &&
+        other.descent == descent &&
+        other.unscaledAscent == unscaledAscent &&
+        other.height == height &&
+        other.width == width &&
+        other.left == left &&
+        other.baseline == baseline &&
+        other.lineNumber == lineNumber;
   }
 
   @override
-  int get hashCode => hashValues(hardBreak, ascent, descent, unscaledAscent, height, width, left, baseline, lineNumber);
+  int get hashCode => hashValues(hardBreak, ascent, descent, unscaledAscent,
+      height, width, left, baseline, lineNumber);
 
   @override
   String toString() {
     return 'LineMetrics(hardBreak: $hardBreak, '
-                       'ascent: $ascent, '
-                       'descent: $descent, '
-                       'unscaledAscent: $unscaledAscent, '
-                       'height: $height, '
-                       'width: $width, '
-                       'left: $left, '
-                       'baseline: $baseline, '
-                       'lineNumber: $lineNumber)';
+        'ascent: $ascent, '
+        'descent: $descent, '
+        'unscaledAscent: $unscaledAscent, '
+        'height: $height, '
+        'width: $width, '
+        'left: $left, '
+        'baseline: $baseline, '
+        'lineNumber: $lineNumber)';
   }
 }
 
@@ -2049,9 +2056,7 @@ class Paragraph {
     _width = paragraphRight;
     _height = currentLineTop + currentLineHeight;
     final int? maxLines = _paragraphStyle._maxLines;
-    _didExceedMaxLines = maxLines == null
-      ? false
-      : _boxes.length > maxLines;
+    _didExceedMaxLines = maxLines == null ? false : _boxes.length > maxLines;
   }
 
   /// Returns a list of text boxes that enclose the given text range.
@@ -2067,7 +2072,9 @@ class Paragraph {
   /// The [boxHeightStyle] and [boxWidthStyle] parameters must not be null.
   ///
   /// See [BoxHeightStyle] and [BoxWidthStyle] for full descriptions of each option.
-  List<TextBox> getBoxesForRange(int start, int end, {BoxHeightStyle boxHeightStyle = BoxHeightStyle.tight, BoxWidthStyle boxWidthStyle = BoxWidthStyle.tight}) {
+  List<TextBox> getBoxesForRange(int start, int end,
+      {BoxHeightStyle boxHeightStyle = BoxHeightStyle.tight,
+      BoxWidthStyle boxWidthStyle = BoxWidthStyle.tight}) {
     assert(boxHeightStyle != null); // ignore: unnecessary_null_comparison
     assert(boxWidthStyle != null); // ignore: unnecessary_null_comparison
     throw UnimplementedError();
@@ -2139,20 +2146,23 @@ class Paragraph {
     final List<LineMetrics> metrics = <LineMetrics>[
       for (int index = 0; index < count; index += 1)
         LineMetrics(
-          hardBreak:      encoded[position++] != 0,
-          ascent:         encoded[position++],
-          descent:        encoded[position++],
+          hardBreak: encoded[position++] != 0,
+          ascent: encoded[position++],
+          descent: encoded[position++],
           unscaledAscent: encoded[position++],
-          height:         encoded[position++],
-          width:          encoded[position++],
-          left:           encoded[position++],
-          baseline:       encoded[position++],
-          lineNumber:     encoded[position++].toInt(),
+          height: encoded[position++],
+          width: encoded[position++],
+          left: encoded[position++],
+          baseline: encoded[position++],
+          lineNumber: encoded[position++].toInt(),
         )
     ];
     return metrics;
   }
-  Float64List _computeLineMetrics() { throw UnimplementedError(); }
+
+  Float64List _computeLineMetrics() {
+    throw UnimplementedError();
+  }
 }
 
 abstract class _Span {
@@ -2182,7 +2192,8 @@ class _TextSpan extends _Span {
 }
 
 class _Placeholder extends _Span {
-  _Placeholder(this._width, this._height, this._alignment, this._baselineOffset, this._baseline);
+  _Placeholder(this._width, this._height, this._alignment, this._baselineOffset,
+      this._baseline);
 
   final double _width;
   final double _height;
@@ -2212,7 +2223,6 @@ class _Placeholder extends _Span {
 /// After constructing a [Paragraph], call [Paragraph.layout] on it and then
 /// paint it with [Canvas.drawParagraph].
 class ParagraphBuilder {
-
   /// Creates a new [ParagraphBuilder] object, which is used to create a
   /// [Paragraph].
   factory ParagraphBuilder(ParagraphStyle style) {
@@ -2221,8 +2231,7 @@ class ParagraphBuilder {
     if (strutStyle != null) {
       strutFontFamilies = <String>[];
       final String? fontFamily = strutStyle._fontFamily;
-      if (fontFamily != null)
-        strutFontFamilies.add(fontFamily);
+      if (fontFamily != null) strutFontFamilies.add(fontFamily);
       if (strutStyle._fontFamilyFallback != null)
         strutFontFamilies.addAll(strutStyle._fontFamilyFallback!);
     }
@@ -2260,15 +2269,17 @@ class ParagraphBuilder {
     final List<String> fullFontFamilies = <String>[];
     fullFontFamilies.add(style._fontFamily ?? '');
     if (style._fontFamilyFallback != null)
-    fullFontFamilies.addAll(style._fontFamilyFallback!);
+      fullFontFamilies.addAll(style._fontFamilyFallback!);
 
     ByteData? encodedFontFeatures;
     final List<FontFeature>? fontFeatures = style._fontFeatures;
     if (fontFeatures != null) {
-      encodedFontFeatures = ByteData(fontFeatures.length * FontFeature._kEncodedSize);
+      encodedFontFeatures =
+          ByteData(fontFeatures.length * FontFeature._kEncodedSize);
       int byteOffset = 0;
       for (FontFeature feature in fontFeatures) {
-        feature._encode(ByteData.view(encodedFontFeatures.buffer, byteOffset, FontFeature._kEncodedSize));
+        feature._encode(ByteData.view(
+            encodedFontFeatures.buffer, byteOffset, FontFeature._kEncodedSize));
         byteOffset += FontFeature._kEncodedSize;
       }
     }
@@ -2295,7 +2306,10 @@ class ParagraphBuilder {
     }
   }
 
-  void addPlaceholder(double width, double height, PlaceholderAlignment alignment, {
+  void addPlaceholder(
+    double width,
+    double height,
+    PlaceholderAlignment alignment, {
     double scale = 1.0,
     double? baselineOffset,
     TextBaseline? baseline,
@@ -2303,7 +2317,9 @@ class ParagraphBuilder {
     // Require a baseline to be specified if using a baseline-based alignment.
     assert((alignment == PlaceholderAlignment.aboveBaseline ||
             alignment == PlaceholderAlignment.belowBaseline ||
-            alignment == PlaceholderAlignment.baseline) ? baseline != null : true);
+            alignment == PlaceholderAlignment.baseline)
+        ? baseline != null
+        : true);
     // Default the baselineOffset to height if null. This will place the placeholder
     // fully above the baseline, similar to [PlaceholderAlignment.aboveBaseline].
     baselineOffset = baselineOffset ?? height;
@@ -2331,16 +2347,15 @@ class ParagraphBuilder {
 /// * `fontFamily`: The family name used to identify the font in text styles.
 ///  If this is not provided, then the family name will be extracted from the font file.
 Future<void> loadFontFromList(Uint8List list, {String? fontFamily}) {
-  return _futurize(
-    (_Callback<void> callback) {
-      _loadFontFromList(list, callback, fontFamily);
-    }
-  ).then((_) => _sendFontChangeMessage());
+  return _futurize((_Callback<void> callback) {
+    _loadFontFromList(list, callback, fontFamily);
+  }).then((_) => _sendFontChangeMessage());
 }
 
-final ByteData _fontChangeMessage = utf8.encoder.convert(
-  json.encode(<String, dynamic>{'type': 'fontsChange'})
-).buffer.asByteData();
+final ByteData _fontChangeMessage = utf8.encoder
+    .convert(json.encode(<String, dynamic>{'type': 'fontsChange'}))
+    .buffer
+    .asByteData();
 
 FutureOr<void> _sendFontChangeMessage() async {
   const String kSystemChannelName = 'flutter/system';
@@ -2350,10 +2365,11 @@ FutureOr<void> _sendFontChangeMessage() async {
       PlatformDispatcher.instance._onPlatformMessageZone,
       kSystemChannelName,
       _fontChangeMessage,
-      (ByteData? responseData) { },
+      (ByteData? responseData) {},
     );
   } else {
-    channelBuffers.push(kSystemChannelName, _fontChangeMessage, (ByteData? responseData) { });
+    channelBuffers.push(
+        kSystemChannelName, _fontChangeMessage, (ByteData? responseData) {});
   }
 }
 
@@ -2369,4 +2385,7 @@ FutureOr<void> _sendFontChangeMessage() async {
 /// default ascent will be used.
 /// {@endtemplate}
 
-void _loadFontFromList(Uint8List list, _Callback<void> callback, String? fontFamily) { throw UnimplementedError(); }
+void _loadFontFromList(
+    Uint8List list, _Callback<void> callback, String? fontFamily) {
+  throw UnimplementedError();
+}

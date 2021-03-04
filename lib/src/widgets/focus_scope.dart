@@ -444,36 +444,35 @@ class Focus extends StatefulWidget {
   ///
   ///  * [maybeOf], which is similar to this function, but will return null
   ///    instead of throwing if it doesn't find a [Focus] node.
-  static FocusNode of(BuildContext context, { bool scopeOk = false }) {
+  static FocusNode of(BuildContext context, {bool scopeOk = false}) {
     assert(context != null);
     assert(scopeOk != null);
-    final _FocusMarker? marker = context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
+    final _FocusMarker? marker =
+        context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
     final FocusNode? node = marker?.notifier;
     assert(() {
       if (node == null) {
         throw FlutterError(
-          'Focus.of() was called with a context that does not contain a Focus widget.\n'
-          'No Focus widget ancestor could be found starting from the context that was passed to '
-          'Focus.of(). This can happen because you are using a widget that looks for a Focus '
-          'ancestor, and do not have a Focus widget descendant in the nearest FocusScope.\n'
-          'The context used was:\n'
-          '  $context'
-        );
+            'Focus.of() was called with a context that does not contain a Focus widget.\n'
+            'No Focus widget ancestor could be found starting from the context that was passed to '
+            'Focus.of(). This can happen because you are using a widget that looks for a Focus '
+            'ancestor, and do not have a Focus widget descendant in the nearest FocusScope.\n'
+            'The context used was:\n'
+            '  $context');
       }
       return true;
     }());
     assert(() {
       if (!scopeOk && node is FocusScopeNode) {
         throw FlutterError(
-          'Focus.of() was called with a context that does not contain a Focus between the given '
-          'context and the nearest FocusScope widget.\n'
-          'No Focus ancestor could be found starting from the context that was passed to '
-          'Focus.of() to the point where it found the nearest FocusScope widget. This can happen '
-          'because you are using a widget that looks for a Focus ancestor, and do not have a '
-          'Focus widget ancestor in the current FocusScope.\n'
-          'The context used was:\n'
-          '  $context'
-        );
+            'Focus.of() was called with a context that does not contain a Focus between the given '
+            'context and the nearest FocusScope widget.\n'
+            'No Focus ancestor could be found starting from the context that was passed to '
+            'Focus.of() to the point where it found the nearest FocusScope widget. This can happen '
+            'because you are using a widget that looks for a Focus ancestor, and do not have a '
+            'Focus widget ancestor in the current FocusScope.\n'
+            'The context used was:\n'
+            '  $context');
       }
       return true;
     }());
@@ -496,10 +495,11 @@ class Focus extends StatefulWidget {
   ///
   ///  * [of], which is similar to this function, but will throw an exception if
   ///    it doesn't find a [Focus] node instead of returning null.
-  static FocusNode? maybeOf(BuildContext context, { bool scopeOk = false }) {
+  static FocusNode? maybeOf(BuildContext context, {bool scopeOk = false}) {
     assert(context != null);
     assert(scopeOk != null);
-    final _FocusMarker? marker = context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
+    final _FocusMarker? marker =
+        context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
     final FocusNode? node = marker?.notifier;
     if (node == null) {
       return null;
@@ -522,16 +522,24 @@ class Focus extends StatefulWidget {
   ///
   /// Calling this function creates a dependency that will rebuild the given
   /// context when the focus changes.
-  static bool isAt(BuildContext context) => Focus.maybeOf(context)?.hasFocus ?? false;
+  static bool isAt(BuildContext context) =>
+      Focus.maybeOf(context)?.hasFocus ?? false;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('debugLabel', debugLabel, defaultValue: null));
-    properties.add(FlagProperty('autofocus', value: autofocus, ifTrue: 'AUTOFOCUS', defaultValue: false));
-    properties.add(FlagProperty('canRequestFocus', value: canRequestFocus, ifFalse: 'NOT FOCUSABLE', defaultValue: false));
-    properties.add(FlagProperty('descendantsAreFocusable', value: descendantsAreFocusable, ifFalse: 'DESCENDANTS UNFOCUSABLE', defaultValue: true));
-    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
+    properties
+        .add(StringProperty('debugLabel', debugLabel, defaultValue: null));
+    properties.add(FlagProperty('autofocus',
+        value: autofocus, ifTrue: 'AUTOFOCUS', defaultValue: false));
+    properties.add(FlagProperty('canRequestFocus',
+        value: canRequestFocus, ifFalse: 'NOT FOCUSABLE', defaultValue: false));
+    properties.add(FlagProperty('descendantsAreFocusable',
+        value: descendantsAreFocusable,
+        ifFalse: 'DESCENDANTS UNFOCUSABLE',
+        defaultValue: true));
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
+        defaultValue: null));
   }
 
   @override
@@ -933,8 +941,10 @@ class FocusScope extends Focus {
   /// The [context] argument must not be null.
   static FocusScopeNode of(BuildContext context) {
     assert(context != null);
-    final _FocusMarker? marker = context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
-    return marker?.notifier?.nearestScope ?? context.owner!.focusManager.rootScope;
+    final _FocusMarker? marker =
+        context.dependOnInheritedWidgetOfExactType<_FocusMarker>();
+    return marker?.notifier?.nearestScope ??
+        context.owner!.focusManager.rootScope;
   }
 
   @override
@@ -970,7 +980,7 @@ class _FocusMarker extends InheritedNotifier<FocusNode> {
     Key? key,
     required FocusNode node,
     required Widget child,
-  })  : assert(node != null),
+  })   : assert(node != null),
         assert(child != null),
         super(key: key, notifier: node, child: child);
 }
@@ -996,7 +1006,7 @@ class ExcludeFocus extends StatelessWidget {
     Key? key,
     this.excluding = true,
     required this.child,
-  })  : assert(excluding != null),
+  })   : assert(excluding != null),
         assert(child != null),
         super(key: key);
 

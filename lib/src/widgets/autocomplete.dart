@@ -18,7 +18,8 @@ import 'overlay.dart';
 ///
 /// See also:
 ///   * [RawAutocomplete.optionsBuilder], which is of this type.
-typedef AutocompleteOptionsBuilder<T extends Object> = Iterable<T> Function(TextEditingValue textEditingValue);
+typedef AutocompleteOptionsBuilder<T extends Object> = Iterable<T> Function(
+    TextEditingValue textEditingValue);
 
 /// The type of the callback used by the [RawAutocomplete] widget to indicate
 /// that the user has selected an option.
@@ -56,7 +57,8 @@ typedef AutocompleteFieldViewBuilder = Widget Function(
 ///
 /// See also:
 ///   * [RawAutocomplete.displayStringForOption], which is of this type.
-typedef AutocompleteOptionToString<T extends Object> = String Function(T option);
+typedef AutocompleteOptionToString<T extends Object> = String Function(
+    T option);
 
 // TODO(justinmc): Mention Autocomplete and AutocompleteCupertino when they are
 // implemented.
@@ -431,11 +433,11 @@ class RawAutocomplete<T extends Object> extends StatefulWidget {
     required this.optionsBuilder,
     this.displayStringForOption = _defaultStringForOption,
     this.onSelected,
-  }) : assert(displayStringForOption != null),
-       assert(fieldViewBuilder != null),
-       assert(optionsBuilder != null),
-       assert(optionsViewBuilder != null),
-       super(key: key);
+  })  : assert(displayStringForOption != null),
+        assert(fieldViewBuilder != null),
+        assert(optionsBuilder != null),
+        assert(optionsViewBuilder != null),
+        super(key: key);
 
   /// Builds the field whose input is used to get the options.
   ///
@@ -478,7 +480,8 @@ class RawAutocomplete<T extends Object> extends StatefulWidget {
   _RawAutocompleteState<T> createState() => _RawAutocompleteState<T>();
 }
 
-class _RawAutocompleteState<T extends Object> extends State<RawAutocomplete<T>> {
+class _RawAutocompleteState<T extends Object>
+    extends State<RawAutocomplete<T>> {
   final GlobalKey _fieldKey = GlobalKey();
   final LayerLink _optionsLayerLink = LayerLink();
   final TextEditingController _textEditingController = TextEditingController();
@@ -500,8 +503,9 @@ class _RawAutocompleteState<T extends Object> extends State<RawAutocomplete<T>> 
       _textEditingController.value,
     );
     _options = options;
-    if (_selection != null
-        && _textEditingController.text != widget.displayStringForOption(_selection!)) {
+    if (_selection != null &&
+        _textEditingController.text !=
+            widget.displayStringForOption(_selection!)) {
       _selection = null;
     }
     _updateOverlay();

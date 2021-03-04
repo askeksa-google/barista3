@@ -112,8 +112,8 @@ class Tooltip extends StatefulWidget {
     this.waitDuration,
     this.showDuration,
     this.child,
-  }) : assert(message != null),
-       super(key: key);
+  })  : assert(message != null),
+        super(key: key);
 
   /// The text to display in the tooltip.
   final String message;
@@ -211,13 +211,27 @@ class Tooltip extends StatefulWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('message', message, showName: false));
     properties.add(DoubleProperty('height', height, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('margin', margin, defaultValue: null));
-    properties.add(DoubleProperty('vertical offset', verticalOffset, defaultValue: null));
-    properties.add(FlagProperty('position', value: preferBelow, ifTrue: 'below', ifFalse: 'above', showName: true, defaultValue: null));
-    properties.add(FlagProperty('semantics', value: excludeFromSemantics, ifTrue: 'excluded', showName: true, defaultValue: null));
-    properties.add(DiagnosticsProperty<Duration>('wait duration', waitDuration, defaultValue: null));
-    properties.add(DiagnosticsProperty<Duration>('show duration', showDuration, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('margin', margin,
+        defaultValue: null));
+    properties.add(
+        DoubleProperty('vertical offset', verticalOffset, defaultValue: null));
+    properties.add(FlagProperty('position',
+        value: preferBelow,
+        ifTrue: 'below',
+        ifFalse: 'above',
+        showName: true,
+        defaultValue: null));
+    properties.add(FlagProperty('semantics',
+        value: excludeFromSemantics,
+        ifTrue: 'excluded',
+        showName: true,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Duration>('wait duration', waitDuration,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Duration>('show duration', showDuration,
+        defaultValue: null));
   }
 }
 
@@ -256,10 +270,10 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
       duration: _fadeInDuration,
       reverseDuration: _fadeOutDuration,
       vsync: this,
-    )
-      ..addStatusListener(_handleStatusChanged);
+    )..addStatusListener(_handleStatusChanged);
     // Listen to see when a mouse is added.
-    RendererBinding.instance!.mouseTracker.addListener(_handleMouseTrackerChange);
+    RendererBinding.instance!.mouseTracker
+        .addListener(_handleMouseTrackerChange);
     // Listen to global pointer events so that we can hide a tooltip immediately
     // if some other control is clicked on.
     GestureBinding.instance!.pointerRouter.addGlobalRoute(_handlePointerEvent);
@@ -307,9 +321,10 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
     if (!mounted) {
       return;
     }
-    final bool mouseIsConnected = RendererBinding.instance!.mouseTracker.mouseIsConnected;
+    final bool mouseIsConnected =
+        RendererBinding.instance!.mouseTracker.mouseIsConnected;
     if (mouseIsConnected != _mouseIsConnected) {
-      setState((){
+      setState(() {
         _mouseIsConnected = mouseIsConnected;
       });
     }
@@ -321,7 +336,7 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
     }
   }
 
-  void _hideTooltip({ bool immediately = false }) {
+  void _hideTooltip({bool immediately = false}) {
     _showTimer?.cancel();
     _showTimer = null;
     if (immediately) {
@@ -339,7 +354,7 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
     _longPressActivated = false;
   }
 
-  void _showTooltip({ bool immediately = false }) {
+  void _showTooltip({bool immediately = false}) {
     _hideTimer?.cancel();
     _hideTimer = null;
     if (immediately) {
@@ -437,10 +452,11 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    GestureBinding.instance!.pointerRouter.removeGlobalRoute(_handlePointerEvent);
-    RendererBinding.instance!.mouseTracker.removeListener(_handleMouseTrackerChange);
-    if (_entry != null)
-      _removeEntry();
+    GestureBinding.instance!.pointerRouter
+        .removeGlobalRoute(_handlePointerEvent);
+    RendererBinding.instance!.mouseTracker
+        .removeListener(_handleMouseTrackerChange);
+    if (_entry != null) _removeEntry();
     _controller.dispose();
     super.dispose();
   }
@@ -448,8 +464,7 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
   void _handleLongPress() {
     _longPressActivated = true;
     final bool tooltipCreated = ensureTooltipVisible();
-    if (tooltipCreated)
-      Feedback.forLongPress(context);
+    if (tooltipCreated) Feedback.forLongPress(context);
   }
 
   @override
@@ -482,13 +497,23 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
     height = widget.height ?? tooltipTheme.height ?? _getDefaultTooltipHeight();
     padding = widget.padding ?? tooltipTheme.padding ?? _getDefaultPadding();
     margin = widget.margin ?? tooltipTheme.margin ?? _defaultMargin;
-    verticalOffset = widget.verticalOffset ?? tooltipTheme.verticalOffset ?? _defaultVerticalOffset;
-    preferBelow = widget.preferBelow ?? tooltipTheme.preferBelow ?? _defaultPreferBelow;
-    excludeFromSemantics = widget.excludeFromSemantics ?? tooltipTheme.excludeFromSemantics ?? _defaultExcludeFromSemantics;
-    decoration = widget.decoration ?? tooltipTheme.decoration ?? defaultDecoration;
+    verticalOffset = widget.verticalOffset ??
+        tooltipTheme.verticalOffset ??
+        _defaultVerticalOffset;
+    preferBelow =
+        widget.preferBelow ?? tooltipTheme.preferBelow ?? _defaultPreferBelow;
+    excludeFromSemantics = widget.excludeFromSemantics ??
+        tooltipTheme.excludeFromSemantics ??
+        _defaultExcludeFromSemantics;
+    decoration =
+        widget.decoration ?? tooltipTheme.decoration ?? defaultDecoration;
     textStyle = widget.textStyle ?? tooltipTheme.textStyle ?? defaultTextStyle;
-    waitDuration = widget.waitDuration ?? tooltipTheme.waitDuration ?? _defaultWaitDuration;
-    showDuration = widget.showDuration ?? tooltipTheme.showDuration ?? _defaultShowDuration;
+    waitDuration = widget.waitDuration ??
+        tooltipTheme.waitDuration ??
+        _defaultWaitDuration;
+    showDuration = widget.showDuration ??
+        tooltipTheme.showDuration ??
+        _defaultShowDuration;
 
     Widget result = GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -523,9 +548,9 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
     required this.target,
     required this.verticalOffset,
     required this.preferBelow,
-  }) : assert(target != null),
-       assert(verticalOffset != null),
-       assert(preferBelow != null);
+  })   : assert(target != null),
+        assert(verticalOffset != null),
+        assert(preferBelow != null);
 
   /// The offset of the target the tooltip is positioned near in the global
   /// coordinate system.
@@ -542,7 +567,8 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
   final bool preferBelow;
 
   @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => constraints.loosen();
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      constraints.loosen();
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
@@ -557,9 +583,9 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_TooltipPositionDelegate oldDelegate) {
-    return target != oldDelegate.target
-        || verticalOffset != oldDelegate.verticalOffset
-        || preferBelow != oldDelegate.preferBelow;
+    return target != oldDelegate.target ||
+        verticalOffset != oldDelegate.verticalOffset ||
+        preferBelow != oldDelegate.preferBelow;
   }
 }
 

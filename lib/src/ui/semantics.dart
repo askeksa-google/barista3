@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 /// The possible actions that can be conveyed from the operating system
@@ -15,7 +13,8 @@ part of dart.ui;
 /// See also:
 ///   - file://./../../lib/ui/semantics/semantics_node.h
 class SemanticsAction {
-  const SemanticsAction._(this.index) : assert(index != null); // ignore: unnecessary_null_comparison
+  const SemanticsAction._(this.index)
+      : assert(index != null); // ignore: unnecessary_null_comparison
 
   static const int _kTapIndex = 1 << 0;
   static const int _kLongPressIndex = 1 << 1;
@@ -60,14 +59,16 @@ class SemanticsAction {
   ///
   /// This action should be recognized by controls that are horizontally
   /// scrollable.
-  static const SemanticsAction scrollLeft = SemanticsAction._(_kScrollLeftIndex);
+  static const SemanticsAction scrollLeft =
+      SemanticsAction._(_kScrollLeftIndex);
 
   /// The equivalent of a user moving their finger across the screen from left
   /// to right.
   ///
   /// This action should be recognized by controls that are horizontally
   /// scrollable.
-  static const SemanticsAction scrollRight = SemanticsAction._(_kScrollRightIndex);
+  static const SemanticsAction scrollRight =
+      SemanticsAction._(_kScrollRightIndex);
 
   /// The equivalent of a user moving their finger across the screen from
   /// bottom to top.
@@ -81,7 +82,8 @@ class SemanticsAction {
   ///
   /// This action should be recognized by controls that are vertically
   /// scrollable.
-  static const SemanticsAction scrollDown = SemanticsAction._(_kScrollDownIndex);
+  static const SemanticsAction scrollDown =
+      SemanticsAction._(_kScrollDownIndex);
 
   /// A request to increase the value represented by the semantics node.
   ///
@@ -97,7 +99,8 @@ class SemanticsAction {
   ///
   /// For example, this action might be send to a node in a scrollable list that
   /// is partially off screen to bring it on screen.
-  static const SemanticsAction showOnScreen = SemanticsAction._(_kShowOnScreenIndex);
+  static const SemanticsAction showOnScreen =
+      SemanticsAction._(_kShowOnScreenIndex);
 
   /// Move the cursor forward by one character.
   ///
@@ -105,7 +108,8 @@ class SemanticsAction {
   ///
   /// The action includes a boolean argument, which indicates whether the cursor
   /// movement should extend (or start) a selection.
-  static const SemanticsAction moveCursorForwardByCharacter = SemanticsAction._(_kMoveCursorForwardByCharacterIndex);
+  static const SemanticsAction moveCursorForwardByCharacter =
+      SemanticsAction._(_kMoveCursorForwardByCharacterIndex);
 
   /// Move the cursor backward by one character.
   ///
@@ -113,7 +117,8 @@ class SemanticsAction {
   ///
   /// The action includes a boolean argument, which indicates whether the cursor
   /// movement should extend (or start) a selection.
-  static const SemanticsAction moveCursorBackwardByCharacter = SemanticsAction._(_kMoveCursorBackwardByCharacterIndex);
+  static const SemanticsAction moveCursorBackwardByCharacter =
+      SemanticsAction._(_kMoveCursorBackwardByCharacterIndex);
 
   /// Set the text selection to the given range.
   ///
@@ -124,7 +129,8 @@ class SemanticsAction {
   ///
   /// Setting `base` and `extent` to the same value will move the cursor to
   /// that position (without selecting anything).
-  static const SemanticsAction setSelection = SemanticsAction._(_kSetSelectionIndex);
+  static const SemanticsAction setSelection =
+      SemanticsAction._(_kSetSelectionIndex);
 
   /// Copy the current selection to the clipboard.
   static const SemanticsAction copy = SemanticsAction._(_kCopyIndex);
@@ -146,7 +152,8 @@ class SemanticsAction {
   /// The accessibility focus is different from the input focus. The input focus
   /// is usually held by the element that currently responds to keyboard inputs.
   /// Accessibility focus and input focus can be held by two different nodes!
-  static const SemanticsAction didGainAccessibilityFocus = SemanticsAction._(_kDidGainAccessibilityFocusIndex);
+  static const SemanticsAction didGainAccessibilityFocus =
+      SemanticsAction._(_kDidGainAccessibilityFocusIndex);
 
   /// Indicates that the node has lost accessibility focus.
   ///
@@ -159,7 +166,8 @@ class SemanticsAction {
   /// The accessibility focus is different from the input focus. The input focus
   /// is usually held by the element that currently responds to keyboard inputs.
   /// Accessibility focus and input focus can be held by two different nodes!
-  static const SemanticsAction didLoseAccessibilityFocus = SemanticsAction._(_kDidLoseAccessibilityFocusIndex);
+  static const SemanticsAction didLoseAccessibilityFocus =
+      SemanticsAction._(_kDidLoseAccessibilityFocusIndex);
 
   /// Indicates that the user has invoked a custom accessibility action.
   ///
@@ -182,7 +190,8 @@ class SemanticsAction {
   ///
   /// The action includes a boolean argument, which indicates whether the cursor
   /// movement should extend (or start) a selection.
-  static const SemanticsAction moveCursorForwardByWord = SemanticsAction._(_kMoveCursorForwardByWordIndex);
+  static const SemanticsAction moveCursorForwardByWord =
+      SemanticsAction._(_kMoveCursorForwardByWordIndex);
 
   /// Move the cursor backward by one word.
   ///
@@ -190,7 +199,8 @@ class SemanticsAction {
   ///
   /// The action includes a boolean argument, which indicates whether the cursor
   /// movement should extend (or start) a selection.
-  static const SemanticsAction moveCursorBackwardByWord = SemanticsAction._(_kMoveCursorBackwardByWordIndex);
+  static const SemanticsAction moveCursorBackwardByWord =
+      SemanticsAction._(_kMoveCursorBackwardByWordIndex);
 
   /// The possible semantics actions.
   ///
@@ -288,7 +298,7 @@ class SemanticsFlag {
   static const int _kIsInMutuallyExclusiveGroupIndex = 1 << 8;
   static const int _kIsHeaderIndex = 1 << 9;
   static const int _kIsObscuredIndex = 1 << 10;
-  static const int _kScopesRouteIndex= 1 << 11;
+  static const int _kScopesRouteIndex = 1 << 11;
   static const int _kNamesRouteIndex = 1 << 12;
   static const int _kIsHiddenIndex = 1 << 13;
   static const int _kIsImageIndex = 1 << 14;
@@ -307,7 +317,8 @@ class SemanticsFlag {
   // flutter/shell/platform/android/io/flutter/view/AccessibilityBridge.java,
   // and the SemanticsFlag class in lib/web_ui/lib/src/ui/semantics.dart.
 
-  const SemanticsFlag._(this.index) : assert(index != null); // ignore: unnecessary_null_comparison
+  const SemanticsFlag._(this.index)
+      : assert(index != null); // ignore: unnecessary_null_comparison
 
   /// The numerical value for this flag.
   ///
@@ -323,7 +334,8 @@ class SemanticsFlag {
   /// See also:
   ///
   ///   * [SemanticsFlag.isChecked], which controls whether the node is "checked" or "unchecked".
-  static const SemanticsFlag hasCheckedState = SemanticsFlag._(_kHasCheckedStateIndex);
+  static const SemanticsFlag hasCheckedState =
+      SemanticsFlag._(_kHasCheckedStateIndex);
 
   /// Whether a semantics node that [hasCheckedState] is checked.
   ///
@@ -336,7 +348,6 @@ class SemanticsFlag {
   ///
   ///   * [SemanticsFlag.hasCheckedState], which enables a checked state.
   static const SemanticsFlag isChecked = SemanticsFlag._(_kIsCheckedIndex);
-
 
   /// Whether a semantics node is selected.
   ///
@@ -390,7 +401,8 @@ class SemanticsFlag {
   /// For example, a button can be enabled or disabled and therefore has an
   /// "enabled" state. Static text is usually neither enabled nor disabled and
   /// therefore does not have an "enabled" state.
-  static const SemanticsFlag hasEnabledState = SemanticsFlag._(_kHasEnabledStateIndex);
+  static const SemanticsFlag hasEnabledState =
+      SemanticsFlag._(_kHasEnabledStateIndex);
 
   /// Whether a semantic node that [hasEnabledState] is currently enabled.
   ///
@@ -403,7 +415,8 @@ class SemanticsFlag {
   ///
   /// For example, a radio button is in a mutually exclusive group because
   /// only one radio button in that group can be marked as [isChecked].
-  static const SemanticsFlag isInMutuallyExclusiveGroup = SemanticsFlag._(_kIsInMutuallyExclusiveGroupIndex);
+  static const SemanticsFlag isInMutuallyExclusiveGroup =
+      SemanticsFlag._(_kIsInMutuallyExclusiveGroupIndex);
 
   /// Whether a semantic node is a header that divides content into sections.
   ///
@@ -503,7 +516,8 @@ class SemanticsFlag {
   /// may not be spoken if the OS accessibility services are already
   /// announcing something else, such as reading the label of a focused
   /// widget or providing a system announcement.
-  static const SemanticsFlag isLiveRegion = SemanticsFlag._(_kIsLiveRegionIndex);
+  static const SemanticsFlag isLiveRegion =
+      SemanticsFlag._(_kIsLiveRegionIndex);
 
   /// The semantics node has the quality of either being "on" or "off".
   ///
@@ -514,7 +528,8 @@ class SemanticsFlag {
   /// See also:
   ///
   ///    * [SemanticsFlag.isToggled], which controls whether the node is "on" or "off".
-  static const SemanticsFlag hasToggledState = SemanticsFlag._(_kHasToggledStateIndex);
+  static const SemanticsFlag hasToggledState =
+      SemanticsFlag._(_kHasToggledStateIndex);
 
   /// If true, the semantics node is "on". If false, the semantics node is
   /// "off".
@@ -533,7 +548,8 @@ class SemanticsFlag {
   /// easily move the accessibility focus to the next set of children. A
   /// [PageView] widget does not have implicit scrolling, so that users don't
   /// navigate to the next page when reaching the end of the current one.
-  static const SemanticsFlag hasImplicitScrolling = SemanticsFlag._(_kHasImplicitScrollingIndex);
+  static const SemanticsFlag hasImplicitScrolling =
+      SemanticsFlag._(_kHasImplicitScrollingIndex);
 
   /// The possible semantics flags.
   ///
@@ -563,7 +579,7 @@ class SemanticsFlag {
     _kIsFocusableIndex: isFocusable,
     _kIsLinkIndex: isLink,
     _kIsSliderIndex: isSlider,
-};
+  };
 
   @override
   String toString() {
@@ -629,8 +645,12 @@ class SemanticsFlag {
 /// user.
 class SemanticsUpdateBuilder {
   /// Creates an empty [SemanticsUpdateBuilder] object.
-    SemanticsUpdateBuilder() { _constructor(); }
-  void _constructor() { throw UnimplementedError(); }
+  SemanticsUpdateBuilder() {
+    _constructor();
+  }
+  void _constructor() {
+    throw UnimplementedError();
+  }
 
   /// Update the information associated with the node with the given `id`.
   ///
@@ -735,7 +755,9 @@ class SemanticsUpdateBuilder {
     assert(_matrix4IsValid(transform));
     assert(
       // ignore: unnecessary_null_comparison
-      scrollChildren == 0 || scrollChildren == null || (scrollChildren > 0 && childrenInHitTestOrder != null),
+      scrollChildren == 0 ||
+          scrollChildren == null ||
+          (scrollChildren > 0 && childrenInHitTestOrder != null),
       'If a node has scrollChildren, it must have childrenInHitTestOrder',
     );
     _updateNode(
@@ -770,6 +792,7 @@ class SemanticsUpdateBuilder {
       additionalActions,
     );
   }
+
   void _updateNode(
     int id,
     int flags,
@@ -800,7 +823,9 @@ class SemanticsUpdateBuilder {
     Int32List childrenInTraversalOrder,
     Int32List childrenInHitTestOrder,
     Int32List additionalActions,
-  ) { throw UnimplementedError(); }
+  ) {
+    throw UnimplementedError();
+  }
 
   /// Update the custom semantics action associated with the given `id`.
   ///
@@ -817,16 +842,17 @@ class SemanticsUpdateBuilder {
   /// For overridden standard actions, `overrideId` corresponds with a
   /// [SemanticsAction.index] value. For custom actions this argument should not be
   /// provided.
-  void updateCustomAction({required int id, String? label, String? hint, int overrideId = -1}) {
+  void updateCustomAction(
+      {required int id, String? label, String? hint, int overrideId = -1}) {
     assert(id != null); // ignore: unnecessary_null_comparison
     assert(overrideId != null); // ignore: unnecessary_null_comparison
     _updateCustomAction(id, label, hint, overrideId);
   }
+
   void _updateCustomAction(
-      int id,
-      String? label,
-      String? hint,
-      int overrideId) { throw UnimplementedError(); }
+      int id, String? label, String? hint, int overrideId) {
+    throw UnimplementedError();
+  }
 
   /// Creates a [SemanticsUpdate] object that encapsulates the updates recorded
   /// by this object.
@@ -838,7 +864,10 @@ class SemanticsUpdateBuilder {
     _build(semanticsUpdate);
     return semanticsUpdate;
   }
-  void _build(SemanticsUpdate outSemanticsUpdate) { throw UnimplementedError(); }
+
+  void _build(SemanticsUpdate outSemanticsUpdate) {
+    throw UnimplementedError();
+  }
 }
 
 /// An opaque object representing a batch of semantics updates.
@@ -852,11 +881,13 @@ class SemanticsUpdate {
   /// or extended directly.
   ///
   /// To create a SemanticsUpdate object, use a [SemanticsUpdateBuilder].
-    SemanticsUpdate._();
+  SemanticsUpdate._();
 
   /// Releases the resources used by this semantics update.
   ///
   /// After calling this function, the semantics update is cannot be used
   /// further.
-  void dispose() { throw UnimplementedError(); }
+  void dispose() {
+    throw UnimplementedError();
+  }
 }

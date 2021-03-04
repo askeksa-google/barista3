@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/foundation.dart';
 
 import 'keyboard_key.dart';
@@ -29,12 +28,12 @@ class RawKeyEventDataLinux extends RawKeyEventData {
     this.keyCode = 0,
     this.modifiers = 0,
     required this.isDown,
-  }) : assert(scanCode != null),
-       assert(unicodeScalarValues != null),
-       assert((unicodeScalarValues & ~LogicalKeyboardKey.valueMask) == 0),
-       assert(keyCode != null),
-       assert(modifiers != null),
-       assert(keyHelper != null);
+  })   : assert(scanCode != null),
+        assert(unicodeScalarValues != null),
+        assert((unicodeScalarValues & ~LogicalKeyboardKey.valueMask) == 0),
+        assert(keyCode != null),
+        assert(modifiers != null),
+        assert(keyHelper != null);
 
   /// A helper class that abstracts the fetching of the toolkit-specific mappings.
   ///
@@ -70,10 +69,12 @@ class RawKeyEventDataLinux extends RawKeyEventData {
   final bool isDown;
 
   @override
-  String get keyLabel => unicodeScalarValues == 0 ? '' : String.fromCharCode(unicodeScalarValues);
+  String get keyLabel =>
+      unicodeScalarValues == 0 ? '' : String.fromCharCode(unicodeScalarValues);
 
   @override
-  PhysicalKeyboardKey get physicalKey => kLinuxToPhysicalKey[scanCode] ?? PhysicalKeyboardKey.none;
+  PhysicalKeyboardKey get physicalKey =>
+      kLinuxToPhysicalKey[scanCode] ?? PhysicalKeyboardKey.none;
 
   @override
   LogicalKeyboardKey get logicalKey {
@@ -91,12 +92,14 @@ class RawKeyEventDataLinux extends RawKeyEventData {
     // plane.
     if (keyLabel.isNotEmpty &&
         !LogicalKeyboardKey.isControlCharacter(keyLabel)) {
-      final int keyId = LogicalKeyboardKey.unicodePlane | (unicodeScalarValues & LogicalKeyboardKey.valueMask);
-      return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(
-        keyId,
-        keyLabel: keyLabel,
-        debugName: kReleaseMode ? null : 'Key ${keyLabel.toUpperCase()}',
-      );
+      final int keyId = LogicalKeyboardKey.unicodePlane |
+          (unicodeScalarValues & LogicalKeyboardKey.valueMask);
+      return LogicalKeyboardKey.findKeyByKeyId(keyId) ??
+          LogicalKeyboardKey(
+            keyId,
+            keyLabel: keyLabel,
+            debugName: kReleaseMode ? null : 'Key ${keyLabel.toUpperCase()}',
+          );
     }
 
     // Look to see if the keyCode is one we know about and have a mapping for.
@@ -117,8 +120,10 @@ class RawKeyEventDataLinux extends RawKeyEventData {
   }
 
   @override
-  bool isModifierPressed(ModifierKey key, {KeyboardSide side = KeyboardSide.any}) {
-    return keyHelper.isModifierPressed(key, modifiers, side: side, keyCode: keyCode, isDown: isDown);
+  bool isModifierPressed(ModifierKey key,
+      {KeyboardSide side = KeyboardSide.any}) {
+    return keyHelper.isModifierPressed(key, modifiers,
+        side: side, keyCode: keyCode, isDown: isDown);
   }
 
   @override
@@ -157,7 +162,10 @@ abstract class KeyHelper {
 
   /// Returns true if the given [ModifierKey] was pressed at the time of this
   /// event.
-  bool isModifierPressed(ModifierKey key, int modifiers, {KeyboardSide side = KeyboardSide.any, required int keyCode, required bool isDown});
+  bool isModifierPressed(ModifierKey key, int modifiers,
+      {KeyboardSide side = KeyboardSide.any,
+      required int keyCode,
+      required bool isDown});
 
   /// The numpad key from the specific key code mapping.
   LogicalKeyboardKey? numpadKey(int keyCode);
@@ -204,14 +212,14 @@ class GLFWKeyHelper with KeyHelper {
   /// {@macro flutter.services.GLFWKeyHelper.modifierCapsLock}
   static const int modifierMeta = 0x0008;
 
-
   /// This mask is used to check the [RawKeyEventDataLinux.modifiers] field to
   /// test whether any key in the numeric keypad is pressed.
   ///
   /// {@macro flutter.services.GLFWKeyHelper.modifierCapsLock}
   static const int modifierNumericPad = 0x0020;
 
-  int _mergeModifiers({required int modifiers, required int keyCode, required bool isDown}) {
+  int _mergeModifiers(
+      {required int modifiers, required int keyCode, required bool isDown}) {
     // GLFW Key codes for modifier keys.
     const int shiftLeftKeyCode = 340;
     const int shiftRightKeyCode = 344;
@@ -261,8 +269,12 @@ class GLFWKeyHelper with KeyHelper {
   }
 
   @override
-  bool isModifierPressed(ModifierKey key, int modifiers, {KeyboardSide side = KeyboardSide.any, required int keyCode, required bool isDown}) {
-    modifiers = _mergeModifiers(modifiers: modifiers, keyCode: keyCode, isDown: isDown);
+  bool isModifierPressed(ModifierKey key, int modifiers,
+      {KeyboardSide side = KeyboardSide.any,
+      required int keyCode,
+      required bool isDown}) {
+    modifiers =
+        _mergeModifiers(modifiers: modifiers, keyCode: keyCode, isDown: isDown);
     switch (key) {
       case ModifierKey.controlModifier:
         return modifiers & modifierControl != 0;
@@ -347,7 +359,8 @@ class GtkKeyHelper with KeyHelper {
   /// {@macro flutter.services.GtkKeyHelper.modifierShift}
   static const int modifierMeta = 1 << 26;
 
-  int _mergeModifiers({required int modifiers, required int keyCode, required bool isDown}) {
+  int _mergeModifiers(
+      {required int modifiers, required int keyCode, required bool isDown}) {
     // GTK Key codes for modifier keys.
     const int shiftLeftKeyCode = 0xffe1;
     const int shiftRightKeyCode = 0xffe2;
@@ -399,8 +412,12 @@ class GtkKeyHelper with KeyHelper {
   }
 
   @override
-  bool isModifierPressed(ModifierKey key, int modifiers, {KeyboardSide side = KeyboardSide.any, required int keyCode, required bool isDown}) {
-    modifiers = _mergeModifiers(modifiers: modifiers, keyCode: keyCode, isDown: isDown);
+  bool isModifierPressed(ModifierKey key, int modifiers,
+      {KeyboardSide side = KeyboardSide.any,
+      required int keyCode,
+      required bool isDown}) {
+    modifiers =
+        _mergeModifiers(modifiers: modifiers, keyCode: keyCode, isDown: isDown);
     switch (key) {
       case ModifierKey.controlModifier:
         return modifiers & modifierControl != 0;

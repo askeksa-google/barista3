@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/foundation.dart';
 import 'package:vector_math/vector_math_64.dart';
 
@@ -13,7 +12,8 @@ typedef PointerRoute = void Function(PointerEvent event);
 
 /// A routing table for [PointerEvent] events.
 class PointerRouter {
-  final Map<int, Map<PointerRoute, Matrix4?>> _routeMap = <int, Map<PointerRoute, Matrix4?>>{};
+  final Map<int, Map<PointerRoute, Matrix4?>> _routeMap =
+      <int, Map<PointerRoute, Matrix4?>>{};
   final Map<PointerRoute, Matrix4?> _globalRoutes = <PointerRoute, Matrix4?>{};
 
   /// Adds a route to the routing table.
@@ -44,8 +44,7 @@ class PointerRouter {
     final Map<PointerRoute, Matrix4?> routes = _routeMap[pointer]!;
     assert(routes.containsKey(route));
     routes.remove(route);
-    if (routes.isEmpty)
-      _routeMap.remove(pointer);
+    if (routes.isEmpty) _routeMap.remove(pointer);
   }
 
   /// Adds a route to the global entry in the routing table.
@@ -84,7 +83,8 @@ class PointerRouter {
     if (count != null) {
       return count!;
     }
-    throw UnsupportedError('debugGlobalRouteCount is not supported in release builds');
+    throw UnsupportedError(
+        'debugGlobalRouteCount is not supported in release builds');
   }
 
   void _dispatch(PointerEvent event, PointerRoute route, Matrix4? transform) {
@@ -95,19 +95,21 @@ class PointerRouter {
       InformationCollector? collector;
       assert(() {
         collector = () sync* {
-          yield DiagnosticsProperty<PointerRouter>('router', this, level: DiagnosticLevel.debug);
-          yield DiagnosticsProperty<PointerRoute>('route', route, level: DiagnosticLevel.debug);
-          yield DiagnosticsProperty<PointerEvent>('event', event, level: DiagnosticLevel.debug);
+          yield DiagnosticsProperty<PointerRouter>('router', this,
+              level: DiagnosticLevel.debug);
+          yield DiagnosticsProperty<PointerRoute>('route', route,
+              level: DiagnosticLevel.debug);
+          yield DiagnosticsProperty<PointerEvent>('event', event,
+              level: DiagnosticLevel.debug);
         };
         return true;
       }());
       FlutterError.reportError(FlutterErrorDetails(
-        exception: exception,
-        stack: stack,
-        library: 'gesture library',
-        context: ErrorDescription('while routing a pointer event'),
-        informationCollector: collector
-      ));
+          exception: exception,
+          stack: stack,
+          library: 'gesture library',
+          context: ErrorDescription('while routing a pointer event'),
+          informationCollector: collector));
     }
   }
 
@@ -117,7 +119,8 @@ class PointerRouter {
   /// PointerRouter object.
   void route(PointerEvent event) {
     final Map<PointerRoute, Matrix4?>? routes = _routeMap[event.pointer];
-    final Map<PointerRoute, Matrix4?> copiedGlobalRoutes = Map<PointerRoute, Matrix4?>.from(_globalRoutes);
+    final Map<PointerRoute, Matrix4?> copiedGlobalRoutes =
+        Map<PointerRoute, Matrix4?>.from(_globalRoutes);
     if (routes != null) {
       _dispatchEventToRoutes(
         event,

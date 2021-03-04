@@ -152,7 +152,7 @@ class _CupertinoActivityIndicatorPainter extends CustomPainter {
     required this.activeColor,
     required this.radius,
     required this.progress,
-  })  : tickFundamentalRRect = RRect.fromLTRBXY(
+  })   : tickFundamentalRRect = RRect.fromLTRBXY(
           -radius / _kDefaultIndicatorRadius,
           -radius / 3.0,
           radius / _kDefaultIndicatorRadius,

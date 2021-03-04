@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/foundation.dart';
 
 import 'keyboard_key.dart';
@@ -27,10 +26,10 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
     this.charactersIgnoringModifiers = '',
     this.keyCode = 0,
     this.modifiers = 0,
-  }) : assert(characters != null),
-       assert(charactersIgnoringModifiers != null),
-       assert(keyCode != null),
-       assert(modifiers != null);
+  })  : assert(characters != null),
+        assert(charactersIgnoringModifiers != null),
+        assert(keyCode != null),
+        assert(modifiers != null);
 
   /// The Unicode characters associated with a key-up or key-down event.
   ///
@@ -65,7 +64,8 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
   String get keyLabel => charactersIgnoringModifiers;
 
   @override
-  PhysicalKeyboardKey get physicalKey => kMacOsToPhysicalKey[keyCode] ?? PhysicalKeyboardKey.none;
+  PhysicalKeyboardKey get physicalKey =>
+      kMacOsToPhysicalKey[keyCode] ?? PhysicalKeyboardKey.none;
 
   @override
   LogicalKeyboardKey get logicalKey {
@@ -94,12 +94,14 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
         codeUnit = (codeUnit << 16) | secondCode;
       }
 
-      final int keyId = LogicalKeyboardKey.unicodePlane | (codeUnit & LogicalKeyboardKey.valueMask);
-      return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(
-        keyId,
-        keyLabel: keyLabel,
-        debugName: kReleaseMode ? null : 'Key ${keyLabel.toUpperCase()}',
-      );
+      final int keyId = LogicalKeyboardKey.unicodePlane |
+          (codeUnit & LogicalKeyboardKey.valueMask);
+      return LogicalKeyboardKey.findKeyByKeyId(keyId) ??
+          LogicalKeyboardKey(
+            keyId,
+            keyLabel: keyLabel,
+            debugName: kReleaseMode ? null : 'Key ${keyLabel.toUpperCase()}',
+          );
     }
 
     // Control keys like "backspace" and movement keys like arrow keys don't
@@ -110,11 +112,12 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
     // physical key map.
     if (physicalKey != PhysicalKeyboardKey.none) {
       final int keyId = physicalKey.usbHidUsage | LogicalKeyboardKey.hidPlane;
-      return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(
-        keyId,
-        keyLabel: physicalKey.debugName ?? '',
-        debugName: physicalKey.debugName,
-      );
+      return LogicalKeyboardKey.findKeyByKeyId(keyId) ??
+          LogicalKeyboardKey(
+            keyId,
+            keyLabel: physicalKey.debugName ?? '',
+            debugName: physicalKey.debugName,
+          );
     }
 
     // This is a non-printable key that is unrecognized, so a new code is minted
@@ -127,7 +130,8 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
     );
   }
 
-  bool _isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
+  bool _isLeftRightModifierPressed(
+      KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (modifiers & anyMask == 0) {
       return false;
     }
@@ -135,12 +139,14 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
     // whether either left or right is pressed. Handles the case where macOS
     // supplies just the "either" modifier flag, but not the left/right flag.
     // (e.g. modifierShift but not modifierLeftShift).
-    final bool anyOnly = modifiers & (leftMask | rightMask | anyMask) == anyMask;
+    final bool anyOnly =
+        modifiers & (leftMask | rightMask | anyMask) == anyMask;
     switch (side) {
       case KeyboardSide.any:
         return true;
       case KeyboardSide.all:
-        return modifiers & leftMask != 0 && modifiers & rightMask != 0 || anyOnly;
+        return modifiers & leftMask != 0 && modifiers & rightMask != 0 ||
+            anyOnly;
       case KeyboardSide.left:
         return modifiers & leftMask != 0 || anyOnly;
       case KeyboardSide.right:
@@ -149,29 +155,46 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
   }
 
   @override
-  bool isModifierPressed(ModifierKey key, {KeyboardSide side = KeyboardSide.any}) {
+  bool isModifierPressed(ModifierKey key,
+      {KeyboardSide side = KeyboardSide.any}) {
     final int independentModifier = modifiers & deviceIndependentMask;
     final bool result;
     switch (key) {
       case ModifierKey.controlModifier:
-        result = _isLeftRightModifierPressed(side, independentModifier & modifierControl, modifierLeftControl, modifierRightControl);
+        result = _isLeftRightModifierPressed(
+            side,
+            independentModifier & modifierControl,
+            modifierLeftControl,
+            modifierRightControl);
         break;
       case ModifierKey.shiftModifier:
-        result = _isLeftRightModifierPressed(side, independentModifier & modifierShift, modifierLeftShift, modifierRightShift);
+        result = _isLeftRightModifierPressed(
+            side,
+            independentModifier & modifierShift,
+            modifierLeftShift,
+            modifierRightShift);
         break;
       case ModifierKey.altModifier:
-        result = _isLeftRightModifierPressed(side, independentModifier & modifierOption, modifierLeftOption, modifierRightOption);
+        result = _isLeftRightModifierPressed(
+            side,
+            independentModifier & modifierOption,
+            modifierLeftOption,
+            modifierRightOption);
         break;
       case ModifierKey.metaModifier:
-        result = _isLeftRightModifierPressed(side, independentModifier & modifierCommand, modifierLeftCommand, modifierRightCommand);
+        result = _isLeftRightModifierPressed(
+            side,
+            independentModifier & modifierCommand,
+            modifierLeftCommand,
+            modifierRightCommand);
         break;
       case ModifierKey.capsLockModifier:
         result = independentModifier & modifierCapsLock != 0;
         break;
-    // On macOS, the function modifier bit is set for any function key, like F1,
-    // F2, etc., but the meaning of ModifierKey.modifierFunction in Flutter is
-    // that of the Fn modifier key, so there's no good way to emulate that on
-    // macOS.
+      // On macOS, the function modifier bit is set for any function key, like F1,
+      // F2, etc., but the meaning of ModifierKey.modifierFunction in Flutter is
+      // that of the Fn modifier key, so there's no good way to emulate that on
+      // macOS.
       case ModifierKey.functionModifier:
       case ModifierKey.numLockModifier:
       case ModifierKey.symbolModifier:
@@ -180,7 +203,8 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
         result = false;
         break;
     }
-    assert(!result || getModifierSide(key) != null, "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
+    assert(!result || getModifierSide(key) != null,
+        "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
     return result;
   }
 
@@ -193,7 +217,8 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
         return KeyboardSide.left;
       } else if (combined == rightMask) {
         return KeyboardSide.right;
-      } else if (combined == combinedMask || modifiers & (combinedMask | anyMask) == anyMask) {
+      } else if (combined == combinedMask ||
+          modifiers & (combinedMask | anyMask) == anyMask) {
         // Handles the case where macOS supplies just the "either" modifier
         // flag, but not the left/right flag. (e.g. modifierShift but not
         // modifierLeftShift), or if left and right flags are provided, but not
@@ -205,13 +230,16 @@ class RawKeyEventDataMacOs extends RawKeyEventData {
 
     switch (key) {
       case ModifierKey.controlModifier:
-        return findSide(modifierControl, modifierLeftControl, modifierRightControl);
+        return findSide(
+            modifierControl, modifierLeftControl, modifierRightControl);
       case ModifierKey.shiftModifier:
         return findSide(modifierShift, modifierLeftShift, modifierRightShift);
       case ModifierKey.altModifier:
-        return findSide(modifierOption, modifierLeftOption, modifierRightOption);
+        return findSide(
+            modifierOption, modifierLeftOption, modifierRightOption);
       case ModifierKey.metaModifier:
-        return findSide(modifierCommand, modifierLeftCommand, modifierRightCommand);
+        return findSide(
+            modifierCommand, modifierLeftCommand, modifierRightCommand);
       case ModifierKey.capsLockModifier:
       case ModifierKey.numLockModifier:
       case ModifierKey.scrollLockModifier:

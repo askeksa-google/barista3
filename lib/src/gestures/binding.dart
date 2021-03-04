@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:async';
 import 'dart:collection';
 import 'package:flute/ui.dart' as ui show PointerDataPacket;
@@ -30,7 +29,8 @@ class _Resampler {
   _Resampler(this._handlePointerEvent, this._handleSampleTimeChanged);
 
   // Resamplers used to filter incoming pointer events.
-  final Map<int, PointerEventResampler> _resamplers = <int, PointerEventResampler>{};
+  final Map<int, PointerEventResampler> _resamplers =
+      <int, PointerEventResampler>{};
 
   // Flag to track if a frame callback has been scheduled.
   bool _frameCallbackScheduled = false;
@@ -55,7 +55,7 @@ class _Resampler {
   void addOrDispatch(PointerEvent event) {
     final SchedulerBinding? scheduler = SchedulerBinding.instance;
     assert(scheduler != null);
-      // Add touch event to resampler or dispatch pointer event directly.
+    // Add touch event to resampler or dispatch pointer event directly.
     if (event.kind == PointerDeviceKind.touch) {
       // Save last event time for debugPrint of resampling margin.
       _lastEventTime = event.timeStamp;
@@ -118,7 +118,7 @@ class _Resampler {
         assert(() {
           if (debugPrintResamplingMargin) {
             final Duration resamplingMargin = _lastEventTime - _lastSampleTime;
-              debugPrint('$resamplingMargin');
+            debugPrint('$resamplingMargin');
           }
           return true;
         }());
@@ -193,7 +193,8 @@ const Duration _samplingInterval = Duration(microseconds: 16667);
 ///
 /// When a [PointerUpEvent] is received, the [GestureArenaManager.sweep] method
 /// is invoked to force the gesture arena logic to terminate if necessary.
-mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, HitTestTarget {
+mixin GestureBinding on BindingBase
+    implements HitTestable, HitTestDispatcher, HitTestTarget {
   @override
   void initInstances() {
     super.initInstances();
@@ -216,9 +217,9 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
   void _handlePointerDataPacket(ui.PointerDataPacket packet) {
     // We convert pointer data to logical pixels so that e.g. the touch slop can be
     // defined in a device-independent manner.
-    _pendingPointerEvents.addAll(PointerEventConverter.expand(packet.data, window.devicePixelRatio));
-    if (!locked)
-      _flushPointerEventQueue();
+    _pendingPointerEvents.addAll(
+        PointerEventConverter.expand(packet.data, window.devicePixelRatio));
+    if (!locked) _flushPointerEventQueue();
   }
 
   /// Dispatch a [PointerCancelEvent] for the given pointer soon.
@@ -282,7 +283,9 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
 
   void _handlePointerEventImmediately(PointerEvent event) {
     HitTestResult? hitTestResult;
-    if (event is PointerDownEvent || event is PointerSignalEvent || event is PointerHoverEvent) {
+    if (event is PointerDownEvent ||
+        event is PointerSignalEvent ||
+        event is PointerHoverEvent) {
       assert(!_hitTests.containsKey(event.pointer));
       hitTestResult = HitTestResult();
       hitTest(hitTestResult, event.position);
@@ -290,8 +293,7 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
         _hitTests[event.pointer] = hitTestResult;
       }
       assert(() {
-        if (debugPrintHitTestResults)
-          debugPrint('$event: $hitTestResult');
+        if (debugPrintHitTestResults) debugPrint('$event: $hitTestResult');
         return true;
       }());
     } else if (event is PointerUpEvent || event is PointerCancelEvent) {
@@ -346,11 +348,13 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
           exception: exception,
           stack: stack,
           library: 'gesture library',
-          context: ErrorDescription('while dispatching a non-hit-tested pointer event'),
+          context: ErrorDescription(
+              'while dispatching a non-hit-tested pointer event'),
           event: event,
           hitTestEntry: null,
           informationCollector: () sync* {
-            yield DiagnosticsProperty<PointerEvent>('Event', event, style: DiagnosticsTreeStyle.errorProperty);
+            yield DiagnosticsProperty<PointerEvent>('Event', event,
+                style: DiagnosticsTreeStyle.errorProperty);
           },
         ));
       }
@@ -368,8 +372,10 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
           event: event,
           hitTestEntry: entry,
           informationCollector: () sync* {
-            yield DiagnosticsProperty<PointerEvent>('Event', event, style: DiagnosticsTreeStyle.errorProperty);
-            yield DiagnosticsProperty<HitTestTarget>('Target', entry.target, style: DiagnosticsTreeStyle.errorProperty);
+            yield DiagnosticsProperty<PointerEvent>('Event', event,
+                style: DiagnosticsTreeStyle.errorProperty);
+            yield DiagnosticsProperty<HitTestTarget>('Target', entry.target,
+                style: DiagnosticsTreeStyle.errorProperty);
           },
         ));
       }
@@ -402,8 +408,7 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
     if (!locked) {
       if (resamplingEnabled) {
         _resampler.sample(samplingOffset, _samplingInterval);
-      }
-      else {
+      } else {
         _resampler.stop();
       }
     }
@@ -454,13 +459,13 @@ class FlutterErrorDetailsForPointerEventDispatcher extends FlutterErrorDetails {
     InformationCollector? informationCollector,
     bool silent = false,
   }) : super(
-    exception: exception,
-    stack: stack,
-    library: library,
-    context: context,
-    informationCollector: informationCollector,
-    silent: silent,
-  );
+          exception: exception,
+          stack: stack,
+          library: library,
+          context: context,
+          informationCollector: informationCollector,
+          silent: silent,
+        );
 
   /// The pointer event that was being routed when the exception was raised.
   final PointerEvent? event;

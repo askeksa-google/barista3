@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:typed_data' show Uint8List;
 import 'package:flute/ui.dart' as ui show instantiateImageCodec, Codec;
 import 'package:flute/foundation.dart';
@@ -86,7 +85,8 @@ mixin PaintingBinding on BindingBase, ServicesBinding {
   /// unnecessary memory usage for images. Callers that wish to display an image
   /// above its native resolution should prefer scaling the canvas the image is
   /// drawn into.
-  Future<ui.Codec> instantiateImageCodec(Uint8List bytes, {
+  Future<ui.Codec> instantiateImageCodec(
+    Uint8List bytes, {
     int? cacheWidth,
     int? cacheHeight,
     bool allowUpscaling = false,
@@ -144,7 +144,7 @@ mixin PaintingBinding on BindingBase, ServicesBinding {
 class _SystemFontsNotifier extends Listenable {
   final Set<VoidCallback> _systemFontsCallbacks = <VoidCallback>{};
 
-  void notifyListeners () {
+  void notifyListeners() {
     for (final VoidCallback callback in _systemFontsCallbacks) {
       callback();
     }
@@ -154,6 +154,7 @@ class _SystemFontsNotifier extends Listenable {
   void addListener(VoidCallback listener) {
     _systemFontsCallbacks.add(listener);
   }
+
   @override
   void removeListener(VoidCallback listener) {
     _systemFontsCallbacks.remove(listener);

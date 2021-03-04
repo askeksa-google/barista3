@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:async';
 import 'package:flute/ui.dart';
 
@@ -56,7 +55,7 @@ enum DeviceOrientation {
 @immutable
 class ApplicationSwitcherDescription {
   /// Creates an ApplicationSwitcherDescription.
-  const ApplicationSwitcherDescription({ this.label, this.primaryColor });
+  const ApplicationSwitcherDescription({this.label, this.primaryColor});
 
   /// A label and description of the current state of the application.
   final String? label;
@@ -158,7 +157,8 @@ class SystemUiOverlayStyle {
       'statusBarColor': statusBarColor?.value,
       'statusBarBrightness': statusBarBrightness?.toString(),
       'statusBarIconBrightness': statusBarIconBrightness?.toString(),
-      'systemNavigationBarIconBrightness': systemNavigationBarIconBrightness?.toString(),
+      'systemNavigationBarIconBrightness':
+          systemNavigationBarIconBrightness?.toString(),
     };
   }
 
@@ -175,12 +175,16 @@ class SystemUiOverlayStyle {
     Brightness? systemNavigationBarIconBrightness,
   }) {
     return SystemUiOverlayStyle(
-      systemNavigationBarColor: systemNavigationBarColor ?? this.systemNavigationBarColor,
-      systemNavigationBarDividerColor: systemNavigationBarDividerColor ?? this.systemNavigationBarDividerColor,
+      systemNavigationBarColor:
+          systemNavigationBarColor ?? this.systemNavigationBarColor,
+      systemNavigationBarDividerColor: systemNavigationBarDividerColor ??
+          this.systemNavigationBarDividerColor,
       statusBarColor: statusBarColor ?? this.statusBarColor,
-      statusBarIconBrightness: statusBarIconBrightness ?? this.statusBarIconBrightness,
+      statusBarIconBrightness:
+          statusBarIconBrightness ?? this.statusBarIconBrightness,
       statusBarBrightness: statusBarBrightness ?? this.statusBarBrightness,
-      systemNavigationBarIconBrightness: systemNavigationBarIconBrightness ?? this.systemNavigationBarIconBrightness,
+      systemNavigationBarIconBrightness: systemNavigationBarIconBrightness ??
+          this.systemNavigationBarIconBrightness,
     );
   }
 
@@ -198,21 +202,22 @@ class SystemUiOverlayStyle {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is SystemUiOverlayStyle
-        && other.systemNavigationBarColor == systemNavigationBarColor
-        && other.systemNavigationBarDividerColor == systemNavigationBarDividerColor
-        && other.statusBarColor == statusBarColor
-        && other.statusBarIconBrightness == statusBarIconBrightness
-        && other.statusBarBrightness == statusBarBrightness
-        && other.systemNavigationBarIconBrightness == systemNavigationBarIconBrightness;
+    if (other.runtimeType != runtimeType) return false;
+    return other is SystemUiOverlayStyle &&
+        other.systemNavigationBarColor == systemNavigationBarColor &&
+        other.systemNavigationBarDividerColor ==
+            systemNavigationBarDividerColor &&
+        other.statusBarColor == statusBarColor &&
+        other.statusBarIconBrightness == statusBarIconBrightness &&
+        other.statusBarBrightness == statusBarBrightness &&
+        other.systemNavigationBarIconBrightness ==
+            systemNavigationBarIconBrightness;
   }
 }
 
 List<String> _stringify(List<dynamic> list) => <String>[
-  for (final dynamic item in list) item.toString(),
-];
+      for (final dynamic item in list) item.toString(),
+    ];
 
 /// Controls specific aspects of the operating system's graphical interface and
 /// how it interacts with the application.
@@ -239,7 +244,8 @@ class SystemChrome {
   ///
   /// Should you decide to opt out of multitasking you can do this by
   /// setting "Requires full screen" to true in the Xcode Deployment Info.
-  static Future<void> setPreferredOrientations(List<DeviceOrientation> orientations) async {
+  static Future<void> setPreferredOrientations(
+      List<DeviceOrientation> orientations) async {
     await SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setPreferredOrientations',
       _stringify(orientations),
@@ -251,7 +257,8 @@ class SystemChrome {
   ///
   /// Any part of the description that is unsupported on the current platform
   /// will be ignored.
-  static Future<void> setApplicationSwitcherDescription(ApplicationSwitcherDescription description) async {
+  static Future<void> setApplicationSwitcherDescription(
+      ApplicationSwitcherDescription description) async {
     await SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setApplicationSwitcherDescription',
       <String, dynamic>{
@@ -283,7 +290,8 @@ class SystemChrome {
   /// after a delay of 1 second. This can be achieved through [restoreSystemUIOverlays]
   /// or calling this again. Otherwise, the original UI overlay settings will be
   /// automatically restored only when the application loses and regains focus.
-  static Future<void> setEnabledSystemUIOverlays(List<SystemUiOverlay> overlays) async {
+  static Future<void> setEnabledSystemUIOverlays(
+      List<SystemUiOverlay> overlays) async {
     await SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setEnabledSystemUIOverlays',
       _stringify(overlays),

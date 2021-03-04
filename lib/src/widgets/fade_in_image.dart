@@ -93,16 +93,16 @@ class FadeInImage extends StatelessWidget {
     this.alignment = Alignment.center,
     this.repeat = ImageRepeat.noRepeat,
     this.matchTextDirection = false,
-  }) : assert(placeholder != null),
-       assert(image != null),
-       assert(fadeOutDuration != null),
-       assert(fadeOutCurve != null),
-       assert(fadeInDuration != null),
-       assert(fadeInCurve != null),
-       assert(alignment != null),
-       assert(repeat != null),
-       assert(matchTextDirection != null),
-       super(key: key);
+  })  : assert(placeholder != null),
+        assert(image != null),
+        assert(fadeOutDuration != null),
+        assert(fadeOutCurve != null),
+        assert(fadeInDuration != null),
+        assert(fadeInCurve != null),
+        assert(alignment != null),
+        assert(repeat != null),
+        assert(matchTextDirection != null),
+        super(key: key);
 
   /// Image displayed while the target [image] is loading.
   final ImageProvider placeholder;
@@ -244,12 +244,13 @@ class FadeInImage extends StatelessWidget {
     Widget result = _image(
       image: image,
       errorBuilder: imageErrorBuilder,
-      frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded)
-          return child;
+      frameBuilder: (BuildContext context, Widget child, int? frame,
+          bool wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded) return child;
         return _AnimatedFadeOutFadeIn(
           target: child,
-          placeholder: _image(image: placeholder, errorBuilder: placeholderErrorBuilder),
+          placeholder:
+              _image(image: placeholder, errorBuilder: placeholderErrorBuilder),
           isTargetLoaded: frame != null,
           fadeInDuration: fadeInDuration,
           fadeOutDuration: fadeOutDuration,
@@ -282,14 +283,14 @@ class _AnimatedFadeOutFadeIn extends ImplicitlyAnimatedWidget {
     required this.fadeOutCurve,
     required this.fadeInDuration,
     required this.fadeInCurve,
-  }) : assert(target != null),
-       assert(placeholder != null),
-       assert(isTargetLoaded != null),
-       assert(fadeOutDuration != null),
-       assert(fadeOutCurve != null),
-       assert(fadeInDuration != null),
-       assert(fadeInCurve != null),
-       super(key: key, duration: fadeInDuration + fadeOutDuration);
+  })   : assert(target != null),
+        assert(placeholder != null),
+        assert(isTargetLoaded != null),
+        assert(fadeOutDuration != null),
+        assert(fadeOutCurve != null),
+        assert(fadeInDuration != null),
+        assert(fadeInCurve != null),
+        super(key: key, duration: fadeInDuration + fadeOutDuration);
 
   final Widget target;
   final Widget placeholder;
@@ -303,7 +304,8 @@ class _AnimatedFadeOutFadeIn extends ImplicitlyAnimatedWidget {
   _AnimatedFadeOutFadeInState createState() => _AnimatedFadeOutFadeInState();
 }
 
-class _AnimatedFadeOutFadeInState extends ImplicitlyAnimatedWidgetState<_AnimatedFadeOutFadeIn> {
+class _AnimatedFadeOutFadeInState
+    extends ImplicitlyAnimatedWidgetState<_AnimatedFadeOutFadeIn> {
   Tween<double>? _targetOpacity;
   Tween<double>? _placeholderOpacity;
   Animation<double>? _targetOpacityAnimation;
@@ -325,23 +327,27 @@ class _AnimatedFadeOutFadeInState extends ImplicitlyAnimatedWidgetState<_Animate
 
   @override
   void didUpdateTweens() {
-    _placeholderOpacityAnimation = animation.drive(TweenSequence<double>(<TweenSequenceItem<double>>[
+    _placeholderOpacityAnimation =
+        animation.drive(TweenSequence<double>(<TweenSequenceItem<double>>[
       TweenSequenceItem<double>(
-        tween: _placeholderOpacity!.chain(CurveTween(curve: widget.fadeOutCurve)),
+        tween:
+            _placeholderOpacity!.chain(CurveTween(curve: widget.fadeOutCurve)),
         weight: widget.fadeOutDuration.inMilliseconds.toDouble(),
       ),
       TweenSequenceItem<double>(
         tween: ConstantTween<double>(0),
         weight: widget.fadeInDuration.inMilliseconds.toDouble(),
       ),
-    ]))..addStatusListener((AnimationStatus status) {
-      if (_placeholderOpacityAnimation!.isCompleted) {
-        // Need to rebuild to remove placeholder now that it is invisible.
-        setState(() {});
-      }
-    });
+    ]))
+          ..addStatusListener((AnimationStatus status) {
+            if (_placeholderOpacityAnimation!.isCompleted) {
+              // Need to rebuild to remove placeholder now that it is invisible.
+              setState(() {});
+            }
+          });
 
-    _targetOpacityAnimation = animation.drive(TweenSequence<double>(<TweenSequenceItem<double>>[
+    _targetOpacityAnimation =
+        animation.drive(TweenSequence<double>(<TweenSequenceItem<double>>[
       TweenSequenceItem<double>(
         tween: ConstantTween<double>(0),
         weight: widget.fadeOutDuration.inMilliseconds.toDouble(),
@@ -351,7 +357,9 @@ class _AnimatedFadeOutFadeInState extends ImplicitlyAnimatedWidgetState<_Animate
         weight: widget.fadeInDuration.inMilliseconds.toDouble(),
       ),
     ]));
-    if (!widget.isTargetLoaded && _isValid(_placeholderOpacity!) && _isValid(_targetOpacity!)) {
+    if (!widget.isTargetLoaded &&
+        _isValid(_placeholderOpacity!) &&
+        _isValid(_targetOpacity!)) {
       // Jump (don't fade) back to the placeholder image, so as to be ready
       // for the full animation when the new target image becomes ready.
       controller.value = controller.upperBound;
@@ -392,7 +400,9 @@ class _AnimatedFadeOutFadeInState extends ImplicitlyAnimatedWidgetState<_Animate
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Animation<double>>('targetOpacity', _targetOpacityAnimation));
-    properties.add(DiagnosticsProperty<Animation<double>>('placeholderOpacity', _placeholderOpacityAnimation));
+    properties.add(DiagnosticsProperty<Animation<double>>(
+        'targetOpacity', _targetOpacityAnimation));
+    properties.add(DiagnosticsProperty<Animation<double>>(
+        'placeholderOpacity', _placeholderOpacityAnimation));
   }
 }

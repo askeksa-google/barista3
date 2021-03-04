@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flute/ui.dart' as ui;
@@ -30,7 +29,8 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
     _restorationManager = createRestorationManager();
     window.onPlatformMessage = defaultBinaryMessenger.handlePlatformMessage;
     initLicenses();
-    SystemChannels.system.setMessageHandler((dynamic message) => handleSystemMessage(message as Object));
+    SystemChannels.system.setMessageHandler(
+        (dynamic message) => handleSystemMessage(message as Object));
     SystemChannels.lifecycle.setMessageHandler(_handleLifecycleMessage);
     readInitialLifecycleStateFromNativeWindow();
   }
@@ -54,7 +54,6 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
     return const _DefaultBinaryMessenger._();
   }
 
-
   /// Called when the operating system notifies the application of a memory
   /// pressure situation.
   ///
@@ -62,7 +61,7 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
   /// [SystemChannels.system].
   @protected
   @mustCallSuper
-  void handleMemoryPressure() { }
+  void handleMemoryPressure() {}
 
   /// Handler called for messages received on the [SystemChannels.system]
   /// message channel.
@@ -104,24 +103,25 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
     // TODO(ianh): Remove this complexity once these bugs are fixed.
     final Completer<String> rawLicenses = Completer<String>();
     scheduleTask(() async {
-      rawLicenses.complete(
-        await rootBundle.loadString(
-          // NOTICES for web isn't compressed since we don't have access to
-          // dart:io on the client side and it's already compressed between
-          // the server and client.
-          //
-          // The compressed version doesn't have a more common .gz extension
-          // because gradle for Android non-transparently manipulates .gz files.
-          kIsWeb ? 'NOTICES' : 'NOTICES.Z',
-          cache: false,
-          unzip: !kIsWeb,
-        )
-      );
+      rawLicenses.complete(await rootBundle.loadString(
+        // NOTICES for web isn't compressed since we don't have access to
+        // dart:io on the client side and it's already compressed between
+        // the server and client.
+        //
+        // The compressed version doesn't have a more common .gz extension
+        // because gradle for Android non-transparently manipulates .gz files.
+        kIsWeb ? 'NOTICES' : 'NOTICES.Z',
+        cache: false,
+        unzip: !kIsWeb,
+      ));
     }, Priority.animation);
     await rawLicenses.future;
-    final Completer<List<LicenseEntry>> parsedLicenses = Completer<List<LicenseEntry>>();
+    final Completer<List<LicenseEntry>> parsedLicenses =
+        Completer<List<LicenseEntry>>();
     scheduleTask(() async {
-      parsedLicenses.complete(compute<String, List<LicenseEntry>>(_parseLicenses, await rawLicenses.future, debugLabel: 'parseLicenses'));
+      parsedLicenses.complete(compute<String, List<LicenseEntry>>(
+          _parseLicenses, await rawLicenses.future,
+          debugLabel: 'parseLicenses'));
     }, Priority.animation);
     await parsedLicenses.future;
     yield* Stream<LicenseEntry>.fromIterable(await parsedLicenses.future);
@@ -194,7 +194,8 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
     if (lifecycleState != null) {
       return;
     }
-    final AppLifecycleState? state = _parseAppLifecycleMessage(window.initialLifecycleState);
+    final AppLifecycleState? state =
+        _parseAppLifecycleMessage(window.initialLifecycleState);
     if (state != null) {
       handleAppLifecycleStateChanged(state);
     }
@@ -268,7 +269,8 @@ class _DefaultBinaryMessenger extends BinaryMessenger {
     // ui.PlatformDispatcher.instance because the PlatformDispatcher may be
     // dependency injected elsewhere with a different instance. However, static
     // access at this location seems to be the least bad option.
-    ui.PlatformDispatcher.instance.sendPlatformMessage(channel, message, (ByteData? reply) {
+    ui.PlatformDispatcher.instance.sendPlatformMessage(channel, message,
+        (ByteData? reply) {
       try {
         completer.complete(reply);
       } catch (exception, stack) {
@@ -276,7 +278,8 @@ class _DefaultBinaryMessenger extends BinaryMessenger {
           exception: exception,
           stack: stack,
           library: 'services library',
-          context: ErrorDescription('during a platform message response callback'),
+          context:
+              ErrorDescription('during a platform message response callback'),
         ));
       }
     });
@@ -315,8 +318,7 @@ class _DefaultBinaryMessenger extends BinaryMessenger {
   @override
   Future<ByteData?>? send(String channel, ByteData? message) {
     final MessageHandler? handler = _mockHandlers[channel];
-    if (handler != null)
-      return handler(message);
+    if (handler != null) return handler(message);
     return _sendPlatformMessage(channel, message);
   }
 
@@ -326,14 +328,16 @@ class _DefaultBinaryMessenger extends BinaryMessenger {
       _handlers.remove(channel);
     } else {
       _handlers[channel] = handler;
-      ui.channelBuffers.drain(channel, (ByteData? data, ui.PlatformMessageResponseCallback callback) async {
+      ui.channelBuffers.drain(channel,
+          (ByteData? data, ui.PlatformMessageResponseCallback callback) async {
         await handlePlatformMessage(channel, data, callback);
       });
     }
   }
 
   @override
-  bool checkMessageHandler(String channel, MessageHandler? handler) => _handlers[channel] == handler;
+  bool checkMessageHandler(String channel, MessageHandler? handler) =>
+      _handlers[channel] == handler;
 
   @override
   void setMockMessageHandler(String channel, MessageHandler? handler) {
@@ -344,5 +348,6 @@ class _DefaultBinaryMessenger extends BinaryMessenger {
   }
 
   @override
-  bool checkMockMessageHandler(String channel, MessageHandler? handler) => _mockHandlers[channel] == handler;
+  bool checkMockMessageHandler(String channel, MessageHandler? handler) =>
+      _mockHandlers[channel] == handler;
 }

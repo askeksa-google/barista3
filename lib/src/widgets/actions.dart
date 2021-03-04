@@ -80,7 +80,8 @@ typedef ActionListenerCallback = void Function(Action<Intent> action);
 ///  * [ActionDispatcher], a class that takes an [Action] and invokes it, passing
 ///    a given [Intent].
 abstract class Action<T extends Intent> with Diagnosticable {
-  final ObserverList<ActionListenerCallback> _listeners = ObserverList<ActionListenerCallback>();
+  final ObserverList<ActionListenerCallback> _listeners =
+      ObserverList<ActionListenerCallback>();
 
   /// Gets the type of intent this action responds to.
   Type get intentType => T;
@@ -162,7 +163,8 @@ abstract class Action<T extends Intent> with Diagnosticable {
   /// registrations to a common upstream object.
   /// {@endtemplate}
   @mustCallSuper
-  void addActionListener(ActionListenerCallback listener) => _listeners.add(listener);
+  void addActionListener(ActionListenerCallback listener) =>
+      _listeners.add(listener);
 
   /// Remove a previously registered closure from the list of closures that are
   /// notified when the object changes.
@@ -176,7 +178,8 @@ abstract class Action<T extends Intent> with Diagnosticable {
   ///
   /// {@macro flutter.widgets.Action.addActionListener}
   @mustCallSuper
-  void removeActionListener(ActionListenerCallback listener) => _listeners.remove(listener);
+  void removeActionListener(ActionListenerCallback listener) =>
+      _listeners.remove(listener);
 
   /// Call all the registered listeners.
   ///
@@ -200,7 +203,8 @@ abstract class Action<T extends Intent> with Diagnosticable {
 
     // Make a local copy so that a listener can unregister while the list is
     // being iterated over.
-    final List<ActionListenerCallback> localListeners = List<ActionListenerCallback>.from(_listeners);
+    final List<ActionListenerCallback> localListeners =
+        List<ActionListenerCallback>.from(_listeners);
     for (final ActionListenerCallback listener in localListeners) {
       InformationCollector? collector;
       assert(() {
@@ -222,7 +226,8 @@ abstract class Action<T extends Intent> with Diagnosticable {
           exception: exception,
           stack: stack,
           library: 'widgets library',
-          context: ErrorDescription('while dispatching notifications for $runtimeType'),
+          context: ErrorDescription(
+              'while dispatching notifications for $runtimeType'),
           informationCollector: collector,
         ));
       }
@@ -251,7 +256,7 @@ class ActionListener extends StatefulWidget {
     required this.listener,
     required this.action,
     required this.child,
-  })  : assert(listener != null),
+  })   : assert(listener != null),
         assert(action != null),
         assert(child != null),
         super(key: key);
@@ -283,7 +288,8 @@ class _ActionListenerState extends State<ActionListener> {
   @override
   void didUpdateWidget(ActionListener oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.action == widget.action && oldWidget.listener == widget.listener) {
+    if (oldWidget.action == widget.action &&
+        oldWidget.listener == widget.listener) {
       return;
     }
     oldWidget.action.removeActionListener(oldWidget.listener);
@@ -407,7 +413,8 @@ class ActionDispatcher with Diagnosticable {
   ]) {
     assert(action != null);
     assert(intent != null);
-    assert(action.isEnabled(intent), 'Action must be enabled when calling invokeAction');
+    assert(action.isEnabled(intent),
+        'Action must be enabled when calling invokeAction');
     if (action is ContextAction) {
       context ??= primaryFocus?.context;
       return action.invoke(intent, context);
@@ -440,7 +447,7 @@ class Actions extends StatefulWidget {
     this.dispatcher,
     required this.actions,
     required this.child,
-  })  : assert(actions != null),
+  })   : assert(actions != null),
         assert(child != null),
         super(key: key);
 
@@ -470,8 +477,10 @@ class Actions extends StatefulWidget {
   // Visits the Actions widget ancestors of the given element using
   // getElementForInheritedWidgetOfExactType. Returns true if the visitor found
   // what it was looking for.
-  static bool _visitActionsAncestors(BuildContext context, bool visitor(InheritedElement element)) {
-    InheritedElement? actionsElement = context.getElementForInheritedWidgetOfExactType<_ActionsMarker>();
+  static bool _visitActionsAncestors(
+      BuildContext context, bool visitor(InheritedElement element)) {
+    InheritedElement? actionsElement =
+        context.getElementForInheritedWidgetOfExactType<_ActionsMarker>();
     while (actionsElement != null) {
       if (visitor(actionsElement) == true) {
         break;
@@ -480,7 +489,8 @@ class Actions extends StatefulWidget {
       // context.getElementForInheritedWidgetOfExactType will return itself if it
       // happens to be of the correct type.
       final BuildContext parent = _getParent(actionsElement);
-      actionsElement = parent.getElementForInheritedWidgetOfExactType<_ActionsMarker>();
+      actionsElement =
+          parent.getElementForInheritedWidgetOfExactType<_ActionsMarker>();
     }
     return actionsElement != null;
   }
@@ -490,7 +500,8 @@ class Actions extends StatefulWidget {
   static ActionDispatcher _findDispatcher(BuildContext context) {
     ActionDispatcher? dispatcher;
     _visitActionsAncestors(context, (InheritedElement element) {
-      final ActionDispatcher? found = (element.widget as _ActionsMarker).dispatcher;
+      final ActionDispatcher? found =
+          (element.widget as _ActionsMarker).dispatcher;
       if (found != null) {
         dispatcher = found;
         return true;
@@ -511,7 +522,8 @@ class Actions extends StatefulWidget {
   /// Creates a dependency on the [Actions] widget that maps the bound action so
   /// that if the actions change, the context will be rebuilt and find the
   /// updated action.
-  static VoidCallback? handler<T extends Intent>(BuildContext context, T intent) {
+  static VoidCallback? handler<T extends Intent>(
+      BuildContext context, T intent) {
     final Action<T>? action = Actions.maybeFind<T>(context);
     if (action != null && action.isEnabled(intent)) {
       return () {
@@ -542,13 +554,14 @@ class Actions extends StatefulWidget {
   ///
   ///  * [maybeFind], which is similar to this function, but will return null if
   ///    no [Actions] ancestor is found.
-  static Action<T> find<T extends Intent>(BuildContext context, { T? intent }) {
+  static Action<T> find<T extends Intent>(BuildContext context, {T? intent}) {
     final Action<T>? action = maybeFind(context, intent: intent);
 
     assert(() {
       if (action == null) {
         final Type type = intent?.runtimeType ?? T;
-        throw FlutterError('Unable to find an action for a $type in an $Actions widget '
+        throw FlutterError(
+            'Unable to find an action for a $type in an $Actions widget '
             'in the given context.\n'
             "$Actions.find() was called on a context that doesn't contain an "
             '$Actions widget with a mapping for the given intent type.\n'
@@ -579,18 +592,20 @@ class Actions extends StatefulWidget {
   ///
   ///  * [find], which is similar to this function, but will throw if
   ///    no [Actions] ancestor is found.
-  static Action<T>? maybeFind<T extends Intent>(BuildContext context, { T? intent }) {
+  static Action<T>? maybeFind<T extends Intent>(BuildContext context,
+      {T? intent}) {
     Action<T>? action;
 
     // Specialize the type if a runtime example instance of the intent is given.
     // This allows this function to be called by code that doesn't know the
     // concrete type of the intent at compile time.
     final Type type = intent?.runtimeType ?? T;
-    assert(type != Intent,
-      'The type passed to "find" resolved to "Intent": either a non-Intent'
-      'generic type argument or an example intent derived from Intent must be'
-      'specified. Intent may be used as the generic type as long as the optional'
-      '"intent" argument is passed.');
+    assert(
+        type != Intent,
+        'The type passed to "find" resolved to "Intent": either a non-Intent'
+        'generic type argument or an example intent derived from Intent must be'
+        'specified. Intent may be used as the generic type as long as the optional'
+        '"intent" argument is passed.');
 
     _visitActionsAncestors(context, (InheritedElement element) {
       final _ActionsMarker actions = element.widget as _ActionsMarker;
@@ -613,7 +628,8 @@ class Actions extends StatefulWidget {
   /// widget is found.
   static ActionDispatcher of(BuildContext context) {
     assert(context != null);
-    final _ActionsMarker? marker = context.dependOnInheritedWidgetOfExactType<_ActionsMarker>();
+    final _ActionsMarker? marker =
+        context.dependOnInheritedWidgetOfExactType<_ActionsMarker>();
     return marker?.dispatcher ?? _findDispatcher(context);
   }
 
@@ -655,7 +671,8 @@ class Actions extends StatefulWidget {
 
     _visitActionsAncestors(context, (InheritedElement element) {
       final _ActionsMarker actions = element.widget as _ActionsMarker;
-      final Action<T>? result = actions.actions[intent.runtimeType] as Action<T>?;
+      final Action<T>? result =
+          actions.actions[intent.runtimeType] as Action<T>?;
       if (result != null) {
         actionElement = element;
         if (result.isEnabled(intent)) {
@@ -686,7 +703,8 @@ class Actions extends StatefulWidget {
     }
     // Invoke the action we found using the relevant dispatcher from the Actions
     // Element we found.
-    return _findDispatcher(actionElement!).invokeAction(action!, intent, context);
+    return _findDispatcher(actionElement!)
+        .invokeAction(action!, intent, context);
   }
 
   @override
@@ -695,8 +713,10 @@ class Actions extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ActionDispatcher>('dispatcher', dispatcher));
-    properties.add(DiagnosticsProperty<Map<Type, Action<Intent>>>('actions', actions));
+    properties
+        .add(DiagnosticsProperty<ActionDispatcher>('dispatcher', dispatcher));
+    properties.add(
+        DiagnosticsProperty<Map<Type, Action<Intent>>>('actions', actions));
   }
 }
 
@@ -722,8 +742,10 @@ class _ActionsState extends State<Actions> {
 
   void _updateActionListeners() {
     final Set<Action<Intent>> widgetActions = widget.actions.values.toSet();
-    final Set<Action<Intent>> removedActions = listenedActions!.difference(widgetActions);
-    final Set<Action<Intent>> addedActions = widgetActions.difference(listenedActions!);
+    final Set<Action<Intent>> removedActions =
+        listenedActions!.difference(widgetActions);
+    final Set<Action<Intent>> addedActions =
+        widgetActions.difference(listenedActions!);
 
     for (final Action<Intent> action in removedActions) {
       action.removeActionListener(_handleActionChanged);
@@ -769,7 +791,7 @@ class _ActionsMarker extends InheritedWidget {
     required this.rebuildKey,
     Key? key,
     required Widget child,
-  })  : assert(child != null),
+  })   : assert(child != null),
         assert(actions != null),
         super(key: key, child: child);
 
@@ -779,9 +801,9 @@ class _ActionsMarker extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ActionsMarker oldWidget) {
-    return rebuildKey != oldWidget.rebuildKey
-        || oldWidget.dispatcher != dispatcher
-        || !mapEquals<Type, Action<Intent>>(oldWidget.actions, actions);
+    return rebuildKey != oldWidget.rebuildKey ||
+        oldWidget.dispatcher != dispatcher ||
+        !mapEquals<Type, Action<Intent>>(oldWidget.actions, actions);
   }
 }
 
@@ -947,7 +969,7 @@ class FocusableActionDetector extends StatefulWidget {
     this.onFocusChange,
     this.mouseCursor = MouseCursor.defer,
     required this.child,
-  })  : assert(enabled != null),
+  })   : assert(enabled != null),
         assert(autofocus != null),
         assert(mouseCursor != null),
         assert(child != null),
@@ -1003,7 +1025,8 @@ class FocusableActionDetector extends StatefulWidget {
   final Widget child;
 
   @override
-  _FocusableActionDetectorState createState() => _FocusableActionDetectorState();
+  _FocusableActionDetectorState createState() =>
+      _FocusableActionDetectorState();
 }
 
 class _FocusableActionDetectorState extends State<FocusableActionDetector> {
@@ -1013,12 +1036,14 @@ class _FocusableActionDetectorState extends State<FocusableActionDetector> {
     SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
       _updateHighlightMode(FocusManager.instance.highlightMode);
     });
-    FocusManager.instance.addHighlightModeListener(_handleFocusHighlightModeChange);
+    FocusManager.instance
+        .addHighlightModeListener(_handleFocusHighlightModeChange);
   }
 
   @override
   void dispose() {
-    FocusManager.instance.removeHighlightModeListener(_handleFocusHighlightModeChange);
+    FocusManager.instance
+        .removeHighlightModeListener(_handleFocusHighlightModeChange);
     super.dispose();
   }
 
@@ -1080,13 +1105,15 @@ class _FocusableActionDetectorState extends State<FocusableActionDetector> {
   // The old states are collected from `oldWidget` if it is provided, or the
   // current widget (before doing `task`) otherwise. The new states are always
   // collected from the current widget.
-  void _mayTriggerCallback({VoidCallback? task, FocusableActionDetector? oldWidget}) {
+  void _mayTriggerCallback(
+      {VoidCallback? task, FocusableActionDetector? oldWidget}) {
     bool shouldShowHoverHighlight(FocusableActionDetector target) {
       return _hovering && target.enabled && _canShowHighlight;
     }
 
     bool canRequestFocus(FocusableActionDetector target) {
-      final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ?? NavigationMode.traditional;
+      final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ??
+          NavigationMode.traditional;
       switch (mode) {
         case NavigationMode.traditional:
           return target.enabled;
@@ -1099,7 +1126,8 @@ class _FocusableActionDetectorState extends State<FocusableActionDetector> {
       return _focused && _canShowHighlight && canRequestFocus(target);
     }
 
-    assert(SchedulerBinding.instance!.schedulerPhase != SchedulerPhase.persistentCallbacks);
+    assert(SchedulerBinding.instance!.schedulerPhase !=
+        SchedulerPhase.persistentCallbacks);
     final FocusableActionDetector oldTarget = oldWidget ?? widget;
     final bool didShowHoverHighlight = shouldShowHoverHighlight(oldTarget);
     final bool didShowFocusHighlight = shouldShowFocusHighlight(oldTarget);
@@ -1127,7 +1155,8 @@ class _FocusableActionDetectorState extends State<FocusableActionDetector> {
   }
 
   bool get _canRequestFocus {
-    final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ?? NavigationMode.traditional;
+    final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ??
+        NavigationMode.traditional;
     switch (mode) {
       case NavigationMode.traditional:
         return widget.enabled;
@@ -1158,10 +1187,14 @@ class _FocusableActionDetectorState extends State<FocusableActionDetector> {
         child: widget.child,
       ),
     );
-    if (widget.enabled && widget.actions != null && widget.actions!.isNotEmpty) {
+    if (widget.enabled &&
+        widget.actions != null &&
+        widget.actions!.isNotEmpty) {
       child = Actions(actions: widget.actions!, child: child);
     }
-    if (widget.enabled && widget.shortcuts != null && widget.shortcuts!.isNotEmpty) {
+    if (widget.enabled &&
+        widget.shortcuts != null &&
+        widget.shortcuts!.isNotEmpty) {
       child = Shortcuts(shortcuts: widget.shortcuts!, child: child);
     }
     return child;
@@ -1208,7 +1241,8 @@ class DoNothingIntent extends Intent {
 ///  * [DoNothingIntent], a similar intent that will handle the key event.
 class DoNothingAndStopPropagationIntent extends Intent {
   /// Creates a const [DoNothingAndStopPropagationIntent].
-  factory DoNothingAndStopPropagationIntent() => const DoNothingAndStopPropagationIntent._();
+  factory DoNothingAndStopPropagationIntent() =>
+      const DoNothingAndStopPropagationIntent._();
 
   // Make DoNothingAndStopPropagationIntent constructor private so it can't be subclassed.
   const DoNothingAndStopPropagationIntent._();

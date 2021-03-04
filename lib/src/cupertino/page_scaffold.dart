@@ -31,9 +31,9 @@ class CupertinoPageScaffold extends StatefulWidget {
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
     required this.child,
-  }) : assert(child != null),
-       assert(resizeToAvoidBottomInset != null),
-       super(key: key);
+  })   : assert(child != null),
+        assert(resizeToAvoidBottomInset != null),
+        super(key: key);
 
   /// The [navigationBar], typically a [CupertinoNavigationBar], is drawn at the
   /// top of the screen.
@@ -81,11 +81,12 @@ class CupertinoPageScaffold extends StatefulWidget {
 }
 
 class _CupertinoPageScaffoldState extends State<CupertinoPageScaffold> {
-
   void _handleStatusBarTap() {
-    final ScrollController? _primaryScrollController = PrimaryScrollController.of(context);
+    final ScrollController? _primaryScrollController =
+        PrimaryScrollController.of(context);
     // Only act on the scroll controller if it has any attached scroll positions.
-    if (_primaryScrollController != null && _primaryScrollController.hasClients) {
+    if (_primaryScrollController != null &&
+        _primaryScrollController.hasClients) {
       _primaryScrollController.animateTo(
         0.0,
         // Eyeballed from iOS.
@@ -103,8 +104,8 @@ class _CupertinoPageScaffoldState extends State<CupertinoPageScaffold> {
     if (widget.navigationBar != null) {
       // TODO(xster): Use real size after partial layout instead of preferred size.
       // https://github.com/flutter/flutter/issues/12912
-      final double topPadding =
-          widget.navigationBar!.preferredSize.height + existingMediaQuery.padding.top;
+      final double topPadding = widget.navigationBar!.preferredSize.height +
+          existingMediaQuery.padding.top;
 
       // Propagate bottom padding and include viewInsets if appropriate
       final double bottomPadding = widget.resizeToAvoidBottomInset
@@ -117,7 +118,8 @@ class _CupertinoPageScaffoldState extends State<CupertinoPageScaffold> {
           ? existingMediaQuery.viewInsets.copyWith(bottom: 0.0)
           : existingMediaQuery.viewInsets;
 
-      final bool fullObstruction = widget.navigationBar!.shouldFullyObstruct(context);
+      final bool fullObstruction =
+          widget.navigationBar!.shouldFullyObstruct(context);
 
       // If navigation bar is opaquely obstructing, directly shift the main content
       // down. If translucent, let main content draw behind navigation bar but hint the
@@ -125,11 +127,11 @@ class _CupertinoPageScaffoldState extends State<CupertinoPageScaffold> {
       if (fullObstruction) {
         paddedContent = MediaQuery(
           data: existingMediaQuery
-          // If the navigation bar is opaque, the top media query padding is fully consumed by the navigation bar.
-          .removePadding(removeTop: true)
-          .copyWith(
-            viewInsets: newViewInsets,
-          ),
+              // If the navigation bar is opaque, the top media query padding is fully consumed by the navigation bar.
+              .removePadding(removeTop: true)
+              .copyWith(
+                viewInsets: newViewInsets,
+              ),
           child: Padding(
             padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
             child: paddedContent,
@@ -163,8 +165,9 @@ class _CupertinoPageScaffoldState extends State<CupertinoPageScaffold> {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: CupertinoDynamicColor.maybeResolve(widget.backgroundColor, context)
-            ?? CupertinoTheme.of(context).scaffoldBackgroundColor,
+        color: CupertinoDynamicColor.maybeResolve(
+                widget.backgroundColor, context) ??
+            CupertinoTheme.of(context).scaffoldBackgroundColor,
       ),
       child: Stack(
         children: <Widget>[

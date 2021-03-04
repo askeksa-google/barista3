@@ -78,7 +78,6 @@ class AppBarTheme with Diagnosticable {
   ///    [AppBar.foregroundColor] in all descendant widgets.
   final Color? backgroundColor;
 
-
   /// Overrides the default value of [AppBar.foregroundColor] in all
   /// descendant widgets.
   ///
@@ -217,13 +216,16 @@ class AppBarTheme with Diagnosticable {
       elevation: lerpDouble(a?.elevation, b?.elevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       iconTheme: IconThemeData.lerp(a?.iconTheme, b?.iconTheme, t),
-      actionsIconTheme: IconThemeData.lerp(a?.actionsIconTheme, b?.actionsIconTheme, t),
+      actionsIconTheme:
+          IconThemeData.lerp(a?.actionsIconTheme, b?.actionsIconTheme, t),
       textTheme: TextTheme.lerp(a?.textTheme, b?.textTheme, t),
       centerTitle: t < 0.5 ? a?.centerTitle : b?.centerTitle,
       titleSpacing: lerpDouble(a?.titleSpacing, b?.titleSpacing, t),
-      toolbarTextStyle: TextStyle.lerp(a?.toolbarTextStyle, b?.toolbarTextStyle, t),
+      toolbarTextStyle:
+          TextStyle.lerp(a?.toolbarTextStyle, b?.toolbarTextStyle, t),
       titleTextStyle: TextStyle.lerp(a?.titleTextStyle, b?.titleTextStyle, t),
-      systemOverlayStyle: t < 0.5 ? a?.systemOverlayStyle : b?.systemOverlayStyle,
+      systemOverlayStyle:
+          t < 0.5 ? a?.systemOverlayStyle : b?.systemOverlayStyle,
     );
   }
 
@@ -249,42 +251,55 @@ class AppBarTheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is AppBarTheme
-        && other.brightness == brightness
-        && other.color == color
-        && other.backgroundColor == backgroundColor
-        && other.foregroundColor == foregroundColor
-        && other.elevation == elevation
-        && other.shadowColor == shadowColor
-        && other.iconTheme == iconTheme
-        && other.actionsIconTheme == actionsIconTheme
-        && other.textTheme == textTheme
-        && other.centerTitle == centerTitle
-        && other.titleSpacing == titleSpacing
-        && other.toolbarTextStyle == toolbarTextStyle
-        && other.titleTextStyle == titleTextStyle
-        && other.systemOverlayStyle == systemOverlayStyle;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is AppBarTheme &&
+        other.brightness == brightness &&
+        other.color == color &&
+        other.backgroundColor == backgroundColor &&
+        other.foregroundColor == foregroundColor &&
+        other.elevation == elevation &&
+        other.shadowColor == shadowColor &&
+        other.iconTheme == iconTheme &&
+        other.actionsIconTheme == actionsIconTheme &&
+        other.textTheme == textTheme &&
+        other.centerTitle == centerTitle &&
+        other.titleSpacing == titleSpacing &&
+        other.toolbarTextStyle == toolbarTextStyle &&
+        other.titleTextStyle == titleTextStyle &&
+        other.systemOverlayStyle == systemOverlayStyle;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Brightness>('brightness', brightness, defaultValue: null));
+    properties.add(DiagnosticsProperty<Brightness>('brightness', brightness,
+        defaultValue: null));
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(ColorProperty('foregroundColor', foregroundColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('elevation', elevation, defaultValue: null));
-    properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<IconThemeData>('iconTheme', iconTheme, defaultValue: null));
-    properties.add(DiagnosticsProperty<IconThemeData>('actionsIconTheme', actionsIconTheme, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextTheme>('textTheme', textTheme, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('centerTitle', centerTitle, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('titleSpacing', titleSpacing, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('toolbarTextStyle', toolbarTextStyle, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('titleTextStyle', titleTextStyle, defaultValue: null));
+    properties.add(
+        ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
+    properties.add(
+        ColorProperty('foregroundColor', foregroundColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<double>('elevation', elevation,
+        defaultValue: null));
+    properties
+        .add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<IconThemeData>('iconTheme', iconTheme,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<IconThemeData>(
+        'actionsIconTheme', actionsIconTheme,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextTheme>('textTheme', textTheme,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<bool>('centerTitle', centerTitle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<double>('titleSpacing', titleSpacing,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle>(
+        'toolbarTextStyle', toolbarTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle>(
+        'titleTextStyle', titleTextStyle,
+        defaultValue: null));
   }
 }

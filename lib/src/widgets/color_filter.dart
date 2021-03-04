@@ -25,17 +25,20 @@ class ColorFiltered extends SingleChildRenderObjectWidget {
   final ColorFilter colorFilter;
 
   @override
-  RenderObject createRenderObject(BuildContext context) => _ColorFilterRenderObject(colorFilter);
+  RenderObject createRenderObject(BuildContext context) =>
+      _ColorFilterRenderObject(colorFilter);
 
   @override
-  void updateRenderObject(BuildContext context, _ColorFilterRenderObject renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ColorFilterRenderObject renderObject) {
     renderObject.colorFilter = colorFilter;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ColorFilter>('colorFilter', colorFilter));
+    properties
+        .add(DiagnosticsProperty<ColorFilter>('colorFilter', colorFilter));
   }
 }
 
@@ -57,6 +60,7 @@ class _ColorFilterRenderObject extends RenderProxyBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    layer = context.pushColorFilter(offset, colorFilter, super.paint, oldLayer: layer as ColorFilterLayer?);
+    layer = context.pushColorFilter(offset, colorFilter, super.paint,
+        oldLayer: layer as ColorFilterLayer?);
   }
 }

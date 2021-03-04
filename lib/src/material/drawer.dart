@@ -143,8 +143,8 @@ class Drawer extends StatelessWidget {
     this.elevation = 16.0,
     this.child,
     this.semanticLabel,
-  }) : assert(elevation != null && elevation >= 0.0),
-       super(key: key);
+  })  : assert(elevation != null && elevation >= 0.0),
+        super(key: key);
 
   /// The z-coordinate at which to place this drawer relative to its parent.
   ///
@@ -236,10 +236,10 @@ class DrawerController extends StatefulWidget {
     this.scrimColor,
     this.edgeDragWidth,
     this.enableOpenDragGesture = true,
-  }) : assert(child != null),
-       assert(dragStartBehavior != null),
-       assert(alignment != null),
-       super(key: key);
+  })  : assert(child != null),
+        assert(dragStartBehavior != null),
+        assert(alignment != null),
+        super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -305,14 +305,16 @@ class DrawerController extends StatefulWidget {
 /// State for a [DrawerController].
 ///
 /// Typically used by a [Scaffold] to [open] and [close] the drawer.
-class DrawerControllerState extends State<DrawerController> with SingleTickerProviderStateMixin {
+class DrawerControllerState extends State<DrawerController>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
     _scrimColorTween = _buildScrimColorTween();
-    _controller = AnimationController(duration: _kBaseSettleDuration, vsync: this)
-      ..addListener(_animationChanged)
-      ..addStatusListener(_animationStatusChanged);
+    _controller =
+        AnimationController(duration: _kBaseSettleDuration, vsync: this)
+          ..addListener(_animationChanged)
+          ..addStatusListener(_animationStatusChanged);
   }
 
   @override
@@ -378,8 +380,7 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
   }
 
   void _handleDragCancel() {
-    if (_controller.isDismissed || _controller.isAnimating)
-      return;
+    if (_controller.isDismissed || _controller.isAnimating) return;
     if (_controller.value < 0.5) {
       close();
     } else {
@@ -390,9 +391,9 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
   final GlobalKey _drawerKey = GlobalKey();
 
   double get _width {
-    final RenderBox? box = _drawerKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box != null)
-      return box.size.width;
+    final RenderBox? box =
+        _drawerKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box != null) return box.size.width;
     return _kWidth; // drawer not being shown currently
   }
 
@@ -423,8 +424,7 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
   }
 
   void _settle(DragEndDetails details) {
-    if (_controller.isDismissed)
-      return;
+    if (_controller.isDismissed) return;
     if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
       double visualVelocity = details.velocity.pixelsPerSecond.dx / _width;
       switch (widget.alignment) {
@@ -458,22 +458,21 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
     _controller.fling(velocity: 1.0);
-    if (widget.drawerCallback != null)
-      widget.drawerCallback!(true);
+    if (widget.drawerCallback != null) widget.drawerCallback!(true);
   }
 
   /// Starts an animation to close the drawer.
   void close() {
     _controller.fling(velocity: -1.0);
-    if (widget.drawerCallback != null)
-      widget.drawerCallback!(false);
+    if (widget.drawerCallback != null) widget.drawerCallback!(false);
   }
 
   late ColorTween _scrimColorTween;
   final GlobalKey _gestureDetectorKey = GlobalKey();
 
   ColorTween _buildScrimColorTween() {
-    return ColorTween(begin: Colors.transparent, end: widget.scrimColor ?? Colors.black54);
+    return ColorTween(
+        begin: Colors.transparent, end: widget.scrimColor ?? Colors.black54);
   }
 
   AlignmentDirectional get _drawerOuterAlignment {
@@ -505,12 +504,12 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
     if (widget.edgeDragWidth == null) {
       switch (textDirection) {
         case TextDirection.ltr:
-          dragAreaWidth = _kEdgeDragWidth +
-            (drawerIsStart ? padding.left : padding.right);
+          dragAreaWidth =
+              _kEdgeDragWidth + (drawerIsStart ? padding.left : padding.right);
           break;
         case TextDirection.rtl:
-          dragAreaWidth = _kEdgeDragWidth +
-            (drawerIsStart ? padding.right : padding.left);
+          dragAreaWidth =
+              _kEdgeDragWidth + (drawerIsStart ? padding.right : padding.left);
           break;
       }
     }
@@ -565,10 +564,12 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
                   child: GestureDetector(
                     onTap: close,
                     child: Semantics(
-                      label: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                      label: MaterialLocalizations.of(context)
+                          .modalBarrierDismissLabel,
                       child: MouseRegion(
                         opaque: true,
-                        child: Container( // The drawer's "scrim"
+                        child: Container(
+                          // The drawer's "scrim"
                           color: _scrimColorTween.evaluate(_controller),
                         ),
                       ),

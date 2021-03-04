@@ -99,8 +99,10 @@ class TabBarTheme with Diagnosticable {
       labelColor: Color.lerp(a.labelColor, b.labelColor, t),
       labelPadding: EdgeInsetsGeometry.lerp(a.labelPadding, b.labelPadding, t),
       labelStyle: TextStyle.lerp(a.labelStyle, b.labelStyle, t),
-      unselectedLabelColor: Color.lerp(a.unselectedLabelColor, b.unselectedLabelColor, t),
-      unselectedLabelStyle: TextStyle.lerp(a.unselectedLabelStyle, b.unselectedLabelStyle, t),
+      unselectedLabelColor:
+          Color.lerp(a.unselectedLabelColor, b.unselectedLabelColor, t),
+      unselectedLabelStyle:
+          TextStyle.lerp(a.unselectedLabelStyle, b.unselectedLabelStyle, t),
     );
   }
 
@@ -119,17 +121,15 @@ class TabBarTheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
-      return true;
-    if (other.runtimeType != runtimeType)
-      return false;
-    return other is TabBarTheme
-        && other.indicator == indicator
-        && other.indicatorSize == indicatorSize
-        && other.labelColor == labelColor
-        && other.labelPadding == labelPadding
-        && other.labelStyle == labelStyle
-        && other.unselectedLabelColor == unselectedLabelColor
-        && other.unselectedLabelStyle == unselectedLabelStyle;
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is TabBarTheme &&
+        other.indicator == indicator &&
+        other.indicatorSize == indicatorSize &&
+        other.labelColor == labelColor &&
+        other.labelPadding == labelPadding &&
+        other.labelStyle == labelStyle &&
+        other.unselectedLabelColor == unselectedLabelColor &&
+        other.unselectedLabelStyle == unselectedLabelStyle;
   }
 }

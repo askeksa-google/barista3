@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 /// Static methods to allow for simple sharing of [SendPort]s across [Isolate]s.
@@ -33,7 +31,8 @@ class IsolateNameServer {
   ///
   /// The `name` argument must not be null.
   static SendPort? lookupPortByName(String name) {
-    assert(name != null, "'name' cannot be null."); // ignore: unnecessary_null_comparison
+    assert(name != null,
+        "'name' cannot be null."); // ignore: unnecessary_null_comparison
     return _lookupPortByName(name);
   }
 
@@ -51,8 +50,10 @@ class IsolateNameServer {
   ///
   /// The `port` and `name` arguments must not be null.
   static bool registerPortWithName(SendPort port, String name) {
-    assert(port != null, "'port' cannot be null."); // ignore: unnecessary_null_comparison
-    assert(name != null, "'name' cannot be null."); // ignore: unnecessary_null_comparison
+    assert(port != null,
+        "'port' cannot be null."); // ignore: unnecessary_null_comparison
+    assert(name != null,
+        "'name' cannot be null."); // ignore: unnecessary_null_comparison
     return _registerPortWithName(port, name);
   }
 
@@ -68,14 +69,20 @@ class IsolateNameServer {
   ///
   /// The `name` argument must not be null.
   static bool removePortNameMapping(String name) {
-    assert(name != null, "'name' cannot be null."); // ignore: unnecessary_null_comparison
+    assert(name != null,
+        "'name' cannot be null."); // ignore: unnecessary_null_comparison
     return _removePortNameMapping(name);
   }
 
-  static SendPort? _lookupPortByName(String name)
-      { throw UnimplementedError(); }
-  static bool _registerPortWithName(SendPort port, String name)
-      { throw UnimplementedError(); }
-  static bool _removePortNameMapping(String name)
-      { throw UnimplementedError(); }
+  static SendPort? _lookupPortByName(String name) {
+    throw UnimplementedError();
+  }
+
+  static bool _registerPortWithName(SendPort port, String name) {
+    throw UnimplementedError();
+  }
+
+  static bool _removePortNameMapping(String name) {
+    throw UnimplementedError();
+  }
 }

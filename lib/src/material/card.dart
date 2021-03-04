@@ -112,9 +112,9 @@ class Card extends StatelessWidget {
     this.clipBehavior,
     this.child,
     this.semanticContainer = true,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(borderOnForeground != null),
-       super(key: key);
+  })  : assert(elevation == null || elevation >= 0.0),
+        assert(borderOnForeground != null),
+        super(key: key);
 
   /// The card's background color.
   ///
@@ -201,12 +201,15 @@ class Card extends StatelessWidget {
         margin: margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0),
         child: Material(
           type: MaterialType.card,
-          shadowColor: shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
+          shadowColor:
+              shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
           color: color ?? cardTheme.color ?? theme.cardColor,
           elevation: elevation ?? cardTheme.elevation ?? _defaultElevation,
-          shape: shape ?? cardTheme.shape ?? const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
+          shape: shape ??
+              cardTheme.shape ??
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              ),
           borderOnForeground: borderOnForeground,
           clipBehavior: clipBehavior ?? cardTheme.clipBehavior ?? Clip.none,
           child: Semantics(

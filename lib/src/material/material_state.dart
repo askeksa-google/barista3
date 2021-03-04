@@ -126,7 +126,8 @@ typedef MaterialPropertyResolver<T> = T Function(Set<MaterialState> states);
 /// }
 /// ```
 /// {@end-tool}
-abstract class MaterialStateColor extends Color implements MaterialStateProperty<Color> {
+abstract class MaterialStateColor extends Color
+    implements MaterialStateProperty<Color> {
   /// Creates a [MaterialStateColor].
   const MaterialStateColor(int defaultValue) : super(defaultValue);
 
@@ -138,7 +139,9 @@ abstract class MaterialStateColor extends Color implements MaterialStateProperty
   ///
   /// The given callback parameter must return a non-null color in the default
   /// state.
-  static MaterialStateColor resolveWith(MaterialPropertyResolver<Color> callback) => _MaterialStateColor(callback);
+  static MaterialStateColor resolveWith(
+          MaterialPropertyResolver<Color> callback) =>
+      _MaterialStateColor(callback);
 
   /// Returns a [Color] that's to be used when a Material component is in the
   /// specified state.
@@ -221,7 +224,8 @@ class _MaterialStateColor extends MaterialStateColor {
 ///  * [MouseCursor] for introduction on the mouse cursor system.
 ///  * [SystemMouseCursors], which defines cursors that are supported by
 ///    native platforms.
-abstract class MaterialStateMouseCursor extends MouseCursor implements MaterialStateProperty<MouseCursor> {
+abstract class MaterialStateMouseCursor extends MouseCursor
+    implements MaterialStateProperty<MouseCursor> {
   /// Creates a [MaterialStateMouseCursor].
   const MaterialStateMouseCursor();
 
@@ -245,7 +249,8 @@ abstract class MaterialStateMouseCursor extends MouseCursor implements MaterialS
   /// disabled, the cursor resolves to [SystemMouseCursors.basic].
   ///
   /// This cursor is the default for many Material widgets.
-  static const MaterialStateMouseCursor clickable = _EnabledAndDisabledMouseCursor(
+  static const MaterialStateMouseCursor clickable =
+      _EnabledAndDisabledMouseCursor(
     enabledCursor: SystemMouseCursors.click,
     disabledCursor: SystemMouseCursors.basic,
     name: 'clickable',
@@ -258,7 +263,8 @@ abstract class MaterialStateMouseCursor extends MouseCursor implements MaterialS
   /// disabled, the cursor resolves to [SystemMouseCursors.basic].
   ///
   /// This cursor is the default for many Material widgets.
-  static const MaterialStateMouseCursor textable = _EnabledAndDisabledMouseCursor(
+  static const MaterialStateMouseCursor textable =
+      _EnabledAndDisabledMouseCursor(
     enabledCursor: SystemMouseCursors.text,
     disabledCursor: SystemMouseCursors.basic,
     name: 'textable',
@@ -334,7 +340,8 @@ class _EnabledAndDisabledMouseCursor extends MaterialStateMouseCursor {
 ///
 /// This class should only be used for parameters which are documented to take
 /// [MaterialStateBorderSide], otherwise only the default state will be used.
-abstract class MaterialStateBorderSide extends BorderSide implements MaterialStateProperty<BorderSide?> {
+abstract class MaterialStateBorderSide extends BorderSide
+    implements MaterialStateProperty<BorderSide?> {
   /// Creates a [MaterialStateBorderSide].
   const MaterialStateBorderSide();
 
@@ -394,7 +401,8 @@ abstract class MaterialStateBorderSide extends BorderSide implements MaterialSta
 /// See also:
 ///
 ///  * [ShapeBorder] the base class for shape outlines.
-abstract class MaterialStateOutlinedBorder extends OutlinedBorder implements MaterialStateProperty<OutlinedBorder?> {
+abstract class MaterialStateOutlinedBorder extends OutlinedBorder
+    implements MaterialStateProperty<OutlinedBorder?> {
   /// Creates a [MaterialStateOutlinedBorder].
   const MaterialStateOutlinedBorder();
 
@@ -464,7 +472,6 @@ abstract class MaterialStateOutlinedBorder extends OutlinedBorder implements Mat
 ///    which is used in APIs that need to accept either a [MouseCursor] or a
 ///    [MaterialStateProperty<MouseCursor>].
 abstract class MaterialStateProperty<T> {
-
   /// Returns a value of type `T` that depends on [states].
   ///
   /// Widgets like [TextButton] and [ElevatedButton] apply this method to their
@@ -488,11 +495,14 @@ abstract class MaterialStateProperty<T> {
 
   /// Convenience method for creating a [MaterialStateProperty] from a
   /// [MaterialPropertyResolver] function alone.
-  static MaterialStateProperty<T> resolveWith<T>(MaterialPropertyResolver<T> callback) => _MaterialStatePropertyWith<T>(callback);
+  static MaterialStateProperty<T> resolveWith<T>(
+          MaterialPropertyResolver<T> callback) =>
+      _MaterialStatePropertyWith<T>(callback);
 
   /// Convenience method for creating a [MaterialStateProperty] that resolves
   /// to a single value for all states.
-  static MaterialStateProperty<T> all<T>(T value) => _MaterialStatePropertyAll<T>(value);
+  static MaterialStateProperty<T> all<T>(T value) =>
+      _MaterialStatePropertyAll<T>(value);
 }
 
 class _MaterialStatePropertyWith<T> implements MaterialStateProperty<T> {

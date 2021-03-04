@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:math' as math;
 
 import 'package:characters/characters.dart';
@@ -108,7 +107,7 @@ typedef TextInputFormatFunction = TextEditingValue Function(
 /// Wiring for [TextInputFormatter.withFunction].
 class _SimpleTextInputFormatter extends TextInputFormatter {
   _SimpleTextInputFormatter(this.formatFunction)
-    : assert(formatFunction != null);
+      : assert(formatFunction != null);
 
   final TextInputFormatFunction formatFunction;
 
@@ -150,9 +149,9 @@ class FilteringTextInputFormatter extends TextInputFormatter {
     this.filterPattern, {
     required this.allow,
     this.replacementString = '',
-  }) : assert(filterPattern != null),
-       assert(allow != null),
-       assert(replacementString != null);
+  })  : assert(filterPattern != null),
+        assert(allow != null),
+        assert(replacementString != null);
 
   /// Creates a formatter that only allows characters matching a pattern.
   ///
@@ -161,9 +160,9 @@ class FilteringTextInputFormatter extends TextInputFormatter {
   FilteringTextInputFormatter.allow(
     this.filterPattern, {
     this.replacementString = '',
-  }) : assert(filterPattern != null),
-       assert(replacementString != null),
-       allow = true;
+  })  : assert(filterPattern != null),
+        assert(replacementString != null),
+        allow = true;
 
   /// Creates a formatter that blocks characters matching a pattern.
   ///
@@ -172,9 +171,9 @@ class FilteringTextInputFormatter extends TextInputFormatter {
   FilteringTextInputFormatter.deny(
     this.filterPattern, {
     this.replacementString = '',
-  }) : assert(filterPattern != null),
-       assert(replacementString != null),
-       allow = false;
+  })  : assert(filterPattern != null),
+        assert(replacementString != null),
+        allow = false;
 
   /// A [Pattern] to match and replace in incoming [TextEditingValue]s.
   ///
@@ -269,80 +268,69 @@ class FilteringTextInputFormatter extends TextInputFormatter {
         return substring.splitMapJoin(
           filterPattern,
           onMatch: !allow ? (Match match) => replacementString : null,
-          onNonMatch: allow ? (String nonMatch) => nonMatch.isNotEmpty ? replacementString : '' : null,
+          onNonMatch: allow
+              ? (String nonMatch) =>
+                  nonMatch.isNotEmpty ? replacementString : ''
+              : null,
         );
       },
     );
   }
 
   /// A [TextInputFormatter] that forces input to be a single line.
-  static final TextInputFormatter singleLineFormatter = FilteringTextInputFormatter.deny('\n');
+  static final TextInputFormatter singleLineFormatter =
+      FilteringTextInputFormatter.deny('\n');
 
   /// A [TextInputFormatter] that takes in digits `[0-9]` only.
-  static final TextInputFormatter digitsOnly = FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  static final TextInputFormatter digitsOnly =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
 }
 
 /// Old name for [FilteringTextInputFormatter.deny].
-@Deprecated(
-  'Use FilteringTextInputFormatter.deny instead. '
-  'This feature was deprecated after v1.20.0-1.0.pre.'
-)
+@Deprecated('Use FilteringTextInputFormatter.deny instead. '
+    'This feature was deprecated after v1.20.0-1.0.pre.')
 class BlacklistingTextInputFormatter extends FilteringTextInputFormatter {
   /// Old name for [FilteringTextInputFormatter.deny].
-  @Deprecated(
-    'Use FilteringTextInputFormatter.deny instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
+  @Deprecated('Use FilteringTextInputFormatter.deny instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
   BlacklistingTextInputFormatter(
     Pattern blacklistedPattern, {
     String replacementString = '',
   }) : super.deny(blacklistedPattern, replacementString: replacementString);
 
   /// Old name for [filterPattern].
-  @Deprecated(
-    'Use filterPattern instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
+  @Deprecated('Use filterPattern instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
   Pattern get blacklistedPattern => filterPattern;
 
   /// Old name for [FilteringTextInputFormatter.singleLineFormatter].
-  @Deprecated(
-    'Use FilteringTextInputFormatter.singleLineFormatter instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
-  static final BlacklistingTextInputFormatter singleLineFormatter
-      = BlacklistingTextInputFormatter(RegExp(r'\n'));
+  @Deprecated('Use FilteringTextInputFormatter.singleLineFormatter instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
+  static final BlacklistingTextInputFormatter singleLineFormatter =
+      BlacklistingTextInputFormatter(RegExp(r'\n'));
 }
 
 /// Old name for [FilteringTextInputFormatter.allow].
-@Deprecated(
-  'Use FilteringTextInputFormatter.allow instead. '
-  'This feature was deprecated after v1.20.0-1.0.pre.'
-)
+@Deprecated('Use FilteringTextInputFormatter.allow instead. '
+    'This feature was deprecated after v1.20.0-1.0.pre.')
 class WhitelistingTextInputFormatter extends FilteringTextInputFormatter {
   /// Old name for [FilteringTextInputFormatter.allow].
-  @Deprecated(
-    'Use FilteringTextInputFormatter.allow instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
+  @Deprecated('Use FilteringTextInputFormatter.allow instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
   WhitelistingTextInputFormatter(Pattern whitelistedPattern)
-    : assert(whitelistedPattern != null),
-      super.allow(whitelistedPattern);
+      : assert(whitelistedPattern != null),
+        super.allow(whitelistedPattern);
 
   /// Old name for [filterPattern].
-  @Deprecated(
-    'Use filterPattern instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
+  @Deprecated('Use filterPattern instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
   Pattern get whitelistedPattern => filterPattern;
 
   /// Old name for [FilteringTextInputFormatter.digitsOnly].
-  @Deprecated(
-    'Use FilteringTextInputFormatter.digitsOnly instead. '
-    'This feature was deprecated after v1.20.0-1.0.pre.'
-  )
-  static final WhitelistingTextInputFormatter digitsOnly
-      = WhitelistingTextInputFormatter(RegExp(r'\d+'));
+  @Deprecated('Use FilteringTextInputFormatter.digitsOnly instead. '
+      'This feature was deprecated after v1.20.0-1.0.pre.')
+  static final WhitelistingTextInputFormatter digitsOnly =
+      WhitelistingTextInputFormatter(RegExp(r'\d+'));
 }
 
 /// A [TextInputFormatter] that prevents the insertion of more characters
@@ -472,12 +460,13 @@ class LengthLimitingTextInputFormatter extends TextInputFormatter {
         baseOffset: math.min(value.selection.start, truncated.length),
         extentOffset: math.min(value.selection.end, truncated.length),
       ),
-      composing: !value.composing.isCollapsed && truncated.length > value.composing.start
-        ? TextRange(
-            start: value.composing.start,
-            end: math.min(value.composing.end, truncated.length),
-          )
-        : TextRange.empty,
+      composing: !value.composing.isCollapsed &&
+              truncated.length > value.composing.start
+          ? TextRange(
+              start: value.composing.start,
+              end: math.min(value.composing.end, truncated.length),
+            )
+          : TextRange.empty,
     );
   }
 
@@ -489,8 +478,8 @@ class LengthLimitingTextInputFormatter extends TextInputFormatter {
     final int? maxLength = this.maxLength;
 
     if (maxLength == null ||
-      maxLength == -1 ||
-      newValue.text.characters.length <= maxLength) {
+        maxLength == -1 ||
+        newValue.text.characters.length <= maxLength) {
       return newValue;
     }
 
@@ -502,7 +491,8 @@ class LengthLimitingTextInputFormatter extends TextInputFormatter {
       case MaxLengthEnforcement.enforced:
         // If already at the maximum and tried to enter even more, and has no
         // selection, keep the old value.
-        if (oldValue.text.characters.length == maxLength && !oldValue.selection.isValid) {
+        if (oldValue.text.characters.length == maxLength &&
+            !oldValue.selection.isValid) {
           return oldValue;
         }
 
@@ -512,7 +502,7 @@ class LengthLimitingTextInputFormatter extends TextInputFormatter {
         // If already at the maximum and tried to enter even more, and the old
         // value is not composing, keep the old value.
         if (oldValue.text.characters.length == maxLength &&
-          !oldValue.composing.isValid) {
+            !oldValue.composing.isValid) {
           return oldValue;
         }
 
@@ -539,15 +529,12 @@ TextEditingValue _selectionAwareTextManipulation(
   if (selectionStartIndex < 0 || selectionEndIndex < 0) {
     manipulatedText = substringManipulation(value.text);
   } else {
-    final String beforeSelection = substringManipulation(
-      value.text.substring(0, selectionStartIndex)
-    );
+    final String beforeSelection =
+        substringManipulation(value.text.substring(0, selectionStartIndex));
     final String inSelection = substringManipulation(
-      value.text.substring(selectionStartIndex, selectionEndIndex)
-    );
-    final String afterSelection = substringManipulation(
-      value.text.substring(selectionEndIndex)
-    );
+        value.text.substring(selectionStartIndex, selectionEndIndex));
+    final String afterSelection =
+        substringManipulation(value.text.substring(selectionEndIndex));
     manipulatedText = beforeSelection + inSelection + afterSelection;
     if (value.selection.baseOffset > value.selection.extentOffset) {
       manipulatedSelection = value.selection.copyWith(
@@ -563,9 +550,9 @@ TextEditingValue _selectionAwareTextManipulation(
   }
   return TextEditingValue(
     text: manipulatedText,
-    selection: manipulatedSelection ?? const TextSelection.collapsed(offset: -1),
-    composing: manipulatedText == value.text
-        ? value.composing
-        : TextRange.empty,
+    selection:
+        manipulatedSelection ?? const TextSelection.collapsed(offset: -1),
+    composing:
+        manipulatedText == value.text ? value.composing : TextRange.empty,
   );
 }

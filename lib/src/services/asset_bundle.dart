@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -67,12 +66,10 @@ abstract class AssetBundle {
   /// If the `unzip` argument is set to true, it would first unzip file at the
   /// specified location before retrieving the string content.
   Future<String> loadString(
-    String key,
-    {
-      bool cache = true,
-      bool unzip = false,
-    }
-  ) async {
+    String key, {
+    bool cache = true,
+    bool unzip = false,
+  }) async {
     final ByteData data = await load(key);
     // Note: data has a non-nullable type, but might be null when running with
     // weak checking, so we need to null check it anyway (and ignore the warning
@@ -90,7 +87,7 @@ abstract class AssetBundle {
     return compute(
       _utf8Decode,
       data,
-      debugLabel: '${unzip ? "Unzip and ": ""}UTF8 decode for "$key"',
+      debugLabel: '${unzip ? "Unzip and " : ""}UTF8 decode for "$key"',
     );
   }
 
@@ -108,7 +105,7 @@ abstract class AssetBundle {
   /// If this is a caching asset bundle, and the given key describes a cached
   /// asset, then evict the asset from the cache so that the next time it is
   /// loaded, the cache will be reread from the asset bundle.
-  void evict(String key) { }
+  void evict(String key) {}
 
   @override
   String toString() => '${describeIdentity(this)}()';
@@ -125,12 +122,15 @@ abstract class AssetBundle {
 abstract class CachingAssetBundle extends AssetBundle {
   // TODO(ianh): Replace this with an intelligent cache, see https://github.com/flutter/flutter/issues/3568
   final Map<String, Future<String>> _stringCache = <String, Future<String>>{};
-  final Map<String, Future<dynamic>> _structuredDataCache = <String, Future<dynamic>>{};
+  final Map<String, Future<dynamic>> _structuredDataCache =
+      <String, Future<dynamic>>{};
 
   @override
-  Future<String> loadString(String key, { bool cache = true, bool unzip = false }) {
+  Future<String> loadString(String key,
+      {bool cache = true, bool unzip = false}) {
     if (cache)
-      return _stringCache.putIfAbsent(key, () => super.loadString(key, unzip: unzip));
+      return _stringCache.putIfAbsent(
+          key, () => super.loadString(key, unzip: unzip));
     return super.loadString(key, unzip: unzip);
   }
 
@@ -185,11 +185,11 @@ abstract class CachingAssetBundle extends AssetBundle {
 class PlatformAssetBundle extends CachingAssetBundle {
   @override
   Future<ByteData> load(String key) async {
-    final Uint8List encoded = utf8.encoder.convert(Uri(path: Uri.encodeFull(key)).path);
-    final ByteData? asset =
-        await defaultBinaryMessenger.send('flutter/assets', encoded.buffer.asByteData());
-    if (asset == null)
-      throw FlutterError('Unable to load asset: $key');
+    final Uint8List encoded =
+        utf8.encoder.convert(Uri(path: Uri.encodeFull(key)).path);
+    final ByteData? asset = await defaultBinaryMessenger.send(
+        'flutter/assets', encoded.buffer.asByteData());
+    if (asset == null) throw FlutterError('Unable to load asset: $key');
     return asset;
   }
 }

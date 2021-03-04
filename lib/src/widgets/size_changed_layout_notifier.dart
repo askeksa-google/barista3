@@ -28,7 +28,7 @@ import 'notification_listener.dart';
 ///
 ///  * [SizeChangedLayoutNotifier], which sends this notification.
 ///  * [LayoutChangedNotification], of which this is a subclass.
-class SizeChangedLayoutNotification extends LayoutChangedNotification { }
+class SizeChangedLayoutNotification extends LayoutChangedNotification {}
 
 /// A widget that automatically dispatches a [SizeChangedLayoutNotification]
 /// when the layout dimensions of its child change.
@@ -59,11 +59,9 @@ class SizeChangedLayoutNotifier extends SingleChildRenderObjectWidget {
 
   @override
   _RenderSizeChangedWithCallback createRenderObject(BuildContext context) {
-    return _RenderSizeChangedWithCallback(
-      onLayoutChangedCallback: () {
-        SizeChangedLayoutNotification().dispatch(context);
-      }
-    );
+    return _RenderSizeChangedWithCallback(onLayoutChangedCallback: () {
+      SizeChangedLayoutNotification().dispatch(context);
+    });
   }
 }
 
@@ -71,8 +69,8 @@ class _RenderSizeChangedWithCallback extends RenderProxyBox {
   _RenderSizeChangedWithCallback({
     RenderBox? child,
     required this.onLayoutChangedCallback,
-  }) : assert(onLayoutChangedCallback != null),
-       super(child);
+  })   : assert(onLayoutChangedCallback != null),
+        super(child);
 
   // There's a 1:1 relationship between the _RenderSizeChangedWithCallback and
   // the `context` that is captured by the closure created by createRenderObject
@@ -88,8 +86,7 @@ class _RenderSizeChangedWithCallback extends RenderProxyBox {
     super.performLayout();
     // Don't send the initial notification, or this will be SizeObserver all
     // over again!
-    if (_oldSize != null && size != _oldSize)
-      onLayoutChangedCallback();
+    if (_oldSize != null && size != _oldSize) onLayoutChangedCallback();
     _oldSize = size;
   }
 }

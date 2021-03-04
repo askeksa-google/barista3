@@ -21,13 +21,13 @@ import 'print.dart';
 ///
 /// See [the foundation library](foundation/foundation-library.html)
 /// for a complete list.
-bool debugAssertAllFoundationVarsUnset(String reason, { DebugPrintCallback debugPrintOverride = debugPrintThrottled }) {
+bool debugAssertAllFoundationVarsUnset(String reason,
+    {DebugPrintCallback debugPrintOverride = debugPrintThrottled}) {
   assert(() {
     if (debugPrint != debugPrintOverride ||
         debugDefaultTargetPlatformOverride != null ||
         debugDoublePrecision != null ||
-        debugBrightnessOverride != null)
-      throw FlutterError(reason);
+        debugBrightnessOverride != null) throw FlutterError(reason);
     return true;
   }());
   return true;
@@ -51,7 +51,8 @@ bool debugInstrumentationEnabled = false;
 ///  * [Timeline], which is used to record synchronous tracing events for
 ///    visualization in Chrome's tracing format. This method does not
 ///    implicitly add any timeline events.
-Future<T> debugInstrumentAction<T>(String description, Future<T> action()) async {
+Future<T> debugInstrumentAction<T>(
+    String description, Future<T> action()) async {
   bool instrument = false;
   assert(() {
     instrument = debugInstrumentationEnabled;
@@ -79,7 +80,8 @@ Future<T> debugInstrumentAction<T>(String description, Future<T> action()) async
 ///
 ///  * [Timeline.startSync], which typically takes this value as its `arguments`
 ///    argument.
-const Map<String, String> timelineArgumentsIndicatingLandmarkEvent = <String, String>{
+const Map<String, String> timelineArgumentsIndicatingLandmarkEvent =
+    <String, String>{
   'mode': 'basic',
 };
 

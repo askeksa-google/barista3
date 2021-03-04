@@ -62,8 +62,8 @@ class AnimatedSize extends SingleChildRenderObjectWidget {
     this.reverseDuration,
     required this.vsync,
     this.clipBehavior = Clip.hardEdge,
-  }) : assert(clipBehavior != null),
-       super(key: key, child: child);
+  })  : assert(clipBehavior != null),
+        super(key: key, child: child);
 
   /// The alignment of the child within the parent when the parent is not yet
   /// the same size as the child.
@@ -122,7 +122,8 @@ class AnimatedSize extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderAnimatedSize renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderAnimatedSize renderObject) {
     renderObject
       ..alignment = alignment
       ..duration = duration
@@ -136,8 +137,13 @@ class AnimatedSize extends SingleChildRenderObjectWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment, defaultValue: Alignment.topCenter));
-    properties.add(IntProperty('duration', duration.inMilliseconds, unit: 'ms'));
-    properties.add(IntProperty('reverseDuration', reverseDuration?.inMilliseconds, unit: 'ms', defaultValue: null));
+    properties.add(DiagnosticsProperty<AlignmentGeometry>(
+        'alignment', alignment,
+        defaultValue: Alignment.topCenter));
+    properties
+        .add(IntProperty('duration', duration.inMilliseconds, unit: 'ms'));
+    properties.add(IntProperty(
+        'reverseDuration', reverseDuration?.inMilliseconds,
+        unit: 'ms', defaultValue: null));
   }
 }

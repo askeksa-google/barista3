@@ -62,7 +62,8 @@ class KeySet<T extends KeyboardKey> {
         return true;
       }());
     }
-    assert(_keys.length == count, 'Two or more provided keys are identical. Each key must appear only once.');
+    assert(_keys.length == count,
+        'Two or more provided keys are identical. Each key must appear only once.');
   }
 
   /// Create  a [KeySet] from a set of [KeyboardKey]s.
@@ -86,13 +87,21 @@ class KeySet<T extends KeyboardKey> {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is KeySet<T>
-        && setEquals<T>(other._keys, _keys);
+    return other is KeySet<T> && setEquals<T>(other._keys, _keys);
   }
 
   // Arrays used to temporarily store hash codes for sorting.
-  static final List<int> _tempHashStore3 = <int>[0, 0, 0]; // used to sort exactly 3 keys
-  static final List<int> _tempHashStore4 = <int>[0, 0, 0, 0]; // used to sort exactly 4 keys
+  static final List<int> _tempHashStore3 = <int>[
+    0,
+    0,
+    0
+  ]; // used to sort exactly 3 keys
+  static final List<int> _tempHashStore4 = <int>[
+    0,
+    0,
+    0,
+    0
+  ]; // used to sort exactly 4 keys
 
   // Cached hash code value. Improves [hashCode] performance by 27%-900%,
   // depending on key set size and read/write ratio.
@@ -123,16 +132,13 @@ class KeySet<T extends KeyboardKey> {
     final int h2 = iterator.current.hashCode;
     if (length == 2) {
       // No need to sort if there's two keys, just compare them.
-      return _hashCode = h1 < h2
-        ? hashValues(h1, h2)
-        : hashValues(h2, h1);
+      return _hashCode = h1 < h2 ? hashValues(h1, h2) : hashValues(h2, h1);
     }
 
     // Sort key hash codes and feed to hashList to ensure the aggregate
     // hash code does not depend on the key order.
-    final List<int> sortedHashes = length == 3
-      ? _tempHashStore3
-      : _tempHashStore4;
+    final List<int> sortedHashes =
+        length == 3 ? _tempHashStore3 : _tempHashStore4;
     sortedHashes[0] = h1;
     sortedHashes[1] = h2;
     iterator.moveNext();
@@ -189,33 +195,38 @@ class LogicalKeySet extends KeySet<LogicalKeyboardKey> with Diagnosticable {
   ///
   /// Intended to be used in debug mode for logging purposes.
   String debugDescribeKeys() {
-    final List<LogicalKeyboardKey> sortedKeys = keys.toList()..sort(
-            (LogicalKeyboardKey a, LogicalKeyboardKey b) {
-          // Put the modifiers first. If it has a synonym, then it's something
-          // like shiftLeft, altRight, etc.
-          final bool aIsModifier = a.synonyms.isNotEmpty || _modifiers.contains(a);
-          final bool bIsModifier = b.synonyms.isNotEmpty || _modifiers.contains(b);
-          if (aIsModifier && !bIsModifier) {
-            return -1;
-          } else if (bIsModifier && !aIsModifier) {
-            return 1;
-          }
-          return a.debugName!.compareTo(b.debugName!);
+    final List<LogicalKeyboardKey> sortedKeys = keys.toList()
+      ..sort((LogicalKeyboardKey a, LogicalKeyboardKey b) {
+        // Put the modifiers first. If it has a synonym, then it's something
+        // like shiftLeft, altRight, etc.
+        final bool aIsModifier =
+            a.synonyms.isNotEmpty || _modifiers.contains(a);
+        final bool bIsModifier =
+            b.synonyms.isNotEmpty || _modifiers.contains(b);
+        if (aIsModifier && !bIsModifier) {
+          return -1;
+        } else if (bIsModifier && !aIsModifier) {
+          return 1;
         }
-    );
-    return sortedKeys.map<String>((LogicalKeyboardKey key) => key.debugName.toString()).join(' + ');
+        return a.debugName!.compareTo(b.debugName!);
+      });
+    return sortedKeys
+        .map<String>((LogicalKeyboardKey key) => key.debugName.toString())
+        .join(' + ');
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Set<LogicalKeyboardKey>>('keys', _keys, description: debugDescribeKeys()));
+    properties.add(DiagnosticsProperty<Set<LogicalKeyboardKey>>('keys', _keys,
+        description: debugDescribeKeys()));
   }
 }
 
 /// Diagnostics property which handles formatting a `Map<LogicalKeySet, Intent>`
 /// (the same type as the [Shortcuts.shortcuts] property) so that it is human-readable.
-class ShortcutMapProperty extends DiagnosticsProperty<Map<LogicalKeySet, Intent>> {
+class ShortcutMapProperty
+    extends DiagnosticsProperty<Map<LogicalKeySet, Intent>> {
   /// Create a diagnostics property for `Map<LogicalKeySet, Intent>` objects,
   /// which are the same type as the [Shortcuts.shortcuts] property.
   ///
@@ -227,22 +238,22 @@ class ShortcutMapProperty extends DiagnosticsProperty<Map<LogicalKeySet, Intent>
     Object defaultValue = kNoDefaultValue,
     DiagnosticLevel level = DiagnosticLevel.info,
     String? description,
-  }) : assert(showName != null),
-       assert(level != null),
-       super(
-         name,
-         value,
-         showName: showName,
-         defaultValue: defaultValue,
-         level: level,
-         description: description,
-       );
+  })  : assert(showName != null),
+        assert(level != null),
+        super(
+          name,
+          value,
+          showName: showName,
+          defaultValue: defaultValue,
+          level: level,
+          description: description,
+        );
 
   @override
   Map<LogicalKeySet, Intent> get value => super.value!;
 
   @override
-  String valueToString({ TextTreeConfiguration? parentConfiguration }) {
+  String valueToString({TextTreeConfiguration? parentConfiguration}) {
     return '{${value.keys.map<String>((LogicalKeySet keySet) => '{${keySet.debugDescribeKeys()}}: ${value[keySet]}').join(', ')}}';
   }
 }
@@ -295,7 +306,7 @@ class ShortcutManager extends ChangeNotifier with Diagnosticable {
   ///
   /// Defaults to a set derived from [RawKeyboard.keysPressed] if `keysPressed` is
   /// not supplied.
-  Intent? _find({ LogicalKeySet? keysPressed }) {
+  Intent? _find({LogicalKeySet? keysPressed}) {
     if (keysPressed == null && RawKeyboard.instance.keysPressed.isEmpty) {
       return null;
     }
@@ -311,7 +322,8 @@ class ShortcutManager extends ChangeNotifier with Diagnosticable {
           final Set<LogicalKeyboardKey> synonyms = setKey.synonyms;
           if (synonyms.isNotEmpty) {
             // There currently aren't any synonyms that match more than one key.
-            assert(synonyms.length == 1, 'Unexpectedly encountered a key synonym with more than one key.');
+            assert(synonyms.length == 1,
+                'Unexpectedly encountered a key synonym with more than one key.');
             pseudoKeys.add(synonyms.first);
           } else {
             pseudoKeys.add(setKey);
@@ -351,34 +363,40 @@ class ShortcutManager extends ChangeNotifier with Diagnosticable {
       return KeyEventResult.ignored;
     }
     assert(context != null);
-    assert(keysPressed != null || RawKeyboard.instance.keysPressed.isNotEmpty,
-      'Received a key down event when no keys are in keysPressed. '
-      "This state can occur if the key event being sent doesn't properly "
-      'set its modifier flags. This was the event: $event and its data: '
-      '${event.data}');
+    assert(
+        keysPressed != null || RawKeyboard.instance.keysPressed.isNotEmpty,
+        'Received a key down event when no keys are in keysPressed. '
+        "This state can occur if the key event being sent doesn't properly "
+        'set its modifier flags. This was the event: $event and its data: '
+        '${event.data}');
     final Intent? matchedIntent = _find(keysPressed: keysPressed);
     if (matchedIntent != null) {
       final BuildContext primaryContext = primaryFocus!.context!;
-      assert (primaryContext != null);
+      assert(primaryContext != null);
       final Action<Intent>? action = Actions.maybeFind<Intent>(
         primaryContext,
         intent: matchedIntent,
       );
       if (action != null && action.isEnabled(matchedIntent)) {
-        Actions.of(primaryContext).invokeAction(action, matchedIntent, primaryContext);
+        Actions.of(primaryContext)
+            .invokeAction(action, matchedIntent, primaryContext);
         return action.consumesKey(matchedIntent)
             ? KeyEventResult.handled
             : KeyEventResult.skipRemainingHandlers;
       }
     }
-    return modal ? KeyEventResult.skipRemainingHandlers : KeyEventResult.ignored;
+    return modal
+        ? KeyEventResult.skipRemainingHandlers
+        : KeyEventResult.ignored;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Map<LogicalKeySet, Intent>>('shortcuts', _shortcuts));
-    properties.add(FlagProperty('modal', value: modal, ifTrue: 'modal', defaultValue: false));
+    properties.add(DiagnosticsProperty<Map<LogicalKeySet, Intent>>(
+        'shortcuts', _shortcuts));
+    properties.add(FlagProperty('modal',
+        value: modal, ifTrue: 'modal', defaultValue: false));
   }
 }
 
@@ -460,9 +478,9 @@ class Shortcuts extends StatefulWidget {
     required this.shortcuts,
     required this.child,
     this.debugLabel,
-  }) : assert(shortcuts != null),
-       assert(child != null),
-       super(key: key);
+  })  : assert(shortcuts != null),
+        assert(child != null),
+        super(key: key);
 
   /// The [ShortcutManager] that will manage the mapping between key
   /// combinations and [Action]s.
@@ -510,10 +528,12 @@ class Shortcuts extends StatefulWidget {
   ///    it doesn't find a [Shortcuts] ancestor.
   static ShortcutManager of(BuildContext context) {
     assert(context != null);
-    final _ShortcutsMarker? inherited = context.dependOnInheritedWidgetOfExactType<_ShortcutsMarker>();
+    final _ShortcutsMarker? inherited =
+        context.dependOnInheritedWidgetOfExactType<_ShortcutsMarker>();
     assert(() {
       if (inherited == null) {
-        throw FlutterError('Unable to find a $Shortcuts widget in the context.\n'
+        throw FlutterError(
+            'Unable to find a $Shortcuts widget in the context.\n'
             '$Shortcuts.of() was called with a context that does not contain a '
             '$Shortcuts widget.\n'
             'No $Shortcuts ancestor could be found starting from the context that was '
@@ -540,7 +560,8 @@ class Shortcuts extends StatefulWidget {
   ///    ancestor.
   static ShortcutManager? maybeOf(BuildContext context) {
     assert(context != null);
-    final _ShortcutsMarker? inherited = context.dependOnInheritedWidgetOfExactType<_ShortcutsMarker>();
+    final _ShortcutsMarker? inherited =
+        context.dependOnInheritedWidgetOfExactType<_ShortcutsMarker>();
     return inherited?.manager;
   }
 
@@ -550,8 +571,10 @@ class Shortcuts extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ShortcutManager>('manager', manager, defaultValue: null));
-    properties.add(ShortcutMapProperty('shortcuts', shortcuts, description: debugLabel?.isNotEmpty ?? false ? debugLabel : null));
+    properties.add(DiagnosticsProperty<ShortcutManager>('manager', manager,
+        defaultValue: null));
+    properties.add(ShortcutMapProperty('shortcuts', shortcuts,
+        description: debugLabel?.isNotEmpty ?? false ? debugLabel : null));
   }
 }
 
@@ -613,7 +636,7 @@ class _ShortcutsMarker extends InheritedNotifier<ShortcutManager> {
   const _ShortcutsMarker({
     required ShortcutManager manager,
     required Widget child,
-  })  : assert(manager != null),
+  })   : assert(manager != null),
         assert(child != null),
         super(notifier: manager, child: child);
 

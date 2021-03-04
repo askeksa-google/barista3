@@ -11,7 +11,8 @@ import 'constants.dart';
 import 'isolates.dart' as isolates;
 
 /// The dart:io implementation of [isolate.compute].
-Future<R> compute<Q, R>(isolates.ComputeCallback<Q, R> callback, Q message, { String? debugLabel }) async {
+Future<R> compute<Q, R>(isolates.ComputeCallback<Q, R> callback, Q message,
+    {String? debugLabel}) async {
   debugLabel ??= kReleaseMode ? 'compute' : callback.toString();
   final Flow flow = Flow.begin();
   Timeline.startSync('$debugLabel: start', flow: flow);
@@ -19,7 +20,8 @@ Future<R> compute<Q, R>(isolates.ComputeCallback<Q, R> callback, Q message, { St
   final ReceivePort exitPort = ReceivePort();
   final ReceivePort errorPort = ReceivePort();
   Timeline.finishSync();
-  final Isolate isolate = await Isolate.spawn<_IsolateConfiguration<Q, FutureOr<R>>>(
+  final Isolate isolate =
+      await Isolate.spawn<_IsolateConfiguration<Q, FutureOr<R>>>(
     _spawn,
     _IsolateConfiguration<Q, FutureOr<R>>(
       callback,
@@ -46,13 +48,13 @@ Future<R> compute<Q, R>(isolates.ComputeCallback<Q, R> callback, Q message, { St
   });
   exitPort.listen((dynamic exitData) {
     if (!result.isCompleted) {
-      result.completeError(Exception('Isolate exited without result or error.'));
+      result
+          .completeError(Exception('Isolate exited without result or error.'));
     }
   });
   resultPort.listen((dynamic resultData) {
     assert(resultData == null || resultData is R);
-    if (!result.isCompleted)
-      result.complete(resultData as R);
+    if (!result.isCompleted) result.complete(resultData as R);
   });
   await result.future;
   Timeline.startSync('$debugLabel: end', flow: Flow.end(flow.id));
@@ -81,7 +83,8 @@ class _IsolateConfiguration<Q, R> {
   FutureOr<R> apply() => callback(message);
 }
 
-Future<void> _spawn<Q, R>(_IsolateConfiguration<Q, FutureOr<R>> configuration) async {
+Future<void> _spawn<Q, R>(
+    _IsolateConfiguration<Q, FutureOr<R>> configuration) async {
   final R result = await Timeline.timeSync(
     configuration.debugLabel,
     () async {
@@ -92,7 +95,9 @@ Future<void> _spawn<Q, R>(_IsolateConfiguration<Q, FutureOr<R>> configuration) a
   );
   Timeline.timeSync(
     '${configuration.debugLabel}: returning result',
-    () { configuration.resultPort.send(result); },
+    () {
+      configuration.resultPort.send(result);
+    },
     flow: Flow.step(configuration.flowId),
   );
 }

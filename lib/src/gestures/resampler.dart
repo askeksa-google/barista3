@@ -114,8 +114,9 @@ class PointerEventResampler {
     Duration timeStamp,
     bool isDown,
   ) {
-    return isDown ? _toMoveEvent(event, position, delta, pointerIdentifier, timeStamp)
-                  : _toHoverEvent(event, position, delta, timeStamp);
+    return isDown
+        ? _toMoveEvent(event, position, delta, pointerIdentifier, timeStamp)
+        : _toHoverEvent(event, position, delta, timeStamp);
   }
 
   Offset _positionAt(Duration sampleTime) {
@@ -128,8 +129,10 @@ class PointerEventResampler {
 
     // Resample if `next` time stamp is past `sampleTime`.
     if (nextTimeStamp > sampleTime && nextTimeStamp > lastTimeStamp) {
-      final double interval = (nextTimeStamp - lastTimeStamp).inMicroseconds.toDouble();
-      final double scalar = (sampleTime - lastTimeStamp).inMicroseconds.toDouble() / interval;
+      final double interval =
+          (nextTimeStamp - lastTimeStamp).inMicroseconds.toDouble();
+      final double scalar =
+          (sampleTime - lastTimeStamp).inMicroseconds.toDouble() / interval;
       final double lastX = _last?.position.dx ?? 0.0;
       final double lastY = _last?.position.dy ?? 0.0;
       x = lastX + (x - lastX) * scalar;
@@ -163,9 +166,9 @@ class PointerEventResampler {
   }
 
   void _dequeueAndSampleNonHoverOrMovePointerEventsUntil(
-      Duration sampleTime,
-      Duration nextSampleTime,
-      HandleEventCallback callback,
+    Duration sampleTime,
+    Duration nextSampleTime,
+    HandleEventCallback callback,
   ) {
     Duration endTime = sampleTime;
     // Scan queued events to determine end time.
@@ -235,7 +238,8 @@ class PointerEventResampler {
         // therefor never produce `hover` events.
         if (position != _position) {
           final Offset delta = position - _position;
-          callback(_toMoveOrHoverEvent(event, position, delta, _pointerIdentifier, sampleTime, wasDown));
+          callback(_toMoveOrHoverEvent(
+              event, position, delta, _pointerIdentifier, sampleTime, wasDown));
           _position = position;
         }
         callback(event.copyWith(
@@ -251,8 +255,8 @@ class PointerEventResampler {
   }
 
   void _samplePointerPosition(
-      Duration sampleTime,
-      HandleEventCallback callback,
+    Duration sampleTime,
+    HandleEventCallback callback,
   ) {
     // Position at `sampleTime`.
     final Offset position = _positionAt(sampleTime);
@@ -261,7 +265,8 @@ class PointerEventResampler {
     final PointerEvent? next = _next;
     if (position != _position && next != null) {
       final Offset delta = position - _position;
-      callback(_toMoveOrHoverEvent(next, position, delta, _pointerIdentifier, sampleTime, _isDown));
+      callback(_toMoveOrHoverEvent(
+          next, position, delta, _pointerIdentifier, sampleTime, _isDown));
       _position = position;
     }
   }
@@ -290,7 +295,8 @@ class PointerEventResampler {
     _processPointerEvents(sampleTime);
 
     // Dequeue and sample pointer events until `sampleTime`.
-    _dequeueAndSampleNonHoverOrMovePointerEventsUntil(sampleTime, nextSampleTime, callback);
+    _dequeueAndSampleNonHoverOrMovePointerEventsUntil(
+        sampleTime, nextSampleTime, callback);
 
     // Dispatch resampled pointer location event if tracked.
     if (_isTracked) {

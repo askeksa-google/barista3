@@ -153,8 +153,8 @@ class AutofillGroup extends StatefulWidget {
     Key? key,
     required this.child,
     this.onDisposeAction = AutofillContextAction.commit,
-  }) : assert(child != null),
-       super(key: key);
+  })  : assert(child != null),
+        super(key: key);
 
   /// Returns the closest [AutofillGroupState] which encloses the given context.
   ///
@@ -165,7 +165,8 @@ class AutofillGroup extends StatefulWidget {
   /// * [EditableTextState], where this method is used to retrieve the closest
   ///   [AutofillGroupState].
   static AutofillGroupState? of(BuildContext context) {
-    final _AutofillScope? scope = context.dependOnInheritedWidgetOfExactType<_AutofillScope>();
+    final _AutofillScope? scope =
+        context.dependOnInheritedWidgetOfExactType<_AutofillScope>();
     return scope?._scope;
   }
 
@@ -216,8 +217,8 @@ class AutofillGroupState extends State<AutofillGroup> with AutofillScopeMixin {
 
   @override
   Iterable<AutofillClient> get autofillClients {
-    return _clients.values
-      .where((AutofillClient client) => client.textInputConfiguration.autofillConfiguration != null);
+    return _clients.values.where((AutofillClient client) =>
+        client.textInputConfiguration.autofillConfiguration != null);
   }
 
   /// Adds the [AutofillClient] to this [AutofillGroup].
@@ -272,8 +273,7 @@ class AutofillGroupState extends State<AutofillGroup> with AutofillScopeMixin {
   void dispose() {
     super.dispose();
 
-    if (!_isTopmostAutofillGroup || widget.onDisposeAction == null)
-      return;
+    if (!_isTopmostAutofillGroup || widget.onDisposeAction == null) return;
     switch (widget.onDisposeAction) {
       case AutofillContextAction.cancel:
         TextInput.finishAutofillContext(shouldSave: false);
@@ -290,8 +290,8 @@ class _AutofillScope extends InheritedWidget {
     Key? key,
     required Widget child,
     AutofillGroupState? autofillScopeState,
-  }) : _scope = autofillScopeState,
-       super(key: key, child: child);
+  })  : _scope = autofillScopeState,
+        super(key: key, child: child);
 
   final AutofillGroupState? _scope;
 

@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flute/foundation.dart';
 
 import 'events.dart';
@@ -31,7 +30,8 @@ class PointerSignalResolver {
   PointerSignalEvent? _currentEvent;
 
   /// Registers interest in handling [event].
-  void register(PointerSignalEvent event, PointerSignalResolvedCallback callback) {
+  void register(
+      PointerSignalEvent event, PointerSignalResolvedCallback callback) {
     assert(event != null);
     assert(callback != null);
     assert(_currentEvent == null || _isSameEvent(_currentEvent!, event));
@@ -59,17 +59,17 @@ class PointerSignalResolver {
       InformationCollector? collector;
       assert(() {
         collector = () sync* {
-          yield DiagnosticsProperty<PointerSignalEvent>('Event', event, style: DiagnosticsTreeStyle.errorProperty);
+          yield DiagnosticsProperty<PointerSignalEvent>('Event', event,
+              style: DiagnosticsTreeStyle.errorProperty);
         };
         return true;
       }());
       FlutterError.reportError(FlutterErrorDetails(
-        exception: exception,
-        stack: stack,
-        library: 'gesture library',
-        context: ErrorDescription('while resolving a PointerSignalEvent'),
-        informationCollector: collector
-      ));
+          exception: exception,
+          stack: stack,
+          library: 'gesture library',
+          context: ErrorDescription('while resolving a PointerSignalEvent'),
+          informationCollector: collector));
     }
     _firstRegisteredCallback = null;
     _currentEvent = null;

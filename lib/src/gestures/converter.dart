@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-import 'package:flute/ui.dart' as ui show PointerData, PointerChange, PointerSignalKind;
+import 'package:flute/ui.dart' as ui
+    show PointerData, PointerChange, PointerSignalKind;
 
 import 'events.dart';
 
@@ -45,19 +45,27 @@ class PointerEventConverter {
   /// [dart:ui.FlutterView.devicePixelRatio]) is used to convert the incoming data
   /// from physical coordinates to logical pixels. See the discussion at
   /// [PointerEvent] for more details on the [PointerEvent] coordinate space.
-  static Iterable<PointerEvent> expand(Iterable<ui.PointerData> data, double devicePixelRatio) sync* {
+  static Iterable<PointerEvent> expand(
+      Iterable<ui.PointerData> data, double devicePixelRatio) sync* {
     for (final ui.PointerData datum in data) {
-      final Offset position = Offset(datum.physicalX, datum.physicalY) / devicePixelRatio;
+      final Offset position =
+          Offset(datum.physicalX, datum.physicalY) / devicePixelRatio;
       assert(position != null);
-      final Offset delta = Offset(datum.physicalDeltaX, datum.physicalDeltaY) / devicePixelRatio;
-      final double radiusMinor = _toLogicalPixels(datum.radiusMinor, devicePixelRatio);
-      final double radiusMajor = _toLogicalPixels(datum.radiusMajor, devicePixelRatio);
-      final double radiusMin = _toLogicalPixels(datum.radiusMin, devicePixelRatio);
-      final double radiusMax = _toLogicalPixels(datum.radiusMax, devicePixelRatio);
+      final Offset delta =
+          Offset(datum.physicalDeltaX, datum.physicalDeltaY) / devicePixelRatio;
+      final double radiusMinor =
+          _toLogicalPixels(datum.radiusMinor, devicePixelRatio);
+      final double radiusMajor =
+          _toLogicalPixels(datum.radiusMajor, devicePixelRatio);
+      final double radiusMin =
+          _toLogicalPixels(datum.radiusMin, devicePixelRatio);
+      final double radiusMax =
+          _toLogicalPixels(datum.radiusMax, devicePixelRatio);
       final Duration timeStamp = datum.timeStamp;
       final PointerDeviceKind kind = datum.kind;
       assert(datum.change != null);
-      if (datum.signalKind == null || datum.signalKind == ui.PointerSignalKind.none) {
+      if (datum.signalKind == null ||
+          datum.signalKind == ui.PointerSignalKind.none) {
         switch (datum.change) {
           case ui.PointerChange.add:
             yield PointerAddedEvent(
@@ -217,7 +225,8 @@ class PointerEventConverter {
         switch (datum.signalKind!) {
           case ui.PointerSignalKind.scroll:
             final Offset scrollDelta =
-                Offset(datum.scrollDeltaX, datum.scrollDeltaY) / devicePixelRatio;
+                Offset(datum.scrollDeltaX, datum.scrollDeltaY) /
+                    devicePixelRatio;
             yield PointerScrollEvent(
               timeStamp: timeStamp,
               kind: kind,
@@ -228,7 +237,8 @@ class PointerEventConverter {
             );
             break;
           case ui.PointerSignalKind.none:
-            assert(false); // This branch should already have 'none' filtered out.
+            assert(
+                false); // This branch should already have 'none' filtered out.
             break;
           case ui.PointerSignalKind.unknown:
             // Ignore unknown signals.
@@ -238,5 +248,7 @@ class PointerEventConverter {
     }
   }
 
-  static double _toLogicalPixels(double physicalPixels, double devicePixelRatio) => physicalPixels / devicePixelRatio;
+  static double _toLogicalPixels(
+          double physicalPixels, double devicePixelRatio) =>
+      physicalPixels / devicePixelRatio;
 }

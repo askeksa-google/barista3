@@ -9,15 +9,16 @@
 /// framework.
 library foundation;
 
-export 'package:meta/meta.dart' show
-  factory,
-  immutable,
-  mustCallSuper,
-  nonVirtual,
-  optionalTypeArgs,
-  protected,
-  required,
-  visibleForTesting;
+export 'package:meta/meta.dart'
+    show
+        factory,
+        immutable,
+        mustCallSuper,
+        nonVirtual,
+        optionalTypeArgs,
+        protected,
+        required,
+        visibleForTesting;
 
 // Examples can assume:
 // // @dart = 2.9

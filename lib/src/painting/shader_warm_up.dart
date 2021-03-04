@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'dart:developer';
 import 'package:flute/ui.dart' as ui;
 
@@ -124,12 +123,13 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
   /// compilation cache.
   @override
   Future<void> warmUpOnCanvas(ui.Canvas canvas) async {
-    const ui.RRect rrect = ui.RRect.fromLTRBXY(20.0, 20.0, 60.0, 60.0, 10.0, 10.0);
+    const ui.RRect rrect =
+        ui.RRect.fromLTRBXY(20.0, 20.0, 60.0, 60.0, 10.0, 10.0);
     final ui.Path rrectPath = ui.Path()..addRRect(rrect);
 
-    final ui.Path circlePath = ui.Path()..addOval(
-        ui.Rect.fromCircle(center: const ui.Offset(40.0, 40.0), radius: 20.0)
-    );
+    final ui.Path circlePath = ui.Path()
+      ..addOval(ui.Rect.fromCircle(
+          center: const ui.Offset(40.0, 40.0), radius: 20.0));
 
     // The following path is based on
     // https://skia.org/user/api/SkCanvas_Reference#SkCanvas_drawPath
@@ -152,7 +152,12 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
     // the associated paint configurations. According to our experience and
     // tracing, drawing the following paths/paints generates various of
     // shaders that are commonly used.
-    final List<ui.Path> paths = <ui.Path>[rrectPath, circlePath, path, convexPath];
+    final List<ui.Path> paths = <ui.Path>[
+      rrectPath,
+      circlePath,
+      path,
+      convexPath
+    ];
 
     final List<ui.Paint> paints = <ui.Paint>[
       ui.Paint()
@@ -168,7 +173,7 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
       ui.Paint()
         ..isAntiAlias = true
         ..style = ui.PaintingStyle.stroke
-        ..strokeWidth = 0.1,  // hairline
+        ..strokeWidth = 0.1, // hairline
     ];
 
     // Warm up path stroke and fill shaders.
@@ -194,7 +199,9 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
     canvas.translate(0.0, drawCallSpacing);
     final ui.ParagraphBuilder paragraphBuilder = ui.ParagraphBuilder(
       ui.ParagraphStyle(textDirection: ui.TextDirection.ltr),
-    )..pushStyle(ui.TextStyle(color: black))..addText('_');
+    )
+      ..pushStyle(ui.TextStyle(color: black))
+      ..addText('_');
     final ui.Paragraph paragraph = paragraphBuilder.build()
       ..layout(const ui.ParagraphConstraints(width: 60.0));
     canvas.drawParagraph(paragraph, const ui.Offset(20.0, 20.0));
@@ -209,7 +216,8 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
       canvas
         ..save()
         ..translate(fraction, fraction)
-        ..clipRRect(ui.RRect.fromLTRBR(8, 8, 328, 248, const ui.Radius.circular(16)))
+        ..clipRRect(
+            ui.RRect.fromLTRBR(8, 8, 328, 248, const ui.Radius.circular(16)))
         ..drawRect(const ui.Rect.fromLTRB(10, 10, 320, 240), ui.Paint())
         ..restore();
       canvas.translate(drawCallSpacing, 0.0);

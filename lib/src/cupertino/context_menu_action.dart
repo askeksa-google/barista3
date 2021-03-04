@@ -20,10 +20,10 @@ class CupertinoContextMenuAction extends StatefulWidget {
     this.isDestructiveAction = false,
     this.onPressed,
     this.trailingIcon,
-  }) : assert(child != null),
-       assert(isDefaultAction != null),
-       assert(isDestructiveAction != null),
-       super(key: key);
+  })  : assert(child != null),
+        assert(isDefaultAction != null),
+        assert(isDestructiveAction != null),
+        super(key: key);
 
   /// The widget that will be placed inside the action.
   final Widget child;
@@ -46,10 +46,12 @@ class CupertinoContextMenuAction extends StatefulWidget {
   final IconData? trailingIcon;
 
   @override
-  _CupertinoContextMenuActionState createState() => _CupertinoContextMenuActionState();
+  _CupertinoContextMenuActionState createState() =>
+      _CupertinoContextMenuActionState();
 }
 
-class _CupertinoContextMenuActionState extends State<CupertinoContextMenuAction> {
+class _CupertinoContextMenuActionState
+    extends State<CupertinoContextMenuAction> {
   static const Color _kBackgroundColor = Color(0xFFEEEEEE);
   static const Color _kBackgroundColorPressed = Color(0xFFDDDDDD);
   static const double _kButtonHeight = 56.0;
@@ -96,7 +98,6 @@ class _CupertinoContextMenuActionState extends State<CupertinoContextMenuAction>
     }
     return _kActionSheetActionStyle;
   }
-
 
   @override
   Widget build(BuildContext context) {

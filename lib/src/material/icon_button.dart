@@ -158,13 +158,13 @@ class IconButton extends StatelessWidget {
     this.tooltip,
     this.enableFeedback = true,
     this.constraints,
-  }) : assert(iconSize != null),
-       assert(padding != null),
-       assert(alignment != null),
-       assert(splashRadius == null || splashRadius > 0),
-       assert(autofocus != null),
-       assert(icon != null),
-       super(key: key);
+  })  : assert(iconSize != null),
+        assert(padding != null),
+        assert(alignment != null),
+        assert(splashRadius == null || splashRadius > 0),
+        assert(autofocus != null),
+        assert(icon != null),
+        super(key: key);
 
   /// The size of the icon inside the button.
   ///
@@ -333,13 +333,16 @@ class IconButton extends StatelessWidget {
     else
       currentColor = disabledColor ?? theme.disabledColor;
 
-    final VisualDensity effectiveVisualDensity = visualDensity ?? theme.visualDensity;
+    final VisualDensity effectiveVisualDensity =
+        visualDensity ?? theme.visualDensity;
 
-    final BoxConstraints unadjustedConstraints = constraints ?? const BoxConstraints(
-      minWidth: _kMinButtonSize,
-      minHeight: _kMinButtonSize,
-    );
-    final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
+    final BoxConstraints unadjustedConstraints = constraints ??
+        const BoxConstraints(
+          minWidth: _kMinButtonSize,
+          minHeight: _kMinButtonSize,
+        );
+    final BoxConstraints adjustedConstraints =
+        effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
 
     Widget result = ConstrainedBox(
       constraints: adjustedConstraints,
@@ -384,11 +387,12 @@ class IconButton extends StatelessWidget {
         hoverColor: hoverColor ?? theme.hoverColor,
         highlightColor: highlightColor ?? theme.highlightColor,
         splashColor: splashColor ?? theme.splashColor,
-        radius: splashRadius ?? math.max(
-          Material.defaultSplashRadius,
-          (iconSize + math.min(padding.horizontal, padding.vertical)) * 0.7,
-          // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
-        ),
+        radius: splashRadius ??
+            math.max(
+              Material.defaultSplashRadius,
+              (iconSize + math.min(padding.horizontal, padding.vertical)) * 0.7,
+              // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
+            ),
       ),
     );
   }
@@ -397,15 +401,22 @@ class IconButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Widget>('icon', icon, showName: false));
-    properties.add(StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
-    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed, ifNull: 'disabled'));
+    properties.add(
+        StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
+    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed,
+        ifNull: 'disabled'));
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
+    properties
+        .add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
     properties.add(ColorProperty('focusColor', focusColor, defaultValue: null));
     properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: null));
-    properties.add(ColorProperty('highlightColor', highlightColor, defaultValue: null));
-    properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
-    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
+    properties.add(
+        ColorProperty('highlightColor', highlightColor, defaultValue: null));
+    properties
+        .add(ColorProperty('splashColor', splashColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
+        defaultValue: null));
   }
 }

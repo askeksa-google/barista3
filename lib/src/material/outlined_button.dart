@@ -61,15 +61,15 @@ class OutlinedButton extends ButtonStyleButton {
     Clip clipBehavior = Clip.none,
     required Widget child,
   }) : super(
-    key: key,
-    onPressed: onPressed,
-    onLongPress: onLongPress,
-    style: style,
-    focusNode: focusNode,
-    autofocus: autofocus,
-    clipBehavior: clipBehavior,
-    child: child,
-  );
+          key: key,
+          onPressed: onPressed,
+          onLongPress: onLongPress,
+          style: style,
+          focusNode: focusNode,
+          autofocus: autofocus,
+          clipBehavior: clipBehavior,
+          child: child,
+        );
 
   /// Create a text button from a pair of widgets that serve as the button's
   /// [icon] and [label].
@@ -140,15 +140,17 @@ class OutlinedButton extends ButtonStyleButton {
     Duration? animationDuration,
     bool? enableFeedback,
   }) {
-    final MaterialStateProperty<Color?>? foregroundColor = (onSurface == null && primary == null)
-      ? null
-      : _OutlinedButtonDefaultForeground(primary, onSurface);
-    final MaterialStateProperty<Color?>? overlayColor = (primary == null)
-      ? null
-      : _OutlinedButtonDefaultOverlay(primary);
-    final MaterialStateProperty<MouseCursor>? mouseCursor = (enabledMouseCursor == null && disabledMouseCursor == null)
-      ? null
-      : _OutlinedButtonDefaultMouseCursor(enabledMouseCursor!, disabledMouseCursor!);
+    final MaterialStateProperty<Color?>? foregroundColor =
+        (onSurface == null && primary == null)
+            ? null
+            : _OutlinedButtonDefaultForeground(primary, onSurface);
+    final MaterialStateProperty<Color?>? overlayColor =
+        (primary == null) ? null : _OutlinedButtonDefaultOverlay(primary);
+    final MaterialStateProperty<MouseCursor>? mouseCursor =
+        (enabledMouseCursor == null && disabledMouseCursor == null)
+            ? null
+            : _OutlinedButtonDefaultMouseCursor(
+                enabledMouseCursor!, disabledMouseCursor!);
 
     return ButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
@@ -242,7 +244,8 @@ class OutlinedButton extends ButtonStyleButton {
         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         width: 1,
       ),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4))),
       enabledMouseCursor: SystemMouseCursors.click,
       disabledMouseCursor: SystemMouseCursors.forbidden,
       visualDensity: theme.visualDensity,
@@ -259,7 +262,8 @@ class OutlinedButton extends ButtonStyleButton {
 }
 
 @immutable
-class _OutlinedButtonDefaultForeground extends MaterialStateProperty<Color?>  with Diagnosticable {
+class _OutlinedButtonDefaultForeground extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _OutlinedButtonDefaultForeground(this.primary, this.onSurface);
 
   final Color? primary;
@@ -274,7 +278,8 @@ class _OutlinedButtonDefaultForeground extends MaterialStateProperty<Color?>  wi
 }
 
 @immutable
-class _OutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?> with Diagnosticable {
+class _OutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _OutlinedButtonDefaultOverlay(this.primary);
 
   final Color primary;
@@ -283,14 +288,16 @@ class _OutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?> with D
   Color? resolve(Set<MaterialState> states) {
     if (states.contains(MaterialState.hovered))
       return primary.withOpacity(0.04);
-    if (states.contains(MaterialState.focused) || states.contains(MaterialState.pressed))
+    if (states.contains(MaterialState.focused) ||
+        states.contains(MaterialState.pressed))
       return primary.withOpacity(0.12);
     return null;
   }
 }
 
 @immutable
-class _OutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor> with Diagnosticable {
+class _OutlinedButtonDefaultMouseCursor
+    extends MaterialStateProperty<MouseCursor> with Diagnosticable {
   _OutlinedButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
   final MouseCursor enabledCursor;
@@ -298,8 +305,7 @@ class _OutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCurso
 
   @override
   MouseCursor resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled))
-      return disabledCursor;
+    if (states.contains(MaterialState.disabled)) return disabledCursor;
     return enabledCursor;
   }
 }
@@ -315,18 +321,18 @@ class _OutlinedButtonWithIcon extends OutlinedButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  }) : assert(icon != null),
-       assert(label != null),
-       super(
-         key: key,
-         onPressed: onPressed,
-         onLongPress: onLongPress,
-         style: style,
-         focusNode: focusNode,
-         autofocus: autofocus ?? false,
-         clipBehavior: clipBehavior ?? Clip.none,
-         child: _OutlinedButtonWithIconChild(icon: icon, label: label),
-      );
+  })   : assert(icon != null),
+        assert(label != null),
+        super(
+          key: key,
+          onPressed: onPressed,
+          onLongPress: onLongPress,
+          style: style,
+          focusNode: focusNode,
+          autofocus: autofocus ?? false,
+          clipBehavior: clipBehavior ?? Clip.none,
+          child: _OutlinedButtonWithIconChild(icon: icon, label: label),
+        );
 }
 
 class _OutlinedButtonWithIconChild extends StatelessWidget {
@@ -342,7 +348,8 @@ class _OutlinedButtonWithIconChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double scale = MediaQuery.maybeOf(context)?.textScaleFactor ?? 1;
-    final double gap = scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
+    final double gap =
+        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[icon, SizedBox(width: gap), label],

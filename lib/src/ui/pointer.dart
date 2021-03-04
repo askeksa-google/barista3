@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of dart.ui;
 
 /// How the pointer has changed since the last report.
@@ -271,42 +269,43 @@ class PointerData {
   /// Returns a complete textual description of the information in this object.
   String toStringFull() {
     return '$runtimeType('
-             'embedderId: $embedderId, '
-             'timeStamp: $timeStamp, '
-             'change: $change, '
-             'kind: $kind, '
-             'signalKind: $signalKind, '
-             'device: $device, '
-             'pointerIdentifier: $pointerIdentifier, '
-             'physicalX: $physicalX, '
-             'physicalY: $physicalY, '
-             'physicalDeltaX: $physicalDeltaX, '
-             'physicalDeltaY: $physicalDeltaY, '
-             'buttons: $buttons, '
-             'synthesized: $synthesized, '
-             'pressure: $pressure, '
-             'pressureMin: $pressureMin, '
-             'pressureMax: $pressureMax, '
-             'distance: $distance, '
-             'distanceMax: $distanceMax, '
-             'size: $size, '
-             'radiusMajor: $radiusMajor, '
-             'radiusMinor: $radiusMinor, '
-             'radiusMin: $radiusMin, '
-             'radiusMax: $radiusMax, '
-             'orientation: $orientation, '
-             'tilt: $tilt, '
-             'platformData: $platformData, '
-             'scrollDeltaX: $scrollDeltaX, '
-             'scrollDeltaY: $scrollDeltaY'
-           ')';
+        'embedderId: $embedderId, '
+        'timeStamp: $timeStamp, '
+        'change: $change, '
+        'kind: $kind, '
+        'signalKind: $signalKind, '
+        'device: $device, '
+        'pointerIdentifier: $pointerIdentifier, '
+        'physicalX: $physicalX, '
+        'physicalY: $physicalY, '
+        'physicalDeltaX: $physicalDeltaX, '
+        'physicalDeltaY: $physicalDeltaY, '
+        'buttons: $buttons, '
+        'synthesized: $synthesized, '
+        'pressure: $pressure, '
+        'pressureMin: $pressureMin, '
+        'pressureMax: $pressureMax, '
+        'distance: $distance, '
+        'distanceMax: $distanceMax, '
+        'size: $size, '
+        'radiusMajor: $radiusMajor, '
+        'radiusMinor: $radiusMinor, '
+        'radiusMin: $radiusMin, '
+        'radiusMax: $radiusMax, '
+        'orientation: $orientation, '
+        'tilt: $tilt, '
+        'platformData: $platformData, '
+        'scrollDeltaX: $scrollDeltaX, '
+        'scrollDeltaY: $scrollDeltaY'
+        ')';
   }
 }
 
 /// A sequence of reports about the state of pointers.
 class PointerDataPacket {
   /// Creates a packet of pointer data reports.
-  const PointerDataPacket({ this.data = const <PointerData>[] }) : assert(data != null); // ignore: unnecessary_null_comparison
+  const PointerDataPacket({this.data = const <PointerData>[]})
+      : assert(data != null); // ignore: unnecessary_null_comparison
 
   /// Data about the individual pointers in this packet.
   ///

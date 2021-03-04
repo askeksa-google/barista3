@@ -10,7 +10,8 @@
 /// Since this is a const value, it can be used to indicate to the compiler that
 /// a particular block of code will not be executed in release mode, and hence
 /// can be removed.
-const bool kReleaseMode = bool.fromEnvironment('dart.vm.product', defaultValue: false);
+const bool kReleaseMode =
+    bool.fromEnvironment('dart.vm.product', defaultValue: false);
 
 /// A constant that is true if the application was compiled in profile mode.
 ///
@@ -20,7 +21,8 @@ const bool kReleaseMode = bool.fromEnvironment('dart.vm.product', defaultValue: 
 /// Since this is a const value, it can be used to indicate to the compiler that
 /// a particular block of code will not be executed in profile mode, an hence
 /// can be removed.
-const bool kProfileMode = bool.fromEnvironment('dart.vm.profile', defaultValue: false);
+const bool kProfileMode =
+    bool.fromEnvironment('dart.vm.profile', defaultValue: false);
 
 /// A constant that is true if the application was compiled in debug mode.
 ///
