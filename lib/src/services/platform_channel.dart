@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flute/foundation.dart';
@@ -537,61 +536,4 @@ class EventChannel {
   BinaryMessenger get binaryMessenger =>
       _binaryMessenger ?? defaultBinaryMessenger;
   final BinaryMessenger? _binaryMessenger;
-
-  /// Sets up a broadcast stream for receiving events on this channel.
-  ///
-  /// Returns a broadcast [Stream] which emits events to listeners as follows:
-  ///
-  /// * a decoded data event (possibly null) for each successful event
-  ///   received from the platform plugin;
-  /// * an error event containing a [PlatformException] for each error event
-  ///   received from the platform plugin.
-  ///
-  /// Errors occurring during stream activation or deactivation are reported
-  /// through the [FlutterError] facility. Stream activation happens only when
-  /// stream listener count changes from 0 to 1. Stream deactivation happens
-  /// only when stream listener count changes from 1 to 0.
-  Stream<dynamic> receiveBroadcastStream([dynamic arguments]) {
-    final MethodChannel methodChannel = MethodChannel(name, codec);
-    late StreamController<dynamic> controller;
-    controller = StreamController<dynamic>.broadcast(onListen: () {
-      binaryMessenger.setMessageHandler(name, (ByteData? reply) {
-        if (reply == null) {
-          controller.close();
-        } else {
-          try {
-            controller.add(codec.decodeEnvelope(reply));
-          } on PlatformException catch (e) {
-            controller.addError(e);
-          }
-        }
-        return null;
-      });
-      try {
-        methodChannel.invokeMethod<void>('listen', arguments);
-      } catch (exception, stack) {
-        FlutterError.reportError(FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'services library',
-          context: ErrorDescription(
-              'while activating platform stream on channel $name'),
-        ));
-      }
-    }, onCancel: () {
-      binaryMessenger.setMessageHandler(name, null);
-      try {
-        methodChannel.invokeMethod<void>('cancel', arguments);
-      } catch (exception, stack) {
-        FlutterError.reportError(FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'services library',
-          context: ErrorDescription(
-              'while de-activating platform stream on channel $name'),
-        ));
-      }
-    });
-    return controller.stream;
-  }
 }

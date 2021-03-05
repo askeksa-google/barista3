@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flute/foundation.dart';
@@ -650,7 +649,6 @@ class DrivenScrollActivity extends ScrollActivity {
         assert(duration > Duration.zero),
         assert(curve != null),
         super(delegate) {
-    _completer = Completer<void>();
     _controller = AnimationController.unbounded(
       value: from,
       debugLabel: objectRuntimeType(this, 'DrivenScrollActivity'),
@@ -661,15 +659,7 @@ class DrivenScrollActivity extends ScrollActivity {
     _end(); // won't trigger if we dispose _controller first
   }
 
-  late final Completer<void> _completer;
   late final AnimationController _controller;
-
-  /// A [Future] that completes when the activity stops.
-  ///
-  /// For example, this [Future] will complete if the animation reaches the end
-  /// or if the user interacts with the scroll view in way that causes the
-  /// animation to stop before it reaches the end.
-  void get done => _completer.future;
 
   void _tick() {
     if (delegate.setPixels(_controller.value) != 0.0) delegate.goIdle();
@@ -701,7 +691,6 @@ class DrivenScrollActivity extends ScrollActivity {
 
   @override
   void dispose() {
-    _completer.complete();
     _controller.dispose();
     super.dispose();
   }

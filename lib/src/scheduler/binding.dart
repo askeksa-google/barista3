@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Timer;
+
 import 'dart:collection';
 import 'dart:developer' show Flow, Timeline;
 import 'package:flute/ui.dart'
@@ -79,19 +80,14 @@ class _TaskEntry<T> {
   final Flow? flow;
 
   late StackTrace debugStack;
-  final Completer<T> completer = Completer<T>();
 
   void run() {
     if (!kReleaseMode) {
       Timeline.timeSync(
         debugLabel ?? 'Scheduled Task',
-        () {
-          completer.complete(task());
-        },
+        () {},
         flow: flow != null ? Flow.step(flow!.id) : null,
       );
-    } else {
-      completer.complete(task());
     }
   }
 }
@@ -647,8 +643,6 @@ mixin SchedulerBinding on BindingBase {
     _postFrameCallbacks.add(callback);
   }
 
-  Completer<void>? _nextFrameCompleter;
-
   /// Returns a Future that completes after the frame completes.
   ///
   /// If this is called between frames, a frame is immediately scheduled if
@@ -659,14 +653,7 @@ mixin SchedulerBinding on BindingBase {
   /// time, since frames are not scheduled while the device's screen is turned
   /// off.
   void get endOfFrame {
-    if (_nextFrameCompleter == null) {
-      if (schedulerPhase == SchedulerPhase.idle) scheduleFrame();
-      _nextFrameCompleter = Completer<void>();
-      addPostFrameCallback((Duration timeStamp) {
-        _nextFrameCompleter!.complete();
-        _nextFrameCompleter = null;
-      });
-    }
+    if (schedulerPhase == SchedulerPhase.idle) scheduleFrame();
   }
 
   /// Whether this scheduler has requested that [handleBeginFrame] be called soon.

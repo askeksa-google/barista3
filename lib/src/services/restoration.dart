@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flute/foundation.dart';
@@ -155,7 +154,6 @@ class RestorationManager extends ChangeNotifier {
 
   RestorationBucket?
       _rootBucket; // May be null to indicate that restoration is turned off.
-  Completer<RestorationBucket?>? _pendingRootBucket;
   bool _rootBucketIsValid = false;
 
   /// Returns true for the frame after [rootBucket] has been replaced with a
@@ -210,9 +208,6 @@ class RestorationManager extends ChangeNotifier {
             manager: this, rawData: _decodeRestorationData(data))
         : null;
     _rootBucketIsValid = true;
-    assert(_pendingRootBucket == null || !_pendingRootBucket!.isCompleted);
-    _pendingRootBucket?.complete(_rootBucket);
-    _pendingRootBucket = null;
 
     if (_rootBucket != oldRoot) {
       notifyListeners();

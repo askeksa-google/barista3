@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async' show Timer;
+
 import 'dart:math' as math;
 
 import 'package:flute/animation.dart';

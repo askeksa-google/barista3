@@ -186,7 +186,6 @@ class ScrollPositionWithSingleContext extends ScrollPosition
       vsync: context.vsync,
     );
     beginActivity(activity);
-    return activity.done;
   }
 
   @override

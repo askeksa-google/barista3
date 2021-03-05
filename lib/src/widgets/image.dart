@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flute/foundation.dart';
@@ -108,14 +107,10 @@ void precacheImage(
 }) {
   final ImageConfiguration config =
       createLocalImageConfiguration(context, size: size);
-  final Completer<void> completer = Completer<void>();
   final ImageStream stream = provider.resolve(config);
   ImageStreamListener? listener;
   listener = ImageStreamListener(
     (ImageInfo? image, bool sync) {
-      if (!completer.isCompleted) {
-        completer.complete();
-      }
       // Give callers until at least the end of the frame to subscribe to the
       // image stream.
       // See ImageCache._liveImages
@@ -124,9 +119,6 @@ void precacheImage(
       });
     },
     onError: (Object exception, StackTrace? stackTrace) {
-      if (!completer.isCompleted) {
-        completer.complete();
-      }
       stream.removeListener(listener!);
       if (onError != null) {
         onError(exception, stackTrace);

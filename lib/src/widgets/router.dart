@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:collection';
 
 import 'package:flute/foundation.dart';
@@ -403,8 +402,6 @@ class Router<T> extends StatefulWidget {
   State<Router<T>> createState() => _RouterState<T>();
 }
 
-typedef _AsyncPassthrough<Q> = Q Function(Q);
-
 // Whether to report the route information in this build cycle.
 enum _IntentionToReportRouteInformation {
   // We haven't receive any signal on whether to report.
@@ -418,8 +415,6 @@ enum _IntentionToReportRouteInformation {
 }
 
 class _RouterState<T> extends State<Router<T>> {
-  Object? _currentRouteInformationParserTransaction;
-  Object? _currentRouterDelegateTransaction;
   late _IntentionToReportRouteInformation _currentIntentionToReport;
 
   @override
@@ -560,10 +555,7 @@ class _RouterState<T> extends State<Router<T>> {
     if (widget.routeInformationProvider != oldWidget.routeInformationProvider ||
         widget.backButtonDispatcher != oldWidget.backButtonDispatcher ||
         widget.routeInformationParser != oldWidget.routeInformationParser ||
-        widget.routerDelegate != oldWidget.routerDelegate) {
-      _currentRouteInformationParserTransaction = Object();
-      _currentRouterDelegateTransaction = Object();
-    }
+        widget.routerDelegate != oldWidget.routerDelegate) {}
     if (widget.routeInformationProvider != oldWidget.routeInformationProvider) {
       oldWidget.routeInformationProvider
           ?.removeListener(_handleRouteInformationProviderNotification);
@@ -595,100 +587,30 @@ class _RouterState<T> extends State<Router<T>> {
     widget.backButtonDispatcher
         ?.removeCallback(_handleBackButtonDispatcherNotification);
     widget.routerDelegate.removeListener(_handleRouterDelegateNotification);
-    _currentRouteInformationParserTransaction = null;
-    _currentRouterDelegateTransaction = null;
     super.dispose();
   }
 
   void _processInitialRoute() {
-    _currentRouteInformationParserTransaction = Object();
-    _currentRouterDelegateTransaction = Object();
     _lastSeenLocation = widget.routeInformationProvider!.value!.location;
     var config = widget.routeInformationParser!
         .parseRouteInformation(widget.routeInformationProvider!.value!);
-    _verifyRouteInformationParserStillCurrent(
-        _currentRouteInformationParserTransaction, widget);
     widget.routerDelegate.setInitialRoutePath(config);
-    _verifyRouterDelegatePushStillCurrent(
-        _currentRouterDelegateTransaction, widget);
     _rebuild();
   }
 
   void _handleRouteInformationProviderNotification() {
-    _currentRouteInformationParserTransaction = Object();
-    _currentRouterDelegateTransaction = Object();
     _lastSeenLocation = widget.routeInformationProvider!.value!.location;
     var config = widget.routeInformationParser!
         .parseRouteInformation(widget.routeInformationProvider!.value!);
-    _verifyRouteInformationParserStillCurrent(
-        _currentRouteInformationParserTransaction, widget);
     widget.routerDelegate.setNewRoutePath(config);
-    _verifyRouterDelegatePushStillCurrent(
-        _currentRouterDelegateTransaction, widget);
     _rebuild();
   }
 
   bool _handleBackButtonDispatcherNotification() {
-    _currentRouteInformationParserTransaction = Object();
-    _currentRouterDelegateTransaction = Object();
-
     bool result = widget.routerDelegate.popRoute();
-    _verifyRouterDelegatePopStillCurrent(
-        _currentRouterDelegateTransaction, widget);
     _rebuild();
     _maybeNeedToReportRouteInformation();
     return result;
-  }
-
-  static final dynamic _never =
-      Completer<dynamic>().future; // won't ever complete
-
-  _AsyncPassthrough<T> _verifyRouteInformationParserStillCurrent(
-      Object? transaction, Router<T> originalWidget) {
-    return (T data) {
-      if (transaction == _currentRouteInformationParserTransaction &&
-          widget.routeInformationProvider ==
-              originalWidget.routeInformationProvider &&
-          widget.backButtonDispatcher == originalWidget.backButtonDispatcher &&
-          widget.routeInformationParser ==
-              originalWidget.routeInformationParser &&
-          widget.routerDelegate == originalWidget.routerDelegate) {
-        return data;
-      }
-      return _never as T;
-    };
-  }
-
-  _AsyncPassthrough<void> _verifyRouterDelegatePushStillCurrent(
-      Object? transaction, Router<T> originalWidget) {
-    return (void data) {
-      if (transaction == _currentRouterDelegateTransaction &&
-          widget.routeInformationProvider ==
-              originalWidget.routeInformationProvider &&
-          widget.backButtonDispatcher == originalWidget.backButtonDispatcher &&
-          widget.routeInformationParser ==
-              originalWidget.routeInformationParser &&
-          widget.routerDelegate == originalWidget.routerDelegate) return data;
-      return _never;
-    };
-  }
-
-  _AsyncPassthrough<bool> _verifyRouterDelegatePopStillCurrent(
-      Object? transaction, Router<T> originalWidget) {
-    return (bool data) {
-      if (transaction == _currentRouterDelegateTransaction &&
-          widget.routeInformationProvider ==
-              originalWidget.routeInformationProvider &&
-          widget.backButtonDispatcher == originalWidget.backButtonDispatcher &&
-          widget.routeInformationParser ==
-              originalWidget.routeInformationParser &&
-          widget.routerDelegate == originalWidget.routerDelegate) {
-        return data;
-      }
-      // A rebuilt was trigger from a different source. Returns true to
-      // prevent bubbling.
-      return true;
-    };
   }
 
   void _rebuild() {

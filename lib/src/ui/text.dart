@@ -2349,7 +2349,7 @@ final ByteData _fontChangeMessage = utf8.encoder
     .buffer
     .asByteData();
 
-FutureOr<void> _sendFontChangeMessage() {
+void _sendFontChangeMessage() {
   const String kSystemChannelName = 'flutter/system';
   if (PlatformDispatcher.instance.onPlatformMessage != null) {
     _invoke3<String, ByteData?, PlatformMessageResponseCallback>(

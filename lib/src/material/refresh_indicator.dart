@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flute/widgets.dart';
@@ -176,7 +175,6 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   late Animation<Color?> _valueColor;
 
   _RefreshIndicatorMode? _mode;
-  late void _pendingRefreshFuture;
   bool? _isIndicatorAtTop;
   double? _dragOffset;
 
@@ -364,8 +362,6 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   void _show() {
     assert(_mode != _RefreshIndicatorMode.refresh);
     assert(_mode != _RefreshIndicatorMode.snap);
-    final Completer<void> completer = Completer<void>();
-    _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController.animateTo(1.0 / _kDragSizeFactorLimit,
         duration: _kIndicatorSnapDuration);
@@ -381,7 +377,6 @@ class RefreshIndicatorState extends State<RefreshIndicator>
       // running with weak checking, so we need to null check it anyway (and
       // ignore the warning that the null-handling logic is dead code).
       if (mounted && _mode == _RefreshIndicatorMode.refresh) {
-        completer.complete();
         _dismiss(_RefreshIndicatorMode.done);
       }
     }
@@ -409,7 +404,6 @@ class RefreshIndicatorState extends State<RefreshIndicator>
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
-    return _pendingRefreshFuture;
   }
 
   @override

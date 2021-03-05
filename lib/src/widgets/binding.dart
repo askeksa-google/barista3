@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Timer;
+
 import 'dart:developer' as developer;
 import 'package:flute/ui.dart'
     show
@@ -471,7 +472,7 @@ mixin WidgetsBinding
             // This is defined to return a STRING, not a boolean.
             // Devtools, the Intellij plugin, and the flutter tool all depend
             // on it returning a string and not a boolean.
-            'enabled': firstFrameRasterized ? 'true' : 'false',
+            'enabled': 'true',
           };
         },
       );
@@ -737,28 +738,6 @@ mixin WidgetsBinding
 
   bool _needToReportFirstFrame = true;
 
-  final Completer<void> _firstFrameCompleter = Completer<void>();
-
-  /// Whether the Flutter engine has rasterized the first frame.
-  ///
-  /// {@macro flutter.flutter_driver.WaitUntilFirstFrameRasterized}
-  ///
-  /// See also:
-  ///
-  ///  * [waitUntilFirstFrameRasterized], the future when [firstFrameRasterized]
-  ///    becomes true.
-  bool get firstFrameRasterized => _firstFrameCompleter.isCompleted;
-
-  /// A future that completes when the Flutter engine has rasterized the first
-  /// frame.
-  ///
-  /// {@macro flutter.flutter_driver.WaitUntilFirstFrameRasterized}
-  ///
-  /// See also:
-  ///
-  ///  * [firstFrameRasterized], whether this future has completed or not.
-  void get waitUntilFirstFrameRasterized => _firstFrameCompleter.future;
-
   /// Whether the first frame has finished building.
   ///
   /// This value can also be obtained over the VM service protocol as
@@ -911,8 +890,6 @@ mixin WidgetsBinding
 
     TimingsCallback? firstFrameCallback;
     if (_needToReportFirstFrame) {
-      assert(!_firstFrameCompleter.isCompleted);
-
       firstFrameCallback = (List<FrameTiming> timings) {
         assert(sendFramesToEngine);
         if (!kReleaseMode) {
@@ -921,7 +898,6 @@ mixin WidgetsBinding
         }
         SchedulerBinding.instance!.removeTimingsCallback(firstFrameCallback!);
         firstFrameCallback = null;
-        _firstFrameCompleter.complete();
       };
       // Callback is only invoked when FlutterView.render is called. When
       // sendFramesToEngine is set to false during the frame, it will not be

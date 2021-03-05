@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'package:flute/ui.dart' as ui;
 
 import 'package:flute/foundation.dart';
@@ -91,7 +90,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   /// after [popped], because [popped] typically completes before the animation
   /// even starts, as soon as the route is popped.
   T? get completed => _result;
-  final Completer<T?> _transitionCompleter = Completer<T?>();
 
   /// {@template flutter.widgets.TransitionRoute.transitionDuration}
   /// The duration the transition going forwards.
@@ -150,8 +148,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   /// this route from the previous one, and back to the previous route from this
   /// one.
   AnimationController createAnimationController() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     final Duration duration = transitionDuration;
     final Duration reverseDuration = reverseTransitionDuration;
     assert(duration != null && duration >= Duration.zero);
@@ -167,8 +163,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   /// the transition controlled by the animation controller created by
   /// [createAnimationController()].
   Animation<double> createAnimation() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     assert(_controller != null);
     return _controller!.view;
   }
@@ -198,8 +192,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
 
   @override
   void install() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot install a $runtimeType after disposing it.');
     _controller = createAnimationController();
     assert(_controller != null,
         '$runtimeType.createAnimationController() returned null.');
@@ -215,8 +207,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   void didPush() {
     assert(_controller != null,
         '$runtimeType.didPush called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     super.didPush();
     return _controller!.forward();
   }
@@ -225,8 +215,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   void didAdd() {
     assert(_controller != null,
         '$runtimeType.didPush called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     super.didAdd();
     _controller!.value = _controller!.upperBound;
   }
@@ -235,8 +223,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   void didReplace(Route<dynamic>? oldRoute) {
     assert(_controller != null,
         '$runtimeType.didReplace called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     if (oldRoute is TransitionRoute)
       _controller!.value = oldRoute._controller!.value;
     super.didReplace(oldRoute);
@@ -246,8 +232,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   bool didPop(T? result) {
     assert(_controller != null,
         '$runtimeType.didPop called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     _result = result;
     _controller!.reverse();
     return super.didPop(result);
@@ -257,8 +241,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   void didPopNext(Route<dynamic> nextRoute) {
     assert(_controller != null,
         '$runtimeType.didPopNext called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     _updateSecondaryAnimation(nextRoute);
     super.didPopNext(nextRoute);
   }
@@ -267,8 +249,6 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   void didChangeNext(Route<dynamic>? nextRoute) {
     assert(_controller != null,
         '$runtimeType.didChangeNext called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
     _updateSecondaryAnimation(nextRoute);
     super.didChangeNext(nextRoute);
   }
@@ -436,10 +416,7 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
 
   @override
   void dispose() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot dispose a $runtimeType twice.');
     _controller?.dispose();
-    _transitionCompleter.complete(_result);
     super.dispose();
   }
 

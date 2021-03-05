@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Timer;
+
 import 'dart:collection';
 
 /// Signature for [debugPrint] implementations.
@@ -59,7 +60,6 @@ const int _kDebugPrintCapacity = 12 * 1024;
 const Duration _kDebugPrintPauseTime = Duration(seconds: 1);
 final Queue<String> _debugPrintBuffer = Queue<String>();
 final Stopwatch _debugPrintStopwatch = Stopwatch();
-Completer<void>? _debugPrintCompleter;
 bool _debugPrintScheduled = false;
 void _debugPrintTask() {
   _debugPrintScheduled = false;
@@ -79,11 +79,8 @@ void _debugPrintTask() {
     _debugPrintScheduled = true;
     _debugPrintedCharacters = 0;
     Timer(_kDebugPrintPauseTime, _debugPrintTask);
-    _debugPrintCompleter ??= Completer<void>();
   } else {
     _debugPrintStopwatch.start();
-    _debugPrintCompleter?.complete();
-    _debugPrintCompleter = null;
   }
 }
 

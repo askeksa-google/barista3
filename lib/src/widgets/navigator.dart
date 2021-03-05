@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer' as developer;
@@ -309,7 +308,6 @@ abstract class Route<T> {
   /// else the value of [currentResult]. See [didComplete] for more discussion
   /// on this topic.
   T? get popped => currentResult;
-  final Completer<T?> _popCompleter = Completer<T?>();
 
   /// A request was made to pop this route. If the route can handle it
   /// internally (e.g. because it has its own stack of internal state) then
@@ -353,9 +351,7 @@ abstract class Route<T> {
   /// iOS-style back gesture. See [NavigatorState.didStartUserGesture].
   @protected
   @mustCallSuper
-  void didComplete(T? result) {
-    _popCompleter.complete(result ?? currentResult);
-  }
+  void didComplete(T? result) {}
 
   /// The given route, which was above this one, has been popped off the
   /// navigator.
@@ -3160,7 +3156,6 @@ class _RouteEntry extends RouteTransitionRecord {
     assert(isPresent);
     _reportRemovalToObserver = !isReplaced;
     route.didComplete(result);
-    assert(route._popCompleter.isCompleted); // implies didComplete was called
     currentState = _RouteLifecycle.remove;
   }
 
@@ -5095,7 +5090,6 @@ class NavigatorState extends State<Navigator>
       // Flush the history if the route actually wants to be popped (the pop
       // wasn't handled internally).
       _flushHistoryUpdates(rearrangeOverlay: false);
-      assert(entry.route._popCompleter.isCompleted);
     }
     assert(() {
       _debugLocked = false;

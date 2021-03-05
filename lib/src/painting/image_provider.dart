@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Zone, ZoneDelegate, ZoneSpecification;
+
 import 'dart:typed_data';
 import 'package:flute/ui.dart' as ui show Codec;
 import 'package:flute/ui.dart' show Size, Locale, TextDirection, hashValues;
@@ -776,20 +777,10 @@ class ResizeImage extends ImageProvider<_SizeAwareCacheKey> {
 
   @override
   _SizeAwareCacheKey obtainKey(ImageConfiguration configuration) {
-    Completer<_SizeAwareCacheKey>? completer;
     // If the imageProvider.obtainKey future is synchronous, then we will be able to fill in result with
     // a value before completer is initialized below.
-    _SizeAwareCacheKey? result;
     Object key = imageProvider.obtainKey(configuration);
-    if (completer == null) {
-      // This future has completed synchronously (completer was never assigned),
-      // so we can directly create the synchronous result to return.
-      result = _SizeAwareCacheKey(key, width, height);
-    } else {
-      // This future did not synchronously complete.
-      completer.complete(_SizeAwareCacheKey(key, width, height));
-    }
-    return result!;
+    return _SizeAwareCacheKey(key, width, height);
   }
 }
 

@@ -1068,7 +1068,6 @@ class _NestedScrollCoordinator
       duration,
       curve,
     );
-    final List<void> resultFutures = <void>[outerActivity.done];
     beginActivity(
       outerActivity,
       (_NestedScrollPosition position) {
@@ -1078,7 +1077,6 @@ class _NestedScrollCoordinator
           duration,
           curve,
         );
-        resultFutures.add(innerActivity.done);
         return innerActivity;
       },
     );

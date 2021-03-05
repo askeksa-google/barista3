@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Timer;
+
 import 'dart:collection';
 import 'dart:math' as math;
 import 'package:flute/ui.dart' show lerpDouble;
@@ -2471,7 +2472,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
       return true;
     }());
 
-    final Completer<T> completer = Completer<T>();
     final GlobalKey<_StandardBottomSheetState> bottomSheetKey =
         GlobalKey<_StandardBottomSheetState>();
     late _StandardBottomSheet bottomSheet;
@@ -2494,7 +2494,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
       if (animationController.status != AnimationStatus.dismissed) {
         _dismissedBottomSheets.add(bottomSheet);
       }
-      completer.complete();
     }
 
     final LocalHistoryEntry? entry = isPersistent
@@ -2539,7 +2538,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
 
     return PersistentBottomSheetController<T>._(
       bottomSheet,
-      completer,
       entry != null ? entry.remove : _removeCurrentBottomSheet,
       (VoidCallback fn) {
         bottomSheetKey.currentState?.setState(fn);
@@ -3480,7 +3478,6 @@ class PersistentBottomSheetController<T>
     extends ScaffoldFeatureController<_StandardBottomSheet> {
   const PersistentBottomSheetController._(
     _StandardBottomSheet widget,
-    Completer<T> completer,
     VoidCallback close,
     StateSetter setState,
     this._isLocalHistoryEntry,
