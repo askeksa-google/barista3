@@ -1,6 +1,6 @@
 name: flute
 environment:
-  sdk: '>=2.12.0-157.0.dev <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 dependencies:
   characters: 1.1.0-nullsafety.5
   collection: 1.15.0-nullsafety.5
