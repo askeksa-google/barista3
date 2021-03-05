@@ -2260,9 +2260,7 @@ class _CanvasMethods {
 }
 
 class Canvas {
-  Canvas(this._recorder, [Rect? cullRect])
-      : _cullRect = cullRect ?? Rect.largest,
-        assert(_recorder != null) {
+  Canvas(this._recorder, [Rect? cullRect]) : assert(_recorder != null) {
     // ignore: unnecessary_null_comparison
     if (_recorder!.isRecording)
       throw ArgumentError(
@@ -2274,46 +2272,13 @@ class Canvas {
   // The Canvas holds a reference to the PictureRecorder to prevent the recorder from being
   // garbage collected until PictureRecorder.endRecording is called.
   PictureRecorder? _recorder;
-  final Rect _cullRect;
 
-  double _currentX = 0;
-  double _currentY = 0;
   Uint8List _methods = Uint8List(10);
   int _methodsLength = 0;
   Float32List _data = Float32List(30);
   int _dataLength = 0;
   List<Object> _objects = <Object>[];
-  bool _isEmpty = true;
-  double _left = 0;
-  double _top = 0;
-  double _right = 0;
-  double _bottom = 0;
   int _saveCount = 0;
-
-  void _updateBounds(double x, double y) {
-    if (_isEmpty) {
-      _left = _right = x;
-      _top = _bottom = y;
-      _isEmpty = false;
-    } else {
-      if (x < _left) {
-        _left = x;
-      }
-      if (x > _right) {
-        _right = x;
-      }
-      if (y < _top) {
-        _top = y;
-      }
-      if (y > _bottom) {
-        _bottom = y;
-      }
-    }
-  }
-
-  _updateBoundsFromCurrent() {
-    _updateBounds(_currentX, _currentY);
-  }
 
   void _addObject(Object object) {
     _objects.add(object);
@@ -2360,15 +2325,6 @@ class Canvas {
     _data[_dataLength++] = b;
     _data[_dataLength++] = c;
     _data[_dataLength++] = d;
-  }
-
-  void _addData5(double a, double b, double c, double d, double e) {
-    _ensureDataLength(_dataLength + 5);
-    _data[_dataLength++] = a;
-    _data[_dataLength++] = b;
-    _data[_dataLength++] = c;
-    _data[_dataLength++] = d;
-    _data[_dataLength++] = e;
   }
 
   void _addData6(double a, double b, double c, double d, double e, double f) {
@@ -2897,11 +2853,6 @@ class Shadow {
 
   static const int _kColorDefault = 0xFF000000;
   // Constants for shadow encoding.
-  static const int _kBytesPerShadow = 16;
-  static const int _kColorOffset = 0 << 2;
-  static const int _kXOffset = 1 << 2;
-  static const int _kYOffset = 2 << 2;
-  static const int _kBlurOffset = 3 << 2;
   final Color color;
   final Offset offset;
   final double blurRadius;
@@ -2973,42 +2924,6 @@ class Shadow {
 
   @override
   int get hashCode => hashValues(color, offset, blurRadius);
-
-  // Serialize [shadows] into ByteData. The format is a single uint_32_t at
-  // the beginning indicating the number of shadows, followed by _kBytesPerShadow
-  // bytes for each shadow.
-  static ByteData _encodeShadows(List<Shadow>? shadows) {
-    if (shadows == null) return ByteData(0);
-
-    final int byteCount = shadows.length * _kBytesPerShadow;
-    final ByteData shadowsData = ByteData(byteCount);
-
-    int shadowOffset = 0;
-    for (int shadowIndex = 0; shadowIndex < shadows.length; ++shadowIndex) {
-      final Shadow shadow = shadows[shadowIndex];
-      // TODO(yjbanov): remove the null check when the framework is migrated. While the list
-      //                of shadows contains non-nullable elements, unmigrated code can still
-      //                pass nulls.
-      // ignore: unnecessary_null_comparison
-      if (shadow != null) {
-        shadowOffset = shadowIndex * _kBytesPerShadow;
-
-        shadowsData.setInt32(_kColorOffset + shadowOffset,
-            shadow.color.value ^ Shadow._kColorDefault, _kFakeHostEndian);
-
-        shadowsData.setFloat32(
-            _kXOffset + shadowOffset, shadow.offset.dx, _kFakeHostEndian);
-
-        shadowsData.setFloat32(
-            _kYOffset + shadowOffset, shadow.offset.dy, _kFakeHostEndian);
-
-        shadowsData.setFloat32(
-            _kBlurOffset + shadowOffset, shadow.blurRadius, _kFakeHostEndian);
-      }
-    }
-
-    return shadowsData;
-  }
 
   @override
   String toString() => 'TextShadow($color, $offset, $blurRadius)';

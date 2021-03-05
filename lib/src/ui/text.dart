@@ -1058,13 +1058,11 @@ class ParagraphStyle {
           ellipsis,
           locale,
         ),
-        _textAlign = textAlign ?? TextAlign.start,
         _textDirection = textDirection ?? TextDirection.ltr,
         _maxLines = maxLines,
         _fontFamily = fontFamily,
         _fontSize = fontSize,
         _height = height,
-        _textHeightBehavior = textHeightBehavior ?? const TextHeightBehavior(),
         _fontWeight = fontWeight ?? FontWeight.normal,
         _fontStyle = fontStyle ?? FontStyle.normal,
         _strutStyle = strutStyle,
@@ -1072,13 +1070,11 @@ class ParagraphStyle {
         _locale = locale;
 
   final Int32List _encoded;
-  final TextAlign _textAlign;
   final TextDirection _textDirection;
   final int? _maxLines;
   final String? _fontFamily;
   final double? _fontSize;
   final double? _height;
-  final TextHeightBehavior _textHeightBehavior;
   final FontWeight _fontWeight;
   final FontStyle _fontStyle;
   final StrutStyle? _strutStyle;
@@ -2192,14 +2188,11 @@ class _TextSpan extends _Span {
 }
 
 class _Placeholder extends _Span {
-  _Placeholder(this._width, this._height, this._alignment, this._baselineOffset,
-      this._baseline);
+  _Placeholder(this._width, this._height, int _alignment,
+      double _baselineOffset, int? _baseline);
 
   final double _width;
   final double _height;
-  final int _alignment;
-  final double _baselineOffset;
-  final int? _baseline;
 
   @override
   double get width => _width;
@@ -2238,13 +2231,13 @@ class ParagraphBuilder {
     return ParagraphBuilder._(style, style._toTextStyle(), strutFontFamilies);
   }
 
-  ParagraphBuilder._(this._style, TextStyle textStyle, this._strutFontFamilies)
+  ParagraphBuilder._(
+      this._style, TextStyle textStyle, List<String>? _strutFontFamilies)
       : _currentStyle = textStyle {
     _styleStack.add(_currentStyle);
   }
 
   final ParagraphStyle _style;
-  final List<String>? _strutFontFamilies;
 
   final List<TextStyle> _styleStack = <TextStyle>[];
   TextStyle _currentStyle;

@@ -30,27 +30,6 @@ class _Logger {
 // constant and can't propagate into the set/get calls.
 const Endian _kFakeHostEndian = Endian.little;
 
-// A service protocol extension to schedule a frame to be rendered into the
-// window.
-Future<developer.ServiceExtensionResponse> _scheduleFrame(
-    String method, Map<String, String> parameters) async {
-  // Schedule the frame.
-  PlatformDispatcher.instance.scheduleFrame();
-  // Always succeed.
-  return developer.ServiceExtensionResponse.result(json.encode(<String, String>{
-    'type': 'Success',
-  }));
-}
-
-void _setupHooks() {
-  // ignore: unused_element
-  assert(() {
-    // In debug mode, register the schedule frame extension.
-    developer.registerExtension('ext.ui.window.scheduleFrame', _scheduleFrame);
-    return true;
-  }());
-}
-
 /// Returns runtime Dart compilation trace as a UTF-8 encoded memory buffer.
 ///
 /// The buffer contains a list of symbols compiled by the Dart JIT at runtime up
@@ -80,10 +59,6 @@ dynamic _saveCompilationTrace() {
   throw UnimplementedError();
 }
 
-void _scheduleMicrotask(void callback()) {
-  throw UnimplementedError();
-}
-
 int? _getCallbackHandle(Function closure) {
   throw UnimplementedError();
 }
@@ -96,5 +71,3 @@ Function? _getCallbackFromHandle(int handle) {
 int? _isolateId; // ignore: unused_element
 
 Function _getPrintClosure() => _print; // ignore: unused_element
-Function _getScheduleMicrotaskClosure() =>
-    _scheduleMicrotask; // ignore: unused_element
