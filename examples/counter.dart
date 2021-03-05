@@ -1,7 +1,22 @@
 import 'package:flute/material.dart';
 
+int _last = 0;
+int get now => _last = DateTime.now().millisecondsSinceEpoch;
+int get since => -(_last - now);
+
+int frame = 0;
+
 void main() {
+  int _in = now;
   runApp(MyApp());
+  int _since = since;
+  print("Into main:   $_in");
+  print("main:     ${"$_since".padLeft(4)}");
+  WidgetsBinding.instance?.addPersistentFrameCallback((_) {
+    if (++frame <= 25) {
+      print("frame ${"$frame".padLeft(2)}: ${"$since".padLeft(4)}");
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {
