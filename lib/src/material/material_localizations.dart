@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flute/foundation.dart';
 import 'package:flute/widgets.dart';
 
 import 'debug.dart';
@@ -522,7 +521,7 @@ class _MaterialLocalizationsDelegate
   bool isSupported(Locale locale) => locale.languageCode == 'en';
 
   @override
-  Future<MaterialLocalizations> load(Locale locale) =>
+  MaterialLocalizations load(Locale locale) =>
       DefaultMaterialLocalizations.load(locale);
 
   @override
@@ -1067,9 +1066,8 @@ class DefaultMaterialLocalizations implements MaterialLocalizations {
   ///
   /// This method is typically used to create a [LocalizationsDelegate].
   /// The [MaterialApp] does so by default.
-  static Future<MaterialLocalizations> load(Locale locale) {
-    return SynchronousFuture<MaterialLocalizations>(
-        const DefaultMaterialLocalizations());
+  static MaterialLocalizations load(Locale locale) {
+    return const DefaultMaterialLocalizations();
   }
 
   /// A [LocalizationsDelegate] that uses [DefaultMaterialLocalizations.load]

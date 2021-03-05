@@ -225,7 +225,7 @@ typedef RefreshControlIndicatorBuilder = Widget Function(
 /// pulled a `refreshTriggerPullDistance`. Must return a [Future]. Upon
 /// completion of the [Future], the [CupertinoSliverRefreshControl] enters the
 /// [RefreshIndicatorMode.done] state and will start to go away.
-typedef RefreshCallback = Future<void> Function();
+typedef RefreshCallback = void Function();
 
 /// A sliver widget implementing the iOS-style pull to refresh content control.
 ///
@@ -300,7 +300,7 @@ typedef RefreshCallback = Future<void> Function();
 ///           CupertinoSliverRefreshControl(
 ///             refreshTriggerPullDistance: 100.0,
 ///             refreshIndicatorExtent: 60.0,
-///             onRefresh: () async {
+///             onRefresh: () {
 ///               await Future.delayed(Duration(milliseconds: 1000));
 ///               setState(() {
 ///                 items.insert(0, Container(color: colors[items.length % 3], height: 100.0));
@@ -490,8 +490,7 @@ class _CupertinoSliverRefreshControlState
   static const double _inactiveResetOverscrollFraction = 0.1;
 
   late RefreshIndicatorMode refreshState;
-  // [Future] returned by the widget's `onRefresh`.
-  Future<void>? refreshTask;
+
   // The amount of space available from the inner indicator box's perspective.
   //
   // The value is the sum of the sliver's layout extent and the overscroll
@@ -550,24 +549,17 @@ class _CupertinoSliverRefreshControlState
             // performLayout.
             SchedulerBinding.instance!
                 .addPostFrameCallback((Duration timestamp) {
-              refreshTask = widget.onRefresh!()
-                ..whenComplete(() {
-                  if (mounted) {
-                    setState(() => refreshTask = null);
-                    // Trigger one more transition because by this time, BoxConstraint's
-                    // maxHeight might already be resting at 0 in which case no
-                    // calls to [transitionNextState] will occur anymore and the
-                    // state may be stuck in a non-inactive state.
-                    refreshState = transitionNextState();
-                  }
-                });
+              widget.onRefresh!();
+              if (mounted) {
+                transitionNextState();
+              }
               setState(() => hasSliverLayoutExtent = true);
             });
           }
           return RefreshIndicatorMode.armed;
         }
       case RefreshIndicatorMode.armed:
-        if (refreshState == RefreshIndicatorMode.armed && refreshTask == null) {
+        if (refreshState == RefreshIndicatorMode.armed) {
           goToDone();
           continue done;
         }
@@ -580,11 +572,7 @@ class _CupertinoSliverRefreshControlState
         continue refresh;
       refresh:
       case RefreshIndicatorMode.refresh:
-        if (refreshTask != null) {
-          return RefreshIndicatorMode.refresh;
-        } else {
-          goToDone();
-        }
+        goToDone();
         continue done;
       done:
       case RefreshIndicatorMode.done:

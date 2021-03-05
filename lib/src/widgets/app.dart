@@ -1284,7 +1284,7 @@ class _WidgetsAppState extends State<WidgetsApp> with WidgetsBindingObserver {
 
   // On Android: the user has pressed the back button.
   @override
-  Future<bool> didPopRoute() async {
+  bool didPopRoute() {
     assert(mounted);
     // The back button dispatcher should handle the pop route if we use a
     // router.
@@ -1292,11 +1292,11 @@ class _WidgetsAppState extends State<WidgetsApp> with WidgetsBindingObserver {
 
     final NavigatorState? navigator = _navigator?.currentState;
     if (navigator == null) return false;
-    return await navigator.maybePop();
+    return navigator.maybePop();
   }
 
   @override
-  Future<bool> didPushRoute(String route) async {
+  bool didPushRoute(String route) {
     assert(mounted);
     // The route name provider should handle the push route if we uses a
     // router.

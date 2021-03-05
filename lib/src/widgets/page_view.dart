@@ -195,7 +195,7 @@ class PageController extends ScrollController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  Future<void> animateToPage(
+  void animateToPage(
     int page, {
     required Duration duration,
     required Curve curve,
@@ -223,7 +223,7 @@ class PageController extends ScrollController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  Future<void> nextPage({required Duration duration, required Curve curve}) {
+  void nextPage({required Duration duration, required Curve curve}) {
     return animateToPage(page!.round() + 1, duration: duration, curve: curve);
   }
 
@@ -233,8 +233,7 @@ class PageController extends ScrollController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  Future<void> previousPage(
-      {required Duration duration, required Curve curve}) {
+  void previousPage({required Duration duration, required Curve curve}) {
     return animateToPage(page!.round() - 1, duration: duration, curve: curve);
   }
 
@@ -341,7 +340,7 @@ class _PagePosition extends ScrollPositionWithSingleContext
   double _pageToUseOnStartup;
 
   @override
-  Future<void> ensureVisible(
+  void ensureVisible(
     RenderObject object, {
     double alignment = 0.0,
     Duration duration = Duration.zero,

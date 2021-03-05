@@ -329,8 +329,8 @@ mixin SchedulerBinding on BindingBase {
     if (!kReleaseMode) {
       registerNumericServiceExtension(
         name: 'timeDilation',
-        getter: () async => timeDilation,
-        setter: (double value) async {
+        getter: () => timeDilation,
+        setter: (double value) {
           timeDilation = value;
         },
       );
@@ -382,43 +382,6 @@ mixin SchedulerBinding on BindingBase {
 
   final PriorityQueue<_TaskEntry<dynamic>> _taskQueue =
       HeapPriorityQueue<_TaskEntry<dynamic>>(_taskSorter);
-
-  /// Schedules the given `task` with the given `priority` and returns a
-  /// [Future] that completes to the `task`'s eventual return value.
-  ///
-  /// The `debugLabel` and `flow` are used to report the task to the [Timeline],
-  /// for use when profiling.
-  ///
-  /// ## Processing model
-  ///
-  /// Tasks will be executed between frames, in priority order,
-  /// excluding tasks that are skipped by the current
-  /// [schedulingStrategy]. Tasks should be short (as in, up to a
-  /// millisecond), so as to not cause the regular frame callbacks to
-  /// get delayed.
-  ///
-  /// If an animation is running, including, for instance, a [ProgressIndicator]
-  /// indicating that there are pending tasks, then tasks with a priority below
-  /// [Priority.animation] won't run (at least, not with the
-  /// [defaultSchedulingStrategy]; this can be configured using
-  /// [schedulingStrategy]).
-  Future<T> scheduleTask<T>(
-    TaskCallback<T> task,
-    Priority priority, {
-    String? debugLabel,
-    Flow? flow,
-  }) {
-    final bool isFirstTask = _taskQueue.isEmpty;
-    final _TaskEntry<T> entry = _TaskEntry<T>(
-      task,
-      priority.value,
-      debugLabel,
-      flow,
-    );
-    _taskQueue.add(entry);
-    if (isFirstTask && !locked) _ensureEventLoopCallback();
-    return entry.completer.future;
-  }
 
   @override
   void unlocked() {
@@ -695,7 +658,7 @@ mixin SchedulerBinding on BindingBase {
   /// If the device's screen is currently turned off, this may wait a very long
   /// time, since frames are not scheduled while the device's screen is turned
   /// off.
-  Future<void> get endOfFrame {
+  void get endOfFrame {
     if (_nextFrameCompleter == null) {
       if (schedulerPhase == SchedulerPhase.idle) scheduleFrame();
       _nextFrameCompleter = Completer<void>();
@@ -704,7 +667,6 @@ mixin SchedulerBinding on BindingBase {
         _nextFrameCompleter = null;
       });
     }
-    return _nextFrameCompleter!.future;
   }
 
   /// Whether this scheduler has requested that [handleBeginFrame] be called soon.
@@ -884,8 +846,8 @@ mixin SchedulerBinding on BindingBase {
 
     // Lock events so touch events etc don't insert themselves until the
     // scheduled frame has finished.
-    lockEvents(() async {
-      await endOfFrame;
+    lockEvents(() {
+      endOfFrame;
       Timeline.finishSync();
     });
   }

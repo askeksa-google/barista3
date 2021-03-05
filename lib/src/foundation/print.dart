@@ -87,12 +87,6 @@ void _debugPrintTask() {
   }
 }
 
-/// A Future that resolves when there is no longer any buffered content being
-/// printed by [debugPrintThrottled] (which is the default implementation for
-/// [debugPrint], which is used to report errors to the console).
-Future<void> get debugPrintDone =>
-    _debugPrintCompleter?.future ?? Future<void>.value();
-
 final RegExp _indentPattern = RegExp('^ *(?:[-+*] |[0-9]+[.):] )?');
 enum _WordWrapParseMode { inSpace, inWord, atBreak }
 

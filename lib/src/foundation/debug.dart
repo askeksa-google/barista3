@@ -51,8 +51,7 @@ bool debugInstrumentationEnabled = false;
 ///  * [Timeline], which is used to record synchronous tracing events for
 ///    visualization in Chrome's tracing format. This method does not
 ///    implicitly add any timeline events.
-Future<T> debugInstrumentAction<T>(
-    String description, Future<T> action()) async {
+T debugInstrumentAction<T>(String description, T action()) {
   bool instrument = false;
   assert(() {
     instrument = debugInstrumentationEnabled;
@@ -61,7 +60,7 @@ Future<T> debugInstrumentAction<T>(
   if (instrument) {
     final Stopwatch stopwatch = Stopwatch()..start();
     try {
-      return await action();
+      return action();
     } finally {
       stopwatch.stop();
       debugPrint('Action "$description" took ${stopwatch.elapsed}');

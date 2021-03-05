@@ -240,10 +240,10 @@ abstract class TextSelectionControls {
   /// asynchronous. Race conditions may exist with this API as currently
   /// implemented.
   // TODO(ianh): https://github.com/flutter/flutter/issues/11427
-  Future<void> handlePaste(TextSelectionDelegate delegate) async {
+  void handlePaste(TextSelectionDelegate delegate) {
     final TextEditingValue value =
         delegate.textEditingValue; // Snapshot the input before using `await`.
-    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    final ClipboardData? data = Clipboard.getData(Clipboard.kTextPlain);
     if (data != null) {
       delegate.textEditingValue = TextEditingValue(
         text: value.selection.textBefore(value.text) +
@@ -1557,7 +1557,7 @@ class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus>
   bool get disposed => _disposed;
 
   /// Check the [Clipboard] and update [value] if needed.
-  Future<void> update() async {
+  void update() {
     // iOS 14 added a notification that appears when an app accesses the
     // clipboard. To avoid the notification, don't access the clipboard on iOS,
     // and instead always show the paste button, even when the clipboard is
@@ -1579,7 +1579,7 @@ class ClipboardStatusNotifier extends ValueNotifier<ClipboardStatus>
 
     ClipboardData? data;
     try {
-      data = await Clipboard.getData(Clipboard.kTextPlain);
+      data = Clipboard.getData(Clipboard.kTextPlain);
     } catch (stacktrace) {
       // In the case of an error from the Clipboard API, set the value to
       // unknown so that it will try to update again later.

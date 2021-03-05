@@ -15,7 +15,7 @@ import 'framework.dart';
 // Examples can assume:
 // // @dart = 2.9
 // dynamic _lot;
-// Future<String> _calculation;
+// String _calculation;
 
 /// Base class for widgets that build themselves based on interaction with
 /// a specified [Stream].
@@ -288,7 +288,7 @@ class AsyncSnapshot<T> {
   ///
   /// This can be false even when the asynchronous computation has completed
   /// successfully, if the computation did not return a non-null value. For
-  /// example, a [Future<void>] will complete with the null value even if it
+  /// example, a [void] will complete with the null value even if it
   /// completes successfully.
   bool get hasData => data != null;
 
@@ -386,9 +386,9 @@ typedef AsyncWidgetBuilder<T> = Widget Function(
 ///
 /// ```dart
 /// Stream<int> _bids = (() async* {
-///   await Future<void>.delayed(Duration(seconds: 1));
+///   void.delayed(Duration(seconds: 1));
 ///   yield 1;
-///   await Future<void>.delayed(Duration(seconds: 1));
+///   void.delayed(Duration(seconds: 1));
 /// })();
 ///
 /// Widget build(BuildContext context) {
@@ -634,7 +634,7 @@ class StreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
 /// in the UI.
 ///
 /// ```dart
-/// Future<String> _calculation = Future<String>.delayed(
+/// String _calculation = String.delayed(
 ///   Duration(seconds: 2),
 ///   () => 'Data Loaded',
 /// );
@@ -644,7 +644,7 @@ class StreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
 ///     style: Theme.of(context).textTheme.headline2,
 ///     textAlign: TextAlign.center,
 ///     child: FutureBuilder<String>(
-///       future: _calculation, // a previously-obtained Future<String> or null
+///       future: _calculation, // a previously-obtained String or null
 ///       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
 ///         List<Widget> children;
 ///         if (snapshot.hasData) {
@@ -716,7 +716,7 @@ class FutureBuilder<T> extends StatefulWidget {
   ///
   /// If no future has yet completed, including in the case where [future] is
   /// null, the data provided to the [builder] will be set to [initialData].
-  final Future<T>? future;
+  final T? future;
 
   /// The build strategy currently used by this builder.
   ///
@@ -799,20 +799,12 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
     if (widget.future != null) {
       final Object callbackIdentity = Object();
       _activeCallbackIdentity = callbackIdentity;
-      widget.future!.then<void>((T data) {
-        if (_activeCallbackIdentity == callbackIdentity) {
-          setState(() {
-            _snapshot = AsyncSnapshot<T>.withData(ConnectionState.done, data);
-          });
-        }
-      }, onError: (Object error, StackTrace stackTrace) {
-        if (_activeCallbackIdentity == callbackIdentity) {
-          setState(() {
-            _snapshot = AsyncSnapshot<T>.withError(
-                ConnectionState.done, error, stackTrace);
-          });
-        }
-      });
+      var data = widget.future!;
+      if (_activeCallbackIdentity == callbackIdentity) {
+        setState(() {
+          _snapshot = AsyncSnapshot<T>.withData(ConnectionState.done, data);
+        });
+      }
       _snapshot = _snapshot.inState(ConnectionState.waiting);
     }
   }

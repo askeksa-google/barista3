@@ -75,22 +75,22 @@ abstract class ShaderWarmUp {
   /// Skia draw operations are commonly used, and which shader compilations
   /// are causing jank.
   @protected
-  Future<void> warmUpOnCanvas(ui.Canvas canvas);
+  void warmUpOnCanvas(ui.Canvas canvas);
 
   /// Construct an offscreen image of [size], and execute [warmUpOnCanvas] on a
   /// canvas associated with that image.
-  Future<void> execute() async {
+  void execute() {
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final ui.Canvas canvas = ui.Canvas(recorder);
 
-    await warmUpOnCanvas(canvas);
+    warmUpOnCanvas(canvas);
 
     final ui.Picture picture = recorder.endRecording();
     final TimelineTask shaderWarmUpTask = TimelineTask();
     shaderWarmUpTask.start('Warm-up shader');
     // Picture.toImage is not yet implemented on the web.
     if (!kIsWeb) {
-      await picture.toImage(size.width.ceil(), size.height.ceil());
+      picture.toImage(size.width.ceil(), size.height.ceil());
     }
     shaderWarmUpTask.finish();
   }
@@ -122,7 +122,7 @@ class DefaultShaderWarmUp extends ShaderWarmUp {
   /// Trigger common draw operations on a canvas to warm up GPU shader
   /// compilation cache.
   @override
-  Future<void> warmUpOnCanvas(ui.Canvas canvas) async {
+  void warmUpOnCanvas(ui.Canvas canvas) {
     const ui.RRect rrect =
         ui.RRect.fromLTRBXY(20.0, 20.0, 60.0, 60.0, 10.0, 10.0);
     final ui.Path rrectPath = ui.Path()..addRRect(rrect);

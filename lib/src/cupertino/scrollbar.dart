@@ -178,9 +178,8 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
       return;
     }
     super.handleThumbPress();
-    _thicknessAnimationController.forward().then<void>(
-          (_) => HapticFeedback.mediumImpact(),
-        );
+    _thicknessAnimationController.forward();
+    HapticFeedback.mediumImpact();
   }
 
   @override

@@ -403,7 +403,7 @@ class Router<T> extends StatefulWidget {
   State<Router<T>> createState() => _RouterState<T>();
 }
 
-typedef _AsyncPassthrough<Q> = Future<Q> Function(Q);
+typedef _AsyncPassthrough<Q> = Q Function(Q);
 
 // Whether to report the route information in this build cycle.
 enum _IntentionToReportRouteInformation {
@@ -604,45 +604,43 @@ class _RouterState<T> extends State<Router<T>> {
     _currentRouteInformationParserTransaction = Object();
     _currentRouterDelegateTransaction = Object();
     _lastSeenLocation = widget.routeInformationProvider!.value!.location;
-    widget.routeInformationParser!
-        .parseRouteInformation(widget.routeInformationProvider!.value!)
-        .then<T>(_verifyRouteInformationParserStillCurrent(
-            _currentRouteInformationParserTransaction, widget))
-        .then<void>(widget.routerDelegate.setInitialRoutePath)
-        .then<void>(_verifyRouterDelegatePushStillCurrent(
-            _currentRouterDelegateTransaction, widget))
-        .then<void>(_rebuild);
+    var config = widget.routeInformationParser!
+        .parseRouteInformation(widget.routeInformationProvider!.value!);
+    _verifyRouteInformationParserStillCurrent(
+        _currentRouteInformationParserTransaction, widget);
+    widget.routerDelegate.setInitialRoutePath(config);
+    _verifyRouterDelegatePushStillCurrent(
+        _currentRouterDelegateTransaction, widget);
+    _rebuild();
   }
 
   void _handleRouteInformationProviderNotification() {
     _currentRouteInformationParserTransaction = Object();
     _currentRouterDelegateTransaction = Object();
     _lastSeenLocation = widget.routeInformationProvider!.value!.location;
-    widget.routeInformationParser!
-        .parseRouteInformation(widget.routeInformationProvider!.value!)
-        .then<T>(_verifyRouteInformationParserStillCurrent(
-            _currentRouteInformationParserTransaction, widget))
-        .then<void>(widget.routerDelegate.setNewRoutePath)
-        .then<void>(_verifyRouterDelegatePushStillCurrent(
-            _currentRouterDelegateTransaction, widget))
-        .then<void>(_rebuild);
+    var config = widget.routeInformationParser!
+        .parseRouteInformation(widget.routeInformationProvider!.value!);
+    _verifyRouteInformationParserStillCurrent(
+        _currentRouteInformationParserTransaction, widget);
+    widget.routerDelegate.setNewRoutePath(config);
+    _verifyRouterDelegatePushStillCurrent(
+        _currentRouterDelegateTransaction, widget);
+    _rebuild();
   }
 
-  Future<bool> _handleBackButtonDispatcherNotification() {
+  bool _handleBackButtonDispatcherNotification() {
     _currentRouteInformationParserTransaction = Object();
     _currentRouterDelegateTransaction = Object();
-    return widget.routerDelegate
-        .popRoute()
-        .then<bool>(_verifyRouterDelegatePopStillCurrent(
-            _currentRouterDelegateTransaction, widget))
-        .then<bool>((bool data) {
-      _rebuild();
-      _maybeNeedToReportRouteInformation();
-      return SynchronousFuture<bool>(data);
-    });
+
+    bool result = widget.routerDelegate.popRoute();
+    _verifyRouterDelegatePopStillCurrent(
+        _currentRouterDelegateTransaction, widget);
+    _rebuild();
+    _maybeNeedToReportRouteInformation();
+    return result;
   }
 
-  static final Future<dynamic> _never =
+  static final dynamic _never =
       Completer<dynamic>().future; // won't ever complete
 
   _AsyncPassthrough<T> _verifyRouteInformationParserStillCurrent(
@@ -655,9 +653,9 @@ class _RouterState<T> extends State<Router<T>> {
           widget.routeInformationParser ==
               originalWidget.routeInformationParser &&
           widget.routerDelegate == originalWidget.routerDelegate) {
-        return SynchronousFuture<T>(data);
+        return data;
       }
-      return _never as Future<T>;
+      return _never as T;
     };
   }
 
@@ -670,8 +668,7 @@ class _RouterState<T> extends State<Router<T>> {
           widget.backButtonDispatcher == originalWidget.backButtonDispatcher &&
           widget.routeInformationParser ==
               originalWidget.routeInformationParser &&
-          widget.routerDelegate == originalWidget.routerDelegate)
-        return SynchronousFuture<void>(data);
+          widget.routerDelegate == originalWidget.routerDelegate) return data;
       return _never;
     };
   }
@@ -686,17 +683,16 @@ class _RouterState<T> extends State<Router<T>> {
           widget.routeInformationParser ==
               originalWidget.routeInformationParser &&
           widget.routerDelegate == originalWidget.routerDelegate) {
-        return SynchronousFuture<bool>(data);
+        return data;
       }
       // A rebuilt was trigger from a different source. Returns true to
       // prevent bubbling.
-      return SynchronousFuture<bool>(true);
+      return true;
     };
   }
 
-  Future<void> _rebuild([void value]) {
+  void _rebuild() {
     setState(() {/* routerDelegate is ready to rebuild */});
-    return SynchronousFuture<void>(value);
   }
 
   void _handleRouterDelegateNotification() {
@@ -830,12 +826,11 @@ class _CallbackHookProvider<T> {
 /// it calls [takePriority] on its [BackButtonDispatcher] (or
 /// [ChildBackButtonDispatcher]) instance.
 ///
-/// The class takes a single callback, which must return a [Future<bool>]. The
+/// The class takes a single callback, which must return a [bool]. The
 /// callback's semantics match [WidgetsBindingObserver.didPopRoute]'s, namely,
 /// the callback should return a future that completes to true if it can handle
 /// the pop request, and a future that completes to false otherwise.
-abstract class BackButtonDispatcher
-    extends _CallbackHookProvider<Future<bool>> {
+abstract class BackButtonDispatcher extends _CallbackHookProvider<bool> {
   late final LinkedHashSet<ChildBackButtonDispatcher> _children =
       <ChildBackButtonDispatcher>{} as LinkedHashSet<ChildBackButtonDispatcher>;
 
@@ -859,29 +854,27 @@ abstract class BackButtonDispatcher
   /// delegate you pass into the router with this back button dispatcher to
   /// return a future of true or false.
   @override
-  Future<bool> invokeCallback(Future<bool> defaultValue) {
+  bool invokeCallback(bool defaultValue) {
     if (_children.isNotEmpty) {
       final List<ChildBackButtonDispatcher> children = _children.toList();
       int childIndex = children.length - 1;
 
-      Future<bool> notifyNextChild(bool result) {
+      bool notifyNextChild(bool result) {
         // If the previous child handles the callback, we return the result.
-        if (result) return SynchronousFuture<bool>(result);
+        if (result) return result;
         // If the previous child did not handle the callback, we ask the next
         // child to handle the it.
         if (childIndex > 0) {
           childIndex -= 1;
-          return children[childIndex]
-              .notifiedByParent(defaultValue)
-              .then<bool>(notifyNextChild);
+          return notifyNextChild(
+              children[childIndex].notifiedByParent(defaultValue));
         }
         // If none of the child handles the callback, the parent will then handle it.
         return super.invokeCallback(defaultValue);
       }
 
-      return children[childIndex]
-          .notifiedByParent(defaultValue)
-          .then<bool>(notifyNextChild);
+      return notifyNextChild(
+          children[childIndex].notifiedByParent(defaultValue));
     }
     return super.invokeCallback(defaultValue);
   }
@@ -963,19 +956,19 @@ class RootBackButtonDispatcher extends BackButtonDispatcher
   RootBackButtonDispatcher();
 
   @override
-  void addCallback(ValueGetter<Future<bool>> callback) {
+  void addCallback(ValueGetter<bool> callback) {
     if (!hasCallbacks) WidgetsBinding.instance!.addObserver(this);
     super.addCallback(callback);
   }
 
   @override
-  void removeCallback(ValueGetter<Future<bool>> callback) {
+  void removeCallback(ValueGetter<bool> callback) {
     super.removeCallback(callback);
     if (!hasCallbacks) WidgetsBinding.instance!.removeObserver(this);
   }
 
   @override
-  Future<bool> didPopRoute() => invokeCallback(Future<bool>.value(false));
+  bool didPopRoute() => invokeCallback(false);
 }
 
 /// A variant of [BackButtonDispatcher] which listens to notifications from a
@@ -1007,7 +1000,7 @@ class ChildBackButtonDispatcher extends BackButtonDispatcher {
   /// Return a boolean future with true if this child will handle the request;
   /// otherwise, return a boolean future with false.
   @protected
-  Future<bool> notifiedByParent(Future<bool> defaultValue) {
+  bool notifiedByParent(bool defaultValue) {
     return invokeCallback(defaultValue);
   }
 
@@ -1025,7 +1018,7 @@ class ChildBackButtonDispatcher extends BackButtonDispatcher {
   }
 
   @override
-  void removeCallback(ValueGetter<Future<bool>> callback) {
+  void removeCallback(ValueGetter<bool> callback) {
     super.removeCallback(callback);
     if (!hasCallbacks) parent.forget(this);
   }
@@ -1053,7 +1046,7 @@ abstract class RouteInformationParser<T> {
   /// Consider using a [SynchronousFuture] if the result can be computed
   /// synchronously, so that the [Router] does not need to wait for the next
   /// microtask to pass the data to the [RouterDelegate].
-  Future<T> parseRouteInformation(RouteInformation routeInformation);
+  T parseRouteInformation(RouteInformation routeInformation);
 
   /// Restore the route information from the given configuration.
   ///
@@ -1106,7 +1099,7 @@ abstract class RouterDelegate<T> extends Listenable {
   /// Consider using a [SynchronousFuture] if the result can be computed
   /// synchronously, so that the [Router] does not need to wait for the next
   /// microtask to schedule a build.
-  Future<void> setInitialRoutePath(T configuration) {
+  void setInitialRoutePath(T configuration) {
     return setNewRoutePath(configuration);
   }
 
@@ -1116,7 +1109,7 @@ abstract class RouterDelegate<T> extends Listenable {
   /// Consider using a [SynchronousFuture] if the result can be computed
   /// synchronously, so that the [Router] does not need to wait for the next
   /// microtask to schedule a build.
-  Future<void> setNewRoutePath(T configuration);
+  void setNewRoutePath(T configuration);
 
   /// Called by the [Router] when the [Router.backButtonDispatcher] reports that
   /// the operating system is requesting that the current route be popped.
@@ -1128,7 +1121,7 @@ abstract class RouterDelegate<T> extends Listenable {
   /// Consider using a [SynchronousFuture] if the result can be computed
   /// synchronously, so that the [Router] does not need to wait for the next
   /// microtask to schedule a build.
-  Future<bool> popRoute();
+  bool popRoute();
 
   /// Called by the [Router] when it detects a route information may have
   /// changed as a result of rebuild.
@@ -1263,15 +1256,14 @@ class PlatformRouteInformationProvider extends RouteInformationProvider
   }
 
   @override
-  Future<bool> didPushRouteInformation(
-      RouteInformation routeInformation) async {
+  bool didPushRouteInformation(RouteInformation routeInformation) {
     assert(hasListeners);
     _platformReportsNewRouteInformation(routeInformation);
     return true;
   }
 
   @override
-  Future<bool> didPushRoute(String route) async {
+  bool didPushRoute(String route) {
     assert(hasListeners);
     _platformReportsNewRouteInformation(RouteInformation(location: route));
     return true;
@@ -1294,9 +1286,9 @@ mixin PopNavigatorRouterDelegateMixin<T> on RouterDelegate<T> {
   GlobalKey<NavigatorState>? get navigatorKey;
 
   @override
-  Future<bool> popRoute() {
+  bool popRoute() {
     final NavigatorState? navigator = navigatorKey?.currentState;
-    if (navigator == null) return SynchronousFuture<bool>(false);
+    if (navigator == null) return false;
     return navigator.maybePop();
   }
 }

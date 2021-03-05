@@ -495,7 +495,7 @@ class MaterialApp extends StatefulWidget {
   /// class FooLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
   ///   const FooLocalizationsDelegate();
   ///   @override
-  ///   Future<FooLocalizations> load(Locale locale) {
+  ///   FooLocalizations load(Locale locale) {
   ///     return SynchronousFuture(FooLocalizations(locale));
   ///   }
   ///   @override

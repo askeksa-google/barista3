@@ -178,7 +178,7 @@ class RenderAndroidView extends RenderBox with _PlatformViewGestureMixin {
 
   late Size _currentAndroidViewSize;
 
-  Future<void> _sizePlatformView() async {
+  void _sizePlatformView() {
     // Android virtual displays cannot have a zero size.
     // Trying to size it to 0 crashes the app, which was happening when starting the app
     // with a locked screen (see: https://github.com/flutter/flutter/issues/20456).
@@ -192,7 +192,7 @@ class RenderAndroidView extends RenderBox with _PlatformViewGestureMixin {
     Size targetSize;
     do {
       targetSize = size;
-      await _viewController.setSize(targetSize);
+      _viewController.setSize(targetSize);
       _currentAndroidViewSize = targetSize;
       // We've resized the platform view to targetSize, but it is possible that
       // while we were resizing the render object's size was changed again.
@@ -490,7 +490,7 @@ class _UiKitViewGestureRecognizer extends OneSequenceGestureRecognizer {
   }
 }
 
-typedef _HandlePointerEvent = Future<void> Function(PointerEvent event);
+typedef _HandlePointerEvent = void Function(PointerEvent event);
 
 // This recognizer constructs gesture recognizers from a set of gesture recognizer factories
 // it was give, adds all of them to a gesture arena team with the _PlatformViewGestureRecognizer

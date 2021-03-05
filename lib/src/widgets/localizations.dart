@@ -15,14 +15,14 @@ import 'framework.dart';
 
 // Examples can assume:
 // class Intl { static String message(String s, { String? name, String? locale }) => ''; }
-// Future<void> initializeMessages(String locale) => Future.value();
+// void initializeMessages(String locale) => Future.value();
 
 // Used by loadAll() to record LocalizationsDelegate.load() futures we're
 // waiting for.
 class _Pending {
   _Pending(this.delegate, this.futureValue);
   final LocalizationsDelegate<dynamic> delegate;
-  final Future<dynamic> futureValue;
+  final dynamic futureValue;
 }
 
 // A utility function used by Localizations to generate one future
@@ -31,7 +31,7 @@ class _Pending {
 //
 // The input future values must have distinct types.
 //
-// The returned Future<Map> will resolve when all of the input map's
+// The returned Map will resolve when all of the input map's
 // future values have resolved. If all of the input map's values are
 // SynchronousFutures then a SynchronousFuture will be returned
 // immediately.
@@ -39,7 +39,7 @@ class _Pending {
 // This is more complicated than just applying Future.wait to input
 // because some of the input.values may be SynchronousFutures. We don't want
 // to Future.wait for the synchronous futures.
-Future<Map<Type, dynamic>> _loadAll(
+Map<Type, dynamic> _loadAll(
     Locale locale, Iterable<LocalizationsDelegate<dynamic>> allDelegates) {
   final Map<Type, dynamic> output = <Type, dynamic>{};
   List<_Pending>? pendingList;
@@ -57,38 +57,24 @@ Future<Map<Type, dynamic>> _loadAll(
   }
 
   for (final LocalizationsDelegate<dynamic> delegate in delegates) {
-    final Future<dynamic> inputValue = delegate.load(locale);
-    dynamic completedValue;
-    final Future<dynamic> futureValue =
-        inputValue.then<dynamic>((dynamic value) {
-      return completedValue = value;
-    });
-    if (completedValue != null) {
-      // inputValue was a SynchronousFuture
-      final Type type = delegate.type;
-      assert(!output.containsKey(type));
-      output[type] = completedValue;
-    } else {
-      pendingList ??= <_Pending>[];
-      pendingList.add(_Pending(delegate, futureValue));
-    }
+    final dynamic inputValue = delegate.load(locale);
+    // inputValue was a SynchronousFuture
+    final Type type = delegate.type;
+    assert(!output.containsKey(type));
+    output[type] = inputValue;
   }
 
   // All of the delegate.load() values were synchronous futures, we're done.
-  if (pendingList == null) return SynchronousFuture<Map<Type, dynamic>>(output);
+  if (pendingList == null) return output;
 
   // Some of delegate.load() values were asynchronous futures. Wait for them.
-  return Future.wait<dynamic>(
-          pendingList.map<Future<dynamic>>((_Pending p) => p.futureValue))
-      .then<Map<Type, dynamic>>((List<dynamic> values) {
-    assert(values.length == pendingList!.length);
-    for (int i = 0; i < values.length; i += 1) {
-      final Type type = pendingList![i].delegate.type;
-      assert(!output.containsKey(type));
-      output[type] = values[i];
-    }
-    return output;
-  });
+  assert(pendingList.length == pendingList.length);
+  for (int i = 0; i < pendingList.length; i += 1) {
+    final Type type = pendingList[i].delegate.type;
+    assert(!output.containsKey(type));
+    output[type] = pendingList[i];
+  }
+  return output;
 }
 
 /// A factory for a set of localized resources of type `T`, to be loaded by a
@@ -115,7 +101,7 @@ abstract class LocalizationsDelegate<T> {
   /// It's assumed that the this method will return an object that contains
   /// a collection of related resources (typically defined with one method per
   /// resource). The object will be retrieved with [Localizations.of].
-  Future<T> load(Locale locale);
+  T load(Locale locale);
 
   /// Returns true if the resources for this delegate should be loaded
   /// again by calling the [load] method.
@@ -186,7 +172,7 @@ class _WidgetsLocalizationsDelegate
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<WidgetsLocalizations> load(Locale locale) =>
+  WidgetsLocalizations load(Locale locale) =>
       DefaultWidgetsLocalizations.load(locale);
 
   @override
@@ -221,9 +207,8 @@ class DefaultWidgetsLocalizations implements WidgetsLocalizations {
   ///
   /// This method is typically used to create a [LocalizationsDelegate].
   /// The [WidgetsApp] does so by default.
-  static Future<WidgetsLocalizations> load(Locale locale) {
-    return SynchronousFuture<WidgetsLocalizations>(
-        const DefaultWidgetsLocalizations());
+  static WidgetsLocalizations load(Locale locale) {
+    return const DefaultWidgetsLocalizations();
   }
 
   /// A [LocalizationsDelegate] that uses [DefaultWidgetsLocalizations.load]
@@ -270,7 +255,7 @@ class _LocalizationsScope extends InheritedWidget {
 /// ```dart
 /// class _MyDelegate extends LocalizationsDelegate<MyLocalizations> {
 ///   @override
-///   Future<MyLocalizations> load(Locale locale) => MyLocalizations.load(locale);
+///   MyLocalizations load(Locale locale) => MyLocalizations.load(locale);
 ///
 ///   @override
 ///   bool shouldReload(MyLocalizationsDelegate old) => false;
@@ -325,7 +310,7 @@ class _LocalizationsScope extends InheritedWidget {
 ///
 ///   final Locale locale;
 ///
-///   static Future<MyLocalizations> load(Locale locale) {
+///   static MyLocalizations load(Locale locale) {
 ///     return initializeMessages(locale.toString())
 ///       .then((void _) {
 ///         return MyLocalizations(locale);
@@ -550,16 +535,11 @@ class _LocalizationsState extends State<Localizations> {
       return;
     }
 
-    Map<Type, dynamic>? typeToResources;
-    final Future<Map<Type, dynamic>> typeToResourcesFuture =
-        _loadAll(locale, delegates)
-            .then<Map<Type, dynamic>>((Map<Type, dynamic> value) {
-      return typeToResources = value;
-    });
+    Map<Type, dynamic>? typeToResources = _loadAll(locale, delegates);
 
     if (typeToResources != null) {
       // All of the delegates' resources loaded synchronously.
-      _typeToResources = typeToResources!;
+      _typeToResources = typeToResources;
       _locale = locale;
     } else {
       // - Don't rebuild the dependent widgets until the resources for the new locale
@@ -567,15 +547,13 @@ class _LocalizationsState extends State<Localizations> {
       // - If we're running at app startup time then defer reporting the first
       // "useful" frame until after the async load has completed.
       RendererBinding.instance!.deferFirstFrame();
-      typeToResourcesFuture.then<void>((Map<Type, dynamic> value) {
-        if (mounted) {
-          setState(() {
-            _typeToResources = value;
-            _locale = locale;
-          });
-        }
-        RendererBinding.instance!.allowFirstFrame();
-      });
+      if (mounted) {
+        setState(() {
+          _typeToResources = typeToResources;
+          _locale = locale;
+        });
+      }
+      RendererBinding.instance!.allowFirstFrame();
     }
   }
 

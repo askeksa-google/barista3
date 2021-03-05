@@ -1273,7 +1273,7 @@ class TextInput {
   TextInputConnection? _currentConnection;
   late TextInputConfiguration _currentConfiguration;
 
-  Future<dynamic> _handleTextInputInvocation(MethodCall methodCall) async {
+  dynamic _handleTextInputInvocation(MethodCall methodCall) {
     if (_currentConnection == null) return;
     final String method = methodCall.method;
 

@@ -758,18 +758,10 @@ class OneFrameImageStreamCompleter extends ImageStreamCompleter {
   /// argument on [FlutterErrorDetails] set to true, meaning that by default the
   /// message is only dumped to the console in debug mode (see [new
   /// FlutterErrorDetails]).
-  OneFrameImageStreamCompleter(Future<ImageInfo> image,
+  OneFrameImageStreamCompleter(ImageInfo image,
       {InformationCollector? informationCollector})
       : assert(image != null) {
-    image.then<void>(setImage, onError: (Object error, StackTrace stack) {
-      reportError(
-        context: ErrorDescription('resolving a single-frame image stream'),
-        exception: error,
-        stack: stack,
-        informationCollector: informationCollector,
-        silent: true,
-      );
-    });
+    setImage(image);
   }
 }
 
@@ -824,7 +816,7 @@ class MultiFrameImageStreamCompleter extends ImageStreamCompleter {
   /// produced by the stream will be delivered to registered [ImageChunkListener]s
   /// (see [addListener]).
   MultiFrameImageStreamCompleter({
-    required Future<ui.Codec> codec,
+    required ui.Codec codec,
     required double scale,
     String? debugLabel,
     Stream<ImageChunkEvent>? chunkEvents,
@@ -833,16 +825,7 @@ class MultiFrameImageStreamCompleter extends ImageStreamCompleter {
         _informationCollector = informationCollector,
         _scale = scale {
     this.debugLabel = debugLabel;
-    codec.then<void>(_handleCodecReady,
-        onError: (Object error, StackTrace stack) {
-      reportError(
-        context: ErrorDescription('resolving an image codec'),
-        exception: error,
-        stack: stack,
-        informationCollector: informationCollector,
-        silent: true,
-      );
-    });
+    _handleCodecReady(codec);
     if (chunkEvents != null) {
       chunkEvents.listen(
         reportImageChunkEvent,
@@ -918,13 +901,13 @@ class MultiFrameImageStreamCompleter extends ImageStreamCompleter {
     return timestamp - _shownTimestamp >= _frameDuration!;
   }
 
-  Future<void> _decodeNextFrameAndSchedule() async {
+  void _decodeNextFrameAndSchedule() {
     // This will be null if we gave it away. If not, it's still ours and it
     // must be disposed of.
     _nextFrame?.image.dispose();
     _nextFrame = null;
     try {
-      _nextFrame = await _codec!.getNextFrame();
+      _nextFrame = _codec!.getNextFrame();
     } catch (exception, stack) {
       reportError(
         context: ErrorDescription('resolving an image frame'),

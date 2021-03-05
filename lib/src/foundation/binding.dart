@@ -26,7 +26,7 @@ import 'print.dart';
 /// "type" key will be set to the string `_extensionType` to indicate
 /// that this is a return value from a service extension, and the
 /// "method" key will be set to the full name of the method.
-typedef ServiceExtensionCallback = Future<Map<String, dynamic>> Function(
+typedef ServiceExtensionCallback = Map<String, dynamic> Function(
     Map<String, String> parameters);
 
 /// Base class for mixins that provide singleton services (also known as
@@ -183,7 +183,7 @@ abstract class BindingBase {
       const String platformOverrideExtensionName = 'platformOverride';
       registerServiceExtension(
         name: platformOverrideExtensionName,
-        callback: (Map<String, String> parameters) async {
+        callback: (Map<String, String> parameters) {
           if (parameters.containsKey('value')) {
             switch (parameters['value']) {
               case 'android':
@@ -214,7 +214,7 @@ abstract class BindingBase {
                   .toString()
                   .substring('$TargetPlatform.'.length),
             );
-            await reassembleApplication();
+            reassembleApplication();
           }
           return <String, dynamic>{
             'value': defaultTargetPlatform
@@ -227,7 +227,7 @@ abstract class BindingBase {
       const String brightnessOverrideExtensionName = 'brightnessOverride';
       registerServiceExtension(
         name: brightnessOverrideExtensionName,
-        callback: (Map<String, String> parameters) async {
+        callback: (Map<String, String> parameters) {
           if (parameters.containsKey('value')) {
             switch (parameters['value']) {
               case 'Brightness.light':
@@ -243,7 +243,7 @@ abstract class BindingBase {
               brightnessOverrideExtensionName,
               (debugBrightnessOverride ?? window.platformBrightness).toString(),
             );
-            await reassembleApplication();
+            reassembleApplication();
           }
           return <String, dynamic>{
             'value': (debugBrightnessOverride ?? window.platformBrightness)
@@ -279,22 +279,17 @@ abstract class BindingBase {
   ///
   /// The [Future] returned by the `callback` argument is returned by [lockEvents].
   @protected
-  Future<void> lockEvents(Future<void> callback()) {
+  void lockEvents(void callback()) {
     developer.Timeline.startSync('Lock events');
 
     assert(callback != null);
     _lockCount += 1;
-    final Future<void> future = callback();
-    assert(future != null,
-        'The lockEvents() callback returned null; it should return a Future<void> that completes when the lock is to expire.');
-    future.whenComplete(() {
-      _lockCount -= 1;
-      if (!locked) {
-        developer.Timeline.finishSync();
-        unlocked();
-      }
-    });
-    return future;
+    callback();
+    _lockCount -= 1;
+    if (!locked) {
+      developer.Timeline.finishSync();
+      unlocked();
+    }
   }
 
   /// Called by [lockEvents] when events get unlocked.
@@ -324,7 +319,7 @@ abstract class BindingBase {
   ///
   /// Subclasses (binding classes) should override [performReassemble] to react
   /// to this method being called. This method itself should not be overridden.
-  Future<void> reassembleApplication() {
+  void reassembleApplication() {
     return lockEvents(performReassemble);
   }
 
@@ -340,9 +335,8 @@ abstract class BindingBase {
   /// Do not call this method directly. Instead, use [reassembleApplication].
   @mustCallSuper
   @protected
-  Future<void> performReassemble() {
+  void performReassemble() {
     FlutterError.resetErrorCount();
-    return Future<void>.value();
   }
 
   /// Registers a service extension method with the given name (full
@@ -361,8 +355,8 @@ abstract class BindingBase {
     assert(callback != null);
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
-        await callback();
+      callback: (Map<String, String> parameters) {
+        callback();
         return <String, dynamic>{};
       },
     );
@@ -393,13 +387,12 @@ abstract class BindingBase {
     assert(setter != null);
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         if (parameters.containsKey('enabled')) {
-          await setter(parameters['enabled'] == 'true');
-          _postExtensionStateChangedEvent(
-              name, await getter() ? 'true' : 'false');
+          setter(parameters['enabled'] == 'true');
+          _postExtensionStateChangedEvent(name, getter() ? 'true' : 'false');
         }
-        return <String, dynamic>{'enabled': await getter() ? 'true' : 'false'};
+        return <String, dynamic>{'enabled': getter() ? 'true' : 'false'};
       },
     );
   }
@@ -428,12 +421,12 @@ abstract class BindingBase {
     assert(setter != null);
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         if (parameters.containsKey(name)) {
-          await setter(double.parse(parameters[name]!));
-          _postExtensionStateChangedEvent(name, (await getter()).toString());
+          setter(double.parse(parameters[name]!));
+          _postExtensionStateChangedEvent(name, (getter()).toString());
         }
-        return <String, dynamic>{name: (await getter()).toString()};
+        return <String, dynamic>{name: (getter()).toString()};
       },
     );
   }
@@ -490,12 +483,12 @@ abstract class BindingBase {
     assert(setter != null);
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         if (parameters.containsKey('value')) {
-          await setter(parameters['value']!);
-          _postExtensionStateChangedEvent(name, await getter());
+          setter(parameters['value']!);
+          _postExtensionStateChangedEvent(name, getter());
         }
-        return <String, dynamic>{'value': await getter()};
+        return <String, dynamic>{'value': getter()};
       },
     );
   }
@@ -560,7 +553,7 @@ abstract class BindingBase {
     assert(callback != null);
     final String methodName = 'ext.flutter.$name';
     developer.registerExtension(methodName,
-        (String method, Map<String, String> parameters) async {
+        (String method, Map<String, String> parameters) {
       assert(method == methodName);
       assert(() {
         if (debugInstrumentationEnabled)
@@ -578,15 +571,12 @@ abstract class BindingBase {
       // the possibility that they're handled in the middle of a frame, which
       // breaks many assertions. As such, we ensure they we run the callbacks
       // on the outer event loop here.
-      await debugInstrumentAction<void>('Wait for outer event loop', () {
-        return Future<void>.delayed(Duration.zero);
-      });
 
       Object? caughtException;
       StackTrace? caughtStack;
       late Map<String, dynamic> result;
       try {
-        result = await callback(parameters);
+        result = callback(parameters);
       } catch (exception, stack) {
         caughtException = exception;
         caughtStack = stack;
@@ -594,7 +584,8 @@ abstract class BindingBase {
       if (caughtException == null) {
         result['type'] = '_extensionType';
         result['method'] = method;
-        return developer.ServiceExtensionResponse.result(json.encode(result));
+        return developer.ServiceExtensionResponse.result(json.encode(result))
+            as dynamic;
       } else {
         FlutterError.reportError(FlutterErrorDetails(
           exception: caughtException,
@@ -609,7 +600,7 @@ abstract class BindingBase {
             'stack': caughtStack.toString(),
             'method': method,
           }),
-        );
+        ) as dynamic;
       }
     });
   }
@@ -619,6 +610,6 @@ abstract class BindingBase {
 }
 
 /// Terminate the Flutter application.
-Future<void> _exitApplication() async {
+void _exitApplication() {
   exit(0);
 }

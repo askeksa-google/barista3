@@ -195,7 +195,7 @@ class Dialog extends StatelessWidget {
 /// and returns a [Future] that completes when the dialog is dismissed.
 ///
 /// ```dart
-/// Future<void> _showMyDialog() async {
+/// void _showMyDialog() {
 ///   return showDialog<void>(
 ///     context: context,
 ///     barrierDismissible: false, // user must tap button!
@@ -692,8 +692,8 @@ class SimpleDialogOption extends StatelessWidget {
 /// that doesn't mention every value in the enum.
 ///
 /// ```dart
-/// Future<void> _askedToLead() async {
-///   switch (await showDialog<Department>(
+/// void _askedToLead() {
+///   switch (showDialog<Department>(
 ///     context: context,
 ///     builder: (BuildContext context) {
 ///       return SimpleDialog(
@@ -986,7 +986,7 @@ Widget _buildMaterialDialogTransitions(
 ///  * [showCupertinoDialog], which displays an iOS-style dialog.
 ///  * [showGeneralDialog], which allows for customization of the dialog popup.
 ///  * <https://material.io/design/components/dialogs.html>
-Future<T?> showDialog<T>({
+T? showDialog<T>({
   required BuildContext context,
   WidgetBuilder? builder,
   bool barrierDismissible = true,

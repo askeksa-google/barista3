@@ -166,7 +166,7 @@ class ScrollPositionWithSingleContext extends ScrollPosition
   }
 
   @override
-  Future<void> animateTo(
+  void animateTo(
     double to, {
     required Duration duration,
     required Curve curve,
@@ -174,7 +174,7 @@ class ScrollPositionWithSingleContext extends ScrollPosition
     if (nearEqual(to, pixels, physics.tolerance.distance)) {
       // Skip the animation, go straight to the position as we are already close.
       jumpTo(to);
-      return Future<void>.value();
+      return;
     }
 
     final DrivenScrollActivity activity = DrivenScrollActivity(

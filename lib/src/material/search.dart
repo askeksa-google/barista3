@@ -51,7 +51,7 @@ import 'theme.dart';
 /// See also:
 ///
 ///  * [SearchDelegate] to define the content of the search page.
-Future<T?> showSearch<T>({
+T? showSearch<T>({
   required BuildContext context,
   required SearchDelegate<T> delegate,
   String? query = '',

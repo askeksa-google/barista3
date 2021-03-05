@@ -57,7 +57,7 @@ class PlatformViewsService {
 
   static final PlatformViewsService _instance = PlatformViewsService._();
 
-  Future<void> _onMethodCall(MethodCall call) {
+  void _onMethodCall(MethodCall call) {
     switch (call.method) {
       case 'viewFocused':
         final int id = call.arguments as int;
@@ -69,7 +69,6 @@ class PlatformViewsService {
         throw UnimplementedError(
             "${call.method} was invoked but isn't implemented by PlatformViewsService");
     }
-    return Future<void>.value();
   }
 
   /// Maps platform view IDs to focus callbacks.
@@ -192,13 +191,13 @@ class PlatformViewsService {
   ///
   /// The `id, `viewType, and `layoutDirection` parameters must not be null.
   /// If `creationParams` is non null then `creationParamsCodec` must not be null.
-  static Future<UiKitViewController> initUiKitView({
+  static UiKitViewController initUiKitView({
     required int id,
     required String viewType,
     required TextDirection layoutDirection,
     dynamic creationParams,
     MessageCodec<dynamic>? creationParamsCodec,
-  }) async {
+  }) {
     assert(id != null);
     assert(viewType != null);
     assert(layoutDirection != null);
@@ -218,7 +217,7 @@ class PlatformViewsService {
         paramsByteData.lengthInBytes,
       );
     }
-    await SystemChannels.platform_views.invokeMethod<void>('create', args);
+    SystemChannels.platform_views.invokeMethod<void>('create', args);
     return UiKitViewController._(id, layoutDirection);
   }
 }
@@ -738,17 +737,17 @@ abstract class AndroidViewController extends PlatformViewController {
     return ((pointerId << 8) & 0xff00) | (action & 0xff);
   }
 
-  Future<void> _sendDisposeMessage();
-  Future<void> _sendCreateMessage();
+  void _sendDisposeMessage();
+  void _sendCreateMessage();
 
   /// Creates the Android View.
   ///
   /// Throws an [AssertionError] if view was already disposed.
-  Future<void> create() async {
+  void create() {
     assert(_state != _AndroidViewState.disposed,
         'trying to create a disposed Android view');
 
-    await _sendCreateMessage();
+    _sendCreateMessage();
 
     _state = _AndroidViewState.created;
     for (final PlatformViewCreatedCallback callback
@@ -763,7 +762,7 @@ abstract class AndroidViewController extends PlatformViewController {
   /// be bigger than zero.
   ///
   /// The first time a size is set triggers the creation of the Android view.
-  Future<void> setSize(Size size);
+  void setSize(Size size);
 
   /// Returns the texture entry id that the Android view is rendering into.
   ///
@@ -785,8 +784,8 @@ abstract class AndroidViewController extends PlatformViewController {
   ///
   /// See [AndroidViewController.dispatchPointerEvent] for sending a
   /// [PointerEvent].
-  Future<void> sendMotionEvent(AndroidMotionEvent event) async {
-    await SystemChannels.platform_views.invokeMethod<dynamic>(
+  void sendMotionEvent(AndroidMotionEvent event) {
+    SystemChannels.platform_views.invokeMethod<dynamic>(
       'touch',
       event._asList(viewId),
     );
@@ -820,7 +819,7 @@ abstract class AndroidViewController extends PlatformViewController {
   }
 
   /// Sets the layout direction for the Android view.
-  Future<void> setLayoutDirection(TextDirection layoutDirection) async {
+  void setLayoutDirection(TextDirection layoutDirection) {
     assert(_state != _AndroidViewState.disposed,
         'trying to set a layout direction for a disposed UIView. View id: $viewId');
 
@@ -833,7 +832,7 @@ abstract class AndroidViewController extends PlatformViewController {
     // direction will be used in _create.
     if (_state == _AndroidViewState.waitingForSize) return;
 
-    await SystemChannels.platform_views
+    SystemChannels.platform_views
         .invokeMethod<void>('setDirection', <String, dynamic>{
       'id': viewId,
       'direction': _getAndroidDirection(layoutDirection),
@@ -852,7 +851,7 @@ abstract class AndroidViewController extends PlatformViewController {
   /// See documentation of [MotionEvent.obtain](https://developer.android.com/reference/android/view/MotionEvent.html#obtain(long,%20long,%20int,%20float,%20float,%20float,%20float,%20int,%20float,%20float,%20int,%20int))
   /// for description of the parameters.
   @override
-  Future<void> dispatchPointerEvent(PointerEvent event) async {
+  void dispatchPointerEvent(PointerEvent event) {
     if (event is PointerHoverEvent) {
       return;
     }
@@ -873,15 +872,15 @@ abstract class AndroidViewController extends PlatformViewController {
     }
 
     if (androidEvent != null) {
-      await sendMotionEvent(androidEvent);
+      sendMotionEvent(androidEvent);
     }
   }
 
   /// Clears the focus from the Android View if it is focused.
   @override
-  Future<void> clearFocus() {
+  void clearFocus() {
     if (_state != _AndroidViewState.created) {
-      return Future<void>.value();
+      return;
     }
     return SystemChannels.platform_views
         .invokeMethod<void>('clearFocus', viewId);
@@ -893,9 +892,9 @@ abstract class AndroidViewController extends PlatformViewController {
   /// The identifier of the platform view cannot be reused after the view is
   /// disposed.
   @override
-  Future<void> dispose() async {
+  void dispose() {
     if (_state == _AndroidViewState.creating ||
-        _state == _AndroidViewState.created) await _sendDisposeMessage();
+        _state == _AndroidViewState.created) _sendDisposeMessage();
     _platformViewCreatedCallbacks.clear();
     _state = _AndroidViewState.disposed;
     PlatformViewsService._instance._focusCallbacks.remove(viewId);
@@ -920,7 +919,7 @@ class SurfaceAndroidViewController extends AndroidViewController {
             creationParamsCodec: creationParamsCodec);
 
   @override
-  Future<void> _sendCreateMessage() {
+  void _sendCreateMessage() {
     final Map<String, dynamic> args = <String, dynamic>{
       'id': viewId,
       'viewType': _viewType,
@@ -946,7 +945,7 @@ class SurfaceAndroidViewController extends AndroidViewController {
   }
 
   @override
-  Future<void> _sendDisposeMessage() {
+  void _sendDisposeMessage() {
     return SystemChannels.platform_views
         .invokeMethod<void>('dispose', <String, dynamic>{
       'id': viewId,
@@ -955,7 +954,7 @@ class SurfaceAndroidViewController extends AndroidViewController {
   }
 
   @override
-  Future<void> setSize(Size size) {
+  void setSize(Size size) {
     throw UnimplementedError(
         'Not supported for $SurfaceAndroidViewController.');
   }
@@ -996,7 +995,7 @@ class TextureAndroidViewController extends AndroidViewController {
   late Size _size;
 
   @override
-  Future<void> setSize(Size size) async {
+  void setSize(Size size) {
     assert(_state != _AndroidViewState.disposed,
         'trying to size a disposed Android View. View id: $viewId');
 
@@ -1008,7 +1007,7 @@ class TextureAndroidViewController extends AndroidViewController {
       return create();
     }
 
-    await SystemChannels.platform_views
+    SystemChannels.platform_views
         .invokeMethod<void>('resize', <String, dynamic>{
       'id': viewId,
       'width': size.width,
@@ -1022,10 +1021,10 @@ class TextureAndroidViewController extends AndroidViewController {
   ///
   /// Throws an [AssertionError] if view was already disposed.
   @override
-  Future<void> create() => super.create();
+  void create() => super.create();
 
   @override
-  Future<void> _sendCreateMessage() async {
+  void _sendCreateMessage() {
     assert(!_size.isEmpty,
         'trying to create $TextureAndroidViewController without setting a valid size.');
 
@@ -1046,11 +1045,11 @@ class TextureAndroidViewController extends AndroidViewController {
       );
     }
     _textureId =
-        await SystemChannels.platform_views.invokeMethod<int>('create', args);
+        SystemChannels.platform_views.invokeMethod<int>('create', args);
   }
 
   @override
-  Future<void> _sendDisposeMessage() {
+  void _sendDisposeMessage() {
     return SystemChannels.platform_views
         .invokeMethod<void>('dispose', <String, dynamic>{
       'id': viewId,
@@ -1081,7 +1080,7 @@ class UiKitViewController {
   TextDirection _layoutDirection;
 
   /// Sets the layout direction for the iOS UIView.
-  Future<void> setLayoutDirection(TextDirection layoutDirection) async {
+  void setLayoutDirection(TextDirection layoutDirection) {
     assert(!_debugDisposed,
         'trying to set a layout direction for a disposed iOS UIView. View id: $id');
 
@@ -1098,7 +1097,7 @@ class UiKitViewController {
   /// When a touch sequence is happening on the embedded UIView all touch events are delayed.
   /// Calling this method releases the delayed events to the embedded UIView and makes it consume
   /// any following touch events for the pointers involved in the active gesture.
-  Future<void> acceptGesture() {
+  void acceptGesture() {
     final Map<String, dynamic> args = <String, dynamic>{
       'id': id,
     };
@@ -1110,7 +1109,7 @@ class UiKitViewController {
   /// When a touch sequence is happening on the embedded UIView all touch events are delayed.
   /// Calling this method drops the buffered touch events and prevents any future touch events for
   /// the pointers that are part of the active touch sequence from arriving to the embedded view.
-  Future<void> rejectGesture() {
+  void rejectGesture() {
     final Map<String, dynamic> args = <String, dynamic>{
       'id': id,
     };
@@ -1122,9 +1121,9 @@ class UiKitViewController {
   /// The [UiKitViewController] object is unusable after calling this.
   /// The `id` of the platform view cannot be reused after the view is
   /// disposed.
-  Future<void> dispose() async {
+  void dispose() {
     _debugDisposed = true;
-    await SystemChannels.platform_views.invokeMethod<void>('dispose', id);
+    SystemChannels.platform_views.invokeMethod<void>('dispose', id);
   }
 }
 
@@ -1142,13 +1141,13 @@ abstract class PlatformViewController {
   int get viewId;
 
   /// Dispatches the `event` to the platform view.
-  Future<void> dispatchPointerEvent(PointerEvent event);
+  void dispatchPointerEvent(PointerEvent event);
 
   /// Disposes the platform view.
   ///
   /// The [PlatformViewController] is unusable after calling dispose.
-  Future<void> dispose();
+  void dispose();
 
   /// Clears the view's focus on the platform side.
-  Future<void> clearFocus();
+  void clearFocus();
 }

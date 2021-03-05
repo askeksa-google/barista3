@@ -303,7 +303,7 @@ class Scrollable extends StatefulWidget {
 
   /// Scrolls the scrollables that enclose the given context so as to make the
   /// given context visible.
-  static Future<void> ensureVisible(
+  static void ensureVisible(
     BuildContext context, {
     double alignment = 0.0,
     Duration duration = Duration.zero,
@@ -311,7 +311,7 @@ class Scrollable extends StatefulWidget {
     ScrollPositionAlignmentPolicy alignmentPolicy =
         ScrollPositionAlignmentPolicy.explicit,
   }) {
-    final List<Future<void>> futures = <Future<void>>[];
+    final List<void> futures = <void>[];
 
     // The `targetRenderObject` is used to record the first target renderObject.
     // If there are multiple scrollable widgets nested, we should let
@@ -336,10 +336,8 @@ class Scrollable extends StatefulWidget {
       scrollable = Scrollable.of(context);
     }
 
-    if (futures.isEmpty || duration == Duration.zero)
-      return Future<void>.value();
+    if (futures.isEmpty || duration == Duration.zero) return;
     if (futures.length == 1) return futures.single;
-    return Future.wait<void>(futures).then<void>((List<void> _) => null);
   }
 }
 

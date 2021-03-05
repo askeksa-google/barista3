@@ -58,9 +58,9 @@ class BasicMessageChannel<T> {
   ///
   /// Returns a [Future] which completes to the received response, which may
   /// be null.
-  Future<T> send(T message) async {
+  T send(T message) {
     return codec.decodeMessage(
-        await binaryMessenger.send(name, codec.encodeMessage(message)));
+        binaryMessenger.send(name, codec.encodeMessage(message)));
   }
 
   /// Sets a callback for receiving messages from the platform plugins on this
@@ -72,12 +72,12 @@ class BasicMessageChannel<T> {
   ///
   /// The handler's return value is sent back to the platform plugins as a
   /// message reply. It may be null.
-  void setMessageHandler(Future<T> Function(T message)? handler) {
+  void setMessageHandler(T Function(T message)? handler) {
     if (handler == null) {
       binaryMessenger.setMessageHandler(name, null);
     } else {
-      binaryMessenger.setMessageHandler(name, (ByteData? message) async {
-        return codec.encodeMessage(await handler(codec.decodeMessage(message)));
+      binaryMessenger.setMessageHandler(name, (ByteData? message) {
+        return codec.encodeMessage(handler(codec.decodeMessage(message)));
       });
     }
   }
@@ -93,12 +93,12 @@ class BasicMessageChannel<T> {
   ///
   /// This is intended for testing. Messages intercepted in this manner are not
   /// sent to platform plugins.
-  void setMockMessageHandler(Future<T> Function(T message)? handler) {
+  void setMockMessageHandler(T Function(T message)? handler) {
     if (handler == null) {
       binaryMessenger.setMockMessageHandler(name, null);
     } else {
-      binaryMessenger.setMockMessageHandler(name, (ByteData? message) async {
-        return codec.encodeMessage(await handler(codec.decodeMessage(message)));
+      binaryMessenger.setMockMessageHandler(name, (ByteData? message) {
+        return codec.encodeMessage(handler(codec.decodeMessage(message)));
       });
     }
   }
@@ -153,10 +153,10 @@ class MethodChannel {
   final BinaryMessenger? _binaryMessenger;
 
   @optionalTypeArgs
-  Future<T?> _invokeMethod<T>(String method,
-      {required bool missingOk, dynamic arguments}) async {
+  T? _invokeMethod<T>(String method,
+      {required bool missingOk, dynamic arguments}) {
     assert(method != null);
-    final ByteData? result = await binaryMessenger.send(
+    final ByteData? result = binaryMessenger.send(
       name,
       codec.encodeMethodCall(MethodCall(method, arguments)),
     );
@@ -203,23 +203,23 @@ class MethodChannel {
   /// class Music {
   ///   static const MethodChannel _channel = MethodChannel('music');
   ///
-  ///   static Future<bool> isLicensed() async {
-  ///     // invokeMethod returns a Future<T> which can be inferred as bool
+  ///   static bool isLicensed() {
+  ///     // invokeMethod returns a T which can be inferred as bool
   ///     // in this context.
   ///     return _channel.invokeMethod('isLicensed');
   ///   }
   ///
-  ///   static Future<List<Song>> songs() async {
-  ///     // invokeMethod here returns a Future<dynamic> that completes to a
+  ///   static Future<List<Song>> songs() {
+  ///     // invokeMethod here returns a dynamic that completes to a
   ///     // List<dynamic> with Map<dynamic, dynamic> entries. Post-processing
   ///     // code thus cannot assume e.g. List<Map<String, String>> even though
   ///     // the actual values involved would support such a typed container.
   ///     // The correct type cannot be inferred with any value of `T`.
-  ///     final List<dynamic> songs = await _channel.invokeMethod('getSongs');
+  ///     final List<dynamic> songs = _channel.invokeMethod('getSongs');
   ///     return songs.map(Song.fromJson).toList();
   ///   }
   ///
-  ///   static Future<void> play(Song song, double volume) async {
+  ///   static void play(Song song, double volume) {
   ///     // Errors occurring on the platform side cause invokeMethod to throw
   ///     // PlatformExceptions.
   ///     try {
@@ -339,7 +339,7 @@ class MethodChannel {
   ///  * <https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodCall.html>
   ///    for how to access method call arguments on Android.
   @optionalTypeArgs
-  Future<T?> invokeMethod<T>(String method, [dynamic arguments]) {
+  T? invokeMethod<T>(String method, [dynamic arguments]) {
     return _invokeMethod<T>(method, missingOk: false, arguments: arguments);
   }
 
@@ -352,10 +352,9 @@ class MethodChannel {
   /// See also:
   ///
   ///  * [invokeMethod], which this call delegates to.
-  Future<List<T>?> invokeListMethod<T>(String method,
-      [dynamic arguments]) async {
+  List<T>? invokeListMethod<T>(String method, [dynamic arguments]) {
     final List<dynamic>? result =
-        await invokeMethod<List<dynamic>?>(method, arguments);
+        invokeMethod<List<dynamic>?>(method, arguments);
     return result?.cast<T>();
   }
 
@@ -368,10 +367,9 @@ class MethodChannel {
   /// See also:
   ///
   ///  * [invokeMethod], which this call delegates to.
-  Future<Map<K, V>?> invokeMapMethod<K, V>(String method,
-      [dynamic arguments]) async {
+  Map<K, V>? invokeMapMethod<K, V>(String method, [dynamic arguments]) {
     final Map<dynamic, dynamic>? result =
-        await invokeMethod<Map<dynamic, dynamic>?>(method, arguments);
+        invokeMethod<Map<dynamic, dynamic>?>(method, arguments);
     return result?.cast<K, V>();
   }
 
@@ -389,8 +387,7 @@ class MethodChannel {
   /// completes with a [MissingPluginException], an empty reply is sent
   /// similarly to what happens if no method call handler has been set.
   /// Any other exception results in an error envelope being sent.
-  void setMethodCallHandler(
-      Future<dynamic> Function(MethodCall call)? handler) {
+  void setMethodCallHandler(dynamic Function(MethodCall call)? handler) {
     _methodChannelHandlers[this] = handler;
     binaryMessenger.setMessageHandler(
       name,
@@ -408,8 +405,7 @@ class MethodChannel {
   ///
   /// Passing null for the `handler` returns true if the handler for the channel
   /// is not set.
-  bool checkMethodCallHandler(
-          Future<dynamic> Function(MethodCall call)? handler) =>
+  bool checkMethodCallHandler(dynamic Function(MethodCall call)? handler) =>
       _methodChannelHandlers[this] == handler;
 
   /// Sets a mock callback for intercepting method invocations on this channel.
@@ -430,8 +426,7 @@ class MethodChannel {
   /// return value of the call. The value will be encoded using
   /// [MethodCodec.encodeSuccessEnvelope], to act as if platform plugin had
   /// returned that value.
-  void setMockMethodCallHandler(
-      Future<dynamic>? Function(MethodCall call)? handler) {
+  void setMockMethodCallHandler(dynamic? Function(MethodCall call)? handler) {
     _methodChannelMockHandlers[this] = handler;
     binaryMessenger.setMockMessageHandler(
       name,
@@ -449,15 +444,14 @@ class MethodChannel {
   ///
   /// Passing null for the `handler` returns true if the handler for the channel
   /// is not set.
-  bool checkMockMethodCallHandler(
-          Future<dynamic> Function(MethodCall call)? handler) =>
+  bool checkMockMethodCallHandler(dynamic Function(MethodCall call)? handler) =>
       _methodChannelMockHandlers[this] == handler;
 
-  Future<ByteData?> _handleAsMethodCall(
-      ByteData? message, Future<dynamic>? handler(MethodCall call)) async {
+  ByteData? _handleAsMethodCall(
+      ByteData? message, dynamic? handler(MethodCall call)) {
     final MethodCall call = codec.decodeMethodCall(message);
     try {
-      return codec.encodeSuccessEnvelope(await handler(call));
+      return codec.encodeSuccessEnvelope(handler(call));
     } on PlatformException catch (e) {
       return codec.encodeErrorEnvelope(
         code: e.code,
@@ -484,24 +478,22 @@ class OptionalMethodChannel extends MethodChannel {
       : super(name, codec);
 
   @override
-  Future<T?> invokeMethod<T>(String method, [dynamic arguments]) async {
+  T? invokeMethod<T>(String method, [dynamic arguments]) {
     return super
         ._invokeMethod<T>(method, missingOk: true, arguments: arguments);
   }
 
   @override
-  Future<List<T>?> invokeListMethod<T>(String method,
-      [dynamic arguments]) async {
+  List<T>? invokeListMethod<T>(String method, [dynamic arguments]) {
     final List<dynamic>? result =
-        await invokeMethod<List<dynamic>>(method, arguments);
+        invokeMethod<List<dynamic>>(method, arguments);
     return result?.cast<T>();
   }
 
   @override
-  Future<Map<K, V>?> invokeMapMethod<K, V>(String method,
-      [dynamic arguments]) async {
+  Map<K, V>? invokeMapMethod<K, V>(String method, [dynamic arguments]) {
     final Map<dynamic, dynamic>? result =
-        await invokeMethod<Map<dynamic, dynamic>>(method, arguments);
+        invokeMethod<Map<dynamic, dynamic>>(method, arguments);
     return result?.cast<K, V>();
   }
 }
@@ -562,8 +554,8 @@ class EventChannel {
   Stream<dynamic> receiveBroadcastStream([dynamic arguments]) {
     final MethodChannel methodChannel = MethodChannel(name, codec);
     late StreamController<dynamic> controller;
-    controller = StreamController<dynamic>.broadcast(onListen: () async {
-      binaryMessenger.setMessageHandler(name, (ByteData? reply) async {
+    controller = StreamController<dynamic>.broadcast(onListen: () {
+      binaryMessenger.setMessageHandler(name, (ByteData? reply) {
         if (reply == null) {
           controller.close();
         } else {
@@ -576,7 +568,7 @@ class EventChannel {
         return null;
       });
       try {
-        await methodChannel.invokeMethod<void>('listen', arguments);
+        methodChannel.invokeMethod<void>('listen', arguments);
       } catch (exception, stack) {
         FlutterError.reportError(FlutterErrorDetails(
           exception: exception,
@@ -586,10 +578,10 @@ class EventChannel {
               'while activating platform stream on channel $name'),
         ));
       }
-    }, onCancel: () async {
+    }, onCancel: () {
       binaryMessenger.setMessageHandler(name, null);
       try {
-        await methodChannel.invokeMethod<void>('cancel', arguments);
+        methodChannel.invokeMethod<void>('cancel', arguments);
       } catch (exception, stack) {
         FlutterError.reportError(FlutterErrorDetails(
           exception: exception,

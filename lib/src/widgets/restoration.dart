@@ -282,20 +282,18 @@ class _RootRestorationScopeState extends State<RootRestorationScope> {
     if (_isWaitingForRootBucket && !_isLoadingRootBucket) {
       _isLoadingRootBucket = true;
       RendererBinding.instance!.deferFirstFrame();
-      ServicesBinding.instance!.restorationManager.rootBucket
-          .then((RestorationBucket? bucket) {
-        _isLoadingRootBucket = false;
-        if (mounted) {
-          ServicesBinding.instance!.restorationManager
-              .addListener(_replaceRootBucket);
-          setState(() {
-            _rootBucket = bucket;
-            _rootBucketValid = true;
-            _okToRenderBlankContainer = false;
-          });
-        }
-        RendererBinding.instance!.allowFirstFrame();
-      });
+      var bucket = ServicesBinding.instance!.restorationManager.rootBucket;
+      _isLoadingRootBucket = false;
+      if (mounted) {
+        ServicesBinding.instance!.restorationManager
+            .addListener(_replaceRootBucket);
+        setState(() {
+          _rootBucket = bucket;
+          _rootBucketValid = true;
+          _okToRenderBlankContainer = false;
+        });
+      }
+      RendererBinding.instance!.allowFirstFrame();
     }
   }
 

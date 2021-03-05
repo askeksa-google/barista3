@@ -69,49 +69,47 @@ mixin RendererBinding
       // these service extensions only work in debug mode
       registerBoolServiceExtension(
         name: 'invertOversizedImages',
-        getter: () async => debugInvertOversizedImages,
-        setter: (bool value) async {
+        getter: () => debugInvertOversizedImages,
+        setter: (bool value) {
           if (debugInvertOversizedImages != value) {
             debugInvertOversizedImages = value;
             return _forceRepaint();
           }
-          return Future<void>.value();
         },
       );
       registerBoolServiceExtension(
         name: 'debugPaint',
-        getter: () async => debugPaintSizeEnabled,
+        getter: () => debugPaintSizeEnabled,
         setter: (bool value) {
-          if (debugPaintSizeEnabled == value) return Future<void>.value();
+          if (debugPaintSizeEnabled == value) return;
           debugPaintSizeEnabled = value;
           return _forceRepaint();
         },
       );
       registerBoolServiceExtension(
         name: 'debugPaintBaselinesEnabled',
-        getter: () async => debugPaintBaselinesEnabled,
+        getter: () => debugPaintBaselinesEnabled,
         setter: (bool value) {
-          if (debugPaintBaselinesEnabled == value) return Future<void>.value();
+          if (debugPaintBaselinesEnabled == value) return;
           debugPaintBaselinesEnabled = value;
           return _forceRepaint();
         },
       );
       registerBoolServiceExtension(
         name: 'repaintRainbow',
-        getter: () async => debugRepaintRainbowEnabled,
+        getter: () => debugRepaintRainbowEnabled,
         setter: (bool value) {
           final bool repaint = debugRepaintRainbowEnabled && !value;
           debugRepaintRainbowEnabled = value;
           if (repaint) return _forceRepaint();
-          return Future<void>.value();
         },
       );
       registerBoolServiceExtension(
         name: 'debugCheckElevationsEnabled',
-        getter: () async => debugCheckElevationsEnabled,
+        getter: () => debugCheckElevationsEnabled,
         setter: (bool value) {
           if (debugCheckElevationsEnabled == value) {
-            return Future<void>.value();
+            return;
           }
           debugCheckElevationsEnabled = value;
           return _forceRepaint();
@@ -121,7 +119,6 @@ mixin RendererBinding
         name: 'debugDumpLayerTree',
         callback: () {
           debugDumpLayerTree();
-          return debugPrintDone;
         },
       );
       return true;
@@ -133,7 +130,6 @@ mixin RendererBinding
         name: 'debugDumpRenderTree',
         callback: () {
           debugDumpRenderTree();
-          return debugPrintDone;
         },
       );
 
@@ -141,7 +137,6 @@ mixin RendererBinding
         name: 'debugDumpSemanticsTreeInTraversalOrder',
         callback: () {
           debugDumpSemanticsTree(DebugSemanticsDumpOrder.traversalOrder);
-          return debugPrintDone;
         },
       );
 
@@ -149,7 +144,6 @@ mixin RendererBinding
         name: 'debugDumpSemanticsTreeInInverseHitTestOrder',
         callback: () {
           debugDumpSemanticsTree(DebugSemanticsDumpOrder.inverseHitTest);
-          return debugPrintDone;
         },
       );
     }
@@ -473,8 +467,8 @@ mixin RendererBinding
   }
 
   @override
-  Future<void> performReassemble() async {
-    await super.performReassemble();
+  void performReassemble() {
+    super.performReassemble();
     Timeline.startSync('Dirty Render Tree',
         arguments: timelineArgumentsIndicatingLandmarkEvent);
     try {
@@ -483,7 +477,7 @@ mixin RendererBinding
       Timeline.finishSync();
     }
     scheduleWarmUpFrame();
-    await endOfFrame;
+    endOfFrame;
   }
 
   @override
@@ -495,7 +489,7 @@ mixin RendererBinding
     super.hitTest(result, position);
   }
 
-  Future<void> _forceRepaint() {
+  void _forceRepaint() {
     late RenderObjectVisitor visitor;
     visitor = (RenderObject child) {
       child.markNeedsPaint();

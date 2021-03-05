@@ -976,11 +976,10 @@ class SliverAnimatedListState extends State<SliverAnimatedList>
       _itemsCount += 1;
     });
 
-    controller.forward().then<void>((_) {
-      _removeActiveItemAt(_incomingItems, incomingItem.itemIndex)!
-          .controller!
-          .dispose();
-    });
+    controller.forward();
+    _removeActiveItemAt(_incomingItems, incomingItem.itemIndex)!
+        .controller!
+        .dispose();
   }
 
   /// Remove the item at [index] and start an animation that will be passed
@@ -1016,22 +1015,21 @@ class SliverAnimatedListState extends State<SliverAnimatedList>
         ..sort();
     });
 
-    controller.reverse().then<void>((void value) {
-      _removeActiveItemAt(_outgoingItems, outgoingItem.itemIndex)!
-          .controller!
-          .dispose();
+    controller.reverse();
+    _removeActiveItemAt(_outgoingItems, outgoingItem.itemIndex)!
+        .controller!
+        .dispose();
 
-      // Decrement the incoming and outgoing item indices to account
-      // for the removal.
-      for (final _ActiveItem item in _incomingItems) {
-        if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
-      }
-      for (final _ActiveItem item in _outgoingItems) {
-        if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
-      }
+    // Decrement the incoming and outgoing item indices to account
+    // for the removal.
+    for (final _ActiveItem item in _incomingItems) {
+      if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
+    }
+    for (final _ActiveItem item in _outgoingItems) {
+      if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
+    }
 
-      setState(() => _itemsCount -= 1);
-    });
+    setState(() => _itemsCount -= 1);
   }
 
   Widget _itemBuilder(BuildContext context, int itemIndex) {

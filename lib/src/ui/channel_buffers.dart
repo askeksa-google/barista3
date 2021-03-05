@@ -13,7 +13,7 @@ part of dart.ui;
 /// The second argument is a closure that, when called, will send messages
 /// back to the plugin.
 // TODO(ianh): deprecate this once the framework is migrated to [ChannelCallback].
-typedef DrainChannelCallback = Future<void> Function(
+typedef DrainChannelCallback = void Function(
     ByteData? data, PlatformMessageResponseCallback callback);
 
 /// Signature for [ChannelBuffers.setListener]'s `callback` argument.
@@ -386,11 +386,11 @@ class ChannelBuffers {
   /// The messages are processed by calling the given `callback`. Each message
   /// is processed in its own microtask.
   // TODO(ianh): deprecate once framework uses [setListener].
-  Future<void> drain(String name, DrainChannelCallback callback) async {
+  void drain(String name, DrainChannelCallback callback) {
     final _Channel? channel = _channels[name];
     while (channel != null && !channel._queue.isEmpty) {
       final _StoredMessage message = channel.pop();
-      await callback(message.data, message.invoke);
+      callback(message.data, message.invoke);
     }
   }
 

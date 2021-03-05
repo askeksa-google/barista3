@@ -19,7 +19,7 @@ typedef _KeyAndErrorHandlerCallback<T> = void Function(
     T key, ImageErrorListener handleError);
 
 /// Signature used for error handling by [_createErrorHandlerAndKey].
-typedef _AsyncKeyErrorHandler<T> = Future<void> Function(
+typedef _AsyncKeyErrorHandler<T> = void Function(
     T key, Object exception, StackTrace? stack);
 
 /// Configuration information passed to the [ImageProvider.resolve] method to
@@ -160,7 +160,7 @@ class ImageConfiguration {
 ///
 ///  * [ResizeImage], which uses this to override the `cacheWidth`,
 ///    `cacheHeight`, and `allowUpscaling` parameters.
-typedef DecoderCallback = Future<ui.Codec> Function(Uint8List bytes,
+typedef DecoderCallback = ui.Codec Function(Uint8List bytes,
     {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
 
 /// Identifies an image without committing to the precise final asset. This
@@ -326,8 +326,8 @@ abstract class ImageProvider<T extends Object> {
       (T key, ImageErrorListener errorHandler) {
         resolveStreamForKey(configuration, stream, key, errorHandler);
       },
-      (T? key, Object exception, StackTrace? stack) async {
-        await null; // wait an event turn in case a listener has been added to the image stream.
+      (T? key, Object exception, StackTrace? stack) {
+        null; // wait an event turn in case a listener has been added to the image stream.
         final _ErrorImageCompleter imageCompleter = _ErrorImageCompleter();
         stream.setCompleter(imageCompleter);
         InformationCollector? collector;
@@ -372,20 +372,15 @@ abstract class ImageProvider<T extends Object> {
   /// [FlutterError.onError], and the method will return null.
   ///
   /// A completed return value of null indicates that an error has occurred.
-  Future<ImageCacheStatus?> obtainCacheStatus({
+  ImageCacheStatus? obtainCacheStatus({
     required ImageConfiguration configuration,
     ImageErrorListener? handleError,
   }) {
     assert(configuration != null);
-    final Completer<ImageCacheStatus?> completer =
-        Completer<ImageCacheStatus?>();
     _createErrorHandlerAndKey(
       configuration,
-      (T key, ImageErrorListener innerHandleError) {
-        completer
-            .complete(PaintingBinding.instance!.imageCache!.statusForKey(key));
-      },
-      (T? key, Object exception, StackTrace? stack) async {
+      (T key, ImageErrorListener innerHandleError) {},
+      (T? key, Object exception, StackTrace? stack) {
         if (handleError != null) {
           handleError(exception, stack);
         } else {
@@ -407,11 +402,9 @@ abstract class ImageProvider<T extends Object> {
             exception: exception,
             stack: stack,
           ));
-          completer.complete(null);
         }
       },
     );
-    return completer.future;
   }
 
   /// This method is used by both [resolve] and [obtainCacheStatus] to ensure
@@ -424,7 +417,7 @@ abstract class ImageProvider<T extends Object> {
   ) {
     T? obtainedKey;
     bool didError = false;
-    Future<void> handleError(Object exception, StackTrace? stack) async {
+    void handleError(Object exception, StackTrace? stack) {
       if (didError) {
         return;
       }
@@ -448,21 +441,19 @@ abstract class ImageProvider<T extends Object> {
       handleError(error, stackTrace);
     }));
     dangerZone.runGuarded(() {
-      Future<T> key;
+      T key;
       try {
         key = obtainKey(configuration);
       } catch (error, stackTrace) {
         handleError(error, stackTrace);
         return;
       }
-      key.then<void>((T key) {
-        obtainedKey = key;
-        try {
-          successCallback(key, handleError);
-        } catch (error, stackTrace) {
-          handleError(error, stackTrace);
-        }
-      }).catchError(handleError);
+      obtainedKey = key;
+      try {
+        successCallback(key, handleError);
+      } catch (error, stackTrace) {
+        handleError(error, stackTrace);
+      }
     });
   }
 
@@ -548,11 +539,11 @@ abstract class ImageProvider<T extends Object> {
   /// }
   /// ```
   /// {@end-tool}
-  Future<bool> evict(
+  bool evict(
       {ImageCache? cache,
-      ImageConfiguration configuration = ImageConfiguration.empty}) async {
+      ImageConfiguration configuration = ImageConfiguration.empty}) {
     cache ??= imageCache;
-    final T key = await obtainKey(configuration);
+    final T key = obtainKey(configuration);
     return cache!.evict(key);
   }
 
@@ -565,7 +556,7 @@ abstract class ImageProvider<T extends Object> {
   /// arguments and [ImageConfiguration] objects should return keys that are
   /// '==' to each other (possibly by using a class for the key that itself
   /// implements [==]).
-  Future<T> obtainKey(ImageConfiguration configuration);
+  T obtainKey(ImageConfiguration configuration);
 
   /// Converts a key into an [ImageStreamCompleter], and begins fetching the
   /// image.
@@ -663,13 +654,12 @@ abstract class AssetBundleImageProvider
   ///
   /// This function is used by [load].
   @protected
-  Future<ui.Codec> _loadAsync(
-      AssetBundleImageKey key, DecoderCallback decode) async {
+  ui.Codec _loadAsync(AssetBundleImageKey key, DecoderCallback decode) {
     ByteData? data;
     // Hot reload/restart could change whether an asset bundle or key in a
     // bundle are available, or if it is a network backed bundle.
     try {
-      data = await key.bundle.load(key.name);
+      data = key.bundle.load(key.name);
     } on FlutterError {
       PaintingBinding.instance!.imageCache!.evict(key);
       rethrow;
@@ -682,7 +672,7 @@ abstract class AssetBundleImageProvider
       PaintingBinding.instance!.imageCache!.evict(key);
       throw StateError('Unable to read data');
     }
-    return await decode(data.buffer.asUint8List());
+    return decode(data.buffer.asUint8List());
   }
 }
 
@@ -785,29 +775,21 @@ class ResizeImage extends ImageProvider<_SizeAwareCacheKey> {
   }
 
   @override
-  Future<_SizeAwareCacheKey> obtainKey(ImageConfiguration configuration) {
+  _SizeAwareCacheKey obtainKey(ImageConfiguration configuration) {
     Completer<_SizeAwareCacheKey>? completer;
     // If the imageProvider.obtainKey future is synchronous, then we will be able to fill in result with
     // a value before completer is initialized below.
-    SynchronousFuture<_SizeAwareCacheKey>? result;
-    imageProvider.obtainKey(configuration).then((Object key) {
-      if (completer == null) {
-        // This future has completed synchronously (completer was never assigned),
-        // so we can directly create the synchronous result to return.
-        result = SynchronousFuture<_SizeAwareCacheKey>(
-            _SizeAwareCacheKey(key, width, height));
-      } else {
-        // This future did not synchronously complete.
-        completer.complete(_SizeAwareCacheKey(key, width, height));
-      }
-    });
-    if (result != null) {
-      return result!;
+    _SizeAwareCacheKey? result;
+    Object key = imageProvider.obtainKey(configuration);
+    if (completer == null) {
+      // This future has completed synchronously (completer was never assigned),
+      // so we can directly create the synchronous result to return.
+      result = _SizeAwareCacheKey(key, width, height);
+    } else {
+      // This future did not synchronously complete.
+      completer.complete(_SizeAwareCacheKey(key, width, height));
     }
-    // If the code reaches here, it means the imageProvider.obtainKey was not
-    // completed sync, so we initialize the completer for completion later.
-    completer = Completer<_SizeAwareCacheKey>();
-    return completer.future;
+    return result!;
   }
 }
 
@@ -839,8 +821,8 @@ class MemoryImage extends ImageProvider<MemoryImage> {
   final double scale;
 
   @override
-  Future<MemoryImage> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<MemoryImage>(this);
+  MemoryImage obtainKey(ImageConfiguration configuration) {
+    return this;
   }
 
   @override
@@ -852,7 +834,7 @@ class MemoryImage extends ImageProvider<MemoryImage> {
     );
   }
 
-  Future<ui.Codec> _loadAsync(MemoryImage key, DecoderCallback decode) {
+  ui.Codec _loadAsync(MemoryImage key, DecoderCallback decode) {
     assert(key == this);
 
     return decode(bytes);
@@ -987,12 +969,12 @@ class ExactAssetImage extends AssetBundleImageProvider {
   final String? package;
 
   @override
-  Future<AssetBundleImageKey> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<AssetBundleImageKey>(AssetBundleImageKey(
+  AssetBundleImageKey obtainKey(ImageConfiguration configuration) {
+    return AssetBundleImageKey(
       bundle: bundle ?? configuration.bundle ?? rootBundle,
       name: keyName,
       scale: scale,
-    ));
+    );
   }
 
   @override

@@ -375,9 +375,7 @@ class HtmlElementView extends StatelessWidget {
       PlatformViewCreationParams params) {
     final _HtmlElementViewController controller =
         _HtmlElementViewController(params.id, viewType);
-    controller._initialize().then((_) {
-      params.onPlatformViewCreated(params.id);
-    });
+    params.onPlatformViewCreated(params.id);
     return controller;
   }
 }
@@ -398,31 +396,22 @@ class _HtmlElementViewController extends PlatformViewController {
 
   bool _initialized = false;
 
-  Future<void> _initialize() async {
-    final Map<String, dynamic> args = <String, dynamic>{
-      'id': viewId,
-      'viewType': viewType,
-    };
-    await SystemChannels.platform_views.invokeMethod<void>('create', args);
-    _initialized = true;
-  }
-
   @override
-  Future<void> clearFocus() async {
+  void clearFocus() {
     // Currently this does nothing on Flutter Web.
     // TODO(het): Implement this. See https://github.com/flutter/flutter/issues/39496
   }
 
   @override
-  Future<void> dispatchPointerEvent(PointerEvent event) async {
+  void dispatchPointerEvent(PointerEvent event) {
     // We do not dispatch pointer events to HTML views because they may contain
     // cross-origin iframes, which only accept user-generated events.
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     if (_initialized) {
-      await SystemChannels.platform_views.invokeMethod<void>('dispose', viewId);
+      SystemChannels.platform_views.invokeMethod<void>('dispose', viewId);
     }
   }
 }
@@ -531,35 +520,13 @@ class _AndroidViewState extends State<AndroidView> {
       return;
     }
     if (!isFocused) {
-      _controller.clearFocus().catchError((dynamic e) {
-        if (e is MissingPluginException) {
-          // We land the framework part of Android platform views keyboard
-          // support before the engine part. There will be a commit range where
-          // clearFocus isn't implemented in the engine. When that happens we
-          // just swallow the error here. Once the engine part is rolled to the
-          // framework I'll remove this.
-          // TODO(amirh): remove this once the engine's clearFocus is rolled.
-          return;
-        }
-      });
+      _controller.clearFocus();
       return;
     }
-    SystemChannels.textInput
-        .invokeMethod<void>(
+    SystemChannels.textInput.invokeMethod<void>(
       'TextInput.setPlatformViewClient',
       _id,
-    )
-        .catchError((dynamic e) {
-      if (e is MissingPluginException) {
-        // We land the framework part of Android platform views keyboard
-        // support before the engine part. There will be a commit range where
-        // setPlatformViewClient isn't implemented in the engine. When that
-        // happens we just swallow the error here. Once the engine part is
-        // rolled to the framework I'll remove this.
-        // TODO(amirh): remove this once the engine's clearFocus is rolled.
-        return;
-      }
-    });
+    );
   }
 }
 
@@ -639,10 +606,9 @@ class _UiKitViewState extends State<UiKitView> {
     super.dispose();
   }
 
-  Future<void> _createNewUiKitView() async {
+  void _createNewUiKitView() {
     final int id = platformViewsRegistry.getNextPlatformViewId();
-    final UiKitViewController controller =
-        await PlatformViewsService.initUiKitView(
+    final UiKitViewController controller = PlatformViewsService.initUiKitView(
       id: id,
       viewType: widget.viewType,
       layoutDirection: _layoutDirection!,

@@ -2339,10 +2339,9 @@ class ParagraphBuilder {
 /// * `list`: A list of bytes containing the font file.
 /// * `fontFamily`: The family name used to identify the font in text styles.
 ///  If this is not provided, then the family name will be extracted from the font file.
-Future<void> loadFontFromList(Uint8List list, {String? fontFamily}) {
-  return _futurize((_Callback<void> callback) {
-    _loadFontFromList(list, callback, fontFamily);
-  }).then((_) => _sendFontChangeMessage());
+void loadFontFromList(Uint8List list, {String? fontFamily}) {
+  _loadFontFromList(list, (_) {}, fontFamily);
+  _sendFontChangeMessage();
 }
 
 final ByteData _fontChangeMessage = utf8.encoder
@@ -2350,7 +2349,7 @@ final ByteData _fontChangeMessage = utf8.encoder
     .buffer
     .asByteData();
 
-FutureOr<void> _sendFontChangeMessage() async {
+FutureOr<void> _sendFontChangeMessage() {
   const String kSystemChannelName = 'flutter/system';
   if (PlatformDispatcher.instance.onPlatformMessage != null) {
     _invoke3<String, ByteData?, PlatformMessageResponseCallback>(

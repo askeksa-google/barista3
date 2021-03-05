@@ -1218,7 +1218,7 @@ class OffsetLayer extends ContainerLayer {
   ///
   ///  * [RenderRepaintBoundary.toImage] for a similar API at the render object level.
   ///  * [dart:ui.Scene.toImage] for more information about the image returned.
-  Future<ui.Image> toImage(Rect bounds, {double pixelRatio = 1.0}) async {
+  ui.Image toImage(Rect bounds, {double pixelRatio = 1.0}) {
     assert(bounds != null);
     assert(pixelRatio != null);
     final ui.SceneBuilder builder = ui.SceneBuilder();
@@ -1234,7 +1234,7 @@ class OffsetLayer extends ContainerLayer {
     try {
       // Size is rounded up to the next pixel to make sure we don't clip off
       // anything.
-      return await scene.toImage(
+      return scene.toImage(
         (pixelRatio * bounds.width).ceil(),
         (pixelRatio * bounds.height).ceil(),
       );

@@ -258,24 +258,23 @@ class FixedExtentScrollController extends ScrollController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  Future<void> animateToItem(
+  void animateToItem(
     int itemIndex, {
     required Duration duration,
     required Curve curve,
-  }) async {
+  }) {
     if (!hasClients) {
       return;
     }
 
-    await Future.wait<void>(<Future<void>>[
-      for (final _FixedExtentScrollPosition position
-          in positions.cast<_FixedExtentScrollPosition>())
-        position.animateTo(
-          itemIndex * position.itemExtent,
-          duration: duration,
-          curve: curve,
-        ),
-    ]);
+    for (final _FixedExtentScrollPosition position
+        in positions.cast<_FixedExtentScrollPosition>()) {
+      position.animateTo(
+        itemIndex * position.itemExtent,
+        duration: duration,
+        curve: curve,
+      );
+    }
   }
 
   /// Changes which item index is centered in the controlled scroll view.

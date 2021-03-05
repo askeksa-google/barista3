@@ -23,7 +23,7 @@ class Scene {
   /// Callers must dispose the [Image] when they are done with it. If the result
   /// will be shared with other methods or classes, [Image.clone] should be used
   /// and each handle created must be disposed.
-  Future<Image> toImage(int width, int height) {
+  Image toImage(int width, int height) {
     if (width <= 0 || height <= 0) {
       throw Exception('Invalid image dimensions.');
     }

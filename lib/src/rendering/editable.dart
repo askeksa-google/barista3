@@ -818,7 +818,7 @@ class RenderEditable extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
 
   // Handles shortcut functionality including cut, copy, paste and select all
   // using control/command + (X, C, V, A).
-  Future<void> _handleShortcuts(LogicalKeyboardKey key) async {
+  void _handleShortcuts(LogicalKeyboardKey key) {
     final TextSelection selection =
         textSelectionDelegate.textEditingValue.selection;
     final String text = textSelectionDelegate.textEditingValue.text;
@@ -843,7 +843,7 @@ class RenderEditable extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     } else if (key == LogicalKeyboardKey.keyV && !_readOnly) {
       // Snapshot the input before using `await`.
       // See https://github.com/flutter/flutter/issues/11427
-      final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+      final ClipboardData? data = Clipboard.getData(Clipboard.kTextPlain);
       if (data != null) {
         value = TextEditingValue(
           text: selection.textBefore(text) +

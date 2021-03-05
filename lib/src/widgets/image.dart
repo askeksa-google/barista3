@@ -100,7 +100,7 @@ ImageConfiguration createLocalImageConfiguration(BuildContext context,
 /// See also:
 ///
 ///  * [ImageCache], which holds images that may be reused.
-Future<void> precacheImage(
+void precacheImage(
   ImageProvider provider,
   BuildContext context, {
   Size? size,
@@ -142,7 +142,6 @@ Future<void> precacheImage(
     },
   );
   stream.addListener(listener);
-  return completer.future;
 }
 
 /// Signature used by [Image.frameBuilder] to control the widget that will be

@@ -11,7 +11,6 @@ import 'package:flute/ui.dart' as ui
     show
         ClipOp,
         Image,
-        ImageByteFormat,
         Paragraph,
         Picture,
         PictureRecorder,
@@ -555,7 +554,7 @@ class _ScreenshotPaintingContext extends PaintingContext {
   ///    that are repaint boundaries that can be used outside of the inspector.
   ///  * [OffsetLayer.toImage] for a similar API at the layer level.
   ///  * [dart:ui.Scene.toImage] for more information about the image returned.
-  static Future<ui.Image> toImage(
+  static ui.Image toImage(
     RenderObject renderObject,
     Rect renderBounds, {
     double pixelRatio = 1.0,
@@ -799,8 +798,8 @@ mixin WidgetInspectorService {
   }) {
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
-        return <String, Object?>{'result': await callback()};
+      callback: (Map<String, String> parameters) {
+        return <String, Object?>{'result': callback()};
       },
     );
   }
@@ -817,9 +816,9 @@ mixin WidgetInspectorService {
   }) {
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         return <String, Object?>{
-          'result': await callback(parameters['objectGroup']!)
+          'result': callback(parameters['objectGroup']!)
         };
       },
     );
@@ -847,13 +846,13 @@ mixin WidgetInspectorService {
     assert(setter != null);
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         if (parameters.containsKey('enabled')) {
           final bool value = parameters['enabled'] == 'true';
-          await setter(value);
+          setter(value);
           _postExtensionStateChangedEvent(name, value);
         }
-        return <String, dynamic>{'enabled': await getter() ? 'true' : 'false'};
+        return <String, dynamic>{'enabled': getter() ? 'true' : 'false'};
       },
     );
   }
@@ -888,11 +887,10 @@ mixin WidgetInspectorService {
   }) {
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         assert(parameters.containsKey('objectGroup'));
         return <String, Object?>{
-          'result':
-              await callback(parameters['arg'], parameters['objectGroup']!),
+          'result': callback(parameters['arg'], parameters['objectGroup']!),
         };
       },
     );
@@ -907,7 +905,7 @@ mixin WidgetInspectorService {
   }) {
     registerServiceExtension(
       name: name,
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         final List<String> args = <String>[];
         int index = 0;
         while (true) {
@@ -924,7 +922,7 @@ mixin WidgetInspectorService {
         assert(index == parameters.length ||
             (index == parameters.length - 1 &&
                 parameters.containsKey('isolateId')));
-        return <String, Object?>{'result': await callback(args)};
+        return <String, Object?>{'result': callback(args)};
       },
     );
   }
@@ -935,13 +933,12 @@ mixin WidgetInspectorService {
   ///
   /// This is expensive and should not be called except during development.
   @protected
-  Future<void> forceRebuild() {
+  void forceRebuild() {
     final WidgetsBinding binding = WidgetsBinding.instance!;
     if (binding.renderViewElement != null) {
       binding.buildOwner!.reassemble(binding.renderViewElement!);
       return binding.endOfFrame;
     }
-    return Future<void>.value();
   }
 
   static const String _consoleObjectGroup = 'console-group';
@@ -1023,21 +1020,19 @@ mixin WidgetInspectorService {
 
     _registerBoolServiceExtension(
       name: 'structuredErrors',
-      getter: () async =>
-          FlutterError.presentError == _structuredExceptionHandler,
+      getter: () => FlutterError.presentError == _structuredExceptionHandler,
       setter: (bool value) {
         FlutterError.presentError =
             value ? _structuredExceptionHandler! : defaultExceptionHandler;
-        return Future<void>.value();
       },
     );
 
     _registerBoolServiceExtension(
       name: 'show',
-      getter: () async => WidgetsApp.debugShowWidgetInspectorOverride,
+      getter: () => WidgetsApp.debugShowWidgetInspectorOverride,
       setter: (bool value) {
         if (WidgetsApp.debugShowWidgetInspectorOverride == value) {
-          return Future<void>.value();
+          return;
         }
         WidgetsApp.debugShowWidgetInspectorOverride = value;
         return forceRebuild();
@@ -1049,8 +1044,8 @@ mixin WidgetInspectorService {
       // are tracked.
       _registerBoolServiceExtension(
         name: 'trackRebuildDirtyWidgets',
-        getter: () async => _trackRebuildDirtyWidgets,
-        setter: (bool value) async {
+        getter: () => _trackRebuildDirtyWidgets,
+        setter: (bool value) {
           if (value == _trackRebuildDirtyWidgets) {
             return;
           }
@@ -1061,7 +1056,7 @@ mixin WidgetInspectorService {
             debugOnRebuildDirtyWidget = _onRebuildWidget;
             // Trigger a rebuild so there are baseline stats for rebuilds
             // performed by the app.
-            await forceRebuild();
+            forceRebuild();
             return;
           } else {
             debugOnRebuildDirtyWidget = null;
@@ -1072,8 +1067,8 @@ mixin WidgetInspectorService {
 
       _registerBoolServiceExtension(
         name: 'trackRepaintWidgets',
-        getter: () async => _trackRepaintWidgets,
-        setter: (bool value) async {
+        getter: () => _trackRepaintWidgets,
+        setter: (bool value) {
           if (value == _trackRepaintWidgets) {
             return;
           }
@@ -1100,14 +1095,14 @@ mixin WidgetInspectorService {
 
     _registerSignalServiceExtension(
       name: 'disposeAllGroups',
-      callback: () async {
+      callback: () {
         disposeAllGroups();
         return null;
       },
     );
     _registerObjectGroupServiceExtension(
       name: 'disposeGroup',
-      callback: (String name) async {
+      callback: (String name) {
         disposeGroup(name);
         return null;
       },
@@ -1118,14 +1113,14 @@ mixin WidgetInspectorService {
     );
     _registerServiceExtensionWithArg(
       name: 'disposeId',
-      callback: (String? objectId, String objectGroup) async {
+      callback: (String? objectId, String objectGroup) {
         disposeId(objectId, objectGroup);
         return null;
       },
     );
     _registerServiceExtensionVarArgs(
       name: 'setPubRootDirectories',
-      callback: (List<String> args) async {
+      callback: (List<String> args) {
         setPubRootDirectories(args);
         return null;
       },
@@ -1171,7 +1166,7 @@ mixin WidgetInspectorService {
     );
     registerServiceExtension(
       name: 'getDetailsSubtree',
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         assert(parameters.containsKey('objectGroup'));
         final String? subtreeDepth = parameters['subtreeDepth'];
         return <String, Object?>{
@@ -1202,12 +1197,12 @@ mixin WidgetInspectorService {
     );
     registerServiceExtension(
       name: 'screenshot',
-      callback: (Map<String, String> parameters) async {
+      callback: (Map<String, String> parameters) {
         assert(parameters.containsKey('id'));
         assert(parameters.containsKey('width'));
         assert(parameters.containsKey('height'));
 
-        final ui.Image? image = await screenshot(
+        final ui.Image? image = screenshot(
           toObject(parameters['id']),
           width: double.parse(parameters['width']!),
           height: double.parse(parameters['height']!),
@@ -1222,11 +1217,9 @@ mixin WidgetInspectorService {
         if (image == null) {
           return <String, Object?>{'result': null};
         }
-        final ByteData? byteData =
-            await image.toByteData(format: ui.ImageByteFormat.png);
 
         return <String, Object>{
-          'result': base64.encoder.convert(Uint8List.view(byteData!.buffer)),
+          'result': '',
         };
       },
     );
@@ -1409,10 +1402,6 @@ mixin WidgetInspectorService {
         } else {
           // It isn't safe to trigger the selection change callback if we are in
           // the middle of rendering the frame.
-          SchedulerBinding.instance!.scheduleTask(
-            selectionChangedCallback!,
-            Priority.touch,
-          );
         }
       }
       return true;
@@ -1837,14 +1826,14 @@ mixin WidgetInspectorService {
   /// areas that are slightly outside of the normal bounds of an object such as
   /// some debug paint information.
   @protected
-  Future<ui.Image?> screenshot(
+  ui.Image? screenshot(
     Object? object, {
     required double width,
     required double height,
     double margin = 0.0,
     double maxPixelRatio = 1.0,
     bool debugPaint = false,
-  }) async {
+  }) {
     if (object is! Element && object is! RenderObject) {
       return null;
     }

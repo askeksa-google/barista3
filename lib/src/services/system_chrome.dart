@@ -244,9 +244,8 @@ class SystemChrome {
   ///
   /// Should you decide to opt out of multitasking you can do this by
   /// setting "Requires full screen" to true in the Xcode Deployment Info.
-  static Future<void> setPreferredOrientations(
-      List<DeviceOrientation> orientations) async {
-    await SystemChannels.platform.invokeMethod<void>(
+  static void setPreferredOrientations(List<DeviceOrientation> orientations) {
+    SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setPreferredOrientations',
       _stringify(orientations),
     );
@@ -257,9 +256,9 @@ class SystemChrome {
   ///
   /// Any part of the description that is unsupported on the current platform
   /// will be ignored.
-  static Future<void> setApplicationSwitcherDescription(
-      ApplicationSwitcherDescription description) async {
-    await SystemChannels.platform.invokeMethod<void>(
+  static void setApplicationSwitcherDescription(
+      ApplicationSwitcherDescription description) {
+    SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setApplicationSwitcherDescription',
       <String, dynamic>{
         'label': description.label,
@@ -290,9 +289,8 @@ class SystemChrome {
   /// after a delay of 1 second. This can be achieved through [restoreSystemUIOverlays]
   /// or calling this again. Otherwise, the original UI overlay settings will be
   /// automatically restored only when the application loses and regains focus.
-  static Future<void> setEnabledSystemUIOverlays(
-      List<SystemUiOverlay> overlays) async {
-    await SystemChannels.platform.invokeMethod<void>(
+  static void setEnabledSystemUIOverlays(List<SystemUiOverlay> overlays) {
+    SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.setEnabledSystemUIOverlays',
       _stringify(overlays),
     );
@@ -307,8 +305,8 @@ class SystemChrome {
   ///
   /// On Android, the system UI cannot be changed until 1 second after the previous
   /// change. This is to prevent malware from permanently hiding navigation buttons.
-  static Future<void> restoreSystemUIOverlays() async {
-    await SystemChannels.platform.invokeMethod<void>(
+  static void restoreSystemUIOverlays() {
+    SystemChannels.platform.invokeMethod<void>(
       'SystemChrome.restoreSystemUIOverlays',
       null,
     );

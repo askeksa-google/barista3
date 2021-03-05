@@ -16,6 +16,7 @@ void main() {
     if (++frame <= 25) {
       print("frame ${"$frame".padLeft(2)}: ${"$since".padLeft(4)}");
     }
+    WidgetsBinding.instance!.scheduleFrame();
   });
 }
 

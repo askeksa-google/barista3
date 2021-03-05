@@ -146,15 +146,11 @@ class RestorationManager extends ChangeNotifier {
   ///
   ///  * [RootRestorationScope], which makes the root bucket available in the
   ///    [Widget] tree.
-  Future<RestorationBucket?> get rootBucket {
+  RestorationBucket? get rootBucket {
     if (_rootBucketIsValid) {
-      return SynchronousFuture<RestorationBucket?>(_rootBucket);
+      return _rootBucket;
     }
-    if (_pendingRootBucket == null) {
-      _pendingRootBucket = Completer<RestorationBucket?>();
-      _getRootBucketFromEngine();
-    }
-    return _pendingRootBucket!.future;
+    return null;
   }
 
   RestorationBucket?
@@ -172,19 +168,6 @@ class RestorationManager extends ChangeNotifier {
   /// when this flag changes from false to true.
   bool get isReplacing => _isReplacing;
   bool _isReplacing = false;
-
-  Future<void> _getRootBucketFromEngine() async {
-    final Map<dynamic, dynamic>? config = await SystemChannels.restoration
-        .invokeMethod<Map<dynamic, dynamic>>('get');
-    if (_pendingRootBucket == null) {
-      // The restoration data was obtained via other means (e.g. by calling
-      // [handleRestorationDataUpdate] while the request to the engine was
-      // outstanding. Ignore the engine's response.
-      return;
-    }
-    assert(_rootBucket == null);
-    _parseAndHandleRestorationUpdateFromEngine(config);
-  }
 
   void _parseAndHandleRestorationUpdateFromEngine(
       Map<dynamic, dynamic>? update) {
@@ -249,7 +232,7 @@ class RestorationManager extends ChangeNotifier {
   /// [handleRestorationUpdateFromEngine] method to restore the state described
   /// by the data.
   @protected
-  Future<void> sendToEngine(Uint8List encodedData) {
+  void sendToEngine(Uint8List encodedData) {
     assert(encodedData != null);
     return SystemChannels.restoration.invokeMethod<void>(
       'put',
@@ -257,7 +240,7 @@ class RestorationManager extends ChangeNotifier {
     );
   }
 
-  Future<dynamic> _methodHandler(MethodCall call) async {
+  dynamic _methodHandler(MethodCall call) {
     switch (call.method) {
       case 'push':
         _parseAndHandleRestorationUpdateFromEngine(

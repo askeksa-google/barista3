@@ -29,9 +29,8 @@ class SystemNavigator {
   /// This method should be preferred over calling `dart:io`'s [exit]
   /// method, as the latter may cause the underlying platform to act
   /// as if the application had crashed.
-  static Future<void> pop({bool? animated}) async {
-    await SystemChannels.platform
-        .invokeMethod<void>('SystemNavigator.pop', animated);
+  static void pop({bool? animated}) {
+    SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', animated);
   }
 
   /// Notifies the platform for a route information change.

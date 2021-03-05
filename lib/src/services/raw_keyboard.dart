@@ -619,7 +619,7 @@ class RawKeyboard {
   ///    propagation.
   RawKeyEventHandler? keyEventHandler;
 
-  Future<dynamic> _handleKeyEvent(dynamic message) async {
+  dynamic _handleKeyEvent(dynamic message) {
     final RawKeyEvent event =
         RawKeyEvent.fromMessage(message as Map<String, dynamic>);
     if (event.data is RawKeyEventDataMacOs &&

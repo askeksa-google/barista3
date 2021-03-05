@@ -605,12 +605,10 @@ class _PackagesView extends StatefulWidget {
 }
 
 class _PackagesViewState extends State<_PackagesView> {
-  final Future<_LicenseData> licenses = LicenseRegistry.licenses
-      .fold<_LicenseData>(
-        _LicenseData(),
-        (_LicenseData prev, LicenseEntry license) => prev..addLicense(license),
-      )
-      .then((_LicenseData licenseData) => licenseData..sortPackages());
+  final _LicenseData licenses = LicenseRegistry.licenses.fold<_LicenseData>(
+    _LicenseData(),
+    (_LicenseData prev, LicenseEntry license) => prev..addLicense(license),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -843,7 +841,7 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
   final List<Widget> _licenses = <Widget>[];
   bool _loaded = false;
 
-  Future<void> _initLicenses() async {
+  void _initLicenses() {
     int debugFlowId = -1;
     assert(() {
       final Flow flow = Flow.begin();
@@ -860,12 +858,7 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
             flow: Flow.step(debugFlowId));
         return true;
       }());
-      final List<LicenseParagraph> paragraphs =
-          await SchedulerBinding.instance!.scheduleTask<List<LicenseParagraph>>(
-        license.paragraphs.toList,
-        Priority.animation,
-        debugLabel: 'License',
-      );
+      final List<LicenseParagraph> paragraphs = license.paragraphs.toList();
       if (!mounted) {
         return;
       }
@@ -1329,7 +1322,7 @@ class _MasterDetailFlowState extends State<_MasterDetailFlow>
 
     return WillPopScope(
       // Push pop check into nested navigator.
-      onWillPop: () async => !(await _navigatorKey.currentState!.maybePop()),
+      onWillPop: () => !(_navigatorKey.currentState!.maybePop()),
       child: Navigator(
         key: _navigatorKey,
         initialRoute: 'initial',
@@ -1394,7 +1387,7 @@ class _MasterDetailFlowState extends State<_MasterDetailFlow>
   MaterialPageRoute<void> _detailPageRoute(Object? arguments) {
     return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
       return WillPopScope(
-        onWillPop: () async {
+        onWillPop: () {
           // No need for setState() as rebuild happens on navigation pop.
           focus = _Focus.master;
           Navigator.of(context).pop();

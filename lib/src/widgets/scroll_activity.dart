@@ -555,8 +555,8 @@ class BallisticScrollActivity extends ScrollActivity {
       vsync: vsync,
     )
       ..addListener(_tick)
-      ..animateWith(simulation)
-          .whenComplete(_end); // won't trigger if we dispose _controller first
+      ..animateWith(simulation);
+    _end(); // won't trigger if we dispose _controller first
   }
 
   late AnimationController _controller;
@@ -657,8 +657,8 @@ class DrivenScrollActivity extends ScrollActivity {
       vsync: vsync,
     )
       ..addListener(_tick)
-      ..animateTo(to, duration: duration, curve: curve)
-          .whenComplete(_end); // won't trigger if we dispose _controller first
+      ..animateTo(to, duration: duration, curve: curve);
+    _end(); // won't trigger if we dispose _controller first
   }
 
   late final Completer<void> _completer;
@@ -669,7 +669,7 @@ class DrivenScrollActivity extends ScrollActivity {
   /// For example, this [Future] will complete if the animation reaches the end
   /// or if the user interacts with the scroll view in way that causes the
   /// animation to stop before it reaches the end.
-  Future<void> get done => _completer.future;
+  void get done => _completer.future;
 
   void _tick() {
     if (delegate.setPixels(_controller.value) != 0.0) delegate.goIdle();

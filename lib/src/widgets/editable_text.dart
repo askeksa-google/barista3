@@ -975,11 +975,11 @@ class EditableText extends StatefulWidget {
   ///         const Text('1, 1, 2, 3, 5, 8...?'),
   ///         TextField(
   ///           controller: _controller,
-  ///           onChanged: (String value) async {
+  ///           onChanged: (String value) {
   ///             if (value != '13') {
   ///               return;
   ///             }
-  ///             await showDialog<void>(
+  ///             showDialog<void>(
   ///               context: context,
   ///               builder: (BuildContext context) {
   ///                 return AlertDialog(

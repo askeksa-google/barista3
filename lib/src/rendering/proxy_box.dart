@@ -3070,7 +3070,7 @@ class RenderRepaintBoundary extends RenderProxyBox {
   /// class _PngHomeState extends State<PngHome> {
   ///   GlobalKey globalKey = GlobalKey();
   ///
-  ///   Future<void> _capturePng() async {
+  ///   void _capturePng() {
   ///     RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
   ///     ui.Image image = await boundary.toImage();
   ///     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -3098,7 +3098,7 @@ class RenderRepaintBoundary extends RenderProxyBox {
   ///
   ///  * [OffsetLayer.toImage] for a similar API at the layer level.
   ///  * [dart:ui.Scene.toImage] for more information about the image returned.
-  Future<ui.Image> toImage({double pixelRatio = 1.0}) {
+  ui.Image toImage({double pixelRatio = 1.0}) {
     assert(!debugNeedsPaint);
     final OffsetLayer offsetLayer = layer! as OffsetLayer;
     return offsetLayer.toImage(Offset.zero & size, pixelRatio: pixelRatio);

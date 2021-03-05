@@ -9,7 +9,7 @@ import 'package:flute/foundation.dart';
 import 'binding.dart';
 
 /// A function which takes a platform message and asynchronously returns an encoded response.
-typedef MessageHandler = Future<ByteData?>? Function(ByteData? message);
+typedef MessageHandler = ByteData? Function(ByteData? message);
 
 /// A messenger which sends binary data across the Flutter platform barrier.
 ///
@@ -24,14 +24,14 @@ abstract class BinaryMessenger {
   /// from [dart:ui.PlatformDispatcher.onPlatformMessage].
   ///
   /// To register a handler for a given message channel, see [setMessageHandler].
-  Future<void> handlePlatformMessage(String channel, ByteData? data,
+  void handlePlatformMessage(String channel, ByteData? data,
       ui.PlatformMessageResponseCallback? callback);
 
   /// Send a binary message to the platform plugins on the given channel.
   ///
   /// Returns a [Future] which completes to the received response, undecoded,
   /// in binary form.
-  Future<ByteData?>? send(String channel, ByteData? message);
+  ByteData? send(String channel, ByteData? message);
 
   /// Set a callback for receiving messages from the platform plugins on the
   /// given channel, without decoding them.

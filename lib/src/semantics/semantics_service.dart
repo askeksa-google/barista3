@@ -29,19 +29,18 @@ class SemanticsService {
   ///
   /// For example a camera application can use this method to make accessibility
   /// announcements regarding objects in the viewfinder.
-  static Future<void> announce(
-      String message, TextDirection textDirection) async {
+  static void announce(String message, TextDirection textDirection) {
     final AnnounceSemanticsEvent event =
         AnnounceSemanticsEvent(message, textDirection);
-    await SystemChannels.accessibility.send(event.toMap());
+    SystemChannels.accessibility.send(event.toMap());
   }
 
   /// Sends a semantic announcement of a tooltip.
   ///
   /// Currently only honored on Android. The contents of [message] will be
   /// read by TalkBack.
-  static Future<void> tooltip(String message) async {
+  static void tooltip(String message) {
     final TooltipSemanticsEvent event = TooltipSemanticsEvent(message);
-    await SystemChannels.accessibility.send(event.toMap());
+    SystemChannels.accessibility.send(event.toMap());
   }
 }

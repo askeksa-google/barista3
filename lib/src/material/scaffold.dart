@@ -257,9 +257,8 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger>
     with TickerProviderStateMixin {
   final LinkedHashSet<ScaffoldState> _scaffolds =
       LinkedHashSet<ScaffoldState>();
-  final Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>>
-      _snackBars =
-      Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>>();
+  final Queue<ScaffoldFeatureController<SnackBar>> _snackBars =
+      Queue<ScaffoldFeatureController<SnackBar>>();
   AnimationController? _snackBarController;
   Timer? _snackBarTimer;
   bool? _accessibleNavigation;
@@ -330,21 +329,19 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger>
   ///   }
   /// ```
   /// {@end-tool}
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
-      SnackBar snackBar) {
+  ScaffoldFeatureController<SnackBar> showSnackBar(SnackBar snackBar) {
     _snackBarController ??= SnackBar.createAnimationController(vsync: this)
       ..addStatusListener(_handleStatusChanged);
     if (_snackBars.isEmpty) {
       assert(_snackBarController!.isDismissed);
       _snackBarController!.forward();
     }
-    late ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller;
-    controller = ScaffoldFeatureController<SnackBar, SnackBarClosedReason>._(
+    late ScaffoldFeatureController<SnackBar> controller;
+    controller = ScaffoldFeatureController<SnackBar>._(
       // We provide a fallback key so that if back-to-back snackbars happen to
       // match in structure, material ink splashes and highlights don't survive
       // from one to the next.
       snackBar.withAnimation(_snackBarController!, fallbackKey: UniqueKey()),
-      Completer<SnackBarClosedReason>(),
       () {
         assert(_snackBars.first == controller);
         hideCurrentSnackBar(reason: SnackBarClosedReason.hide);
@@ -399,9 +396,6 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger>
       {SnackBarClosedReason reason = SnackBarClosedReason.remove}) {
     assert(reason != null);
     if (_snackBars.isEmpty) return;
-    final Completer<SnackBarClosedReason> completer =
-        _snackBars.first._completer;
-    if (!completer.isCompleted) completer.complete(reason);
     _snackBarTimer?.cancel();
     _snackBarTimer = null;
     // This will trigger the animation's status callback.
@@ -416,16 +410,10 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger>
     assert(reason != null);
     if (_snackBars.isEmpty ||
         _snackBarController!.status == AnimationStatus.dismissed) return;
-    final Completer<SnackBarClosedReason> completer =
-        _snackBars.first._completer;
     if (_accessibleNavigation!) {
       _snackBarController!.value = 0.0;
-      completer.complete(reason);
     } else {
-      _snackBarController!.reverse().then<void>((void value) {
-        assert(mounted);
-        if (!completer.isCompleted) completer.complete(reason);
-      });
+      _snackBarController!.reverse();
     }
     _snackBarTimer?.cancel();
     _snackBarTimer = null;
@@ -2202,9 +2190,8 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
   }
 
   // SNACKBAR API
-  final Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>>
-      _snackBars =
-      Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>>();
+  final Queue<ScaffoldFeatureController<SnackBar>> _snackBars =
+      Queue<ScaffoldFeatureController<SnackBar>>();
   AnimationController? _snackBarController;
   Timer? _snackBarTimer;
   bool? _accessibleNavigation;
@@ -2255,21 +2242,19 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
   ///   * [ScaffoldMessenger], this should be used instead to manage [SnackBar]s.
   @Deprecated('Use ScaffoldMessenger.showSnackBar. '
       'This feature was deprecated after v1.23.0-14.0.pre.')
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
-      SnackBar snackbar) {
+  ScaffoldFeatureController<SnackBar> showSnackBar(SnackBar snackbar) {
     _snackBarController ??= SnackBar.createAnimationController(vsync: this)
       ..addStatusListener(_handleSnackBarStatusChange);
     if (_snackBars.isEmpty) {
       assert(_snackBarController!.isDismissed);
       _snackBarController!.forward();
     }
-    late ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller;
-    controller = ScaffoldFeatureController<SnackBar, SnackBarClosedReason>._(
+    late ScaffoldFeatureController<SnackBar> controller;
+    controller = ScaffoldFeatureController<SnackBar>._(
       // We provide a fallback key so that if back-to-back snackbars happen to
       // match in structure, material ink splashes and highlights don't survive
       // from one to the next.
       snackbar.withAnimation(_snackBarController!, fallbackKey: UniqueKey()),
-      Completer<SnackBarClosedReason>(),
       () {
         assert(_snackBars.first == controller);
         hideCurrentSnackBar(reason: SnackBarClosedReason.hide);
@@ -2339,9 +2324,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
     }
 
     if (_snackBars.isEmpty) return;
-    final Completer<SnackBarClosedReason> completer =
-        _snackBars.first._completer;
-    if (!completer.isCompleted) completer.complete(reason);
     _snackBarTimer?.cancel();
     _snackBarTimer = null;
     _snackBarController!.value = 0.0;
@@ -2384,16 +2366,10 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
     if (_snackBars.isEmpty ||
         _snackBarController!.status == AnimationStatus.dismissed) return;
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final Completer<SnackBarClosedReason> completer =
-        _snackBars.first._completer;
     if (mediaQuery.accessibleNavigation) {
       _snackBarController!.value = 0.0;
-      completer.complete(reason);
     } else {
-      _snackBarController!.reverse().then<void>((void value) {
-        assert(mounted);
-        if (!completer.isCompleted) completer.complete(reason);
-      });
+      _snackBarController!.reverse();
     }
     _snackBarTimer?.cancel();
     _snackBarTimer = null;
@@ -2401,7 +2377,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
 
   // The _messengerSnackBar represents the current SnackBar being managed by
   // the ScaffoldMessenger, instead of the Scaffold.
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _messengerSnackBar;
+  ScaffoldFeatureController<SnackBar>? _messengerSnackBar;
 
   // This is used to update the _messengerSnackBar by the ScaffoldMessenger.
   void _updateSnackBar() {
@@ -2471,12 +2447,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
       if (!_currentBottomSheet!._isLocalHistoryEntry) {
         _currentBottomSheet!.close();
       }
-      assert(() {
-        _currentBottomSheet?._completer.future.whenComplete(() {
-          assert(_currentBottomSheet == null);
-        });
-        return true;
-      }());
     }
   }
 
@@ -2714,7 +2684,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
   }
 
   /// Shows the [Scaffold.floatingActionButton].
-  TickerFuture _showFloatingActionButton() {
+  void _showFloatingActionButton() {
     return _floatingActionButtonVisibilityController.forward();
   }
 
@@ -3290,14 +3260,9 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin {
 ///
 /// Commonly obtained from [ScaffoldMessengerState.showSnackBar] or
 /// [ScaffoldState.showBottomSheet].
-class ScaffoldFeatureController<T extends Widget, U> {
-  const ScaffoldFeatureController._(
-      this._widget, this._completer, this.close, this.setState);
+class ScaffoldFeatureController<T extends Widget> {
+  const ScaffoldFeatureController._(this._widget, this.close, this.setState);
   final T _widget;
-  final Completer<U> _completer;
-
-  /// Completes when the feature controlled by this object is no longer visible.
-  Future<U> get closed => _completer.future;
 
   /// Remove the feature (e.g., bottom sheet or snack bar) from the scaffold.
   final VoidCallback close;
@@ -3512,14 +3477,14 @@ class _StandardBottomSheetState extends State<_StandardBottomSheet> {
 /// sheets. A bottom sheet is only persistent if it is set as the
 /// [Scaffold.bottomSheet].
 class PersistentBottomSheetController<T>
-    extends ScaffoldFeatureController<_StandardBottomSheet, T> {
+    extends ScaffoldFeatureController<_StandardBottomSheet> {
   const PersistentBottomSheetController._(
     _StandardBottomSheet widget,
     Completer<T> completer,
     VoidCallback close,
     StateSetter setState,
     this._isLocalHistoryEntry,
-  ) : super._(widget, completer, close, setState);
+  ) : super._(widget, close, setState);
 
   final bool _isLocalHistoryEntry;
 }

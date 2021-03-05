@@ -1273,13 +1273,10 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
       dropdownColor: widget.dropdownColor,
     );
 
-    navigator
-        .push(_dropdownRoute!)
-        .then<void>((_DropdownRouteResult<T>? newValue) {
-      _removeDropdownRoute();
-      if (!mounted || newValue == null) return;
-      if (widget.onChanged != null) widget.onChanged!(newValue.result);
-    });
+    var newValue = navigator.push(_dropdownRoute!);
+    _removeDropdownRoute();
+    if (!mounted || newValue == null) return;
+    if (widget.onChanged != null) widget.onChanged!(newValue.result);
 
     if (widget.onTap != null) {
       widget.onTap!();

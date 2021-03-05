@@ -507,9 +507,8 @@ class _DraggableScrollableSheetScrollPosition
 
     ballisticController
       ..addListener(_tick)
-      ..animateWith(simulation).whenCompleteOrCancel(
-        ballisticController.dispose,
-      );
+      ..animateWith(simulation);
+    ballisticController.dispose();
   }
 
   @override

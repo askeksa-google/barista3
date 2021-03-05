@@ -28,8 +28,7 @@ typedef DismissDirectionCallback = void Function(DismissDirection direction);
 /// confirm or veto a dismiss gesture.
 ///
 /// Used by [Dismissible.confirmDismiss].
-typedef ConfirmDismissCallback = Future<bool?> Function(
-    DismissDirection direction);
+typedef ConfirmDismissCallback = bool? Function(DismissDirection direction);
 
 /// The direction in which a [Dismissible] can be dismissed.
 enum DismissDirection {
@@ -157,10 +156,10 @@ class Dismissible extends StatefulWidget {
 
   /// Gives the app an opportunity to confirm or veto a pending dismissal.
   ///
-  /// If the returned Future<bool> completes true, then this widget will be
+  /// If the returned bool completes true, then this widget will be
   /// dismissed, otherwise it will be moved back to its original location.
   ///
-  /// If the returned Future<bool?> completes to false or null the [onResize]
+  /// If the returned bool? completes to false or null the [onResize]
   /// and [onDismissed] callbacks will not run.
   final ConfirmDismissCallback? confirmDismiss;
 
@@ -456,11 +455,11 @@ class _DismissibleState extends State<Dismissible>
     return _FlingGestureKind.reverse;
   }
 
-  Future<void> _handleDragEnd(DragEndDetails details) async {
+  void _handleDragEnd(DragEndDetails details) {
     if (!_isActive || _moveController!.isAnimating) return;
     _dragUnderway = false;
     if (_moveController!.isCompleted &&
-        await _confirmStartResizeAnimation() == true) {
+        _confirmStartResizeAnimation() == true) {
       _startResizeAnimation();
       return;
     }
@@ -503,9 +502,9 @@ class _DismissibleState extends State<Dismissible>
     }
   }
 
-  Future<void> _handleDismissStatusChanged(AnimationStatus status) async {
+  void _handleDismissStatusChanged(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_dragUnderway) {
-      if (await _confirmStartResizeAnimation() == true)
+      if (_confirmStartResizeAnimation() == true)
         _startResizeAnimation();
       else
         _moveController!.reverse();
@@ -513,7 +512,7 @@ class _DismissibleState extends State<Dismissible>
     updateKeepAlive();
   }
 
-  Future<bool?> _confirmStartResizeAnimation() async {
+  bool? _confirmStartResizeAnimation() {
     if (widget.confirmDismiss != null) {
       final DismissDirection direction = _dismissDirection;
       return widget.confirmDismiss!(direction);

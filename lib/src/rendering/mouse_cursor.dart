@@ -119,7 +119,7 @@ abstract class MouseCursorSession {
   /// necessary (usually through [SystemChannels.mouseCursor]). It can also
   /// collect resources, and store the result in this object.
   @protected
-  Future<void> activate();
+  void activate();
 
   /// Called when device stops displaying the cursor.
   ///
@@ -285,7 +285,7 @@ class _NoopMouseCursorSession extends MouseCursorSession {
       : super(cursor, device);
 
   @override
-  Future<void> activate() async {/* Nothing */}
+  void activate() {/* Nothing */}
 
   @override
   void dispose() {/* Nothing */}
@@ -322,7 +322,7 @@ class _SystemMouseCursorSession extends MouseCursorSession {
   SystemMouseCursor get cursor => super.cursor as SystemMouseCursor;
 
   @override
-  Future<void> activate() {
+  void activate() {
     return SystemChannels.mouseCursor.invokeMethod<void>(
       'activateSystemCursor',
       <String, dynamic>{

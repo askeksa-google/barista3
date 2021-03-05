@@ -20,7 +20,7 @@ class FontLoader {
   /// called.
   FontLoader(this.family)
       : _loaded = false,
-        _fontFutures = <Future<Uint8List>>[];
+        _fontFutures = <Uint8List>[];
 
   /// The font family being loaded.
   ///
@@ -32,11 +32,11 @@ class FontLoader {
   ///
   /// The [bytes] argument specifies the actual font asset bytes. Currently,
   /// only OpenType (OTF) and TrueType (TTF) fonts are supported.
-  void addFont(Future<ByteData> bytes) {
+  void addFont(ByteData bytes) {
     if (_loaded) throw StateError('FontLoader is already loaded');
 
-    _fontFutures.add(bytes.then((ByteData data) =>
-        Uint8List.view(data.buffer, data.offsetInBytes, data.lengthInBytes)));
+    _fontFutures.add(
+        Uint8List.view(bytes.buffer, bytes.offsetInBytes, bytes.lengthInBytes));
   }
 
   /// Loads this font loader's font [family] and all of its associated assets
@@ -49,14 +49,13 @@ class FontLoader {
   ///
   /// The returned future will complete with an error if any of the font asset
   /// futures yield an error.
-  Future<void> load() async {
+  void load() {
     if (_loaded) throw StateError('FontLoader is already loaded');
     _loaded = true;
 
-    final Iterable<Future<void>> loadFutures = _fontFutures.map(
-        (Future<Uint8List> f) =>
-            f.then<void>((Uint8List list) => loadFont(list, family)));
-    await Future.wait(loadFutures.toList());
+    for (Uint8List list in _fontFutures) {
+      loadFont(list, family);
+    }
   }
 
   /// Hook called to load a font asset into the engine.
@@ -65,10 +64,10 @@ class FontLoader {
   /// custom logic (for example, to mock the underlying engine API in tests).
   @protected
   @visibleForTesting
-  Future<void> loadFont(Uint8List list, String family) {
+  void loadFont(Uint8List list, String family) {
     return loadFontFromList(list, fontFamily: family);
   }
 
   bool _loaded;
-  final List<Future<Uint8List>> _fontFutures;
+  final List<Uint8List> _fontFutures;
 }

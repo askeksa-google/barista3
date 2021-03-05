@@ -67,7 +67,7 @@ typedef RoutePredicate = bool Function(Route<dynamic> route);
 ///
 /// Used by [Form.onWillPop], [ModalRoute.addScopedWillPopCallback],
 /// [ModalRoute.removeScopedWillPopCallback], and [WillPopScope].
-typedef WillPopCallback = Future<bool> Function();
+typedef WillPopCallback = bool Function();
 
 /// Signature for the [Navigator.onPopPage] callback.
 ///
@@ -217,11 +217,8 @@ abstract class Route<T> {
   /// immediately after this method is called.
   @protected
   @mustCallSuper
-  TickerFuture didPush() {
-    return TickerFuture.complete()
-      ..then<void>((void _) {
-        navigator?.focusScopeNode.requestFocus();
-      });
+  void didPush() {
+    navigator?.focusScopeNode.requestFocus();
   }
 
   /// Called after [install] when the route is added to the navigator.
@@ -244,20 +241,19 @@ abstract class Route<T> {
     // For example, ModalRoute create a focus scope in its overlay entries. The
     // focused child can only be attached to navigator after initState which
     // will be guarded by the asynchronous gap.
-    TickerFuture.complete().then<void>((void _) {
-      // The route can be disposed before the ticker future completes. This can
-      // happen when the navigator is under a TabView that warps from one tab to
-      // another, non-adjacent tab, with an animation. The TabView reorders its
-      // children before and after the warping completes, and that causes its
-      // children to be built and disposed within the same frame. If one of its
-      // children contains a navigator, the routes in that navigator are also
-      // added and disposed within that frame.
-      //
-      // Since the reference to the navigator will be set to null after it is
-      // disposed, we have to do a null-safe operation in case that happens
-      // within the same frame when it is added.
-      navigator?.focusScopeNode.requestFocus();
-    });
+
+    // The route can be disposed before the ticker future completes. This can
+    // happen when the navigator is under a TabView that warps from one tab to
+    // another, non-adjacent tab, with an animation. The TabView reorders its
+    // children before and after the warping completes, and that causes its
+    // children to be built and disposed within the same frame. If one of its
+    // children contains a navigator, the routes in that navigator are also
+    // added and disposed within that frame.
+    //
+    // Since the reference to the navigator will be set to null after it is
+    // disposed, we have to do a null-safe operation in case that happens
+    // within the same frame when it is added.
+    navigator?.focusScopeNode.requestFocus();
   }
 
   /// Called after [install] when the route replaced another in the navigator.
@@ -293,7 +289,7 @@ abstract class Route<T> {
   ///    mechanism.
   ///  * [WillPopScope], another widget that provides a way to intercept the
   ///    back button.
-  Future<RoutePopDisposition> willPop() async {
+  RoutePopDisposition willPop() {
     return isFirst ? RoutePopDisposition.bubble : RoutePopDisposition.pop;
   }
 
@@ -312,7 +308,7 @@ abstract class Route<T> {
   /// The future completes with the value given to [Navigator.pop], if any, or
   /// else the value of [currentResult]. See [didComplete] for more discussion
   /// on this topic.
-  Future<T?> get popped => _popCompleter.future;
+  T? get popped => currentResult;
   final Completer<T?> _popCompleter = Completer<T?>();
 
   /// A request was made to pop this route. If the route can handle it
@@ -1194,7 +1190,7 @@ class DefaultTransitionDelegate<T> extends TransitionDelegate<T> {
 /// operation we could `await` the result of [Navigator.push]:
 ///
 /// ```dart
-/// bool value = await Navigator.push(context, MaterialPageRoute<bool>(
+/// bool value = Navigator.push(context, MaterialPageRoute<bool>(
 ///   builder: (BuildContext context) {
 ///     return Center(
 ///       child: GestureDetector(
@@ -1226,7 +1222,7 @@ class DefaultTransitionDelegate<T> extends TransitionDelegate<T> {
 /// There are functions which create and show popup routes. For
 /// example: [showDialog], [showMenu], and [showModalBottomSheet]. These
 /// functions return their pushed route's Future as described above.
-/// Callers can await the returned value to take an action when the
+/// Callers can the returned value to take an action when the
 /// route is popped, or to discover the route's value.
 ///
 /// There are also widgets which create popup routes, like [PopupMenuButton] and
@@ -1725,7 +1721,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePushNamed], which pushes a route that can be restored
   ///    during state restoration.
   @optionalTypeArgs
-  static Future<T?> pushNamed<T extends Object?>(
+  static T? pushNamed<T extends Object?>(
     BuildContext context,
     String routeName, {
     Object? arguments,
@@ -1843,7 +1839,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePushReplacementNamed], which pushes a replacement route that
   ///    can be restored during state restoration.
   @optionalTypeArgs
-  static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+  static T? pushReplacementNamed<T extends Object?, TO extends Object?>(
     BuildContext context,
     String routeName, {
     TO? result,
@@ -1942,7 +1938,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePopAndPushNamed], which pushes a new route that can be
   ///    restored during state restoration.
   @optionalTypeArgs
-  static Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+  static T? popAndPushNamed<T extends Object?, TO extends Object?>(
     BuildContext context,
     String routeName, {
     TO? result,
@@ -2049,7 +2045,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePushNamedAndRemoveUntil], which pushes a new route that can
   ///    be restored during state restoration.
   @optionalTypeArgs
-  static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+  static T? pushNamedAndRemoveUntil<T extends Object?>(
     BuildContext context,
     String newRouteName,
     RoutePredicate predicate, {
@@ -2132,8 +2128,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePush], which pushes a route that can be restored during
   ///    state restoration.
   @optionalTypeArgs
-  static Future<T?> push<T extends Object?>(
-      BuildContext context, Route<T> route) {
+  static T? push<T extends Object?>(BuildContext context, Route<T> route) {
     return Navigator.of(context).push(route);
   }
 
@@ -2239,7 +2234,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePushReplacement], which pushes a replacement route that can
   ///    be restored during state restoration.
   @optionalTypeArgs
-  static Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
+  static T? pushReplacement<T extends Object?, TO extends Object?>(
       BuildContext context, Route<T> newRoute,
       {TO? result}) {
     return Navigator.of(context)
@@ -2351,7 +2346,7 @@ class Navigator extends StatefulWidget {
   ///  * [restorablePushAndRemoveUntil], which pushes a route that can be
   ///    restored during state restoration.
   @optionalTypeArgs
-  static Future<T?> pushAndRemoveUntil<T extends Object?>(
+  static T? pushAndRemoveUntil<T extends Object?>(
       BuildContext context, Route<T> newRoute, RoutePredicate predicate) {
     return Navigator.of(context).pushAndRemoveUntil<T>(newRoute, predicate);
   }
@@ -2593,8 +2588,7 @@ class Navigator extends StatefulWidget {
   ///  * [ModalRoute], which provides a `scopedWillPopCallback` that can be used
   ///    to define the route's `willPop` method.
   @optionalTypeArgs
-  static Future<bool> maybePop<T extends Object?>(BuildContext context,
-      [T? result]) {
+  static bool maybePop<T extends Object?>(BuildContext context, [T? result]) {
     return Navigator.of(context).maybePop<T>(result);
   }
 
@@ -2935,7 +2929,7 @@ class Navigator extends StatefulWidget {
 //
 // * These states are transient; as soon as _flushHistoryUpdates is run the
 //   route entry will exit that state.
-// # These states await futures or other events, then transition automatically.
+// # These states futures or other events, then transition automatically.
 enum _RouteLifecycle {
   staging, // we will wait for transition delegate to decide what to do with this route.
   //
@@ -3059,23 +3053,21 @@ class _RouteEntry extends RouteTransitionRecord {
     assert(route.overlayEntries.isNotEmpty);
     if (currentState == _RouteLifecycle.push ||
         currentState == _RouteLifecycle.pushReplace) {
-      final TickerFuture routeFuture = route.didPush();
+      route.didPush();
       currentState = _RouteLifecycle.pushing;
-      routeFuture.whenCompleteOrCancel(() {
-        if (currentState == _RouteLifecycle.pushing) {
-          currentState = _RouteLifecycle.idle;
-          assert(!navigator._debugLocked);
-          assert(() {
-            navigator._debugLocked = true;
-            return true;
-          }());
-          navigator._flushHistoryUpdates();
-          assert(() {
-            navigator._debugLocked = false;
-            return true;
-          }());
-        }
-      });
+      if (currentState == _RouteLifecycle.pushing) {
+        currentState = _RouteLifecycle.idle;
+        assert(!navigator._debugLocked);
+        assert(() {
+          navigator._debugLocked = true;
+          return true;
+        }());
+        navigator._flushHistoryUpdates();
+        assert(() {
+          navigator._debugLocked = false;
+          return true;
+        }());
+      }
     } else {
       assert(currentState == _RouteLifecycle.replace);
       route.didReplace(previous);
@@ -4207,7 +4199,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePushNamed], which pushes a route that can be restored
   ///    during state restoration.
   @optionalTypeArgs
-  Future<T?> pushNamed<T extends Object?>(
+  T? pushNamed<T extends Object?>(
     String routeName, {
     Object? arguments,
   }) {
@@ -4275,7 +4267,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePushReplacementNamed], which pushes a replacement route that
   ///  can be restored during state restoration.
   @optionalTypeArgs
-  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+  T? pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     TO? result,
     Object? arguments,
@@ -4348,7 +4340,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePopAndPushNamed], which pushes a new route that can be
   ///    restored during state restoration.
   @optionalTypeArgs
-  Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+  T? popAndPushNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     TO? result,
     Object? arguments,
@@ -4411,7 +4403,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePushNamedAndRemoveUntil], which pushes a new route that can
   ///    be restored during state restoration.
   @optionalTypeArgs
-  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+  T? pushNamedAndRemoveUntil<T extends Object?>(
     String newRouteName,
     RoutePredicate predicate, {
     Object? arguments,
@@ -4479,7 +4471,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePush], which pushes a route that can be restored during
   ///    state restoration.
   @optionalTypeArgs
-  Future<T?> push<T extends Object?>(Route<T> route) {
+  T? push<T extends Object?>(Route<T> route) {
     _pushEntry(_RouteEntry(route, initialState: _RouteLifecycle.push));
     return route.popped;
   }
@@ -4627,8 +4619,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePushReplacement], which pushes a replacement route that can
   ///    be restored during state restoration.
   @optionalTypeArgs
-  Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
-      Route<T> newRoute,
+  T? pushReplacement<T extends Object?, TO extends Object?>(Route<T> newRoute,
       {TO? result}) {
     assert(newRoute != null);
     assert(newRoute._navigator == null);
@@ -4746,7 +4737,7 @@ class NavigatorState extends State<Navigator>
   ///  * [restorablePushAndRemoveUntil], which pushes a route that can be
   ///    restored during state restoration.
   @optionalTypeArgs
-  Future<T?> pushAndRemoveUntil<T extends Object?>(
+  T? pushAndRemoveUntil<T extends Object?>(
       Route<T> newRoute, RoutePredicate predicate) {
     assert(newRoute != null);
     assert(newRoute._navigator == null);
@@ -5032,7 +5023,7 @@ class NavigatorState extends State<Navigator>
   ///  * [ModalRoute], which provides a `scopedWillPopCallback` that can be used
   ///    to define the route's `willPop` method.
   @optionalTypeArgs
-  Future<bool> maybePop<T extends Object?>([T? result]) async {
+  bool maybePop<T extends Object?>([T? result]) {
     final _RouteEntry? lastEntry = _history.cast<_RouteEntry?>().lastWhere(
           (_RouteEntry? e) => e != null && _RouteEntry.isPresentPredicate(e),
           orElse: () => null,
@@ -5040,7 +5031,7 @@ class NavigatorState extends State<Navigator>
     if (lastEntry == null) return false;
     assert(lastEntry.route._navigator == this);
     final RoutePopDisposition disposition =
-        await lastEntry.route.willPop(); // this is asynchronous
+        lastEntry.route.willPop(); // this is asynchronous
     assert(disposition != null);
     if (!mounted)
       return true; // forget about this pop, we were disposed in the meantime
@@ -6033,17 +6024,16 @@ class RestorableRouteFuture<T> extends RestorableProperty<String?> {
     _route = _navigator._getRouteById<T>(id);
     assert(_route != null);
     route!.restorationScopeId.addListener(notifyListeners);
-    route!.popped.then((dynamic result) {
-      if (_disposed) {
-        return;
-      }
-      _route?.restorationScopeId.removeListener(notifyListeners);
-      _route = null;
-      notifyListeners();
-      if (onComplete != null) {
-        onComplete!(result as T);
-      }
-    });
+    var result = route!.popped;
+    if (_disposed) {
+      return;
+    }
+    _route?.restorationScopeId.removeListener(notifyListeners);
+    _route = null;
+    notifyListeners();
+    if (onComplete != null) {
+      onComplete!(result as T);
+    }
   }
 
   static NavigatorState _defaultNavigatorFinder(BuildContext context) =>

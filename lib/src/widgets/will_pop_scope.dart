@@ -20,7 +20,7 @@ import 'routes.dart';
 /// @override
 /// Widget build(BuildContext context) {
 ///   return WillPopScope (
-///     onWillPop: () async {
+///     onWillPop: () {
 ///       return shouldPop;
 ///     },
 ///     child: Text('WillPopScope sample'),
@@ -35,7 +35,7 @@ import 'routes.dart';
 /// @override
 /// Widget build(BuildContext context) {
 ///   return WillPopScope(
-///     onWillPop: () async {
+///     onWillPop: () {
 ///       return shouldPop;
 ///     },
 ///     child: Scaffold(

@@ -5969,7 +5969,7 @@ class RawImage extends LeafRenderObjectWidget {
 /// ```dart
 /// class TestAssetBundle extends CachingAssetBundle {
 ///   @override
-///   Future<ByteData> load(String key) async {
+///   ByteData load(String key) {
 ///     if (key == 'resources/test')
 ///       return ByteData.view(Uint8List.fromList(utf8.encode('Hello World!')).buffer);
 ///     return null;
@@ -5983,7 +5983,7 @@ class RawImage extends LeafRenderObjectWidget {
 /// bundle implementation:
 ///
 /// ```dart
-/// await tester.pumpWidget(
+/// tester.pumpWidget(
 ///   MaterialApp(
 ///     home: DefaultAssetBundle(
 ///       bundle: TestAssetBundle(),
@@ -6492,8 +6492,8 @@ class MouseRegion extends StatefulWidget {
   ///   bool regionIsHidden = false;
   ///   bool hovered = false;
   ///
-  ///   void startCountdown() async {
-  ///     await Future.delayed(const Duration(seconds: 1));
+  ///   void startCountdown() {
+  ///     Future.delayed(const Duration(seconds: 1));
   ///     hideButton();
   ///   }
   ///
@@ -7736,7 +7736,7 @@ typedef StatefulWidgetBuilder = Widget Function(
 /// also has state.
 ///
 /// ```dart
-/// await showDialog<void>(
+/// showDialog<void>(
 ///   context: context,
 ///   builder: (BuildContext context) {
 ///     int selectedRadio = 0;

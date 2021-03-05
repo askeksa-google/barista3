@@ -102,7 +102,7 @@ abstract class WidgetsBindingObserver {
   ///
   /// This method exposes the `popRoute` notification from
   /// [SystemChannels.navigation].
-  Future<bool> didPopRoute() => Future<bool>.value(false);
+  bool didPopRoute() => false;
 
   /// Called when the host tells the application to push a new route onto the
   /// navigator.
@@ -113,7 +113,7 @@ abstract class WidgetsBindingObserver {
   ///
   /// This method exposes the `pushRoute` notification from
   /// [SystemChannels.navigation].
-  Future<bool> didPushRoute(String route) => Future<bool>.value(false);
+  bool didPushRoute(String route) => false;
 
   /// Called when the host tells the application to push a new
   /// [RouteInformation] and a restoration state onto the router.
@@ -127,7 +127,7 @@ abstract class WidgetsBindingObserver {
   ///
   /// The default implementation is to call the [didPushRoute] directly with the
   /// [RouteInformation.location].
-  Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
+  bool didPushRouteInformation(RouteInformation routeInformation) {
     return didPushRoute(routeInformation.location!);
   }
 
@@ -435,18 +435,15 @@ mixin WidgetsBinding
         name: 'debugDumpApp',
         callback: () {
           debugDumpApp();
-          return debugPrintDone;
         },
       );
 
       if (!kIsWeb) {
         registerBoolServiceExtension(
           name: 'showPerformanceOverlay',
-          getter: () =>
-              Future<bool>.value(WidgetsApp.showPerformanceOverlayOverride),
+          getter: () => WidgetsApp.showPerformanceOverlayOverride,
           setter: (bool value) {
-            if (WidgetsApp.showPerformanceOverlayOverride == value)
-              return Future<void>.value();
+            if (WidgetsApp.showPerformanceOverlayOverride == value) return;
             WidgetsApp.showPerformanceOverlayOverride = value;
             return _forceRebuild();
           },
@@ -455,7 +452,7 @@ mixin WidgetsBinding
 
       registerServiceExtension(
         name: 'didSendFirstFrameEvent',
-        callback: (_) async {
+        callback: (_) {
           return <String, dynamic>{
             // This is defined to return a STRING, not a boolean.
             // Devtools, the Intellij plugin, and the flutter tool all depend
@@ -469,7 +466,7 @@ mixin WidgetsBinding
       // event 'Rasterized first useful frame' is sent out.
       registerServiceExtension(
         name: 'didSendFirstFrameRasterizedEvent',
-        callback: (_) async {
+        callback: (_) {
           return <String, dynamic>{
             // This is defined to return a STRING, not a boolean.
             // Devtools, the Intellij plugin, and the flutter tool all depend
@@ -481,7 +478,7 @@ mixin WidgetsBinding
 
       registerServiceExtension(
         name: 'fastReassemble',
-        callback: (Map<String, Object> params) async {
+        callback: (Map<String, Object> params) {
           final String? className = params['className'] as String?;
           void markElementsDirty(Element element) {
             if (element.widget.runtimeType.toString() == className) {
@@ -493,7 +490,7 @@ mixin WidgetsBinding
           if (renderViewElement != null) {
             markElementsDirty(renderViewElement!);
           }
-          await endOfFrame;
+          endOfFrame;
           return <String, String>{'type': 'Success'};
         },
       );
@@ -501,8 +498,8 @@ mixin WidgetsBinding
       // Expose the ability to send Widget rebuilds as [Timeline] events.
       registerBoolServiceExtension(
         name: 'profileWidgetBuilds',
-        getter: () async => debugProfileBuildsEnabled,
-        setter: (bool value) async {
+        getter: () => debugProfileBuildsEnabled,
+        setter: (bool value) {
           if (debugProfileBuildsEnabled != value)
             debugProfileBuildsEnabled = value;
         },
@@ -512,10 +509,9 @@ mixin WidgetsBinding
     assert(() {
       registerBoolServiceExtension(
         name: 'debugAllowBanner',
-        getter: () => Future<bool>.value(WidgetsApp.debugAllowBannerOverride),
+        getter: () => WidgetsApp.debugAllowBannerOverride,
         setter: (bool value) {
-          if (WidgetsApp.debugAllowBannerOverride == value)
-            return Future<void>.value();
+          if (WidgetsApp.debugAllowBannerOverride == value) return;
           WidgetsApp.debugAllowBannerOverride = value;
           return _forceRebuild();
         },
@@ -525,10 +521,9 @@ mixin WidgetsBinding
       // Use ext.flutter.inspector.show instead.
       registerBoolServiceExtension(
         name: 'debugWidgetInspector',
-        getter: () async => WidgetsApp.debugShowWidgetInspectorOverride,
+        getter: () => WidgetsApp.debugShowWidgetInspectorOverride,
         setter: (bool value) {
-          if (WidgetsApp.debugShowWidgetInspectorOverride == value)
-            return Future<void>.value();
+          if (WidgetsApp.debugShowWidgetInspectorOverride == value) return;
           WidgetsApp.debugShowWidgetInspectorOverride = value;
           return _forceRebuild();
         },
@@ -541,12 +536,12 @@ mixin WidgetsBinding
     }());
   }
 
-  Future<void> _forceRebuild() {
+  void _forceRebuild() {
     if (renderViewElement != null) {
       buildOwner!.reassemble(renderViewElement!);
       return endOfFrame;
     }
-    return Future<void>.value();
+    return;
   }
 
   /// The [BuildOwner] in charge of executing the build pipeline for the
@@ -677,10 +672,10 @@ mixin WidgetsBinding
   /// This method exposes the `popRoute` notification from
   /// [SystemChannels.navigation].
   @protected
-  Future<void> handlePopRoute() async {
+  void handlePopRoute() {
     for (final WidgetsBindingObserver observer
         in List<WidgetsBindingObserver>.from(_observers)) {
-      if (await observer.didPopRoute()) return;
+      if (observer.didPopRoute()) return;
     }
     SystemNavigator.pop();
   }
@@ -697,25 +692,24 @@ mixin WidgetsBinding
   /// [SystemChannels.navigation].
   @protected
   @mustCallSuper
-  Future<void> handlePushRoute(String route) async {
+  void handlePushRoute(String route) {
     for (final WidgetsBindingObserver observer
         in List<WidgetsBindingObserver>.from(_observers)) {
-      if (await observer.didPushRoute(route)) return;
+      if (observer.didPushRoute(route)) return;
     }
   }
 
-  Future<void> _handlePushRouteInformation(
-      Map<dynamic, dynamic> routeArguments) async {
+  void _handlePushRouteInformation(Map<dynamic, dynamic> routeArguments) {
     for (final WidgetsBindingObserver observer
         in List<WidgetsBindingObserver>.from(_observers)) {
-      if (await observer.didPushRouteInformation(RouteInformation(
+      if (observer.didPushRouteInformation(RouteInformation(
         location: routeArguments['location'] as String,
         state: routeArguments['state'] as Object,
       ))) return;
     }
   }
 
-  Future<dynamic> _handleNavigationInvocation(MethodCall methodCall) {
+  dynamic _handleNavigationInvocation(MethodCall methodCall) {
     switch (methodCall.method) {
       case 'popRoute':
         return handlePopRoute();
@@ -725,7 +719,6 @@ mixin WidgetsBinding
         return _handlePushRouteInformation(
             methodCall.arguments as Map<dynamic, dynamic>);
     }
-    return Future<dynamic>.value();
   }
 
   @override
@@ -764,7 +757,7 @@ mixin WidgetsBinding
   /// See also:
   ///
   ///  * [firstFrameRasterized], whether this future has completed or not.
-  Future<void> get waitUntilFirstFrameRasterized => _firstFrameCompleter.future;
+  void get waitUntilFirstFrameRasterized => _firstFrameCompleter.future;
 
   /// Whether the first frame has finished building.
   ///
@@ -1009,7 +1002,7 @@ mixin WidgetsBinding
   bool get isRootWidgetAttached => _renderViewElement != null;
 
   @override
-  Future<void> performReassemble() {
+  void performReassemble() {
     assert(() {
       WidgetInspectorService.instance.performReassemble();
       return true;

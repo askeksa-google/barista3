@@ -91,7 +91,7 @@ class Feedback {
   ///
   ///  * [wrapForTap] to trigger platform-specific feedback before executing a
   ///    [GestureTapCallback].
-  static Future<void> forTap(BuildContext context) async {
+  static void forTap(BuildContext context) {
     context.findRenderObject()!.sendSemanticsEvent(const TapSemanticEvent());
     switch (_platform(context)) {
       case TargetPlatform.android:
@@ -101,7 +101,7 @@ class Feedback {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        return Future<void>.value();
+        return;
     }
   }
 
@@ -133,7 +133,7 @@ class Feedback {
   ///
   ///  * [wrapForLongPress] to trigger platform-specific feedback before
   ///    executing a [GestureLongPressCallback].
-  static Future<void> forLongPress(BuildContext context) {
+  static void forLongPress(BuildContext context) {
     context
         .findRenderObject()!
         .sendSemanticsEvent(const LongPressSemanticsEvent());
@@ -145,7 +145,7 @@ class Feedback {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        return Future<void>.value();
+        return;
     }
   }
 

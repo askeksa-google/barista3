@@ -85,7 +85,7 @@ mixin PaintingBinding on BindingBase, ServicesBinding {
   /// unnecessary memory usage for images. Callers that wish to display an image
   /// above its native resolution should prefer scaling the canvas the image is
   /// drawn into.
-  Future<ui.Codec> instantiateImageCodec(
+  ui.Codec instantiateImageCodec(
     Uint8List bytes, {
     int? cacheWidth,
     int? cacheHeight,
@@ -128,8 +128,8 @@ mixin PaintingBinding on BindingBase, ServicesBinding {
   final _SystemFontsNotifier _systemFonts = _SystemFontsNotifier();
 
   @override
-  Future<void> handleSystemMessage(Object systemMessage) async {
-    await super.handleSystemMessage(systemMessage);
+  void handleSystemMessage(Object systemMessage) {
+    super.handleSystemMessage(systemMessage);
     final Map<String, dynamic> message = systemMessage as Map<String, dynamic>;
     final String type = message['type'] as String;
     switch (type) {

@@ -1340,19 +1340,18 @@ class _TabBarViewState extends State<TabBarView> {
     }
   }
 
-  Future<void> _warpToCurrentIndex() async {
-    if (!mounted) return Future<void>.value();
+  void _warpToCurrentIndex() {
+    if (!mounted) return;
 
-    if (_pageController.page == _currentIndex!.toDouble())
-      return Future<void>.value();
+    if (_pageController.page == _currentIndex!.toDouble()) return;
 
     final int previousIndex = _controller!.previousIndex;
     if ((_currentIndex! - previousIndex).abs() == 1) {
       _warpUnderwayCount += 1;
-      await _pageController.animateToPage(_currentIndex!,
+      _pageController.animateToPage(_currentIndex!,
           duration: kTabScrollDuration, curve: Curves.ease);
       _warpUnderwayCount -= 1;
-      return Future<void>.value();
+      return;
     }
 
     assert((_currentIndex! - previousIndex).abs() > 1);
@@ -1370,9 +1369,9 @@ class _TabBarViewState extends State<TabBarView> {
     });
     _pageController.jumpToPage(initialPage);
 
-    await _pageController.animateToPage(_currentIndex!,
+    _pageController.animateToPage(_currentIndex!,
         duration: kTabScrollDuration, curve: Curves.ease);
-    if (!mounted) return Future<void>.value();
+    if (!mounted) return;
     setState(() {
       _warpUnderwayCount -= 1;
       if (widget.children != _children) {

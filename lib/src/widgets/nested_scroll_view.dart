@@ -1057,18 +1057,18 @@ class _NestedScrollCoordinator
     _outerPosition!.updateCanDrag(maxInnerExtent);
   }
 
-  Future<void> animateTo(
+  void animateTo(
     double to, {
     required Duration duration,
     required Curve curve,
-  }) async {
+  }) {
     final DrivenScrollActivity outerActivity =
         _outerPosition!.createDrivenScrollActivity(
       nestOffset(to, _outerPosition!),
       duration,
       curve,
     );
-    final List<Future<void>> resultFutures = <Future<void>>[outerActivity.done];
+    final List<void> resultFutures = <void>[outerActivity.done];
     beginActivity(
       outerActivity,
       (_NestedScrollPosition position) {
@@ -1082,7 +1082,6 @@ class _NestedScrollCoordinator
         return innerActivity;
       },
     );
-    await Future.wait<void>(resultFutures);
   }
 
   void jumpTo(double to) {
@@ -1558,7 +1557,7 @@ class _NestedScrollPosition extends ScrollPosition
   }
 
   @override
-  Future<void> animateTo(
+  void animateTo(
     double to, {
     required Duration duration,
     required Curve curve,

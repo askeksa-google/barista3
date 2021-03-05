@@ -844,7 +844,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
 ///    calling this method automatically.
 ///  * [SemanticsConfiguration.namesRoute], for a description of edge triggered
 ///    semantics.
-Future<T?> showMenu<T>({
+T? showMenu<T>({
   required BuildContext context,
   required RelativeRect position,
   required List<PopupMenuEntry<T>> items,
@@ -1107,7 +1107,7 @@ class PopupMenuButtonState<T> extends State<PopupMenuButton<T>> {
     final List<PopupMenuEntry<T>> items = widget.itemBuilder(context);
     // Only show the menu if there is something to show
     if (items.isNotEmpty) {
-      showMenu<T?>(
+      var newValue = showMenu<T?>(
         context: context,
         elevation: widget.elevation ?? popupMenuTheme.elevation,
         items: items,
@@ -1115,14 +1115,13 @@ class PopupMenuButtonState<T> extends State<PopupMenuButton<T>> {
         position: position,
         shape: widget.shape ?? popupMenuTheme.shape,
         color: widget.color ?? popupMenuTheme.color,
-      ).then<void>((T? newValue) {
-        if (!mounted) return null;
-        if (newValue == null) {
-          if (widget.onCanceled != null) widget.onCanceled!();
-          return null;
-        }
-        if (widget.onSelected != null) widget.onSelected!(newValue);
-      });
+      );
+      if (!mounted) return null;
+      if (newValue == null) {
+        if (widget.onCanceled != null) widget.onCanceled!();
+        return null;
+      }
+      if (widget.onSelected != null) widget.onSelected!(newValue);
     }
   }
 

@@ -45,7 +45,7 @@ class BinaryMessages {
   /// To register a handler for a given message channel, see [setMessageHandler].
   @Deprecated('Use defaultBinaryMessenger.handlePlatformMessage instead. '
       'This feature was deprecated after v1.6.5.')
-  static Future<void> handlePlatformMessage(
+  static void handlePlatformMessage(
     String channel,
     ByteData data,
     ui.PlatformMessageResponseCallback callback,
@@ -59,7 +59,7 @@ class BinaryMessages {
   /// binary form.
   @Deprecated('Use defaultBinaryMessenger.send instead. '
       'This feature was deprecated after v1.6.5.')
-  static Future<ByteData?>? send(String channel, ByteData? message) {
+  static ByteData? send(String channel, ByteData? message) {
     return _binaryMessenger.send(channel, message);
   }
 
@@ -74,7 +74,7 @@ class BinaryMessages {
   @Deprecated('Use defaultBinaryMessenger.setMessageHandler instead. '
       'This feature was deprecated after v1.6.5.')
   static void setMessageHandler(
-      String channel, Future<ByteData?> Function(ByteData? message) handler) {
+      String channel, ByteData? Function(ByteData? message) handler) {
     _binaryMessenger.setMessageHandler(channel, handler);
   }
 
@@ -92,7 +92,7 @@ class BinaryMessages {
   @Deprecated('Use defaultBinaryMessenger.setMockMessageHandler instead. '
       'This feature was deprecated after v1.6.5.')
   static void setMockMessageHandler(
-      String channel, Future<ByteData?> Function(ByteData? message) handler) {
+      String channel, ByteData? Function(ByteData? message) handler) {
     _binaryMessenger.setMockMessageHandler(channel, handler);
   }
 }

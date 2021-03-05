@@ -201,12 +201,12 @@ class _CupertinoButtonState extends State<CupertinoButton>
   void _animate() {
     if (_animationController.isAnimating) return;
     final bool wasHeldDown = _buttonHeldDown;
-    final TickerFuture ticker = _buttonHeldDown
-        ? _animationController.animateTo(1.0, duration: kFadeOutDuration)
-        : _animationController.animateTo(0.0, duration: kFadeInDuration);
-    ticker.then<void>((void value) {
-      if (mounted && wasHeldDown != _buttonHeldDown) _animate();
-    });
+    if (_buttonHeldDown) {
+      _animationController.animateTo(1.0, duration: kFadeOutDuration);
+    } else {
+      _animationController.animateTo(0.0, duration: kFadeInDuration);
+    }
+    if (mounted && wasHeldDown != _buttonHeldDown) _animate();
   }
 
   @override

@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'package:flute/ui.dart' show hashValues;
@@ -201,7 +200,7 @@ class AssetImage extends AssetBundleImageProvider {
   static const double _naturalResolution = 1.0;
 
   @override
-  Future<AssetBundleImageKey> obtainKey(ImageConfiguration configuration) {
+  AssetBundleImageKey obtainKey(ImageConfiguration configuration) {
     // This function tries to return a SynchronousFuture if possible. We do this
     // because otherwise showing an image would always take at least one frame,
     // which would be sad. (This code is called from inside build/layout/paint,
@@ -210,57 +209,25 @@ class AssetImage extends AssetBundleImageProvider {
     // build/layout/paint sequence.)
     final AssetBundle chosenBundle =
         bundle ?? configuration.bundle ?? rootBundle;
-    Completer<AssetBundleImageKey>? completer;
-    Future<AssetBundleImageKey>? result;
 
-    chosenBundle
-        .loadStructuredData<Map<String, List<String>>?>(
-            _kAssetManifestFileName, _manifestParser)
-        .then<void>((Map<String, List<String>>? manifest) {
-      final String chosenName = _chooseVariant(
-        keyName,
-        configuration,
-        manifest == null ? null : manifest[keyName],
-      )!;
-      final double chosenScale = _parseScale(chosenName);
-      final AssetBundleImageKey key = AssetBundleImageKey(
-        bundle: chosenBundle,
-        name: chosenName,
-        scale: chosenScale,
-      );
-      if (completer != null) {
-        // We already returned from this function, which means we are in the
-        // asynchronous mode. Pass the value to the completer. The completer's
-        // future is what we returned.
-        completer.complete(key);
-      } else {
-        // We haven't yet returned, so we must have been called synchronously
-        // just after loadStructuredData returned (which means it provided us
-        // with a SynchronousFuture). Let's return a SynchronousFuture
-        // ourselves.
-        result = SynchronousFuture<AssetBundleImageKey>(key);
-      }
-    }).catchError((Object error, StackTrace stack) {
-      // We had an error. (This guarantees we weren't called synchronously.)
-      // Forward the error to the caller.
-      assert(completer != null);
-      assert(result == null);
-      completer!.completeError(error, stack);
-    });
-    if (result != null) {
-      // The code above ran synchronously, and came up with an answer.
-      // Return the SynchronousFuture that we created above.
-      return result!;
-    }
-    // The code above hasn't yet run its "then" handler yet. Let's prepare a
-    // completer for it to use when it does run.
-    completer = Completer<AssetBundleImageKey>();
-    return completer.future;
+    var manifest = chosenBundle.loadStructuredData<Map<String, List<String>>?>(
+        _kAssetManifestFileName, _manifestParser);
+    final String chosenName = _chooseVariant(
+      keyName,
+      configuration,
+      manifest == null ? null : manifest[keyName],
+    )!;
+    final double chosenScale = _parseScale(chosenName);
+    final AssetBundleImageKey key = AssetBundleImageKey(
+      bundle: chosenBundle,
+      name: chosenName,
+      scale: chosenScale,
+    );
+    return key;
   }
 
-  static Future<Map<String, List<String>>?> _manifestParser(String? jsonData) {
-    if (jsonData == null)
-      return SynchronousFuture<Map<String, List<String>>?>(null);
+  static Map<String, List<String>>? _manifestParser(String? jsonData) {
+    if (jsonData == null) return null;
     // TODO(ianh): JSON decoding really shouldn't be on the main thread.
     final Map<String, dynamic> parsedJson =
         json.decode(jsonData) as Map<String, dynamic>;
@@ -271,7 +238,7 @@ class AssetImage extends AssetBundleImageProvider {
             keys.map<List<String>>((String key) =>
                 List<String>.from(parsedJson[key] as List<dynamic>)));
     // TODO(ianh): convert that data structure to the right types.
-    return SynchronousFuture<Map<String, List<String>>?>(parsedManifest);
+    return parsedManifest;
   }
 
   String? _chooseVariant(

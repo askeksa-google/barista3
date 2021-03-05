@@ -368,16 +368,13 @@ class _ReorderableListContentState extends State<_ReorderableListContent>
     // If the context is off screen, then we request a scroll to make it visible.
     if (!onScreen) {
       _scrolling = true;
-      _scrollController.position
-          .animateTo(
+      _scrollController.position.animateTo(
         scrollOffset < bottomOffset ? bottomOffset : topOffset,
         duration: _scrollAnimationDuration,
         curve: Curves.easeInOut,
-      )
-          .then((void value) {
-        setState(() {
-          _scrolling = false;
-        });
+      );
+      setState(() {
+        _scrolling = false;
       });
     }
   }

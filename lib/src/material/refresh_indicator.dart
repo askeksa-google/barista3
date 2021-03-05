@@ -34,7 +34,7 @@ const Duration _kIndicatorScaleDuration = Duration(milliseconds: 200);
 /// finished.
 ///
 /// Used by [RefreshIndicator.onRefresh].
-typedef RefreshCallback = Future<void> Function();
+typedef RefreshCallback = void Function();
 
 // The state machine moves through these modes only when the scrollable
 // identified by scrollableKey has been scrolled to its min or max limit.
@@ -176,7 +176,7 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   late Animation<Color?> _valueColor;
 
   _RefreshIndicatorMode? _mode;
-  late Future<void> _pendingRefreshFuture;
+  late void _pendingRefreshFuture;
   bool? _isIndicatorAtTop;
   double? _dragOffset;
 
@@ -333,8 +333,7 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   }
 
   // Stop showing the refresh indicator.
-  Future<void> _dismiss(_RefreshIndicatorMode newMode) async {
-    await Future<void>.value();
+  void _dismiss(_RefreshIndicatorMode newMode) {
     // This can only be called from _show() when refreshing and
     // _handleScrollNotification in response to a ScrollEndNotification or
     // direction change.
@@ -345,12 +344,10 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     });
     switch (_mode) {
       case _RefreshIndicatorMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        _scaleController.animateTo(1.0, duration: _kIndicatorScaleDuration);
         break;
       case _RefreshIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        _positionController.animateTo(0.0, duration: _kIndicatorScaleDuration);
         break;
       default:
         assert(false);
@@ -370,41 +367,24 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     final Completer<void> completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
-    _positionController
-        .animateTo(1.0 / _kDragSizeFactorLimit,
-            duration: _kIndicatorSnapDuration)
-        .then<void>((void value) {
-      if (mounted && _mode == _RefreshIndicatorMode.snap) {
-        assert(widget.onRefresh != null);
-        setState(() {
-          // Show the indeterminate progress indicator.
-          _mode = _RefreshIndicatorMode.refresh;
-        });
+    _positionController.animateTo(1.0 / _kDragSizeFactorLimit,
+        duration: _kIndicatorSnapDuration);
+    if (mounted && _mode == _RefreshIndicatorMode.snap) {
+      assert(widget.onRefresh != null);
+      setState(() {
+        // Show the indeterminate progress indicator.
+        _mode = _RefreshIndicatorMode.refresh;
+      });
 
-        final Future<void> refreshResult = widget.onRefresh();
-        assert(() {
-          if (refreshResult == null)
-            FlutterError.reportError(FlutterErrorDetails(
-              exception: FlutterError('The onRefresh callback returned null.\n'
-                  'The RefreshIndicator onRefresh callback must return a Future.'),
-              context: ErrorDescription('when calling onRefresh'),
-              library: 'material library',
-            ));
-          return true;
-        }());
-        // `refreshResult` has a non-nullable type, but might be null when
-        // running with weak checking, so we need to null check it anyway (and
-        // ignore the warning that the null-handling logic is dead code).
-        if (refreshResult == null) // ignore: dead_code
-          return;
-        refreshResult.whenComplete(() {
-          if (mounted && _mode == _RefreshIndicatorMode.refresh) {
-            completer.complete();
-            _dismiss(_RefreshIndicatorMode.done);
-          }
-        });
+      widget.onRefresh();
+      // `refreshResult` has a non-nullable type, but might be null when
+      // running with weak checking, so we need to null check it anyway (and
+      // ignore the warning that the null-handling logic is dead code).
+      if (mounted && _mode == _RefreshIndicatorMode.refresh) {
+        completer.complete();
+        _dismiss(_RefreshIndicatorMode.done);
       }
-    });
+    }
   }
 
   /// Show the refresh indicator and run the refresh callback as if it had
@@ -417,13 +397,13 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   /// The future returned from this method completes when the
   /// [RefreshIndicator.onRefresh] callback's future completes.
   ///
-  /// If you await the future returned by this function from a [State], you
+  /// If you the future returned by this function from a [State], you
   /// should check that the state is still [mounted] before calling [setState].
   ///
   /// When initiated in this manner, the refresh indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
+  void show({bool atTop = true}) {
     if (_mode != _RefreshIndicatorMode.refresh &&
         _mode != _RefreshIndicatorMode.snap) {
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);

@@ -751,7 +751,7 @@ class _ContextMenuRoute<T> extends PopupRoute<T> {
   }
 
   @override
-  TickerFuture didPush() {
+  void didPush() {
     _internalOffstage = true;
     _setOffstageInternally();
 

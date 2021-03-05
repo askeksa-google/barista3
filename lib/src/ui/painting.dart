@@ -622,12 +622,6 @@ class Image {
             'Image.debugDisposed is only available when asserts are enabled.'));
   }
 
-  Future<ByteData?> toByteData(
-      {ImageByteFormat format = ImageByteFormat.rawRgba}) {
-    assert(!_disposed && !_image._disposed);
-    return _image.toByteData(format: format);
-  }
-
   List<StackTrace>? debugGetOpenHandleStackTraces() {
     List<StackTrace>? stacks;
     assert(() {
@@ -666,19 +660,6 @@ class _Image {
   final int width;
 
   final int height;
-
-  Future<ByteData?> toByteData(
-      {ImageByteFormat format = ImageByteFormat.rawRgba}) {
-    return _futurize((_Callback<ByteData> callback) {
-      return _toByteData(format.index, (Uint8List? encoded) {
-        callback(encoded!.buffer.asByteData());
-      });
-    });
-  }
-
-  String? _toByteData(int format, _Callback<Uint8List?> callback) {
-    throw UnimplementedError();
-  }
 
   bool _disposed = false;
   void dispose() {
@@ -733,23 +714,23 @@ class Codec {
     throw UnimplementedError();
   }
 
-  Future<FrameInfo> getNextFrame() async {
-    final Completer<FrameInfo> completer = Completer<FrameInfo>.sync();
+  FrameInfo getNextFrame() {
+    late final FrameInfo result;
     final String? error =
         _getNextFrame((_Image? image, int durationMilliseconds) {
       if (image == null) {
         throw Exception(
             'Codec failed to produce an image, possibly due to invalid image data.');
       }
-      completer.complete(FrameInfo._(
+      result = FrameInfo._(
         image: Image._(image),
         duration: Duration(milliseconds: durationMilliseconds),
-      ));
+      );
     });
     if (error != null) {
       throw Exception(error);
     }
-    return await completer.future;
+    return result;
   }
 
   String? _getNextFrame(void Function(_Image?, int) callback) {
@@ -761,14 +742,14 @@ class Codec {
   }
 }
 
-Future<Codec> instantiateImageCodec(
+Codec instantiateImageCodec(
   Uint8List list, {
   int? targetWidth,
   int? targetHeight,
   bool allowUpscaling = true,
-}) async {
-  final ImmutableBuffer buffer = await ImmutableBuffer.fromUint8List(list);
-  final ImageDescriptor descriptor = await ImageDescriptor.encoded(buffer);
+}) {
+  final ImmutableBuffer buffer = ImmutableBuffer.fromUint8List(list);
+  final ImageDescriptor descriptor = ImageDescriptor.encoded(buffer);
   if (!allowUpscaling) {
     if (targetWidth != null && targetWidth > descriptor.width) {
       targetWidth = descriptor.width;
@@ -787,10 +768,9 @@ void decodeImageFromList(Uint8List list, ImageDecoderCallback callback) {
   _decodeImageFromListAsync(list, callback);
 }
 
-Future<void> _decodeImageFromListAsync(
-    Uint8List list, ImageDecoderCallback callback) async {
-  final Codec codec = await instantiateImageCodec(list);
-  final FrameInfo frameInfo = await codec.getNextFrame();
+void _decodeImageFromListAsync(Uint8List list, ImageDecoderCallback callback) {
+  final Codec codec = instantiateImageCodec(list);
+  final FrameInfo frameInfo = codec.getNextFrame();
   callback(frameInfo.image);
 }
 
@@ -812,32 +792,30 @@ void decodeImageFromPixels(
     assert(allowUpscaling || targetHeight <= height);
   }
 
-  ImmutableBuffer.fromUint8List(pixels).then((ImmutableBuffer buffer) {
-    final ImageDescriptor descriptor = ImageDescriptor.raw(
-      buffer,
-      width: width,
-      height: height,
-      rowBytes: rowBytes,
-      pixelFormat: format,
-    );
+  var buffer = ImmutableBuffer.fromUint8List(pixels);
+  final ImageDescriptor descriptor = ImageDescriptor.raw(
+    buffer,
+    width: width,
+    height: height,
+    rowBytes: rowBytes,
+    pixelFormat: format,
+  );
 
-    if (!allowUpscaling) {
-      if (targetWidth != null && targetWidth! > descriptor.width) {
-        targetWidth = descriptor.width;
-      }
-      if (targetHeight != null && targetHeight! > descriptor.height) {
-        targetHeight = descriptor.height;
-      }
+  if (!allowUpscaling) {
+    if (targetWidth != null && targetWidth > descriptor.width) {
+      targetWidth = descriptor.width;
     }
+    if (targetHeight != null && targetHeight > descriptor.height) {
+      targetHeight = descriptor.height;
+    }
+  }
 
-    descriptor
-        .instantiateCodec(
-          targetWidth: targetWidth,
-          targetHeight: targetHeight,
-        )
-        .then((Codec codec) => codec.getNextFrame())
-        .then((FrameInfo frameInfo) => callback(frameInfo.image));
-  });
+  Codec codec = descriptor.instantiateCodec(
+    targetWidth: targetWidth,
+    targetHeight: targetHeight,
+  );
+  FrameInfo frameInfo = codec.getNextFrame();
+  callback(frameInfo.image);
 }
 
 enum PathFillType {
@@ -2810,7 +2788,7 @@ class Canvas {
 
 class Picture {
   Picture._();
-  Future<Image> toImage(int width, int height) async {
+  Image toImage(int width, int height) {
     if (width <= 0 || height <= 0) throw Exception('Invalid image dimensions.');
     return Image._(_Image._(width, height));
   }
@@ -2931,15 +2909,9 @@ class Shadow {
 
 class ImmutableBuffer {
   ImmutableBuffer._(this.length);
-  static Future<ImmutableBuffer> fromUint8List(Uint8List list) {
+  static ImmutableBuffer fromUint8List(Uint8List list) {
     final ImmutableBuffer instance = ImmutableBuffer._(list.length);
-    return _futurize((_Callback<void> callback) {
-      instance._init(list, callback);
-    }).then((_) => instance);
-  }
-
-  void _init(Uint8List list, _Callback<void> callback) {
-    throw UnimplementedError();
+    return instance;
   }
 
   final int length;
@@ -2950,15 +2922,9 @@ class ImmutableBuffer {
 
 class ImageDescriptor {
   ImageDescriptor._();
-  static Future<ImageDescriptor> encoded(ImmutableBuffer buffer) {
+  static ImageDescriptor encoded(ImmutableBuffer buffer) {
     final ImageDescriptor descriptor = ImageDescriptor._();
-    return _futurize((_Callback<void> callback) {
-      return descriptor._initEncoded(buffer, callback);
-    }).then((_) => descriptor);
-  }
-
-  String? _initEncoded(ImmutableBuffer buffer, _Callback<void> callback) {
-    throw UnimplementedError();
+    return descriptor;
   }
 
   // Not async because there's no expensive work to do here.
@@ -3004,7 +2970,7 @@ class ImageDescriptor {
     throw UnimplementedError();
   }
 
-  Future<Codec> instantiateCodec({int? targetWidth, int? targetHeight}) async {
+  Codec instantiateCodec({int? targetWidth, int? targetHeight}) {
     if (targetWidth != null && targetWidth <= 0) {
       targetWidth = null;
     }
@@ -3036,16 +3002,3 @@ class ImageDescriptor {
 }
 
 typedef _Callback<T> = void Function(T result);
-typedef _Callbacker<T> = String? Function(_Callback<T> callback);
-Future<T> _futurize<T>(_Callbacker<T> callbacker) {
-  final Completer<T> completer = Completer<T>.sync();
-  final String? error = callbacker((T t) {
-    if (t == null) {
-      completer.completeError(Exception('operation failed'));
-    } else {
-      completer.complete(t);
-    }
-  });
-  if (error != null) throw Exception(error);
-  return completer.future;
-}

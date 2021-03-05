@@ -2257,7 +2257,7 @@ class _TimePickerDialogState extends State<_TimePickerDialog> {
 /// Show a dialog with [initialTime] equal to the current time.
 ///
 /// ```dart
-/// Future<TimeOfDay?> selectedTime = showTimePicker(
+/// TimeOfDay? selectedTime = showTimePicker(
 ///   initialTime: TimeOfDay.now(),
 ///   context: context,
 /// );
@@ -2286,7 +2286,7 @@ class _TimePickerDialogState extends State<_TimePickerDialog> {
 /// Show a dialog with the text direction overridden to be [TextDirection.rtl].
 ///
 /// ```dart
-/// Future<TimeOfDay?> selectedTimeRTL = showTimePicker(
+/// TimeOfDay? selectedTimeRTL = showTimePicker(
 ///   context: context,
 ///   initialTime: TimeOfDay.now(),
 ///   builder: (BuildContext context, Widget? child) {
@@ -2303,7 +2303,7 @@ class _TimePickerDialogState extends State<_TimePickerDialog> {
 /// Show a dialog with time unconditionally displayed in 24 hour format.
 ///
 /// ```dart
-/// Future<TimeOfDay?> selectedTime24Hour = showTimePicker(
+/// TimeOfDay? selectedTime24Hour = showTimePicker(
 ///   context: context,
 ///   initialTime: TimeOfDay(hour: 10, minute: 47),
 ///   builder: (BuildContext context, Widget? child) {
@@ -2322,7 +2322,7 @@ class _TimePickerDialogState extends State<_TimePickerDialog> {
 ///    date picker.
 ///  * [TimePickerThemeData], which allows you to customize the colors,
 ///    typography, and shape of the time picker.
-Future<TimeOfDay?> showTimePicker({
+TimeOfDay? showTimePicker({
   required BuildContext context,
   required TimeOfDay initialTime,
   TransitionBuilder? builder,
@@ -2332,7 +2332,7 @@ Future<TimeOfDay?> showTimePicker({
   String? confirmText,
   String? helpText,
   RouteSettings? routeSettings,
-}) async {
+}) {
   assert(context != null);
   assert(initialTime != null);
   assert(useRootNavigator != null);
@@ -2346,7 +2346,7 @@ Future<TimeOfDay?> showTimePicker({
     confirmText: confirmText,
     helpText: helpText,
   );
-  return await showDialog<TimeOfDay>(
+  return showDialog<TimeOfDay>(
     context: context,
     useRootNavigator: useRootNavigator,
     builder: (BuildContext context) {

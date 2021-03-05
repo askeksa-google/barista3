@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart' show visibleForTesting;
 
 /// Signature for callbacks passed to [LicenseRegistry.addLicense].
-typedef LicenseEntryCollector = Stream<LicenseEntry> Function();
+typedef LicenseEntryCollector = Iterable<LicenseEntry> Function();
 
 /// A string that represents one paragraph in a [LicenseEntry].
 ///
@@ -310,7 +310,7 @@ class LicenseRegistry {
   /// Returns the licenses that have been registered.
   ///
   /// Generating the list of licenses is expensive.
-  static Stream<LicenseEntry> get licenses async* {
+  static Iterable<LicenseEntry> get licenses sync* {
     if (_collectors == null) return;
     for (final LicenseEntryCollector collector in _collectors!)
       yield* collector();

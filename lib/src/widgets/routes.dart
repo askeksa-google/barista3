@@ -90,7 +90,7 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   /// This future completes once the animation has been dismissed. That will be
   /// after [popped], because [popped] typically completes before the animation
   /// even starts, as soon as the route is popped.
-  Future<T?> get completed => _transitionCompleter.future;
+  T? get completed => _result;
   final Completer<T?> _transitionCompleter = Completer<T?>();
 
   /// {@template flutter.widgets.TransitionRoute.transitionDuration}
@@ -212,7 +212,7 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  TickerFuture didPush() {
+  void didPush() {
     assert(_controller != null,
         '$runtimeType.didPush called before calling install() or after calling dispose().');
     assert(!_transitionCompleter.isCompleted,
@@ -369,7 +369,7 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   }
 
   void _setSecondaryAnimation(Animation<double>? animation,
-      [Future<dynamic>? disposed]) {
+      [dynamic? disposed]) {
     _secondaryAnimation.parent = animation;
     // Releases the reference to the next route's animation when that route
     // is disposed.
@@ -557,7 +557,7 @@ mixin LocalHistoryRoute<T> on Route<T> {
   ///
   ///   bool _showRectangle = false;
   ///
-  ///   void _navigateLocallyToShowRectangle() async {
+  ///   void _navigateLocallyToShowRectangle() {
   ///     // This local history entry essentially represents the display of the red
   ///     // rectangle. When this local history entry is removed, we hide the red
   ///     // rectangle.
@@ -645,7 +645,7 @@ mixin LocalHistoryRoute<T> on Route<T> {
   }
 
   @override
-  Future<RoutePopDisposition> willPop() async {
+  RoutePopDisposition willPop() {
     if (willHandlePopInternally) return RoutePopDisposition.pop;
     return super.willPop();
   }
@@ -1130,7 +1130,7 @@ abstract class ModalRoute<T> extends TransitionRoute<T>
   }
 
   @override
-  TickerFuture didPush() {
+  void didPush() {
     if (_scopeKey.currentState != null) {
       navigator!.focusScopeNode
           .setFirstFocus(_scopeKey.currentState!.focusScopeNode);
@@ -1359,14 +1359,14 @@ abstract class ModalRoute<T> extends TransitionRoute<T>
   ///  * [removeScopedWillPopCallback], which removes a callback from the list
   ///    this method checks.
   @override
-  Future<RoutePopDisposition> willPop() async {
+  RoutePopDisposition willPop() {
     final _ModalScopeState<T>? scope = _scopeKey.currentState;
     assert(scope != null);
     for (final WillPopCallback callback
         in List<WillPopCallback>.from(_willPopCallbacks)) {
-      if (await callback() != true) return RoutePopDisposition.doNotPop;
+      if (callback() != true) return RoutePopDisposition.doNotPop;
     }
-    return await super.willPop();
+    return super.willPop();
   }
 
   /// Enables this route to veto attempts by the user to dismiss it.
@@ -1887,7 +1887,7 @@ class _DialogRoute<T> extends PopupRoute<T> {
 ///
 ///  * [showDialog], which displays a Material-style dialog.
 ///  * [showCupertinoDialog], which displays an iOS-style dialog.
-Future<T?> showGeneralDialog<T extends Object?>({
+T? showGeneralDialog<T extends Object?>({
   required BuildContext context,
   required RoutePageBuilder pageBuilder,
   bool barrierDismissible = false,

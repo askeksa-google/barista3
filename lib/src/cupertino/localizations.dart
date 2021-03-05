@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flute/foundation.dart';
 import 'package:flute/widgets.dart';
 
 import 'debug.dart';
@@ -279,7 +278,7 @@ class _CupertinoLocalizationsDelegate
   bool isSupported(Locale locale) => locale.languageCode == 'en';
 
   @override
-  Future<CupertinoLocalizations> load(Locale locale) =>
+  CupertinoLocalizations load(Locale locale) =>
       DefaultCupertinoLocalizations.load(locale);
 
   @override
@@ -446,9 +445,8 @@ class DefaultCupertinoLocalizations implements CupertinoLocalizations {
   /// The [locale] parameter is ignored.
   ///
   /// This method is typically used to create a [LocalizationsDelegate].
-  static Future<CupertinoLocalizations> load(Locale locale) {
-    return SynchronousFuture<CupertinoLocalizations>(
-        const DefaultCupertinoLocalizations());
+  static CupertinoLocalizations load(Locale locale) {
+    return const DefaultCupertinoLocalizations();
   }
 
   /// A [LocalizationsDelegate] that uses [DefaultCupertinoLocalizations.load]

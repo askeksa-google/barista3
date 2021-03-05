@@ -34,8 +34,8 @@ class Clipboard {
   static const String kTextPlain = 'text/plain';
 
   /// Stores the given clipboard data on the clipboard.
-  static Future<void> setData(ClipboardData data) async {
-    await SystemChannels.platform.invokeMethod<void>(
+  static void setData(ClipboardData data) {
+    SystemChannels.platform.invokeMethod<void>(
       'Clipboard.setData',
       <String, dynamic>{
         'text': data.text,
@@ -50,9 +50,8 @@ class Clipboard {
   ///
   /// Returns a future which completes to null if the data could not be
   /// obtained, and to a [ClipboardData] object if it could.
-  static Future<ClipboardData?> getData(String format) async {
-    final Map<String, dynamic>? result =
-        await SystemChannels.platform.invokeMethod(
+  static ClipboardData? getData(String format) {
+    final Map<String, dynamic>? result = SystemChannels.platform.invokeMethod(
       'Clipboard.getData',
       format,
     );

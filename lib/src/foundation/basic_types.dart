@@ -48,7 +48,7 @@ typedef IterableFilter<T> = Iterable<T> Function(Iterable<T> input);
 ///  * [VoidCallback], a synchronous version of this signature.
 ///  * [AsyncValueGetter], a signature for asynchronous getters.
 ///  * [AsyncValueSetter], a signature for asynchronous setters.
-typedef AsyncCallback = Future<void> Function();
+typedef AsyncCallback = void Function();
 
 /// Signature for callbacks that report that a value has been set and return a
 /// [Future] that completes when the value has been saved.
@@ -57,7 +57,7 @@ typedef AsyncCallback = Future<void> Function();
 ///
 ///  * [ValueSetter], a synchronous version of this signature.
 ///  * [AsyncValueGetter], the getter equivalent of this signature.
-typedef AsyncValueSetter<T> = Future<void> Function(T value);
+typedef AsyncValueSetter<T> = void Function(T value);
 
 /// Signature for callbacks that are to asynchronously report a value on demand.
 ///
@@ -65,7 +65,7 @@ typedef AsyncValueSetter<T> = Future<void> Function(T value);
 ///
 ///  * [ValueGetter], a synchronous version of this signature.
 ///  * [AsyncValueSetter], the setter equivalent of this signature.
-typedef AsyncValueGetter<T> = Future<T> Function();
+typedef AsyncValueGetter<T> = T Function();
 
 // LAZY CACHING ITERATOR
 

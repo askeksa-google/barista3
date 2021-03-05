@@ -205,11 +205,10 @@ class _ExpansionTileState extends State<ExpansionTile>
       if (_isExpanded) {
         _controller.forward();
       } else {
-        _controller.reverse().then<void>((void value) {
-          if (!mounted) return;
-          setState(() {
-            // Rebuild without widget.children.
-          });
+        _controller.reverse();
+        if (!mounted) return;
+        setState(() {
+          // Rebuild without widget.children.
         });
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);

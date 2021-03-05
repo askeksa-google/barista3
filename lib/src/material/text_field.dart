@@ -230,8 +230,8 @@ class _TextFieldSelectionGestureDetectorBuilder
 ///     body: Center(
 ///       child: TextField(
 ///         controller: _controller,
-///         onSubmitted: (String value) async {
-///           await showDialog<void>(
+///         onSubmitted: (String value) {
+///           showDialog<void>(
 ///             context: context,
 ///             builder: (BuildContext context) {
 ///               return AlertDialog(

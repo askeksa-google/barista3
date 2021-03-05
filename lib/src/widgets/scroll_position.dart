@@ -659,7 +659,7 @@ abstract class ScrollPosition extends ViewportOffset with ScrollMetrics {
   ///
   ///  * [ScrollPositionAlignmentPolicy] for the way in which `alignment` is
   ///    applied, and the way the given `object` is aligned.
-  Future<void> ensureVisible(
+  void ensureVisible(
     RenderObject object, {
     double alignment = 0.0,
     Duration duration = Duration.zero,
@@ -708,11 +708,11 @@ abstract class ScrollPosition extends ViewportOffset with ScrollMetrics {
         break;
     }
 
-    if (target == pixels) return Future<void>.value();
+    if (target == pixels) return;
 
     if (duration == Duration.zero) {
       jumpTo(target);
-      return Future<void>.value();
+      return;
     }
 
     return animateTo(target, duration: duration, curve: curve);
@@ -753,7 +753,7 @@ abstract class ScrollPosition extends ViewportOffset with ScrollMetrics {
   ///
   /// The animation is typically handled by an [DrivenScrollActivity].
   @override
-  Future<void> animateTo(
+  void animateTo(
     double to, {
     required Duration duration,
     required Curve curve,
@@ -795,7 +795,7 @@ abstract class ScrollPosition extends ViewportOffset with ScrollMetrics {
   ///
   /// If [animateTo] is called then [curve] defaults to [Curves.ease].
   @override
-  Future<void> moveTo(
+  void moveTo(
     double to, {
     Duration? duration,
     Curve? curve,

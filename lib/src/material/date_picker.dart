@@ -109,7 +109,7 @@ const double _inputFormLandscapeHeight = 108.0;
 ///  * [CalendarDatePicker], which provides the calendar grid used by the date picker dialog.
 ///  * [InputDatePickerFormField], which provides a text input field for entering dates.
 ///
-Future<DateTime?> showDatePicker({
+DateTime? showDatePicker({
   required BuildContext context,
   required DateTime initialDate,
   required DateTime firstDate,
@@ -130,7 +130,7 @@ Future<DateTime?> showDatePicker({
   String? errorInvalidText,
   String? fieldHintText,
   String? fieldLabelText,
-}) async {
+}) {
   assert(context != null);
   assert(initialDate != null);
   assert(firstDate != null);
@@ -759,7 +759,7 @@ class _DatePickerHeader extends StatelessWidget {
 ///    select a single date.
 ///  * [DateTimeRange], which is used to describe a date range.
 ///
-Future<DateTimeRange?> showDateRangePicker({
+DateTimeRange? showDateRangePicker({
   required BuildContext context,
   DateTimeRange? initialDateRange,
   required DateTime firstDate,
@@ -782,7 +782,7 @@ Future<DateTimeRange?> showDateRangePicker({
   RouteSettings? routeSettings,
   TextDirection? textDirection,
   TransitionBuilder? builder,
-}) async {
+}) {
   assert(context != null);
   assert(
       initialDateRange == null ||

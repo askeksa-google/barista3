@@ -998,12 +998,6 @@ class FlutterError extends Error
                   details.toDiagnosticsNode(style: DiagnosticsTreeStyle.error))
               .trimRight(),
         );
-      } else {
-        debugPrintStack(
-          stackTrace: details.stack,
-          label: details.exception.toString(),
-          maxFrames: 100,
-        );
       }
     } else {
       debugPrint('Another exception was thrown: ${details.summary}');
