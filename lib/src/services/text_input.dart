@@ -1322,8 +1322,8 @@ class TextInput {
         break;
       case 'TextInputClient.performPrivateCommand':
         _currentConnection!._client.performPrivateCommand(
-            args[1]['action'] as String,
-            args[1]['data'] as Map<String, dynamic>);
+            (args[1] as Map<String, dynamic>)['action'] as String,
+            (args[1] as Map<String, dynamic>)['data'] as Map<String, dynamic>);
         break;
       case 'TextInputClient.updateFloatingCursor':
         _currentConnection!._client.updateFloatingCursor(_toTextPoint(

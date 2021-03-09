@@ -836,7 +836,7 @@ class _CupertinoTextSelectionToolbarItemsElement extends RenderObjectElement {
     if (slot is IndexedSlot) {
       assert(renderObject.debugValidateChild(child));
       renderObject.insert(child as RenderBox,
-          after: slot.value?.renderObject as RenderBox?);
+          after: (slot.value as Element?)?.renderObject as RenderBox?);
       return;
     }
     assert(false,

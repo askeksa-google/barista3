@@ -112,12 +112,12 @@ typedef _ListStringArgFunction(List<String> args);
 // ignore: unused_element
 void _runMainZoned(Function startMainIsolateFunction, Function userMainFunction,
     List<String> args) {
-  startMainIsolateFunction(() {
+  (startMainIsolateFunction as void Function(void Function(), Null))(() {
     runZonedGuarded<void>(() {
       if (userMainFunction is _ListStringArgFunction) {
-        (userMainFunction as dynamic)(args);
+        userMainFunction(args);
       } else {
-        userMainFunction();
+        (userMainFunction as void Function())();
       }
     }, (Object error, StackTrace stackTrace) {
       _reportUnhandledException(error.toString(), stackTrace.toString());

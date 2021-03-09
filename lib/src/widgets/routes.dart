@@ -353,14 +353,12 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
     _secondaryAnimation.parent = animation;
     // Releases the reference to the next route's animation when that route
     // is disposed.
-    disposed?.then((dynamic _) {
-      if (_secondaryAnimation.parent == animation) {
-        _secondaryAnimation.parent = kAlwaysDismissedAnimation;
-        if (animation is TrainHoppingAnimation) {
-          animation.dispose();
-        }
+    if (_secondaryAnimation.parent == animation) {
+      _secondaryAnimation.parent = kAlwaysDismissedAnimation;
+      if (animation is TrainHoppingAnimation) {
+        animation.dispose();
       }
-    });
+    }
   }
 
   /// Returns true if this route supports a transition animation that runs

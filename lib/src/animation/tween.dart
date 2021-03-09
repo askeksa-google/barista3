@@ -257,7 +257,8 @@ class Tween<T extends dynamic> extends Animatable<T> {
   T lerp(double t) {
     assert(begin != null);
     assert(end != null);
-    return begin + (end - begin) * t as T;
+    // Not hit by the examples. Just assume double.
+    return ((begin as double) + ((end as double) - (begin as double)) * t) as T;
   }
 
   /// Returns the interpolated value for the current value of the given animation.

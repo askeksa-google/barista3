@@ -454,7 +454,8 @@ class Paint {
   }
 
   ColorFilter? get colorFilter {
-    return _objects?[_kColorFilterIndex]?.creator as ColorFilter?;
+    return (_objects?[_kColorFilterIndex] as _ImageFilter?)?.creator
+        as ColorFilter?;
   }
 
   set colorFilter(ColorFilter? value) {
@@ -469,7 +470,7 @@ class Paint {
   }
 
   ImageFilter? get imageFilter {
-    return _objects?[_kImageFilterIndex]?.creator as ImageFilter?;
+    return (_objects?[_kImageFilterIndex] as _ImageFilter?)?.creator;
   }
 
   set imageFilter(ImageFilter? value) {
@@ -479,7 +480,7 @@ class Paint {
       }
     } else {
       final List<dynamic> objects = _ensureObjectsInitialized();
-      if (objects[_kImageFilterIndex]?.creator != value) {
+      if ((objects[_kImageFilterIndex] as _ImageFilter?)?.creator != value) {
         objects[_kImageFilterIndex] = value._toNativeImageFilter();
       }
     }
