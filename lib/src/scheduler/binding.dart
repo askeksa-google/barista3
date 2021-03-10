@@ -652,7 +652,7 @@ mixin SchedulerBinding on BindingBase {
   /// If the device's screen is currently turned off, this may wait a very long
   /// time, since frames are not scheduled while the device's screen is turned
   /// off.
-  void get endOfFrame {
+  void endOfFrame() {
     if (schedulerPhase == SchedulerPhase.idle) scheduleFrame();
   }
 
@@ -834,7 +834,7 @@ mixin SchedulerBinding on BindingBase {
     // Lock events so touch events etc don't insert themselves until the
     // scheduled frame has finished.
     lockEvents(() {
-      endOfFrame;
+      endOfFrame();
       Timeline.finishSync();
     });
   }

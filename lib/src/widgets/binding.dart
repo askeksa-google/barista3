@@ -491,7 +491,7 @@ mixin WidgetsBinding
           if (renderViewElement != null) {
             markElementsDirty(renderViewElement!);
           }
-          endOfFrame;
+          endOfFrame();
           return <String, String>{'type': 'Success'};
         },
       );
@@ -540,7 +540,7 @@ mixin WidgetsBinding
   void _forceRebuild() {
     if (renderViewElement != null) {
       buildOwner!.reassemble(renderViewElement!);
-      return endOfFrame;
+      return endOfFrame();
     }
     return;
   }

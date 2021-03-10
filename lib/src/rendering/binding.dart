@@ -477,7 +477,7 @@ mixin RendererBinding
       Timeline.finishSync();
     }
     scheduleWarmUpFrame();
-    endOfFrame;
+    endOfFrame();
   }
 
   @override
@@ -496,7 +496,7 @@ mixin RendererBinding
       child.visitChildren(visitor);
     };
     instance?.renderView.visitChildren(visitor);
-    return endOfFrame;
+    return endOfFrame();
   }
 }
 
