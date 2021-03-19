@@ -2334,7 +2334,7 @@ class SemanticsNode extends AbstractNode with DiagnosticableTreeMixin {
   @override
   String toStringDeep({
     String prefixLineOne = '',
-    String? prefixOtherLines,
+    String? prefixOtherLines = '',
     DiagnosticLevel minLevel = DiagnosticLevel.debug,
     DebugSemanticsDumpOrder childOrder = DebugSemanticsDumpOrder.traversalOrder,
   }) {

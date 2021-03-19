@@ -3135,7 +3135,8 @@ mixin Diagnosticable {
   /// relationship between the parent and the node. For example, pass
   /// [DiagnosticsTreeStyle.offstage] to indicate that a node is offstage.
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return DiagnosticableNode<Diagnosticable>(
       name: name,
       value: this,
@@ -3432,7 +3433,7 @@ abstract class DiagnosticableTree with Diagnosticable {
   ///    children.
   String toStringDeep({
     String prefixLineOne = '',
-    String? prefixOtherLines,
+    String? prefixOtherLines = '',
     DiagnosticLevel minLevel = DiagnosticLevel.debug,
   }) {
     return toDiagnosticsNode().toStringDeep(
@@ -3446,7 +3447,8 @@ abstract class DiagnosticableTree with Diagnosticable {
 
   @override
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return DiagnosticableTreeNode(
       name: name,
       value: this,
@@ -3511,7 +3513,7 @@ mixin DiagnosticableTreeMixin implements DiagnosticableTree {
   @override
   String toStringDeep({
     String prefixLineOne = '',
-    String? prefixOtherLines,
+    String? prefixOtherLines = '',
     DiagnosticLevel minLevel = DiagnosticLevel.debug,
   }) {
     return toDiagnosticsNode().toStringDeep(
@@ -3525,7 +3527,8 @@ mixin DiagnosticableTreeMixin implements DiagnosticableTree {
 
   @override
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return DiagnosticableTreeNode(
       name: name,
       value: this,

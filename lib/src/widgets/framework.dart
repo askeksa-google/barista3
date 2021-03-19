@@ -4269,7 +4269,8 @@ abstract class Element extends DiagnosticableTree implements BuildContext {
 
   @override
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return _ElementDiagnosticableTreeNode(
       name: name,
       value: this,
@@ -5050,7 +5051,8 @@ class StatefulElement extends ComponentElement {
 
   @override
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return _ElementDiagnosticableTreeNode(
       name: name,
       value: this,

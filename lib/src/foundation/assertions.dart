@@ -713,7 +713,8 @@ class FlutterErrorDetails with Diagnosticable {
 
   @override
   DiagnosticsNode toDiagnosticsNode(
-      {String? name, DiagnosticsTreeStyle? style}) {
+      {String? name,
+      DiagnosticsTreeStyle? style = DiagnosticsTreeStyle.sparse}) {
     return _FlutterErrorDetailsNode(
       name: name,
       value: this,
