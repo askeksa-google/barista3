@@ -194,7 +194,7 @@ abstract class ViewportOffset extends ChangeNotifier {
     double to, {
     Duration? duration,
     Curve? curve,
-    bool? clamp,
+    bool? clamp = true,
   }) {
     assert(to != null);
     if (duration == null || duration == Duration.zero) {

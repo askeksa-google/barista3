@@ -1082,8 +1082,8 @@ abstract class SliderTrackShape {
     required RenderBox parentBox,
     Offset offset = Offset.zero,
     required SliderThemeData sliderTheme,
-    bool isEnabled,
-    bool isDiscrete,
+    bool isEnabled = false,
+    bool isDiscrete = false,
   });
 
   /// Paints the track shape based on the state passed to it.
@@ -1125,8 +1125,8 @@ abstract class SliderTrackShape {
     required SliderThemeData sliderTheme,
     required Animation<double> enableAnimation,
     required Offset thumbCenter,
-    bool isEnabled,
-    bool isDiscrete,
+    bool isEnabled = false,
+    bool isDiscrete = false,
     required TextDirection textDirection,
   });
 }
