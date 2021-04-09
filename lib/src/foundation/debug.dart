@@ -14,18 +14,11 @@ import 'print.dart';
 /// This function is used by the test framework to ensure that debug variables
 /// haven't been inadvertently changed.
 ///
-/// The `debugPrintOverride` argument can be specified to indicate the expected
-/// value of the [debugPrint] variable. This is useful for test frameworks that
-/// override [debugPrint] themselves and want to check that their own custom
-/// value wasn't overridden by a test.
-///
 /// See [the foundation library](foundation/foundation-library.html)
 /// for a complete list.
-bool debugAssertAllFoundationVarsUnset(String reason,
-    {DebugPrintCallback debugPrintOverride = debugPrintThrottled}) {
+bool debugAssertAllFoundationVarsUnset(String reason) {
   assert(() {
-    if (debugPrint != debugPrintOverride ||
-        debugDefaultTargetPlatformOverride != null ||
+    if (debugDefaultTargetPlatformOverride != null ||
         debugDoublePrecision != null ||
         debugBrightnessOverride != null) throw FlutterError(reason);
     return true;

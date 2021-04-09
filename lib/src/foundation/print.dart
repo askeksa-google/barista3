@@ -6,9 +6,6 @@ import 'dart:async' show Timer;
 
 import 'dart:collection';
 
-/// Signature for [debugPrint] implementations.
-typedef DebugPrintCallback = void Function(String? message, {int? wrapWidth});
-
 /// Prints a message to the console, which you can access using the "flutter"
 /// tool's "logs" command ("flutter logs").
 ///
@@ -20,31 +17,7 @@ typedef DebugPrintCallback = void Function(String? message, {int? wrapWidth});
 /// interleaving calls to this function (directly or indirectly via, e.g.,
 /// [debugDumpRenderTree] or [debugDumpApp]) and to the Dart [print] method can
 /// result in out-of-order messages in the logs.
-///
-/// The implementation of this function can be replaced by setting the
-/// [debugPrint] variable to a new implementation that matches the
-/// [DebugPrintCallback] signature. For example, flutter_test does this.
-///
-/// The default value is [debugPrintThrottled]. For a version that acts
-/// identically but does not throttle, use [debugPrintSynchronously].
-DebugPrintCallback debugPrint = debugPrintThrottled;
-
-/// Alternative implementation of [debugPrint] that does not throttle.
-/// Used by tests.
-void debugPrintSynchronously(String? message, {int? wrapWidth}) {
-  if (message != null && wrapWidth != null) {
-    print(message
-        .split('\n')
-        .expand<String>((String line) => debugWordWrap(line, wrapWidth))
-        .join('\n'));
-  } else {
-    print(message);
-  }
-}
-
-/// Implementation of [debugPrint] that throttles messages. This avoids dropping
-/// messages on platforms that rate-limit their logging (for example, Android).
-void debugPrintThrottled(String? message, {int? wrapWidth}) {
+void debugPrint(String? message, {int? wrapWidth}) {
   final List<String> messageLines = message?.split('\n') ?? <String>['null'];
   if (wrapWidth != null) {
     _debugPrintBuffer.addAll(messageLines
