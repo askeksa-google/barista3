@@ -748,9 +748,10 @@ class _InkResponseState extends State<_InkResponseStateWidget>
   final Map<_HighlightType, InkHighlight?> _highlights =
       <_HighlightType, InkHighlight?>{};
   late final Map<Type, Action<Intent>> _actionMap = <Type, Action<Intent>>{
-    ActivateIntent: CallbackAction<ActivateIntent>(onInvoke: _simulateTap),
+    ActivateIntent:
+        CallbackAction<ActivateIntent>(onInvoke: (_) => _simulateTap()),
     ButtonActivateIntent:
-        CallbackAction<ButtonActivateIntent>(onInvoke: _simulateTap),
+        CallbackAction<ButtonActivateIntent>(onInvoke: (_) => _simulateTap()),
   };
 
   bool get highlightsExist => _highlights.values
@@ -778,7 +779,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
 
   bool get _anyChildInkResponsePressed => _activeChildren.isNotEmpty;
 
-  void _simulateTap([Intent? intent]) {
+  void _simulateTap() {
     _startSplash(context: context);
     _handleTap();
   }

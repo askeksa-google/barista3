@@ -345,7 +345,7 @@ class _TooltipState extends State<Tooltip> with SingleTickerProviderStateMixin {
     }
     if (_longPressActivated) {
       // Tool tips activated by long press should stay around for the showDuration.
-      _hideTimer ??= Timer(showDuration, _controller.reverse);
+      _hideTimer ??= Timer(showDuration, () => _controller.reverse());
     } else {
       // Tool tips activated by hover should disappear as soon as the mouse
       // leaves the control.

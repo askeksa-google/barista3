@@ -3654,7 +3654,7 @@ class _RootSemanticsFragment extends _InterestingSemanticsFragment {
     assert(elevationAdjustment == 0.0);
 
     owner._semantics ??= SemanticsNode.root(
-      showOnScreen: owner.showOnScreen,
+      showOnScreen: () => owner.showOnScreen(),
       owner: owner.owner!.semanticsOwner!,
     );
     final SemanticsNode node = owner._semantics!;
@@ -3774,7 +3774,8 @@ class _SwitchableSemanticsFragment extends _InterestingSemanticsFragment {
     if (!_mergeIntoParent && (geometry?.dropFromTree == true))
       return; // Drop the node, it's not going to be visible.
 
-    owner._semantics ??= SemanticsNode(showOnScreen: owner.showOnScreen);
+    owner._semantics ??=
+        SemanticsNode(showOnScreen: () => owner.showOnScreen());
     final SemanticsNode node = owner._semantics!
       ..isMergedIntoParent = _mergeIntoParent
       ..tags = _tagsForChildren;

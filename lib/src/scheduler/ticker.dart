@@ -306,7 +306,7 @@ class Ticker {
             'The stack trace when the $runtimeType was actually created was:');
         FlutterError.defaultStackFilter(
                 _debugCreationStack.toString().trimRight().split('\n'))
-            .forEach(buffer.writeln);
+            .forEach((s) => buffer.writeln(s));
       }
       return true;
     }());

@@ -1287,7 +1287,7 @@ mixin WidgetInspectorService {
   /// Returns whether the application has rendered its first frame and it is
   /// appropriate to display the Widget tree in the inspector.
   @protected
-  bool isWidgetTreeReady([String? groupName]) {
+  bool isWidgetTreeReady() {
     return WidgetsBinding.instance != null &&
         WidgetsBinding.instance!.debugDidSendFirstFrameEvent;
   }
@@ -1366,7 +1366,7 @@ mixin WidgetInspectorService {
   /// The `groupName` parameter is not required by is added to regularize the
   /// API surface of methods called from the Flutter IntelliJ Plugin.
   @protected
-  bool setSelectionById(String? id, [String? groupName]) {
+  bool setSelectionById(String? id, String? groupName) {
     return setSelection(toObject(id), groupName);
   }
 
