@@ -36,10 +36,8 @@ import 'gesture_detector.dart';
 typedef InspectorSelectButtonBuilder = Widget Function(
     BuildContext context, VoidCallback onPressed);
 
-typedef _RegisterServiceExtensionCallback = void Function({
-  required String name,
-  required ServiceExtensionCallback callback,
-});
+typedef _RegisterServiceExtensionCallback = void Function(
+    String name, ServiceExtensionCallback callback);
 
 /// A layer that mimics the behavior of another layer.
 ///
@@ -784,8 +782,8 @@ mixin WidgetInspectorService {
     required ServiceExtensionCallback callback,
   }) {
     _registerServiceExtensionCallback(
-      name: 'inspector.$name',
-      callback: callback,
+      'inspector.$name',
+      callback,
     );
   }
 

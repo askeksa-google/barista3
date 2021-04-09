@@ -65,7 +65,7 @@ typedef TaskCallback<T> = T Function();
 ///
 ///  * [defaultSchedulingStrategy], the default [SchedulingStrategy] for [SchedulerBinding.schedulingStrategy].
 typedef SchedulingStrategy = bool Function(
-    {required int priority, required SchedulerBinding scheduler});
+    int priority, SchedulerBinding scheduler);
 
 class _TaskEntry<T> {
   _TaskEntry(this.task, this.priority, this.debugLabel, this.flow) {
@@ -419,7 +419,7 @@ mixin SchedulerBinding on BindingBase {
   bool handleEventLoopCallback() {
     if (_taskQueue.isEmpty || locked) return false;
     final _TaskEntry<dynamic> entry = _taskQueue.first;
-    if (schedulingStrategy(priority: entry.priority, scheduler: this)) {
+    if (schedulingStrategy(entry.priority, this)) {
       try {
         _taskQueue.removeFirst();
         entry.run();
@@ -1139,8 +1139,7 @@ mixin SchedulerBinding on BindingBase {
 /// If there are any frame callbacks registered, only runs tasks with
 /// a [Priority] of [Priority.animation] or higher. Otherwise, runs
 /// all tasks.
-bool defaultSchedulingStrategy(
-    {required int priority, required SchedulerBinding scheduler}) {
+bool defaultSchedulingStrategy(int priority, SchedulerBinding scheduler) {
   if (scheduler.transientCallbackCount > 0)
     return priority >= Priority.animation.value;
   return true;

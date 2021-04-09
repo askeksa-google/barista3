@@ -433,8 +433,8 @@ mixin WidgetsBinding
 
     if (!kReleaseMode) {
       registerSignalServiceExtension(
-        name: 'debugDumpApp',
-        callback: () {
+        'debugDumpApp',
+        () {
           debugDumpApp();
         },
       );
@@ -452,8 +452,8 @@ mixin WidgetsBinding
       }
 
       registerServiceExtension(
-        name: 'didSendFirstFrameEvent',
-        callback: (_) {
+        'didSendFirstFrameEvent',
+        (_) {
           return <String, dynamic>{
             // This is defined to return a STRING, not a boolean.
             // Devtools, the Intellij plugin, and the flutter tool all depend
@@ -466,8 +466,8 @@ mixin WidgetsBinding
       // This returns 'true' when the first frame is rasterized, and the trace
       // event 'Rasterized first useful frame' is sent out.
       registerServiceExtension(
-        name: 'didSendFirstFrameRasterizedEvent',
-        callback: (_) {
+        'didSendFirstFrameRasterizedEvent',
+        (_) {
           return <String, dynamic>{
             // This is defined to return a STRING, not a boolean.
             // Devtools, the Intellij plugin, and the flutter tool all depend
@@ -478,8 +478,8 @@ mixin WidgetsBinding
       );
 
       registerServiceExtension(
-        name: 'fastReassemble',
-        callback: (Map<String, Object> params) {
+        'fastReassemble',
+        (Map<String, Object> params) {
           final String? className = params['className'] as String?;
           void markElementsDirty(Element element) {
             if (element.widget.runtimeType.toString() == className) {

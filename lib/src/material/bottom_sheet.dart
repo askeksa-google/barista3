@@ -32,9 +32,9 @@ typedef BottomSheetDragStartHandler = void Function(DragStartDetails details);
 ///
 /// Used by [BottomSheet.onDragEnd].
 typedef BottomSheetDragEndHandler = void Function(
-  DragEndDetails details, {
-  required bool isClosing,
-});
+  DragEndDetails details,
+  bool isClosing,
+);
 
 /// A material design bottom sheet.
 ///
@@ -230,7 +230,7 @@ class _BottomSheetState extends State<BottomSheet> {
     if (widget.onDragEnd != null) {
       widget.onDragEnd!(
         details,
-        isClosing: isClosing,
+        isClosing,
       );
     }
 
@@ -362,7 +362,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
     animationCurve = Curves.linear;
   }
 
-  void handleDragEnd(DragEndDetails details, {bool? isClosing}) {
+  void handleDragEnd(DragEndDetails details, bool? isClosing) {
     // Allow the bottom sheet to animate smoothly from its current position.
     animationCurve = _BottomSheetSuspendedCurve(
       widget.route!.animation!.value,

@@ -116,8 +116,8 @@ mixin RendererBinding
         },
       );
       registerSignalServiceExtension(
-        name: 'debugDumpLayerTree',
-        callback: () {
+        'debugDumpLayerTree',
+        () {
           debugDumpLayerTree();
         },
       );
@@ -127,22 +127,22 @@ mixin RendererBinding
     if (!kReleaseMode) {
       // these service extensions work in debug or profile mode
       registerSignalServiceExtension(
-        name: 'debugDumpRenderTree',
-        callback: () {
+        'debugDumpRenderTree',
+        () {
           debugDumpRenderTree();
         },
       );
 
       registerSignalServiceExtension(
-        name: 'debugDumpSemanticsTreeInTraversalOrder',
-        callback: () {
+        'debugDumpSemanticsTreeInTraversalOrder',
+        () {
           debugDumpSemanticsTree(DebugSemanticsDumpOrder.traversalOrder);
         },
       );
 
       registerSignalServiceExtension(
-        name: 'debugDumpSemanticsTreeInInverseHitTestOrder',
-        callback: () {
+        'debugDumpSemanticsTreeInInverseHitTestOrder',
+        () {
           debugDumpSemanticsTree(DebugSemanticsDumpOrder.inverseHitTest);
         },
       );

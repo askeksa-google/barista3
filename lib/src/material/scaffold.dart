@@ -3387,7 +3387,7 @@ class _StandardBottomSheetState extends State<_StandardBottomSheet> {
     animationCurve = Curves.linear;
   }
 
-  void _handleDragEnd(DragEndDetails details, {bool? isClosing}) {
+  void _handleDragEnd(DragEndDetails details, bool? isClosing) {
     // Allow the bottom sheet to animate smoothly from its current position.
     animationCurve = _BottomSheetSuspendedCurve(
       widget.animationController.value,

@@ -166,24 +166,24 @@ abstract class BindingBase {
 
     assert(() {
       registerSignalServiceExtension(
-        name: 'reassemble',
-        callback: reassembleApplication,
+        'reassemble',
+        reassembleApplication,
       );
       return true;
     }());
 
     if (!kReleaseMode && !kIsWeb) {
       registerSignalServiceExtension(
-        name: 'exit',
-        callback: _exitApplication,
+        'exit',
+        _exitApplication,
       );
     }
 
     assert(() {
       const String platformOverrideExtensionName = 'platformOverride';
       registerServiceExtension(
-        name: platformOverrideExtensionName,
-        callback: (Map<String, String> parameters) {
+        platformOverrideExtensionName,
+        (Map<String, String> parameters) {
           if (parameters.containsKey('value')) {
             switch (parameters['value']) {
               case 'android':
@@ -226,8 +226,8 @@ abstract class BindingBase {
 
       const String brightnessOverrideExtensionName = 'brightnessOverride';
       registerServiceExtension(
-        name: brightnessOverrideExtensionName,
-        callback: (Map<String, String> parameters) {
+        brightnessOverrideExtensionName,
+        (Map<String, String> parameters) {
           if (parameters.containsKey('value')) {
             switch (parameters['value']) {
               case 'Brightness.light':
@@ -347,15 +347,15 @@ abstract class BindingBase {
   ///
   /// {@macro flutter.foundation.BindingBase.registerServiceExtension}
   @protected
-  void registerSignalServiceExtension({
-    required String name,
-    required AsyncCallback callback,
-  }) {
+  void registerSignalServiceExtension(
+    String name,
+    AsyncCallback callback,
+  ) {
     assert(name != null);
     assert(callback != null);
     registerServiceExtension(
-      name: name,
-      callback: (Map<String, String> parameters) {
+      name,
+      (Map<String, String> parameters) {
         callback();
         return <String, dynamic>{};
       },
@@ -386,8 +386,8 @@ abstract class BindingBase {
     assert(getter != null);
     assert(setter != null);
     registerServiceExtension(
-      name: name,
-      callback: (Map<String, String> parameters) {
+      name,
+      (Map<String, String> parameters) {
         if (parameters.containsKey('enabled')) {
           setter(parameters['enabled'] == 'true');
           _postExtensionStateChangedEvent(name, getter() ? 'true' : 'false');
@@ -420,8 +420,8 @@ abstract class BindingBase {
     assert(getter != null);
     assert(setter != null);
     registerServiceExtension(
-      name: name,
-      callback: (Map<String, String> parameters) {
+      name,
+      (Map<String, String> parameters) {
         if (parameters.containsKey(name)) {
           setter(double.parse(parameters[name]!));
           _postExtensionStateChangedEvent(name, (getter()).toString());
@@ -482,8 +482,8 @@ abstract class BindingBase {
     assert(getter != null);
     assert(setter != null);
     registerServiceExtension(
-      name: name,
-      callback: (Map<String, String> parameters) {
+      name,
+      (Map<String, String> parameters) {
         if (parameters.containsKey('value')) {
           setter(parameters['value']!);
           _postExtensionStateChangedEvent(name, getter());
@@ -545,10 +545,8 @@ abstract class BindingBase {
   /// service extension in release builds.
   /// {@endtemplate}
   @protected
-  void registerServiceExtension({
-    required String name,
-    required ServiceExtensionCallback callback,
-  }) {
+  void registerServiceExtension(
+      String name, ServiceExtensionCallback callback) {
     assert(name != null);
     assert(callback != null);
     final String methodName = 'ext.flutter.$name';
