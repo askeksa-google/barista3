@@ -943,7 +943,8 @@ class FlutterError extends Error
   /// example, the structured errors service extension sets its own method when
   /// the extension is enabled. If you want to change how Flutter responds to an
   /// error, use [onError] instead.
-  static FlutterExceptionHandler presentError = dumpErrorToConsole;
+  static FlutterExceptionHandler presentError =
+      (details) => dumpErrorToConsole(details);
 
   static int _errorCount = 0;
 

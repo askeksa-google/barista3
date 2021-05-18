@@ -903,7 +903,8 @@ class RenderOpacity extends RenderProxyBox {
         return;
       }
       assert(needsCompositing);
-      layer = context.pushOpacity(offset, _alpha, super.paint,
+      layer = context.pushOpacity(
+          offset, _alpha, (context, offset) => super.paint(context, offset),
           oldLayer: layer as OpacityLayer?);
     }
   }
@@ -1015,7 +1016,8 @@ mixin RenderAnimatedOpacityMixin<T extends RenderObject>
         return;
       }
       assert(needsCompositing);
-      layer = context.pushOpacity(offset, _alpha!, super.paint,
+      layer = context.pushOpacity(
+          offset, _alpha!, (context, offset) => super.paint(context, offset),
           oldLayer: layer as OpacityLayer?);
     }
   }
@@ -1125,7 +1127,8 @@ class RenderShaderMask extends RenderProxyBox {
         ..shader = _shaderCallback(Offset.zero & size)
         ..maskRect = offset & size
         ..blendMode = _blendMode;
-      context.pushLayer(layer!, super.paint, offset);
+      context.pushLayer(
+          layer!, (context, offset) => super.paint(context, offset), offset);
     } else {
       layer = null;
     }
@@ -1171,7 +1174,8 @@ class RenderBackdropFilter extends RenderProxyBox {
       assert(needsCompositing);
       layer ??= BackdropFilterLayer();
       layer!.filter = _filter;
-      context.pushLayer(layer!, super.paint, offset);
+      context.pushLayer(
+          layer!, (context, offset) => super.paint(context, offset), offset);
     } else {
       layer = null;
     }
@@ -1454,7 +1458,7 @@ class RenderClipRect extends _RenderCustomClip<Rect> {
         needsCompositing,
         offset,
         _clip!,
-        super.paint,
+        (context, offset) => super.paint(context, offset),
         clipBehavior: clipBehavior,
         oldLayer: layer as ClipRectLayer?,
       );
@@ -1546,7 +1550,7 @@ class RenderClipRRect extends _RenderCustomClip<RRect> {
         offset,
         _clip!.outerRect,
         _clip!,
-        super.paint,
+        (context, offset) => super.paint(context, offset),
         clipBehavior: clipBehavior,
         oldLayer: layer as ClipRRectLayer?,
       );
@@ -1629,7 +1633,7 @@ class RenderClipOval extends _RenderCustomClip<Rect> {
         offset,
         _clip!,
         _getClipPath(_clip!),
-        super.paint,
+        (context, offset) => super.paint(context, offset),
         clipBehavior: clipBehavior,
         oldLayer: layer as ClipPathLayer?,
       );
@@ -1706,7 +1710,7 @@ class RenderClipPath extends _RenderCustomClip<Path> {
         offset,
         Offset.zero & size,
         _clip!,
-        super.paint,
+        (context, offset) => super.paint(context, offset),
         clipBehavior: clipBehavior,
         oldLayer: layer as ClipPathLayer?,
       );
@@ -1927,7 +1931,8 @@ class RenderPhysicalModel extends _RenderPhysicalModelBase<RRect> {
         ..elevation = paintShadows ? elevation : 0.0
         ..color = color
         ..shadowColor = shadowColor;
-      context.pushLayer(layer!, super.paint, offset,
+      context.pushLayer(
+          layer!, (context, offset) => super.paint(context, offset), offset,
           childPaintBounds: offsetBounds);
       assert(() {
         layer!.debugCreator = debugCreator;
@@ -2027,7 +2032,8 @@ class RenderPhysicalShape extends _RenderPhysicalModelBase<Path> {
         ..elevation = paintShadows ? elevation : 0.0
         ..color = color
         ..shadowColor = shadowColor;
-      context.pushLayer(layer!, super.paint, offset,
+      context.pushLayer(
+          layer!, (context, offset) => super.paint(context, offset), offset,
           childPaintBounds: offsetBounds);
       assert(() {
         layer!.debugCreator = debugCreator;
@@ -2363,7 +2369,7 @@ class RenderTransform extends RenderProxyBox {
           needsCompositing,
           offset,
           transform,
-          super.paint,
+          (context, offset) => super.paint(context, offset),
           oldLayer: layer as TransformLayer?,
         );
       } else {
@@ -2596,8 +2602,8 @@ class RenderFittedBox extends RenderProxyBox {
       PaintingContext context, Offset offset) {
     final Offset? childOffset = MatrixUtils.getAsTranslation(_transform!);
     if (childOffset == null)
-      return context.pushTransform(
-          needsCompositing, offset, _transform!, super.paint,
+      return context.pushTransform(needsCompositing, offset, _transform!,
+          (context, offset) => super.paint(context, offset),
           oldLayer: layer is TransformLayer ? layer! as TransformLayer : null);
     else
       super.paint(context, offset + childOffset);
@@ -4925,7 +4931,8 @@ class RenderLeaderLayer extends RenderProxyBox {
         ..link = link
         ..offset = offset;
     }
-    context.pushLayer(layer!, super.paint, Offset.zero);
+    context.pushLayer(
+        layer!, (context, offset) => super.paint(context, offset), Offset.zero);
     assert(layer != null);
   }
 
@@ -5125,7 +5132,7 @@ class RenderFollowerLayer extends RenderProxyBox {
     }
     context.pushLayer(
       layer!,
-      super.paint,
+      (context, offset) => super.paint(context, offset),
       Offset.zero,
       childPaintBounds: const Rect.fromLTRB(
         // We don't know where we'll end up, so we have no idea what our cull rect should be.
@@ -5207,6 +5214,7 @@ class RenderAnnotatedRegion<T extends Object> extends RenderProxyBox {
       size: sized ? size : null,
       offset: sized ? offset : null,
     );
-    context.pushLayer(layer, super.paint, offset);
+    context.pushLayer(
+        layer, (context, offset) => super.paint(context, offset), offset);
   }
 }
