@@ -989,10 +989,12 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
   // Compute the largest width and height needed to paint the slider shapes,
   // other than the track shape. It is assumed that these shapes are vertically
   // centered on the track.
-  double get _maxSliderPartWidth =>
-      _sliderPartSizes.map((Size size) => size.width).reduce(math.max);
-  double get _maxSliderPartHeight =>
-      _sliderPartSizes.map((Size size) => size.height).reduce(math.max);
+  double get _maxSliderPartWidth => _sliderPartSizes
+      .map((Size size) => size.width)
+      .reduce((a, b) => math.max(a, b));
+  double get _maxSliderPartHeight => _sliderPartSizes
+      .map((Size size) => size.height)
+      .reduce((a, b) => math.max(a, b));
   List<Size> get _sliderPartSizes => <Size>[
         _sliderTheme.overlayShape!.getPreferredSize(isInteractive, isDiscrete),
         _sliderTheme.thumbShape!.getPreferredSize(isInteractive, isDiscrete),
