@@ -668,7 +668,7 @@ class _ModalScopeStatus extends InheritedWidget {
     required this.canPop,
     required this.route,
     required Widget child,
-  })   : assert(isCurrent != null),
+  })  : assert(isCurrent != null),
         assert(canPop != null),
         assert(route != null),
         assert(child != null),
@@ -1557,10 +1557,12 @@ abstract class ModalRoute<T> extends TransitionRoute<T>
   late OverlayEntry _modalScope;
 
   @override
-  Iterable<OverlayEntry> createOverlayEntries() sync* {
-    yield _modalBarrier = OverlayEntry(builder: _buildModalBarrier);
-    yield _modalScope =
-        OverlayEntry(builder: _buildModalScope, maintainState: maintainState);
+  Iterable<OverlayEntry> createOverlayEntries() {
+    return [
+      _modalBarrier = OverlayEntry(builder: _buildModalBarrier),
+      _modalScope =
+          OverlayEntry(builder: _buildModalScope, maintainState: maintainState)
+    ];
   }
 
   @override

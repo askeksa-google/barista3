@@ -2784,15 +2784,18 @@ class BuildOwner {
             ErrorDescription('while rebuilding dirty elements'),
             e,
             stack,
-            informationCollector: () sync* {
+            informationCollector: () {
               if (index < _dirtyElements.length) {
-                yield DiagnosticsDebugCreator(
-                    DebugCreator(_dirtyElements[index]));
-                yield _dirtyElements[index].describeElement(
-                    'The element being rebuilt at the time was index $index of $dirtyCount');
+                return [
+                  DiagnosticsDebugCreator(DebugCreator(_dirtyElements[index])),
+                  _dirtyElements[index].describeElement(
+                      'The element being rebuilt at the time was index $index of $dirtyCount')
+                ];
               } else {
-                yield ErrorHint(
-                    'The element being rebuilt at the time was index $index of $dirtyCount, but _dirtyElements only had ${_dirtyElements.length} entries. This suggests some confusion in the framework internals.');
+                return [
+                  ErrorHint(
+                      'The element being rebuilt at the time was index $index of $dirtyCount, but _dirtyElements only had ${_dirtyElements.length} entries. This suggests some confusion in the framework internals.')
+                ];
               }
             },
           );
@@ -4745,8 +4748,8 @@ abstract class ComponentElement extends Element {
           ErrorDescription('building $this'),
           e,
           stack,
-          informationCollector: () sync* {
-            yield DiagnosticsDebugCreator(DebugCreator(this));
+          informationCollector: () {
+            return [DiagnosticsDebugCreator(DebugCreator(this))];
           },
         ),
       );
@@ -4765,8 +4768,8 @@ abstract class ComponentElement extends Element {
           ErrorDescription('building $this'),
           e,
           stack,
-          informationCollector: () sync* {
-            yield DiagnosticsDebugCreator(DebugCreator(this));
+          informationCollector: () {
+            return [DiagnosticsDebugCreator(DebugCreator(this))];
           },
         ),
       );

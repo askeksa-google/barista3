@@ -42,7 +42,7 @@ abstract class ConstrainedLayoutBuilder<ConstraintType extends Constraints>
   const ConstrainedLayoutBuilder({
     Key? key,
     required this.builder,
-  })   : assert(builder != null),
+  })  : assert(builder != null),
         super(key: key);
 
   @override
@@ -134,8 +134,8 @@ class _LayoutBuilderElement<ConstraintType extends Constraints>
             ErrorDescription('building $widget'),
             e,
             stack,
-            informationCollector: () sync* {
-              yield DiagnosticsDebugCreator(DebugCreator(this));
+            informationCollector: () {
+              return [DiagnosticsDebugCreator(DebugCreator(this))];
             },
           ),
         );
@@ -149,8 +149,8 @@ class _LayoutBuilderElement<ConstraintType extends Constraints>
             ErrorDescription('building $widget'),
             e,
             stack,
-            informationCollector: () sync* {
-              yield DiagnosticsDebugCreator(DebugCreator(this));
+            informationCollector: () {
+              return [DiagnosticsDebugCreator(DebugCreator(this))];
             },
           ),
         );
@@ -322,7 +322,7 @@ class LayoutBuilder extends ConstrainedLayoutBuilder<BoxConstraints> {
   const LayoutBuilder({
     Key? key,
     required LayoutWidgetBuilder builder,
-  })   : assert(builder != null),
+  })  : assert(builder != null),
         super(key: key, builder: builder);
 
   @override

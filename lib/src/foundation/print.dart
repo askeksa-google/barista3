@@ -77,11 +77,13 @@ enum _WordWrapParseMode { inSpace, inWord, atBreak }
 ///
 /// The default [debugPrint] implementation uses this for its line wrapping.
 Iterable<String> debugWordWrap(String message, int width,
-    {String wrapIndent = ''}) sync* {
+    {String wrapIndent = ''}) {
   if (message.length < width || message.trimLeft()[0] == '#') {
-    yield message;
-    return;
+    return [message];
   }
+
+  final List<String> items = [];
+
   final Match prefixMatch = _indentPattern.matchAsPrefix(message)!;
   final String prefix = wrapIndent + ' ' * prefixMatch.group(0)!.length;
   int start = 0;
@@ -114,12 +116,12 @@ Iterable<String> debugWordWrap(String message, int width,
             lastWordEnd = index;
           }
           if (addPrefix) {
-            yield prefix + message.substring(start, lastWordEnd);
+            items.add(prefix + message.substring(start, lastWordEnd));
           } else {
-            yield message.substring(start, lastWordEnd);
+            items.add(message.substring(start, lastWordEnd));
             addPrefix = true;
           }
-          if (lastWordEnd >= message.length) return;
+          if (lastWordEnd >= message.length) return items;
           // just yielded a line
           if (lastWordEnd == index) {
             // we broke at current position

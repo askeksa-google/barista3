@@ -646,7 +646,7 @@ class HeroControllerScope extends InheritedWidget {
     Key? key,
     required HeroController this.controller,
     required Widget child,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         super(key: key, child: child);
 
   /// Creates a widget to prevent the subtree from receiving the hero controller
@@ -654,7 +654,7 @@ class HeroControllerScope extends InheritedWidget {
   const HeroControllerScope.none({
     Key? key,
     required Widget child,
-  })   : controller = null,
+  })  : controller = null,
         super(key: key, child: child);
 
   /// The hero controller that is hosted inside this widget.
@@ -3611,8 +3611,10 @@ class NavigatorState extends State<Navigator>
   /// The overlay this navigator uses for its visual presentation.
   OverlayState? get overlay => _overlayKey.currentState;
 
-  Iterable<OverlayEntry> get _allRouteOverlayEntries sync* {
-    for (final _RouteEntry entry in _history) yield* entry.route.overlayEntries;
+  Iterable<OverlayEntry> get _allRouteOverlayEntries {
+    return [
+      for (final _RouteEntry entry in _history) ...entry.route.overlayEntries
+    ];
   }
 
   String? _lastAnnouncedRouteName;
@@ -5435,7 +5437,7 @@ class _NamedRestorationInformation extends _RestorationInformation {
     required this.name,
     required this.arguments,
     required this.restorationScopeId,
-  })   : assert(name != null),
+  })  : assert(name != null),
         super(_RouteRestorationType.named);
 
   factory _NamedRestorationInformation.fromSerializableData(
@@ -5477,7 +5479,7 @@ class _AnonymousRestorationInformation extends _RestorationInformation {
     required this.routeBuilder,
     required this.arguments,
     required this.restorationScopeId,
-  })   : assert(routeBuilder != null),
+  })  : assert(routeBuilder != null),
         super(_RouteRestorationType.anonymous);
 
   factory _AnonymousRestorationInformation.fromSerializableData(

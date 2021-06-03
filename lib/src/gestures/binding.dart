@@ -353,9 +353,11 @@ mixin GestureBinding on BindingBase
               'while dispatching a non-hit-tested pointer event'),
           event: event,
           hitTestEntry: null,
-          informationCollector: () sync* {
-            yield DiagnosticsProperty<PointerEvent>('Event', event,
-                style: DiagnosticsTreeStyle.errorProperty);
+          informationCollector: () {
+            return [
+              DiagnosticsProperty<PointerEvent>('Event', event,
+                  style: DiagnosticsTreeStyle.errorProperty)
+            ];
           },
         ));
       }
@@ -372,11 +374,13 @@ mixin GestureBinding on BindingBase
           context: ErrorDescription('while dispatching a pointer event'),
           event: event,
           hitTestEntry: entry,
-          informationCollector: () sync* {
-            yield DiagnosticsProperty<PointerEvent>('Event', event,
-                style: DiagnosticsTreeStyle.errorProperty);
-            yield DiagnosticsProperty<HitTestTarget>('Target', entry.target,
-                style: DiagnosticsTreeStyle.errorProperty);
+          informationCollector: () {
+            return [
+              DiagnosticsProperty<PointerEvent>('Event', event,
+                  style: DiagnosticsTreeStyle.errorProperty),
+              DiagnosticsProperty<HitTestTarget>('Target', entry.target,
+                  style: DiagnosticsTreeStyle.errorProperty)
+            ];
           },
         ));
       }

@@ -71,7 +71,7 @@ class _MulticastCanvas implements Canvas {
   _MulticastCanvas({
     required Canvas main,
     required Canvas screenshot,
-  })   : assert(main != null),
+  })  : assert(main != null),
         assert(screenshot != null),
         _main = main,
         _screenshot = screenshot;
@@ -340,7 +340,7 @@ class _ScreenshotContainerLayer extends OffsetLayer {
 class _ScreenshotData {
   _ScreenshotData({
     required this.target,
-  })   : assert(target != null),
+  })  : assert(target != null),
         containerLayer = _ScreenshotContainerLayer();
 
   /// Target to take a screenshot of.
@@ -395,7 +395,7 @@ class _ScreenshotPaintingContext extends PaintingContext {
     required ContainerLayer containerLayer,
     required Rect estimatedBounds,
     required _ScreenshotData screenshotData,
-  })   : _data = screenshotData,
+  })  : _data = screenshotData,
         super(containerLayer, estimatedBounds);
 
   final _ScreenshotData _data;
@@ -2219,7 +2219,7 @@ class WidgetInspector extends StatefulWidget {
     Key? key,
     required this.child,
     required this.selectButtonBuilder,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget that is being inspected.
@@ -2647,7 +2647,7 @@ class _InspectorOverlayLayer extends Layer {
     required this.overlayRect,
     required this.selection,
     required this.rootRenderObject,
-  })   : assert(overlayRect != null),
+  })  : assert(overlayRect != null),
         assert(selection != null) {
     bool inDebugMode = false;
     assert(() {
@@ -2951,23 +2951,24 @@ bool _isDebugCreator(DiagnosticsNode node) => node is DiagnosticsDebugCreator;
 /// This function will be registered to [FlutterErrorDetails.propertiesTransformers]
 /// in [WidgetsBinding.initInstances].
 Iterable<DiagnosticsNode> transformDebugCreator(
-    Iterable<DiagnosticsNode> properties) sync* {
+    Iterable<DiagnosticsNode> properties) {
+  final List<DiagnosticsNode> items = [];
   final List<DiagnosticsNode> pending = <DiagnosticsNode>[];
   bool foundStackTrace = false;
   for (final DiagnosticsNode node in properties) {
     if (!foundStackTrace && node is DiagnosticsStackTrace)
       foundStackTrace = true;
     if (_isDebugCreator(node)) {
-      yield* _parseDiagnosticsNode(node)!;
+      items.addAll(_parseDiagnosticsNode(node)!);
     } else {
       if (foundStackTrace) {
         pending.add(node);
       } else {
-        yield node;
+        items.add(node);
       }
     }
   }
-  yield* pending;
+  return items..addAll(pending);
 }
 
 /// Transform the input [DiagnosticsNode].

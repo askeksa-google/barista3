@@ -884,12 +884,14 @@ class _PrefixedStringBuilder {
   /// used as wrap boundaries.
   static Iterable<String> _wordWrapLine(
       String message, List<int> wrapRanges, int width,
-      {int startOffset = 0, int otherLineOffset = 0}) sync* {
+      {int startOffset = 0, int otherLineOffset = 0}) {
     if (message.length + startOffset < width) {
       // Nothing to do. The line doesn't wrap.
-      yield message;
-      return;
+      return [message];
     }
+
+    final List<String> items = [];
+
     int startForLengthCalculations = -startOffset;
     bool addPrefix = false;
     int index = 0;
@@ -937,9 +939,9 @@ class _PrefixedStringBuilder {
               lastWordEnd = index;
             }
             final String line = message.substring(start, lastWordEnd);
-            yield line;
+            items.add(line);
             addPrefix = true;
-            if (lastWordEnd >= message.length) return;
+            if (lastWordEnd >= message.length) return items;
             // just yielded a line
             if (lastWordEnd == index) {
               // we broke at current position
@@ -2564,12 +2566,11 @@ class FlagsSummary<T> extends DiagnosticsProperty<Map<String, T?>> {
   //
   // For a null value, it is omitted unless `includeEmtpy` is true and
   // [ifEntryNull] contains a corresponding description.
-  Iterable<String> _formattedValues() sync* {
-    for (final MapEntry<String, T?> entry in value.entries) {
-      if (entry.value != null) {
-        yield entry.key;
-      }
-    }
+  Iterable<String> _formattedValues() {
+    return [
+      for (final MapEntry<String, T?> entry in value.entries)
+        if (entry.value != null) entry.key
+    ];
   }
 }
 
@@ -2925,7 +2926,7 @@ class DiagnosticableNode<T extends Diagnosticable> extends DiagnosticsNode {
     String? name,
     required this.value,
     required DiagnosticsTreeStyle? style,
-  })   : assert(value != null),
+  })  : assert(value != null),
         super(
           name: name,
           style: style,

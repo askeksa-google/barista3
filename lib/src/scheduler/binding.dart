@@ -436,13 +436,15 @@ mixin SchedulerBinding on BindingBase {
           context: ErrorDescription('during a task callback'),
           informationCollector: (callbackStack == null)
               ? null
-              : () sync* {
-                  yield DiagnosticsStackTrace(
-                    '\nThis exception was thrown in the context of a scheduler callback. '
-                    'When the scheduler callback was _registered_ (as opposed to when the '
-                    'exception was thrown), this was the stack',
-                    callbackStack,
-                  );
+              : () {
+                  return [
+                    DiagnosticsStackTrace(
+                      '\nThis exception was thrown in the context of a scheduler callback. '
+                      'When the scheduler callback was _registered_ (as opposed to when the '
+                      'exception was thrown), this was the stack',
+                      callbackStack,
+                    )
+                  ];
                 },
         ));
       }
@@ -1117,13 +1119,15 @@ mixin SchedulerBinding on BindingBase {
         context: ErrorDescription('during a scheduler callback'),
         informationCollector: (callbackStack == null)
             ? null
-            : () sync* {
-                yield DiagnosticsStackTrace(
-                  '\nThis exception was thrown in the context of a scheduler callback. '
-                  'When the scheduler callback was _registered_ (as opposed to when the '
-                  'exception was thrown), this was the stack',
-                  callbackStack,
-                );
+            : () {
+                return [
+                  DiagnosticsStackTrace(
+                    '\nThis exception was thrown in the context of a scheduler callback. '
+                    'When the scheduler callback was _registered_ (as opposed to when the '
+                    'exception was thrown), this was the stack',
+                    callbackStack,
+                  )
+                ];
               },
       ));
     }

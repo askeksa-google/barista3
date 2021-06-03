@@ -648,7 +648,7 @@ class _RouterScope extends InheritedWidget {
     required this.routerDelegate,
     required this.routerState,
     required Widget child,
-  })   : assert(
+  })  : assert(
             routeInformationProvider == null || routeInformationParser != null),
         assert(routerDelegate != null),
         assert(routerState != null),
@@ -724,12 +724,14 @@ class _CallbackHookProvider<T> {
         library: 'widget library',
         context:
             ErrorDescription('while invoking the callback for $runtimeType'),
-        informationCollector: () sync* {
-          yield DiagnosticsProperty<_CallbackHookProvider<T>>(
-            'The $runtimeType that invoked the callback was:',
-            this,
-            style: DiagnosticsTreeStyle.errorProperty,
-          );
+        informationCollector: () {
+          return [
+            DiagnosticsProperty<_CallbackHookProvider<T>>(
+              'The $runtimeType that invoked the callback was:',
+              this,
+              style: DiagnosticsTreeStyle.errorProperty,
+            )
+          ];
         },
       ));
       return defaultValue;

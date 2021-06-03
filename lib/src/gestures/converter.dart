@@ -46,7 +46,9 @@ class PointerEventConverter {
   /// from physical coordinates to logical pixels. See the discussion at
   /// [PointerEvent] for more details on the [PointerEvent] coordinate space.
   static Iterable<PointerEvent> expand(
-      Iterable<ui.PointerData> data, double devicePixelRatio) sync* {
+      Iterable<ui.PointerData> data, double devicePixelRatio) {
+    final List<PointerEvent> items = [];
+
     for (final ui.PointerData datum in data) {
       final Offset position =
           Offset(datum.physicalX, datum.physicalY) / devicePixelRatio;
@@ -68,7 +70,7 @@ class PointerEventConverter {
           datum.signalKind == ui.PointerSignalKind.none) {
         switch (datum.change) {
           case ui.PointerChange.add:
-            yield PointerAddedEvent(
+            items.add(PointerAddedEvent(
               timeStamp: timeStamp,
               kind: kind,
               device: datum.device,
@@ -83,10 +85,10 @@ class PointerEventConverter {
               orientation: datum.orientation,
               tilt: datum.tilt,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.hover:
-            yield PointerHoverEvent(
+            items.add(PointerHoverEvent(
               timeStamp: timeStamp,
               kind: kind,
               device: datum.device,
@@ -107,10 +109,10 @@ class PointerEventConverter {
               tilt: datum.tilt,
               synthesized: datum.synthesized,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.down:
-            yield PointerDownEvent(
+            items.add(PointerDownEvent(
               timeStamp: timeStamp,
               pointer: datum.pointerIdentifier,
               kind: kind,
@@ -130,10 +132,10 @@ class PointerEventConverter {
               orientation: datum.orientation,
               tilt: datum.tilt,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.move:
-            yield PointerMoveEvent(
+            items.add(PointerMoveEvent(
               timeStamp: timeStamp,
               pointer: datum.pointerIdentifier,
               kind: kind,
@@ -156,10 +158,10 @@ class PointerEventConverter {
               platformData: datum.platformData,
               synthesized: datum.synthesized,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.up:
-            yield PointerUpEvent(
+            items.add(PointerUpEvent(
               timeStamp: timeStamp,
               pointer: datum.pointerIdentifier,
               kind: kind,
@@ -180,10 +182,10 @@ class PointerEventConverter {
               orientation: datum.orientation,
               tilt: datum.tilt,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.cancel:
-            yield PointerCancelEvent(
+            items.add(PointerCancelEvent(
               timeStamp: timeStamp,
               pointer: datum.pointerIdentifier,
               kind: kind,
@@ -203,10 +205,10 @@ class PointerEventConverter {
               orientation: datum.orientation,
               tilt: datum.tilt,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerChange.remove:
-            yield PointerRemovedEvent(
+            items.add(PointerRemovedEvent(
               timeStamp: timeStamp,
               kind: kind,
               device: datum.device,
@@ -218,7 +220,7 @@ class PointerEventConverter {
               radiusMin: radiusMin,
               radiusMax: radiusMax,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
         }
       } else {
@@ -227,14 +229,14 @@ class PointerEventConverter {
             final Offset scrollDelta =
                 Offset(datum.scrollDeltaX, datum.scrollDeltaY) /
                     devicePixelRatio;
-            yield PointerScrollEvent(
+            items.add(PointerScrollEvent(
               timeStamp: timeStamp,
               kind: kind,
               device: datum.device,
               position: position,
               scrollDelta: scrollDelta,
               embedderId: datum.embedderId,
-            );
+            ));
             break;
           case ui.PointerSignalKind.none:
             assert(
@@ -246,6 +248,8 @@ class PointerEventConverter {
         }
       }
     }
+
+    return items;
   }
 
   static double _toLogicalPixels(
