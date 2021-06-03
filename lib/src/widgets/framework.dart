@@ -1603,31 +1603,30 @@ abstract class ParentDataWidget<T extends ParentData> extends ProxyWidget {
     required ParentData? parentData,
     RenderObjectWidget? parentDataCreator,
     DiagnosticsNode? ownershipChain,
-  }) sync* {
+  }) {
     assert(T != dynamic);
     assert(T != ParentData);
     assert(debugTypicalAncestorWidgetClass != null);
 
     final String description =
         'The ParentDataWidget $this wants to apply ParentData of type $T to a RenderObject';
-    if (parentData == null) {
-      yield ErrorDescription(
-          '$description, which has not been set up to receive any ParentData.');
-    } else {
-      yield ErrorDescription(
-          '$description, which has been set up to accept ParentData of incompatible type ${parentData.runtimeType}.');
-    }
-    yield ErrorHint(
-        'Usually, this means that the $runtimeType widget has the wrong ancestor RenderObjectWidget. '
-        'Typically, $runtimeType widgets are placed directly inside $debugTypicalAncestorWidgetClass widgets.');
-    if (parentDataCreator != null) {
-      yield ErrorHint(
-          'The offending $runtimeType is currently placed inside a ${parentDataCreator.runtimeType} widget.');
-    }
-    if (ownershipChain != null) {
-      yield ErrorDescription(
-          'The ownership chain for the RenderObject that received the incompatible parent data was:\n  $ownershipChain');
-    }
+    return [
+      if (parentData == null)
+        ErrorDescription(
+            '$description, which has not been set up to receive any ParentData.')
+      else
+        ErrorDescription(
+            '$description, which has been set up to accept ParentData of incompatible type ${parentData.runtimeType}.'),
+      ErrorHint(
+          'Usually, this means that the $runtimeType widget has the wrong ancestor RenderObjectWidget. '
+          'Typically, $runtimeType widgets are placed directly inside $debugTypicalAncestorWidgetClass widgets.'),
+      if (parentDataCreator != null)
+        ErrorHint(
+            'The offending $runtimeType is currently placed inside a ${parentDataCreator.runtimeType} widget.'),
+      if (ownershipChain != null)
+        ErrorDescription(
+            'The ownership chain for the RenderObject that received the incompatible parent data was:\n  $ownershipChain')
+    ];
   }
 
   /// Write the data from this widget into the given render object's parent data.

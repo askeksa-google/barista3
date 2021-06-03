@@ -557,7 +557,7 @@ class DraggableDetails {
     this.wasAccepted = false,
     required this.velocity,
     required this.offset,
-  })   : assert(velocity != null),
+  })  : assert(velocity != null),
         assert(offset != null);
 
   /// Determines whether the [DragTarget] accepted this draggable.
@@ -739,7 +739,7 @@ class _DragAvatar<T extends Object> extends Drag {
     this.onDragUpdate,
     this.onDragEnd,
     required this.ignoringFeedbackSemantics,
-  })   : assert(overlayState != null),
+  })  : assert(overlayState != null),
         assert(ignoringFeedbackSemantics != null),
         assert(dragStartPoint != null),
         assert(feedbackOffset != null),
@@ -838,17 +838,20 @@ class _DragAvatar<T extends Object> extends Drag {
     _activeTarget = newTarget;
   }
 
-  Iterable<_DragTargetState<T>> _getDragTargets(
-      Iterable<HitTestEntry> path) sync* {
+  Iterable<_DragTargetState<T>> _getDragTargets(Iterable<HitTestEntry> path) {
+    final List<_DragTargetState<T>> items = [];
+
     // Look for the RenderBoxes that corresponds to the hit target (the hit target
     // widgets build RenderMetaData boxes for us for this purpose).
     for (final HitTestEntry entry in path) {
       final HitTestTarget target = entry.target;
       if (target is RenderMetaData) {
         final dynamic metaData = target.metaData;
-        if (metaData is _DragTargetState<T>) yield metaData;
+        if (metaData is _DragTargetState<T>) items.add(metaData);
       }
     }
+
+    return items;
   }
 
   void _leaveAllEntered() {

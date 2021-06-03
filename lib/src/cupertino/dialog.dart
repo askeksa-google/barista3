@@ -531,7 +531,7 @@ class _RenderCupertinoDialog extends RenderBox {
     double dividerThickness = 0.0,
     bool isInAccessibilityMode = false,
     required Color dividerColor,
-  })   : _contentSection = contentSection,
+  })  : _contentSection = contentSection,
         _actionsSection = actionsSection,
         _dividerThickness = dividerThickness,
         _isInAccessibilityMode = isInAccessibilityMode,
@@ -1134,7 +1134,7 @@ class CupertinoDialogAction extends StatelessWidget {
     this.isDestructiveAction = false,
     this.textStyle,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(isDefaultAction != null),
         assert(isDestructiveAction != null),
         super(key: key);
@@ -1394,7 +1394,7 @@ class _RenderCupertinoDialogActions extends RenderBox
     required Color dialogColor,
     required Color dialogPressedColor,
     required Color dividerColor,
-  })   : _dialogWidth = dialogWidth,
+  })  : _dialogWidth = dialogWidth,
         _buttonBackgroundPaint = Paint()
           ..color = dialogColor
           ..style = PaintingStyle.fill,
@@ -1451,17 +1451,21 @@ class _RenderCupertinoDialogActions extends RenderBox
     markNeedsPaint();
   }
 
-  Iterable<RenderBox> get _pressedButtons sync* {
+  Iterable<RenderBox> get _pressedButtons {
+    final List<RenderBox> items = [];
+
     RenderBox? currentChild = firstChild;
     while (currentChild != null) {
       assert(currentChild.parentData is _ActionButtonParentData);
       final _ActionButtonParentData parentData =
           currentChild.parentData! as _ActionButtonParentData;
       if (parentData.isPressed) {
-        yield currentChild;
+        items.add(currentChild);
       }
       currentChild = childAfter(currentChild);
     }
+
+    return items;
   }
 
   bool get _isButtonPressed {

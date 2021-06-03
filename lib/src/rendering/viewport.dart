@@ -105,7 +105,7 @@ class RevealedOffset {
   const RevealedOffset({
     required this.offset,
     required this.rect,
-  })   : assert(offset != null),
+  })  : assert(offset != null),
         assert(rect != null);
 
   /// Offset for the viewport to reveal a specific element in the viewport.
@@ -1763,34 +1763,40 @@ class RenderViewport
   }
 
   @override
-  Iterable<RenderSliver> get childrenInPaintOrder sync* {
-    if (firstChild == null) return;
+  Iterable<RenderSliver> get childrenInPaintOrder {
+    final List<RenderSliver> items = [];
+
+    if (firstChild == null) return items;
     RenderSliver? child = firstChild;
     while (child != center) {
-      yield child!;
+      items.add(child!);
       child = childAfter(child);
     }
     child = lastChild;
     while (true) {
-      yield child!;
-      if (child == center) return;
+      items.add(child!);
+      if (child == center) return items;
       child = childBefore(child);
     }
   }
 
   @override
-  Iterable<RenderSliver> get childrenInHitTestOrder sync* {
-    if (firstChild == null) return;
+  Iterable<RenderSliver> get childrenInHitTestOrder {
+    final List<RenderSliver> items = [];
+
+    if (firstChild == null) return items;
     RenderSliver? child = center;
     while (child != null) {
-      yield child;
+      items.add(child);
       child = childAfter(child);
     }
     child = childBefore(center!);
     while (child != null) {
-      yield child;
+      items.add(child);
       child = childBefore(child);
     }
+
+    return items;
   }
 
   @override
@@ -2074,20 +2080,28 @@ class RenderShrinkWrappingViewport
   String labelForChild(int index) => 'child $index';
 
   @override
-  Iterable<RenderSliver> get childrenInPaintOrder sync* {
+  Iterable<RenderSliver> get childrenInPaintOrder {
+    final List<RenderSliver> items = [];
+
     RenderSliver? child = firstChild;
     while (child != null) {
-      yield child;
+      items.add(child);
       child = childAfter(child);
     }
+
+    return items;
   }
 
   @override
-  Iterable<RenderSliver> get childrenInHitTestOrder sync* {
+  Iterable<RenderSliver> get childrenInHitTestOrder {
+    final List<RenderSliver> items = [];
+
     RenderSliver? child = lastChild;
     while (child != null) {
-      yield child;
+      items.add(child);
       child = childBefore(child);
     }
+
+    return items;
   }
 }

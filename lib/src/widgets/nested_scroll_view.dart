@@ -700,7 +700,7 @@ class _InheritedNestedScrollView extends InheritedWidget {
     Key? key,
     required this.state,
     required Widget child,
-  })   : assert(state != null),
+  })  : assert(state != null),
         assert(child != null),
         super(key: key, child: child);
 
@@ -1331,9 +1331,9 @@ class _NestedScrollController extends ScrollController {
     });
   }
 
-  Iterable<_NestedScrollPosition> get nestedPositions sync* {
+  Iterable<_NestedScrollPosition> get nestedPositions {
     // TODO(vegorov): use instance method version of castFrom when it is available.
-    yield* Iterable.castFrom<ScrollPosition, _NestedScrollPosition>(positions);
+    return Iterable.castFrom<ScrollPosition, _NestedScrollPosition>(positions);
   }
 }
 
@@ -2036,7 +2036,7 @@ class RenderSliverOverlapInjector extends RenderSliver {
   /// The [handle] must not be null.
   RenderSliverOverlapInjector({
     required SliverOverlapAbsorberHandle handle,
-  })   : assert(handle != null),
+  })  : assert(handle != null),
         _handle = handle;
 
   double? _currentLayoutExtent;

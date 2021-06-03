@@ -139,7 +139,9 @@ class LicenseEntryWithLineBreaks extends LicenseEntry {
   final String text;
 
   @override
-  Iterable<LicenseParagraph> get paragraphs sync* {
+  Iterable<LicenseParagraph> get paragraphs {
+    final List<LicenseParagraph> items = [];
+
     int lineStart = 0;
     int currentPosition = 0;
     int lastLineIndent = 0;
@@ -184,7 +186,7 @@ class LicenseEntryWithLineBreaks extends LicenseEntry {
             case '\n':
             case '\f':
               if (lines.isNotEmpty) {
-                yield getParagraph();
+                items.add(getParagraph());
               }
               if (text[currentPosition] == '\r' &&
                   currentPosition < text.length - 1 &&
@@ -209,7 +211,7 @@ class LicenseEntryWithLineBreaks extends LicenseEntry {
             startParagraph:
             default:
               if (lines.isNotEmpty && currentLineIndent > lastLineIndent) {
-                yield getParagraph();
+                items.add(getParagraph());
                 currentParagraphIndentation = null;
               }
               // The following is a wild heuristic for guessing the indentation level.
@@ -234,7 +236,7 @@ class LicenseEntryWithLineBreaks extends LicenseEntry {
               break;
             case '\f':
               addLine();
-              yield getParagraph();
+              items.add(getParagraph());
               lastLineIndent = 0;
               currentLineIndent = 0;
               currentParagraphIndentation = null;
@@ -251,14 +253,16 @@ class LicenseEntryWithLineBreaks extends LicenseEntry {
     switch (state) {
       case _LicenseEntryWithLineBreaksParserState.beforeParagraph:
         if (lines.isNotEmpty) {
-          yield getParagraph();
+          items.add(getParagraph());
         }
         break;
       case _LicenseEntryWithLineBreaksParserState.inParagraph:
         addLine();
-        yield getParagraph();
+        items.add(getParagraph());
         break;
     }
+
+    return items;
   }
 }
 
@@ -310,10 +314,11 @@ class LicenseRegistry {
   /// Returns the licenses that have been registered.
   ///
   /// Generating the list of licenses is expensive.
-  static Iterable<LicenseEntry> get licenses sync* {
-    if (_collectors == null) return;
-    for (final LicenseEntryCollector collector in _collectors!)
-      yield* collector();
+  static Iterable<LicenseEntry> get licenses {
+    if (_collectors == null) return [];
+    return [
+      for (final LicenseEntryCollector collector in _collectors!) ...collector()
+    ];
   }
 
   /// Resets the internal state of [LicenseRegistry]. Intended for use in

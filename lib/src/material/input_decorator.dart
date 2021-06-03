@@ -731,18 +731,20 @@ class _RenderDecoration extends RenderBox {
   }
 
   // The returned list is ordered for hit testing.
-  Iterable<RenderBox> get _children sync* {
-    if (icon != null) yield icon!;
-    if (input != null) yield input!;
-    if (prefixIcon != null) yield prefixIcon!;
-    if (suffixIcon != null) yield suffixIcon!;
-    if (prefix != null) yield prefix!;
-    if (suffix != null) yield suffix!;
-    if (label != null) yield label!;
-    if (hint != null) yield hint!;
-    if (helperError != null) yield helperError!;
-    if (counter != null) yield counter!;
-    if (container != null) yield container!;
+  Iterable<RenderBox> get _children {
+    return [
+      if (icon != null) icon!,
+      if (input != null) input!,
+      if (prefixIcon != null) prefixIcon!,
+      if (suffixIcon != null) suffixIcon!,
+      if (prefix != null) prefix!,
+      if (suffix != null) suffix!,
+      if (label != null) label!,
+      if (hint != null) hint!,
+      if (helperError != null) helperError!,
+      if (counter != null) counter!,
+      if (container != null) container!
+    ];
   }
 
   _Decoration get decoration => _decoration;
@@ -1691,7 +1693,7 @@ class _Decorator extends RenderObjectWidget {
     required this.textBaseline,
     required this.isFocused,
     required this.expands,
-  })   : assert(decoration != null),
+  })  : assert(decoration != null),
         assert(textDirection != null),
         assert(textBaseline != null),
         assert(expands != null),

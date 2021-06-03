@@ -541,22 +541,20 @@ mixin SchedulerBinding on BindingBase {
         FlutterError.reportError(FlutterErrorDetails(
           exception: reason,
           library: 'scheduler library',
-          informationCollector: () sync* {
-            if (count == 1) {
-              // TODO(jacobr): I have added an extra line break in this case.
-              yield ErrorDescription('There was one transient callback left. '
-                  'The stack trace for when it was registered is as follows:');
-            } else {
-              yield ErrorDescription(
-                  'There were $count transient callbacks left. '
-                  'The stack traces for when they were registered are as follows:');
-            }
-            for (final int id in callbacks.keys) {
-              final _FrameCallbackEntry entry = callbacks[id]!;
-              yield DiagnosticsStackTrace(
-                  '── callback $id ──', entry.debugStack,
-                  showSeparator: false);
-            }
+          informationCollector: () {
+            return [
+              if (count == 1)
+                // TODO(jacobr): I have added an extra line break in this case.
+                ErrorDescription('There was one transient callback left. '
+                    'The stack trace for when it was registered is as follows:')
+              else
+                ErrorDescription('There were $count transient callbacks left. '
+                    'The stack traces for when they were registered are as follows:'),
+              for (final int id in callbacks.keys)
+                DiagnosticsStackTrace(
+                    '── callback $id ──', callbacks[id]!.debugStack,
+                    showSeparator: false)
+            ];
           },
         ));
       }

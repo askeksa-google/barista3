@@ -1349,16 +1349,18 @@ abstract class RenderObject extends AbstractNode
       stack: stack,
       library: 'rendering library',
       context: ErrorDescription('during $method()'),
-      informationCollector: () sync* {
-        if (debugCreator != null) yield DiagnosticsDebugCreator(debugCreator!);
-        yield describeForError(
-            'The following RenderObject was being processed when the exception was fired');
-        // TODO(jacobr): this error message has a code smell. Consider whether
-        // displaying the truncated children is really useful for command line
-        // users. Inspector users can see the full tree by clicking on the
-        // render object so this may not be that useful.
-        yield describeForError('RenderObject',
-            style: DiagnosticsTreeStyle.truncateChildren);
+      informationCollector: () {
+        return [
+          if (debugCreator != null) DiagnosticsDebugCreator(debugCreator!),
+          describeForError(
+              'The following RenderObject was being processed when the exception was fired'),
+          // TODO(jacobr): this error message has a code smell. Consider whether
+          // displaying the truncated children is really useful for command line
+          // users. Inspector users can see the full tree by clicking on the
+          // render object so this may not be that useful.
+          describeForError('RenderObject',
+              style: DiagnosticsTreeStyle.truncateChildren)
+        ];
       },
     ));
   }
@@ -3548,7 +3550,7 @@ abstract class _InterestingSemanticsFragment extends _SemanticsFragment {
   _InterestingSemanticsFragment({
     required RenderObject owner,
     required bool dropsSemanticsOfPreviousSiblings,
-  })   : assert(owner != null),
+  })  : assert(owner != null),
         _ancestorChain = <RenderObject>[owner],
         super(
             dropsSemanticsOfPreviousSiblings: dropsSemanticsOfPreviousSiblings);
@@ -3726,7 +3728,7 @@ class _SwitchableSemanticsFragment extends _InterestingSemanticsFragment {
     required SemanticsConfiguration config,
     required RenderObject owner,
     required bool dropsSemanticsOfPreviousSiblings,
-  })   : _mergeIntoParent = mergeIntoParent,
+  })  : _mergeIntoParent = mergeIntoParent,
         _config = config,
         assert(mergeIntoParent != null),
         assert(config != null),

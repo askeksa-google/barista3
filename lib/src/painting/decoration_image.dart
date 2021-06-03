@@ -618,7 +618,7 @@ void paintImage({
 }
 
 Iterable<Rect> _generateImageTileRects(
-    Rect outputRect, Rect fundamentalRect, ImageRepeat repeat) sync* {
+    Rect outputRect, Rect fundamentalRect, ImageRepeat repeat) {
   int startX = 0;
   int startY = 0;
   int stopX = 0;
@@ -636,10 +636,11 @@ Iterable<Rect> _generateImageTileRects(
     stopY = ((outputRect.bottom - fundamentalRect.bottom) / strideY).ceil();
   }
 
-  for (int i = startX; i <= stopX; ++i) {
-    for (int j = startY; j <= stopY; ++j)
-      yield fundamentalRect.shift(Offset(i * strideX, j * strideY));
-  }
+  return [
+    for (int i = startX; i <= stopX; ++i)
+      for (int j = startY; j <= stopY; ++j)
+        fundamentalRect.shift(Offset(i * strideX, j * strideY))
+  ];
 }
 
 Rect _scaleRect(Rect rect, double scale) => Rect.fromLTRB(rect.left * scale,

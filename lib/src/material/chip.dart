@@ -2431,16 +2431,12 @@ class _RenderChip extends RenderBox {
   }
 
   // The returned list is ordered for hit testing.
-  Iterable<RenderBox> get _children sync* {
-    if (avatar != null) {
-      yield avatar!;
-    }
-    if (label != null) {
-      yield label!;
-    }
-    if (deleteIcon != null) {
-      yield deleteIcon!;
-    }
+  Iterable<RenderBox> get _children {
+    return [
+      if (avatar != null) avatar!,
+      if (label != null) label!,
+      if (deleteIcon != null) deleteIcon!
+    ];
   }
 
   bool get isDrawingCheckmark =>

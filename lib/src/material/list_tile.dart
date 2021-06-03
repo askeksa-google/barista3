@@ -981,9 +981,9 @@ class ListTile extends StatelessWidget {
   ///
   ///  * [Divider], which you can use to obtain this effect manually.
   static Iterable<Widget> divideTiles(
-      {BuildContext? context,
-      required Iterable<Widget> tiles,
-      Color? color}) sync* {
+      {BuildContext? context, required Iterable<Widget> tiles, Color? color}) {
+    final List<Widget> items = [];
+
     assert(tiles != null);
     assert(color != null || context != null);
 
@@ -998,14 +998,16 @@ class ListTile extends StatelessWidget {
 
     Widget tile = iterator.current;
     while (iterator.moveNext()) {
-      yield DecoratedBox(
+      items.add(DecoratedBox(
         position: DecorationPosition.foreground,
         decoration: decoration,
         child: tile,
-      );
+      ));
       tile = iterator.current;
     }
-    if (isNotEmpty) yield tile;
+    if (isNotEmpty) items.add(tile);
+
+    return items;
   }
 
   Color? _iconColor(ThemeData theme, ListTileTheme? tileTheme) {
@@ -1398,7 +1400,7 @@ class _RenderListTile extends RenderBox {
     required double horizontalTitleGap,
     required double minVerticalPadding,
     required double minLeadingWidth,
-  })   : assert(isDense != null),
+  })  : assert(isDense != null),
         assert(visualDensity != null),
         assert(isThreeLine != null),
         assert(textDirection != null),
@@ -1456,11 +1458,13 @@ class _RenderListTile extends RenderBox {
   }
 
   // The returned list is ordered for hit testing.
-  Iterable<RenderBox> get _children sync* {
-    if (leading != null) yield leading!;
-    if (title != null) yield title!;
-    if (subtitle != null) yield subtitle!;
-    if (trailing != null) yield trailing!;
+  Iterable<RenderBox> get _children {
+    return [
+      if (leading != null) leading!,
+      if (title != null) title!,
+      if (subtitle != null) subtitle!,
+      if (trailing != null) trailing!
+    ];
   }
 
   bool get isDense => _isDense;

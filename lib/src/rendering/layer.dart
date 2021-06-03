@@ -67,8 +67,8 @@ class AnnotationResult<T> {
   /// tree.
   ///
   /// It is similar to [entries] but does not contain other information.
-  Iterable<T> get annotations sync* {
-    for (final AnnotationEntry<T> entry in _entries) yield entry.annotation;
+  Iterable<T> get annotations {
+    return [for (final AnnotationEntry<T> entry in _entries) entry.annotation];
   }
 }
 
@@ -643,7 +643,7 @@ class PlatformViewLayer extends Layer {
   PlatformViewLayer({
     required this.rect,
     required this.viewId,
-  })   : assert(rect != null),
+  })  : assert(rect != null),
         assert(viewId != null);
 
   /// Bounding rectangle of this layer in the global coordinate space.
