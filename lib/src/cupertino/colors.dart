@@ -1087,7 +1087,7 @@ class CupertinoDynamicColor extends Color with Diagnosticable {
   }
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     String toString(String name, Color color) {
       final String marker = color == _effectiveColor ? '*' : '';
       return '$marker$name = $color$marker';

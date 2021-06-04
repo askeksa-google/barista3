@@ -165,7 +165,7 @@ class Ticker {
   DiagnosticsNode describeForError(String name) {
     // TODO(jacobr): make this more structured.
     return DiagnosticsProperty<Ticker>(name, this,
-        description: toString(debugIncludeStack: true));
+        description: toString2(debugIncludeStack: true));
   }
 
   /// Stops calling this [Ticker]'s callback.
@@ -291,7 +291,9 @@ class Ticker {
   late StackTrace _debugCreationStack;
 
   @override
-  String toString({bool debugIncludeStack = false}) {
+  String toString() => toString2();
+
+  String toString2({bool debugIncludeStack = false}) {
     final StringBuffer buffer = StringBuffer();
     buffer.write('${objectRuntimeType(this, 'Ticker')}(');
     assert(() {

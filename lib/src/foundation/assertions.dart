@@ -48,7 +48,7 @@ class PartialStackFrame {
     required this.package,
     required this.className,
     required this.method,
-  })   : assert(className != null),
+  })  : assert(className != null),
         assert(method != null),
         assert(package != null);
 
@@ -121,7 +121,7 @@ class RepetitiveStackFrameFilter extends StackFilter {
   const RepetitiveStackFrameFilter({
     required this.frames,
     required this.replacement,
-  })   : assert(frames != null),
+  })  : assert(frames != null),
         assert(replacement != null);
 
   /// The shape of this repetitive stack pattern.
@@ -706,7 +706,7 @@ class FlutterErrorDetails with Diagnosticable {
   }
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return toDiagnosticsNode(style: DiagnosticsTreeStyle.error)
         .toStringDeep(minLevel: minLevel);
   }
@@ -1119,7 +1119,7 @@ class FlutterError extends Error
   String toStringShort() => 'FlutterError';
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     if (kReleaseMode) {
       final Iterable<_ErrorDiagnostic> errors =
           diagnostics.whereType<_ErrorDiagnostic>();

@@ -2879,7 +2879,7 @@ abstract class RenderObject extends AbstractNode
   }
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
       toStringShort();
 
   /// Returns a description of the tree rooted at this node.

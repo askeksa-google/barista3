@@ -225,11 +225,11 @@ abstract class MouseCursor with Diagnosticable {
   String get debugDescription;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     final String debugDescription = this.debugDescription;
     if (minLevel.index >= DiagnosticLevel.info.index &&
         debugDescription != null) return debugDescription;
-    return super.toString(minLevel: minLevel);
+    return super.toString2(minLevel: minLevel);
   }
 
   /// A special class that indicates that the region with this cursor defers the

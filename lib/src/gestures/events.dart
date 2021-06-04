@@ -678,7 +678,7 @@ mixin _PointerEventDescription on PointerEvent {
 
   /// Returns a complete textual description of this event.
   String toStringFull() {
-    return toString(minLevel: DiagnosticLevel.fine);
+    return toString2(minLevel: DiagnosticLevel.fine);
   }
 }
 

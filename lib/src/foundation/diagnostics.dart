@@ -1674,7 +1674,9 @@ abstract class DiagnosticsNode {
   /// In release mode, far less information is retained and some information may
   /// not print at all.
   @override
-  String toString({
+  String toString() => toString2();
+
+  String toString2({
     TextTreeConfiguration? parentConfiguration,
     DiagnosticLevel minLevel = DiagnosticLevel.info,
   }) {
@@ -3116,11 +3118,13 @@ mixin Diagnosticable {
   String toStringShort() => describeIdentity(this);
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() => toString2();
+
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     String? fullString;
     assert(() {
       fullString = toDiagnosticsNode(style: DiagnosticsTreeStyle.singleLine)
-          .toString(minLevel: minLevel);
+          .toString2(minLevel: minLevel);
       return true;
     }());
     return fullString ?? toStringShort();
@@ -3483,9 +3487,9 @@ abstract class DiagnosticableTree with Diagnosticable {
 /// This mixin is identical to class [DiagnosticableTree].
 mixin DiagnosticableTreeMixin implements DiagnosticableTree {
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return toDiagnosticsNode(style: DiagnosticsTreeStyle.singleLine)
-        .toString(minLevel: minLevel);
+        .toString2(minLevel: minLevel);
   }
 
   @override
