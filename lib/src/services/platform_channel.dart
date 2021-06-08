@@ -103,8 +103,9 @@ class BasicMessageChannel<T> {
   }
 }
 
-Expando<Object> _methodChannelHandlers = Expando<Object>();
-Expando<Object> _methodChannelMockHandlers = Expando<Object>();
+Map<Object, Object?> _methodChannelHandlers = Map<Object, Object?>.identity();
+Map<Object, Object?> _methodChannelMockHandlers =
+    Map<Object, Object?>.identity();
 
 /// A named channel for communicating with platform plugins using asynchronous
 /// method calls.
