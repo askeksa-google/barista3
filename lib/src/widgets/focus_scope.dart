@@ -980,7 +980,7 @@ class _FocusMarker extends InheritedNotifier<FocusNode> {
     Key? key,
     required FocusNode node,
     required Widget child,
-  })   : assert(node != null),
+  })  : assert(node != null),
         assert(child != null),
         super(key: key, notifier: node, child: child);
 }
@@ -1006,7 +1006,7 @@ class ExcludeFocus extends StatelessWidget {
     Key? key,
     this.excluding = true,
     required this.child,
-  })   : assert(excluding != null),
+  })  : assert(excluding != null),
         assert(child != null),
         super(key: key);
 

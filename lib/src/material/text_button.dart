@@ -349,7 +349,7 @@ class _TextButtonWithIcon extends TextButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  })   : assert(icon != null),
+  })  : assert(icon != null),
         assert(label != null),
         super(
           key: key,

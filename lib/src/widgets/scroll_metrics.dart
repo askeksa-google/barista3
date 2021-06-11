@@ -142,7 +142,7 @@ class FixedScrollMetrics extends ScrollMetrics {
     required double? pixels,
     required double? viewportDimension,
     required this.axisDirection,
-  })   : _minScrollExtent = minScrollExtent,
+  })  : _minScrollExtent = minScrollExtent,
         _maxScrollExtent = maxScrollExtent,
         _pixels = pixels,
         _viewportDimension = viewportDimension;

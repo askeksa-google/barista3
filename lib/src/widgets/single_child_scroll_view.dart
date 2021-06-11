@@ -347,7 +347,7 @@ class _SingleChildViewport extends SingleChildRenderObjectWidget {
     required this.offset,
     Widget? child,
     required this.clipBehavior,
-  })   : assert(axisDirection != null),
+  })  : assert(axisDirection != null),
         assert(clipBehavior != null),
         super(key: key, child: child);
 
@@ -384,7 +384,7 @@ class _RenderSingleChildViewport extends RenderBox
     double cacheExtent = RenderAbstractViewport.defaultCacheExtent,
     RenderBox? child,
     required Clip clipBehavior,
-  })   : assert(axisDirection != null),
+  })  : assert(axisDirection != null),
         assert(offset != null),
         assert(cacheExtent != null),
         assert(clipBehavior != null),

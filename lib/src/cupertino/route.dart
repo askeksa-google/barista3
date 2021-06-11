@@ -380,7 +380,7 @@ class _PageBasedCupertinoPageRoute<T> extends PageRoute<T>
     with CupertinoRouteTransitionMixin<T> {
   _PageBasedCupertinoPageRoute({
     required CupertinoPage<T> page,
-  })   : assert(page != null),
+  })  : assert(page != null),
         super(settings: page) {
     assert(opaque);
   }
@@ -471,7 +471,7 @@ class CupertinoPageTransition extends StatelessWidget {
     required Animation<double> secondaryRouteAnimation,
     required this.child,
     required bool linearTransition,
-  })   : assert(linearTransition != null),
+  })  : assert(linearTransition != null),
         _primaryPositionAnimation = (linearTransition
                 ? primaryRouteAnimation
                 : CurvedAnimation(
@@ -551,7 +551,7 @@ class CupertinoFullscreenDialogTransition extends StatelessWidget {
     required Animation<double> secondaryRouteAnimation,
     required this.child,
     required bool linearTransition,
-  })   : _positionAnimation = CurvedAnimation(
+  })  : _positionAnimation = CurvedAnimation(
           parent: primaryRouteAnimation,
           curve: Curves.linearToEaseOut,
           // The curve must be flipped so that the reverse animation doesn't play
@@ -608,7 +608,7 @@ class _CupertinoBackGestureDetector<T> extends StatefulWidget {
     required this.enabledCallback,
     required this.onStartPopGesture,
     required this.child,
-  })   : assert(enabledCallback != null),
+  })  : assert(enabledCallback != null),
         assert(onStartPopGesture != null),
         assert(child != null),
         super(key: key);
@@ -735,7 +735,7 @@ class _CupertinoBackGestureController<T> {
   _CupertinoBackGestureController({
     required this.navigator,
     required this.controller,
-  })   : assert(navigator != null),
+  })  : assert(navigator != null),
         assert(controller != null) {
     navigator.didStartUserGesture();
   }

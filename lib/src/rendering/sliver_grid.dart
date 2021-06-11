@@ -155,7 +155,7 @@ class SliverGridRegularTileLayout extends SliverGridLayout {
     required this.childMainAxisExtent,
     required this.childCrossAxisExtent,
     required this.reverseCrossAxis,
-  })   : assert(crossAxisCount != null && crossAxisCount > 0),
+  })  : assert(crossAxisCount != null && crossAxisCount > 0),
         assert(mainAxisStride != null && mainAxisStride >= 0),
         assert(crossAxisStride != null && crossAxisStride >= 0),
         assert(childMainAxisExtent != null && childMainAxisExtent >= 0),
@@ -490,7 +490,7 @@ class RenderSliverGrid extends RenderSliverMultiBoxAdaptor {
   RenderSliverGrid({
     required RenderSliverBoxChildManager childManager,
     required SliverGridDelegate gridDelegate,
-  })   : assert(gridDelegate != null),
+  })  : assert(gridDelegate != null),
         _gridDelegate = gridDelegate,
         super(childManager: childManager);
 

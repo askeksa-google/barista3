@@ -708,7 +708,7 @@ class _MaterialInterior extends ImplicitlyAnimatedWidget {
     required this.shadowColor,
     Curve curve = Curves.linear,
     required Duration duration,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(shape != null),
         assert(clipBehavior != null),
         assert(elevation != null && elevation >= 0.0),

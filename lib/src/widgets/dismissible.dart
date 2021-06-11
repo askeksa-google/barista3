@@ -238,7 +238,7 @@ class _DismissibleClipper extends CustomClipper<Rect> {
   _DismissibleClipper({
     required this.axis,
     required this.moveAnimation,
-  })   : assert(axis != null),
+  })  : assert(axis != null),
         assert(moveAnimation != null),
         super(reclip: moveAnimation);
 

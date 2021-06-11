@@ -491,7 +491,7 @@ class _TabSwitchingView extends StatefulWidget {
     required this.currentTabIndex,
     required this.tabCount,
     required this.tabBuilder,
-  })   : assert(currentTabIndex != null),
+  })  : assert(currentTabIndex != null),
         assert(tabCount != null && tabCount > 0),
         assert(tabBuilder != null);
 

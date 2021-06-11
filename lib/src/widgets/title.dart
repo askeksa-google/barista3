@@ -20,7 +20,7 @@ class Title extends StatelessWidget {
     this.title = '',
     required this.color,
     required this.child,
-  })   : assert(title != null),
+  })  : assert(title != null),
         assert(color != null && color.alpha == 0xFF),
         super(key: key);
 

@@ -25,7 +25,7 @@ class GridTile extends StatelessWidget {
     this.header,
     this.footer,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget to show over the top of this grid tile.

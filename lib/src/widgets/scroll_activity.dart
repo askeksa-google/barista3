@@ -643,7 +643,7 @@ class DrivenScrollActivity extends ScrollActivity {
     required Duration duration,
     required Curve curve,
     required TickerProvider vsync,
-  })   : assert(from != null),
+  })  : assert(from != null),
         assert(to != null),
         assert(duration != null),
         assert(duration > Duration.zero),

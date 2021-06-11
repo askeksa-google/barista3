@@ -240,7 +240,7 @@ class AnimationController extends Animation<double>
     this.upperBound = 1.0,
     this.animationBehavior = AnimationBehavior.normal,
     required TickerProvider vsync,
-  })   : assert(lowerBound != null),
+  })  : assert(lowerBound != null),
         assert(upperBound != null),
         assert(upperBound >= lowerBound),
         assert(vsync != null),

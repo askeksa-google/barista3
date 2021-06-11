@@ -1083,7 +1083,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.toolbarTextStyle,
     required this.titleTextStyle,
     required this.systemOverlayStyle,
-  })   : assert(primary || topPadding == 0.0),
+  })  : assert(primary || topPadding == 0.0),
         assert(
           !floating ||
               (snapConfiguration == null &&

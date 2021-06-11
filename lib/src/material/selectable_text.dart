@@ -50,7 +50,7 @@ class _SelectableTextSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _SelectableTextSelectionGestureDetectorBuilder({
     required _SelectableTextState state,
-  })   : _state = state,
+  })  : _state = state,
         super(delegate: state);
 
   final _SelectableTextState _state;

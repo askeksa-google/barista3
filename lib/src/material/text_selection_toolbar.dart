@@ -42,7 +42,7 @@ class TextSelectionToolbar extends StatelessWidget {
     required this.anchorBelow,
     this.toolbarBuilder = _defaultToolbarBuilder,
     required this.children,
-  })   : assert(children.length > 0),
+  })  : assert(children.length > 0),
         super(key: key);
 
   /// The focal point above which the toolbar attempts to position itself.
@@ -184,7 +184,7 @@ class _TextSelectionToolbarOverflowable extends StatefulWidget {
     required this.isAbove,
     required this.toolbarBuilder,
     required this.children,
-  })   : assert(children.length > 0),
+  })  : assert(children.length > 0),
         super(key: key);
 
   final List<Widget> children;
@@ -294,7 +294,7 @@ class _TextSelectionToolbarTrailingEdgeAlign
     required Widget child,
     required this.overflowOpen,
     required this.textDirection,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(overflowOpen != null),
         super(key: key, child: child);
 
@@ -323,7 +323,7 @@ class _TextSelectionToolbarTrailingEdgeAlignRenderBox extends RenderProxyBox {
   _TextSelectionToolbarTrailingEdgeAlignRenderBox({
     required bool overflowOpen,
     required TextDirection textDirection,
-  })   : _textDirection = textDirection,
+  })  : _textDirection = textDirection,
         _overflowOpen = overflowOpen,
         super();
 
@@ -433,7 +433,7 @@ class _TextSelectionToolbarItemsLayout extends MultiChildRenderObjectWidget {
     required this.isAbove,
     required this.overflowOpen,
     required List<Widget> children,
-  })   : assert(children != null),
+  })  : assert(children != null),
         assert(isAbove != null),
         assert(overflowOpen != null),
         super(key: key, children: children);
@@ -485,7 +485,7 @@ class _RenderTextSelectionToolbarItemsLayout extends RenderBox
   _RenderTextSelectionToolbarItemsLayout({
     required bool isAbove,
     required bool overflowOpen,
-  })   : assert(overflowOpen != null),
+  })  : assert(overflowOpen != null),
         assert(isAbove != null),
         _isAbove = isAbove,
         _overflowOpen = overflowOpen,

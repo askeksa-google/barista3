@@ -271,7 +271,7 @@ abstract class _SliverPersistentHeaderRenderObjectWidget
   const _SliverPersistentHeaderRenderObjectWidget({
     Key? key,
     required this.delegate,
-  })   : assert(delegate != null),
+  })  : assert(delegate != null),
         super(key: key);
 
   final SliverPersistentHeaderDelegate delegate;

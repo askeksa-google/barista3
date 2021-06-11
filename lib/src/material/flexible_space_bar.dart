@@ -437,7 +437,7 @@ class FlexibleSpaceBarSettings extends InheritedWidget {
     required this.maxExtent,
     required this.currentExtent,
     required Widget child,
-  })   : assert(toolbarOpacity != null),
+  })  : assert(toolbarOpacity != null),
         assert(minExtent != null && minExtent >= 0),
         assert(maxExtent != null && maxExtent >= 0),
         assert(currentExtent != null && currentExtent >= 0),

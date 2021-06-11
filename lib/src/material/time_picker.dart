@@ -87,7 +87,7 @@ class _TimePickerFragmentContext {
     required this.onHourDoubleTapped,
     required this.onMinuteDoubleTapped,
     required this.use24HourDials,
-  })   : assert(selectedTime != null),
+  })  : assert(selectedTime != null),
         assert(mode != null),
         assert(onTimeChange != null),
         assert(onModeChange != null),
@@ -113,7 +113,7 @@ class _TimePickerHeader extends StatelessWidget {
     required this.onMinuteDoubleTapped,
     required this.use24HourDials,
     required this.helpText,
-  })   : assert(selectedTime != null),
+  })  : assert(selectedTime != null),
         assert(mode != null),
         assert(orientation != null),
         assert(use24HourDials != null);
@@ -276,7 +276,7 @@ class _HourMinuteControl extends StatelessWidget {
     required this.onTap,
     required this.onDoubleTap,
     required this.isSelected,
-  })   : assert(text != null),
+  })  : assert(text != null),
         assert(onTap != null),
         assert(isSelected != null);
 
@@ -974,7 +974,7 @@ class _Dial extends StatefulWidget {
     required this.use24HourDials,
     required this.onChanged,
     required this.onHourSelected,
-  })   : assert(selectedTime != null),
+  })  : assert(selectedTime != null),
         assert(mode != null),
         assert(use24HourDials != null);
 
@@ -1381,7 +1381,7 @@ class _TimePickerInput extends StatefulWidget {
     required this.autofocusHour,
     required this.autofocusMinute,
     required this.onChanged,
-  })   : assert(initialSelectedTime != null),
+  })  : assert(initialSelectedTime != null),
         assert(onChanged != null),
         super(key: key);
 

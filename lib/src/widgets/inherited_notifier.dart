@@ -134,7 +134,7 @@ abstract class InheritedNotifier<T extends Listenable> extends InheritedWidget {
     Key? key,
     this.notifier,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   /// The [Listenable] object to which to listen.

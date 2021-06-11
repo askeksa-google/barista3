@@ -795,7 +795,7 @@ class _RenderSwitch extends RenderToggleable {
     required bool hovering,
     required this.state,
     required Color surfaceColor,
-  })   : assert(textDirection != null),
+  })  : assert(textDirection != null),
         _activeThumbImage = activeThumbImage,
         _onActiveThumbImageError = onActiveThumbImageError,
         _inactiveThumbImage = inactiveThumbImage,

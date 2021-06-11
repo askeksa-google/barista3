@@ -282,7 +282,7 @@ class _OutlineButtonWithIcon extends OutlineButton
     MaterialTapTargetSize? materialTapTargetSize,
     required Widget icon,
     required Widget label,
-  })   : assert(highlightElevation == null || highlightElevation >= 0.0),
+  })  : assert(highlightElevation == null || highlightElevation >= 0.0),
         assert(clipBehavior != null),
         assert(autofocus != null),
         assert(icon != null),
@@ -542,7 +542,7 @@ class _OutlineBorder extends ShapeBorder
   const _OutlineBorder({
     required this.shape,
     required this.side,
-  })   : assert(shape != null),
+  })  : assert(shape != null),
         assert(side != null);
 
   final ShapeBorder shape;

@@ -31,7 +31,7 @@ class CupertinoPageScaffold extends StatefulWidget {
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(resizeToAvoidBottomInset != null),
         super(key: key);
 

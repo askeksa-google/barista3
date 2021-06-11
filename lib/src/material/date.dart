@@ -215,7 +215,7 @@ class DateTimeRange {
   DateTimeRange({
     required this.start,
     required this.end,
-  })   : assert(start != null),
+  })  : assert(start != null),
         assert(end != null),
         assert(!start.isAfter(end));
 

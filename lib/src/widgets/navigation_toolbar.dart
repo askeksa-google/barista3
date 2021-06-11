@@ -89,7 +89,7 @@ class _ToolbarLayout extends MultiChildLayoutDelegate {
     required this.centerMiddle,
     required this.middleSpacing,
     required this.textDirection,
-  })   : assert(middleSpacing != null),
+  })  : assert(middleSpacing != null),
         assert(textDirection != null);
 
   // If false the middle widget should be start-justified within the space

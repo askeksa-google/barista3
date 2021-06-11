@@ -76,7 +76,7 @@ class ShapeDecoration extends Decoration {
     this.gradient,
     this.shadows,
     required this.shape,
-  })   : assert(!(color != null && gradient != null)),
+  })  : assert(!(color != null && gradient != null)),
         assert(shape != null);
 
   /// Creates a shape decoration configured to match a [BoxDecoration].

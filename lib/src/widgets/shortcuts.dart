@@ -636,7 +636,7 @@ class _ShortcutsMarker extends InheritedNotifier<ShortcutManager> {
   const _ShortcutsMarker({
     required ShortcutManager manager,
     required Widget child,
-  })   : assert(manager != null),
+  })  : assert(manager != null),
         assert(child != null),
         super(notifier: manager, child: child);
 

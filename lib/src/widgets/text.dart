@@ -48,7 +48,7 @@ class DefaultTextStyle extends InheritedTheme {
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
     required Widget child,
-  })   : assert(style != null),
+  })  : assert(style != null),
         assert(softWrap != null),
         assert(overflow != null),
         assert(maxLines == null || maxLines > 0),
@@ -249,7 +249,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
     Key? key,
     required this.textHeightBehavior,
     required Widget child,
-  })   : assert(textHeightBehavior != null),
+  })  : assert(textHeightBehavior != null),
         assert(child != null),
         super(key: key, child: child);
 

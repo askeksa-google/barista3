@@ -51,7 +51,7 @@ class ForcePressDetails {
     required this.globalPosition,
     Offset? localPosition,
     required this.pressure,
-  })   : assert(globalPosition != null),
+  })  : assert(globalPosition != null),
         assert(pressure != null),
         localPosition = localPosition ?? globalPosition;
 

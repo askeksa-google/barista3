@@ -103,7 +103,7 @@ class ScaffoldMessenger extends StatefulWidget {
   const ScaffoldMessenger({
     Key? key,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -464,7 +464,7 @@ class _ScaffoldMessengerScope extends InheritedWidget {
     Key? key,
     required Widget child,
     required ScaffoldMessengerState scaffoldMessengerState,
-  })   : _scaffoldMessengerState = scaffoldMessengerState,
+  })  : _scaffoldMessengerState = scaffoldMessengerState,
         super(key: key, child: child);
 
   final ScaffoldMessengerState _scaffoldMessengerState;
@@ -732,7 +732,7 @@ class _BodyBoxConstraints extends BoxConstraints {
     double maxHeight = double.infinity,
     required this.bottomWidgetsHeight,
     required this.appBarHeight,
-  })   : assert(bottomWidgetsHeight != null),
+  })  : assert(bottomWidgetsHeight != null),
         assert(bottomWidgetsHeight >= 0),
         assert(appBarHeight != null),
         assert(appBarHeight >= 0),
@@ -775,7 +775,7 @@ class _BodyBuilder extends StatelessWidget {
     required this.extendBody,
     required this.extendBodyBehindAppBar,
     required this.body,
-  })   : assert(extendBody != null),
+  })  : assert(extendBody != null),
         assert(extendBodyBehindAppBar != null),
         assert(body != null),
         super(key: key);
@@ -832,7 +832,7 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
     required this.snackBarWidth,
     required this.extendBody,
     required this.extendBodyBehindAppBar,
-  })   : assert(minInsets != null),
+  })  : assert(minInsets != null),
         assert(textDirection != null),
         assert(geometryNotifier != null),
         assert(previousFloatingActionButtonLocation != null),
@@ -1090,7 +1090,7 @@ class _FloatingActionButtonTransition extends StatefulWidget {
     required this.fabMotionAnimator,
     required this.geometryNotifier,
     required this.currentController,
-  })   : assert(fabMoveAnimation != null),
+  })  : assert(fabMoveAnimation != null),
         assert(fabMotionAnimator != null),
         assert(currentController != null),
         super(key: key);
@@ -3492,7 +3492,7 @@ class _ScaffoldScope extends InheritedWidget {
     required this.hasDrawer,
     required this.geometryNotifier,
     required Widget child,
-  })   : assert(hasDrawer != null),
+  })  : assert(hasDrawer != null),
         super(key: key, child: child);
 
   final bool hasDrawer;

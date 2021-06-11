@@ -350,7 +350,7 @@ class _BottomNavigationTile extends StatelessWidget {
     required this.showUnselectedLabels,
     this.indexLabel,
     required this.mouseCursor,
-  })   : assert(type != null),
+  })  : assert(type != null),
         assert(item != null),
         assert(animation != null),
         assert(selected != null),
@@ -531,7 +531,7 @@ class _TileIcon extends StatelessWidget {
     required this.item,
     required this.selectedIconTheme,
     required this.unselectedIconTheme,
-  })   : assert(selected != null),
+  })  : assert(selected != null),
         assert(item != null),
         super(key: key);
 
@@ -579,7 +579,7 @@ class _Label extends StatelessWidget {
     required this.unselectedLabelStyle,
     required this.showSelectedLabels,
     required this.showUnselectedLabels,
-  })   : assert(colorTween != null),
+  })  : assert(colorTween != null),
         assert(animation != null),
         assert(item != null),
         assert(selectedLabelStyle != null),
@@ -988,7 +988,7 @@ class _Circle {
     required this.index,
     required this.color,
     required TickerProvider vsync,
-  })   : assert(state != null),
+  })  : assert(state != null),
         assert(index != null),
         assert(color != null) {
     controller = AnimationController(
@@ -1038,7 +1038,7 @@ class _RadialPainter extends CustomPainter {
   _RadialPainter({
     required this.circles,
     required this.textDirection,
-  })   : assert(circles != null),
+  })  : assert(circles != null),
         assert(textDirection != null);
 
   final List<_Circle> circles;

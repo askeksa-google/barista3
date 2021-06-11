@@ -63,7 +63,7 @@ class _TapTracker {
     required PointerDownEvent event,
     required this.entry,
     required Duration doubleTapMinTime,
-  })   : assert(doubleTapMinTime != null),
+  })  : assert(doubleTapMinTime != null),
         assert(event != null),
         assert(event.buttons != null),
         pointer = event.pointer,
@@ -370,7 +370,7 @@ class _TapGesture extends _TapTracker {
     required this.gestureRecognizer,
     required PointerEvent event,
     required Duration longTapDelay,
-  })   : _lastPosition = OffsetPair.fromEventPosition(event),
+  })  : _lastPosition = OffsetPair.fromEventPosition(event),
         super(
           event: event as PointerDownEvent,
           entry: GestureBinding.instance!.gestureArena

@@ -587,7 +587,7 @@ class AssetBundleImageKey {
     required this.bundle,
     required this.name,
     required this.scale,
-  })   : assert(bundle != null),
+  })  : assert(bundle != null),
         assert(name != null),
         assert(scale != null);
 

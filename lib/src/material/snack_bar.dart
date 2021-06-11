@@ -90,7 +90,7 @@ class SnackBarAction extends StatefulWidget {
     this.disabledTextColor,
     required this.label,
     required this.onPressed,
-  })   : assert(label != null),
+  })  : assert(label != null),
         assert(onPressed != null),
         super(key: key);
 

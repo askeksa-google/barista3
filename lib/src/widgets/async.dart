@@ -508,7 +508,7 @@ class StreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
     this.initialData,
     Stream<T>? stream,
     required this.builder,
-  })   : assert(builder != null),
+  })  : assert(builder != null),
         super(key: key, stream: stream);
 
   /// The build strategy currently used by this builder.
@@ -708,7 +708,7 @@ class FutureBuilder<T> extends StatefulWidget {
     this.future,
     this.initialData,
     required this.builder,
-  })   : assert(builder != null),
+  })  : assert(builder != null),
         super(key: key);
 
   /// The asynchronous computation to which this builder is currently connected,

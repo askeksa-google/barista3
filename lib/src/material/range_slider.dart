@@ -807,7 +807,7 @@ class _RenderRangeSlider extends RenderBox
     required this.onChangeEnd,
     required _RangeSliderState state,
     required TextDirection textDirection,
-  })   : assert(values != null),
+  })  : assert(values != null),
         assert(values.start >= 0.0 && values.start <= 1.0),
         assert(values.end >= 0.0 && values.end <= 1.0),
         assert(state != null),

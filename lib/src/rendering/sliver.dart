@@ -107,7 +107,7 @@ class SliverConstraints extends Constraints {
     required this.viewportMainAxisExtent,
     required this.remainingCacheExtent,
     required this.cacheOrigin,
-  })   : assert(axisDirection != null),
+  })  : assert(axisDirection != null),
         assert(growthDirection != null),
         assert(userScrollDirection != null),
         assert(scrollOffset != null),
@@ -910,7 +910,7 @@ class SliverHitTestEntry extends HitTestEntry {
     RenderSliver target, {
     required this.mainAxisPosition,
     required this.crossAxisPosition,
-  })   : assert(mainAxisPosition != null),
+  })  : assert(mainAxisPosition != null),
         assert(crossAxisPosition != null),
         super(target);
 

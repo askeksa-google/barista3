@@ -37,7 +37,7 @@ class StackFrame {
     required this.method,
     this.isConstructor = false,
     required this.source,
-  })   : assert(number != null),
+  })  : assert(number != null),
         assert(column != null),
         assert(line != null),
         assert(method != null),

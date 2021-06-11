@@ -207,7 +207,7 @@ class _CaptureAll extends StatelessWidget {
     Key? key,
     required this.themes,
     required this.child,
-  })   : assert(themes != null),
+  })  : assert(themes != null),
         assert(child != null),
         super(key: key);
 

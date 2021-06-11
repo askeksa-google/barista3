@@ -253,7 +253,7 @@ class _FormScope extends InheritedWidget {
     required Widget child,
     required FormState formState,
     required int generation,
-  })   : _formState = formState,
+  })  : _formState = formState,
         _generation = generation,
         super(key: key, child: child);
 

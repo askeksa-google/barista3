@@ -123,7 +123,7 @@ abstract class AnimatedWidget extends StatefulWidget {
   const AnimatedWidget({
     Key? key,
     required this.listenable,
-  })   : assert(listenable != null),
+  })  : assert(listenable != null),
         super(key: key);
 
   /// The [Listenable] to which this widget is listening.
@@ -986,7 +986,7 @@ class PositionedTransition extends AnimatedWidget {
     Key? key,
     required Animation<RelativeRect> rect,
     required this.child,
-  })   : assert(rect != null),
+  })  : assert(rect != null),
         super(key: key, listenable: rect);
 
   /// The animation that controls the child's size and position.
@@ -1094,7 +1094,7 @@ class RelativePositionedTransition extends AnimatedWidget {
     required Animation<Rect> rect,
     required this.size,
     required this.child,
-  })   : assert(rect != null),
+  })  : assert(rect != null),
         assert(size != null),
         assert(child != null),
         super(key: key, listenable: rect);
@@ -1223,7 +1223,7 @@ class DecoratedBoxTransition extends AnimatedWidget {
     required this.decoration,
     this.position = DecorationPosition.background,
     required this.child,
-  })   : assert(decoration != null),
+  })  : assert(decoration != null),
         assert(child != null),
         super(key: key, listenable: decoration);
 

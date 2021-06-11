@@ -32,7 +32,7 @@ class ColorScheme with Diagnosticable {
     required this.onBackground,
     required this.onError,
     required this.brightness,
-  })   : assert(primary != null),
+  })  : assert(primary != null),
         assert(primaryVariant != null),
         assert(secondary != null),
         assert(secondaryVariant != null),

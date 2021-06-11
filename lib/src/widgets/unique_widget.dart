@@ -25,7 +25,7 @@ abstract class UniqueWidget<T extends State<StatefulWidget>>
   /// inflated instance of this widget.
   const UniqueWidget({
     required GlobalKey<T> key,
-  })   : assert(key != null),
+  })  : assert(key != null),
         super(key: key);
 
   @override

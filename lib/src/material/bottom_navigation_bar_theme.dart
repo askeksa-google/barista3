@@ -267,7 +267,7 @@ class BottomNavigationBarTheme extends InheritedWidget {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         super(key: key, child: child);
 
   /// The properties used for all descendant [BottomNavigationBar] widgets.

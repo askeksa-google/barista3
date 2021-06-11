@@ -665,7 +665,7 @@ class _InkResponseStateWidget extends StatefulWidget {
     this.parentState,
     this.getRectCallback,
     required this.debugCheckContext,
-  })   : assert(containedInkWell != null),
+  })  : assert(containedInkWell != null),
         assert(highlightShape != null),
         assert(enableFeedback != null),
         assert(excludeFromSemantics != null),

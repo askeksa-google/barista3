@@ -38,7 +38,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
     required this.autofocus,
     required this.clipBehavior,
     required this.child,
-  })   : assert(autofocus != null),
+  })  : assert(autofocus != null),
         assert(clipBehavior != null),
         super(key: key);
 

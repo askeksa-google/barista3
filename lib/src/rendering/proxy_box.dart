@@ -214,7 +214,7 @@ class RenderConstrainedBox extends RenderProxyBox {
   RenderConstrainedBox({
     RenderBox? child,
     required BoxConstraints additionalConstraints,
-  })   : assert(additionalConstraints != null),
+  })  : assert(additionalConstraints != null),
         assert(additionalConstraints.debugAssertIsValid()),
         _additionalConstraints = additionalConstraints,
         super(child);
@@ -451,7 +451,7 @@ class RenderAspectRatio extends RenderProxyBox {
   RenderAspectRatio({
     RenderBox? child,
     required double aspectRatio,
-  })   : assert(aspectRatio != null),
+  })  : assert(aspectRatio != null),
         assert(aspectRatio > 0.0),
         assert(aspectRatio.isFinite),
         _aspectRatio = aspectRatio,
@@ -4844,7 +4844,7 @@ class RenderIndexedSemantics extends RenderProxyBox {
   RenderIndexedSemantics({
     RenderBox? child,
     required int index,
-  })   : assert(index != null),
+  })  : assert(index != null),
         _index = index,
         super(child);
 

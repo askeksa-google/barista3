@@ -42,7 +42,7 @@ class CupertinoUserInterfaceLevel extends InheritedWidget {
     Key? key,
     required CupertinoUserInterfaceLevelData data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         _data = data,
         super(key: key, child: child);
 

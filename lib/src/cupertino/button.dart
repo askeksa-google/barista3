@@ -41,7 +41,7 @@ class CupertinoButton extends StatefulWidget {
     this.pressedOpacity = 0.4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     required this.onPressed,
-  })   : assert(pressedOpacity == null ||
+  })  : assert(pressedOpacity == null ||
             (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
         assert(disabledColor != null),
         _filled = false,
@@ -62,7 +62,7 @@ class CupertinoButton extends StatefulWidget {
     this.pressedOpacity = 0.4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     required this.onPressed,
-  })   : assert(pressedOpacity == null ||
+  })  : assert(pressedOpacity == null ||
             (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
         assert(disabledColor != null),
         color = null,

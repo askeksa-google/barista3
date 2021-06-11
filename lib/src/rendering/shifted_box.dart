@@ -1184,7 +1184,7 @@ class RenderCustomSingleChildLayoutBox extends RenderShiftedBox {
   RenderCustomSingleChildLayoutBox({
     RenderBox? child,
     required SingleChildLayoutDelegate delegate,
-  })   : assert(delegate != null),
+  })  : assert(delegate != null),
         _delegate = delegate,
         super(child);
 
@@ -1301,7 +1301,7 @@ class RenderBaseline extends RenderShiftedBox {
     RenderBox? child,
     required double baseline,
     required TextBaseline baselineType,
-  })   : assert(baseline != null),
+  })  : assert(baseline != null),
         assert(baselineType != null),
         _baseline = baseline,
         _baselineType = baselineType,

@@ -548,7 +548,7 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
     required this.target,
     required this.verticalOffset,
     required this.preferBelow,
-  })   : assert(target != null),
+  })  : assert(target != null),
         assert(verticalOffset != null),
         assert(preferBelow != null);
 

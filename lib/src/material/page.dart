@@ -188,7 +188,7 @@ class _PageBasedMaterialPageRoute<T> extends PageRoute<T>
     with MaterialRouteTransitionMixin<T> {
   _PageBasedMaterialPageRoute({
     required MaterialPage<T> page,
-  })   : assert(page != null),
+  })  : assert(page != null),
         super(settings: page) {
     assert(opaque);
   }

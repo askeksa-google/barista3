@@ -592,7 +592,7 @@ class _PackagesView extends StatefulWidget {
     required this.about,
     required this.isLateral,
     required this.selectedId,
-  })   : assert(about != null),
+  })  : assert(about != null),
         assert(isLateral != null),
         super(key: key);
 

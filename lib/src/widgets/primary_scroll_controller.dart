@@ -35,14 +35,14 @@ class PrimaryScrollController extends InheritedWidget {
     Key? key,
     required ScrollController this.controller,
     required Widget child,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         super(key: key, child: child);
 
   /// Creates a subtree without an associated [ScrollController].
   const PrimaryScrollController.none({
     Key? key,
     required Widget child,
-  })   : controller = null,
+  })  : controller = null,
         super(key: key, child: child);
 
   /// The [ScrollController] associated with the subtree.

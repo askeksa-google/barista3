@@ -130,7 +130,7 @@ class _MenuItem extends SingleChildRenderObjectWidget {
     Key? key,
     required this.onLayout,
     required Widget? child,
-  })   : assert(onLayout != null),
+  })  : assert(onLayout != null),
         super(key: key, child: child);
 
   final ValueChanged<Size> onLayout;
@@ -229,7 +229,7 @@ class PopupMenuItem<T> extends PopupMenuEntry<T> {
     this.textStyle,
     this.mouseCursor,
     required this.child,
-  })   : assert(enabled != null),
+  })  : assert(enabled != null),
         assert(height != null),
         super(key: key);
 

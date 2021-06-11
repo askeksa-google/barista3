@@ -153,7 +153,7 @@ class _BottomAppBarClipper extends CustomClipper<Path> {
     required this.geometry,
     required this.shape,
     required this.notchMargin,
-  })   : assert(geometry != null),
+  })  : assert(geometry != null),
         assert(shape != null),
         assert(notchMargin != null),
         super(reclip: geometry);

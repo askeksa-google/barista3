@@ -226,7 +226,7 @@ class _LocalizationsScope extends InheritedWidget {
     required this.localizationsState,
     required this.typeToResources,
     required Widget child,
-  })   : assert(localizationsState != null),
+  })  : assert(localizationsState != null),
         assert(typeToResources != null),
         super(key: key, child: child);
 

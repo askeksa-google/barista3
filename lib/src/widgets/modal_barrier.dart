@@ -279,7 +279,7 @@ class _ModalBarrierGestureDetector extends StatelessWidget {
     Key? key,
     required this.child,
     required this.onDismiss,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(onDismiss != null),
         super(key: key);
 

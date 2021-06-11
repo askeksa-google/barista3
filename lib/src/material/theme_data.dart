@@ -621,7 +621,7 @@ class ThemeData with Diagnosticable {
     required this.switchTheme,
     required this.fixTextFieldOutlineLabel,
     required this.useTextSelectionTheme,
-  })   : assert(visualDensity != null),
+  })  : assert(visualDensity != null),
         assert(primaryColor != null),
         assert(primaryColorBrightness != null),
         assert(primaryColorLight != null),

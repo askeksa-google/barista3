@@ -522,7 +522,7 @@ class _ChildAnimationManifest {
   _ChildAnimationManifest({
     this.opacity = 1,
     required this.separatorOpacity,
-  })   : assert(separatorOpacity != null),
+  })  : assert(separatorOpacity != null),
         assert(opacity != null),
         separatorTween =
             Tween<double>(begin: separatorOpacity, end: separatorOpacity),
@@ -578,7 +578,7 @@ class _RenderSegmentedControl<T> extends RenderBox
     required int? selectedIndex,
     required Color? thumbColor,
     required this.state,
-  })   : _highlightedIndex = selectedIndex,
+  })  : _highlightedIndex = selectedIndex,
         _thumbColor = thumbColor,
         assert(state != null) {
     state.drag

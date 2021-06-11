@@ -109,7 +109,7 @@ class DataRow {
     this.onSelectChanged,
     this.color,
     required this.cells,
-  })   : assert(cells != null),
+  })  : assert(cells != null),
         key = ValueKey<int?>(index);
 
   /// A [Key] that uniquely identifies this row. This is used to
@@ -427,7 +427,7 @@ class DataTable extends StatelessWidget {
     this.showBottomBorder = false,
     this.dividerThickness,
     required this.rows,
-  })   : assert(columns != null),
+  })  : assert(columns != null),
         assert(columns.isNotEmpty),
         assert(sortColumnIndex == null ||
             (sortColumnIndex >= 0 && sortColumnIndex < columns.length)),

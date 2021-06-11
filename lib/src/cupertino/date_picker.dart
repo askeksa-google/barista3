@@ -91,7 +91,7 @@ class _DatePickerLayoutDelegate extends MultiChildLayoutDelegate {
   _DatePickerLayoutDelegate({
     required this.columnWidths,
     required this.textDirectionFactor,
-  })   : assert(columnWidths != null),
+  })  : assert(columnWidths != null),
         assert(textDirectionFactor != null);
 
   // The list containing widths of all columns.
@@ -1601,7 +1601,7 @@ class CupertinoTimerPicker extends StatefulWidget {
     this.alignment = Alignment.center,
     this.backgroundColor,
     required this.onTimerDurationChanged,
-  })   : assert(mode != null),
+  })  : assert(mode != null),
         assert(onTimerDurationChanged != null),
         assert(initialTimerDuration >= Duration.zero),
         assert(initialTimerDuration < const Duration(days: 1)),

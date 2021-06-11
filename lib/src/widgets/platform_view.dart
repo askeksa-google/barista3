@@ -345,7 +345,7 @@ class HtmlElementView extends StatelessWidget {
   const HtmlElementView({
     Key? key,
     required this.viewType,
-  })   : assert(viewType != null),
+  })  : assert(viewType != null),
         assert(kIsWeb, 'HtmlElementView is only available on Flutter Web.'),
         super(key: key);
 
@@ -670,7 +670,7 @@ class _UiKitPlatformView extends LeafRenderObjectWidget {
     required this.controller,
     required this.hitTestBehavior,
     required this.gestureRecognizers,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         assert(hitTestBehavior != null),
         assert(gestureRecognizers != null),
         super(key: key);
@@ -707,7 +707,7 @@ class PlatformViewCreationParams {
     required this.viewType,
     required this.onPlatformViewCreated,
     required this.onFocusChanged,
-  })   : assert(id != null),
+  })  : assert(id != null),
         assert(onPlatformViewCreated != null);
 
   /// The unique identifier for the new platform view.
@@ -795,7 +795,7 @@ class PlatformViewLink extends StatefulWidget {
     required PlatformViewSurfaceFactory surfaceFactory,
     required CreatePlatformViewCallback onCreatePlatformView,
     required this.viewType,
-  })   : assert(surfaceFactory != null),
+  })  : assert(surfaceFactory != null),
         assert(onCreatePlatformView != null),
         assert(viewType != null),
         _surfaceFactory = surfaceFactory,
@@ -923,7 +923,7 @@ class PlatformViewSurface extends LeafRenderObjectWidget {
     required this.controller,
     required this.hitTestBehavior,
     required this.gestureRecognizers,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         assert(hitTestBehavior != null),
         assert(gestureRecognizers != null),
         super(key: key);
@@ -1018,7 +1018,7 @@ class AndroidViewSurface extends PlatformViewSurface {
     required AndroidViewController controller,
     required PlatformViewHitTestBehavior hitTestBehavior,
     required Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         assert(hitTestBehavior != null),
         assert(gestureRecognizers != null),
         super(

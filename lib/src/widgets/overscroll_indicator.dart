@@ -368,7 +368,7 @@ class _GlowController extends ChangeNotifier {
     required TickerProvider vsync,
     required Color color,
     required Axis axis,
-  })   : assert(vsync != null),
+  })  : assert(vsync != null),
         assert(color != null),
         assert(axis != null),
         _color = color,

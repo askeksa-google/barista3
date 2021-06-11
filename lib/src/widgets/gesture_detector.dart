@@ -1291,7 +1291,7 @@ class _GestureSemantics extends SingleChildRenderObjectWidget {
     Key? key,
     Widget? child,
     required this.assignSemantics,
-  })   : assert(assignSemantics != null),
+  })  : assert(assignSemantics != null),
         super(key: key, child: child);
 
   final _AssignSemantics assignSemantics;

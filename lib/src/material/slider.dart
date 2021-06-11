@@ -932,7 +932,7 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     required TextDirection textDirection,
     required bool hasFocus,
     required bool hovering,
-  })   : assert(value != null && value >= 0.0 && value <= 1.0),
+  })  : assert(value != null && value >= 0.0 && value <= 1.0),
         assert(state != null),
         assert(textDirection != null),
         _platform = platform,

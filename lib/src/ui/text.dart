@@ -1571,7 +1571,7 @@ class TextRange {
   const TextRange({
     required this.start,
     required this.end,
-  })   : assert(start != null &&
+  })  : assert(start != null &&
             start >= -1), // ignore: unnecessary_null_comparison
         assert(end != null && end >= -1); // ignore: unnecessary_null_comparison
 

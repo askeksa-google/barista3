@@ -1780,7 +1780,7 @@ class FocusTraversalGroup extends StatefulWidget {
     FocusTraversalPolicy? policy,
     this.descendantsAreFocusable = true,
     required this.child,
-  })   : assert(descendantsAreFocusable != null),
+  })  : assert(descendantsAreFocusable != null),
         policy = policy ?? ReadingOrderTraversalPolicy(),
         super(key: key);
 
@@ -1920,7 +1920,7 @@ class _FocusTraversalGroupMarker extends InheritedWidget {
     required this.policy,
     required this.focusNode,
     required Widget child,
-  })   : assert(policy != null),
+  })  : assert(policy != null),
         assert(focusNode != null),
         super(child: child);
 

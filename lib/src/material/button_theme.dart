@@ -96,7 +96,7 @@ class ButtonTheme extends InheritedTheme {
     ColorScheme? colorScheme,
     MaterialTapTargetSize? materialTapTargetSize,
     required Widget child,
-  })   : assert(textTheme != null),
+  })  : assert(textTheme != null),
         assert(minWidth != null && minWidth >= 0.0),
         assert(height != null && height >= 0.0),
         assert(alignedDropdown != null),
@@ -127,7 +127,7 @@ class ButtonTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         super(key: key, child: child);
 
   /// Creates a button theme that is appropriate for button bars, as used in

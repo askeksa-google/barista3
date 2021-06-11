@@ -54,7 +54,7 @@ class CupertinoTheme extends StatelessWidget {
     Key? key,
     required this.data,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(data != null),
         super(key: key);
 
@@ -146,7 +146,7 @@ class _InheritedCupertinoTheme extends InheritedWidget {
     Key? key,
     required this.theme,
     required Widget child,
-  })   : assert(theme != null),
+  })  : assert(theme != null),
         super(key: key, child: child);
 
   final CupertinoTheme theme;
@@ -540,7 +540,7 @@ class _DefaultCupertinoTextThemeData extends CupertinoTextThemeData {
     required this.labelColor,
     required this.inactiveGray,
     required Color primaryColor,
-  })   : assert(labelColor != null),
+  })  : assert(labelColor != null),
         assert(inactiveGray != null),
         assert(primaryColor != null),
         super(primaryColor: primaryColor);

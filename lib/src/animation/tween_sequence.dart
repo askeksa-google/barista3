@@ -124,7 +124,7 @@ class TweenSequenceItem<T> {
   const TweenSequenceItem({
     required this.tween,
     required this.weight,
-  })   : assert(tween != null),
+  })  : assert(tween != null),
         assert(weight != null),
         assert(weight > 0.0);
 

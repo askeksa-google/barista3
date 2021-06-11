@@ -440,7 +440,7 @@ class RestorationBucket {
   RestorationBucket.empty({
     required String restorationId,
     required Object? debugOwner,
-  })   : assert(restorationId != null),
+  })  : assert(restorationId != null),
         _restorationId = restorationId,
         _rawData = <String, dynamic>{} {
     assert(() {
@@ -475,7 +475,7 @@ class RestorationBucket {
   RestorationBucket.root({
     required RestorationManager manager,
     required Map<dynamic, dynamic>? rawData,
-  })   : assert(manager != null),
+  })  : assert(manager != null),
         _manager = manager,
         _rawData = rawData ?? <dynamic, dynamic>{},
         _restorationId = 'root' {
@@ -499,7 +499,7 @@ class RestorationBucket {
     required String restorationId,
     required RestorationBucket parent,
     required Object? debugOwner,
-  })   : assert(restorationId != null),
+  })  : assert(restorationId != null),
         assert(parent != null),
         assert(parent._rawChildren[restorationId] != null),
         _manager = parent._manager,

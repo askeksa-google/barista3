@@ -636,7 +636,7 @@ class TextAlignVertical {
   /// Creates a TextAlignVertical from any y value between -1.0 and 1.0.
   const TextAlignVertical({
     required this.y,
-  })   : assert(y != null),
+  })  : assert(y != null),
         assert(y >= -1.0 && y <= 1.0);
 
   /// A value ranging from -1.0 to 1.0 that defines the topmost and bottommost

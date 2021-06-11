@@ -311,7 +311,7 @@ class _RaisedButtonWithIcon extends RaisedButton
     Duration? animationDuration,
     required Widget icon,
     required Widget label,
-  })   : assert(elevation == null || elevation >= 0.0),
+  })  : assert(elevation == null || elevation >= 0.0),
         assert(highlightElevation == null || highlightElevation >= 0.0),
         assert(disabledElevation == null || disabledElevation >= 0.0),
         assert(clipBehavior != null),

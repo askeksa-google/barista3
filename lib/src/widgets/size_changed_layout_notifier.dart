@@ -69,7 +69,7 @@ class _RenderSizeChangedWithCallback extends RenderProxyBox {
   _RenderSizeChangedWithCallback({
     RenderBox? child,
     required this.onLayoutChangedCallback,
-  })   : assert(onLayoutChangedCallback != null),
+  })  : assert(onLayoutChangedCallback != null),
         super(child);
 
   // There's a 1:1 relationship between the _RenderSizeChangedWithCallback and

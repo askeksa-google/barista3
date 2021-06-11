@@ -1194,7 +1194,7 @@ class _ThumbPressGestureRecognizer extends LongPressGestureRecognizer {
     required Object debugOwner,
     required GlobalKey customPaintKey,
     required Duration pressDuration,
-  })   : _customPaintKey = customPaintKey,
+  })  : _customPaintKey = customPaintKey,
         super(
           postAcceptSlopTolerance: postAcceptSlopTolerance,
           kind: kind,
@@ -1231,7 +1231,7 @@ class _TrackTapGestureRecognizer extends TapGestureRecognizer {
   _TrackTapGestureRecognizer({
     required Object debugOwner,
     required GlobalKey customPaintKey,
-  })   : _customPaintKey = customPaintKey,
+  })  : _customPaintKey = customPaintKey,
         super(debugOwner: debugOwner);
 
   final GlobalKey _customPaintKey;

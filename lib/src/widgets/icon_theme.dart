@@ -21,7 +21,7 @@ class IconTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         assert(child != null),
         super(key: key, child: child);
 

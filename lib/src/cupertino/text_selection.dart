@@ -615,7 +615,7 @@ class _CupertinoTextSelectionToolbarContent extends StatefulWidget {
     Key? key,
     required this.children,
     required this.isArrowPointingDown,
-  })   : assert(children != null),
+  })  : assert(children != null),
         // This ignore is used because .isNotEmpty isn't compatible with const.
         assert(children.length > 0), // ignore: prefer_is_empty
         super(key: key);
@@ -750,7 +750,7 @@ class _CupertinoTextSelectionToolbarItems extends RenderObjectWidget {
     required this.dividerWidth,
     required this.nextButton,
     required this.nextButtonDisabled,
-  })   : assert(children != null),
+  })  : assert(children != null),
         assert(children.isNotEmpty),
         assert(backButton != null),
         assert(dividerWidth != null),
@@ -976,7 +976,7 @@ class _CupertinoTextSelectionToolbarItemsRenderBox extends RenderBox
   _CupertinoTextSelectionToolbarItemsRenderBox({
     required double dividerWidth,
     required int page,
-  })   : assert(dividerWidth != null),
+  })  : assert(dividerWidth != null),
         assert(page != null),
         _dividerWidth = dividerWidth,
         _page = page,

@@ -282,7 +282,7 @@ class RenderUiKitView extends RenderBox {
     required UiKitViewController viewController,
     required this.hitTestBehavior,
     required Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-  })   : assert(viewController != null),
+  })  : assert(viewController != null),
         assert(hitTestBehavior != null),
         assert(gestureRecognizers != null),
         _viewController = viewController {
@@ -618,7 +618,7 @@ class PlatformViewRenderBox extends RenderBox with _PlatformViewGestureMixin {
     required PlatformViewController controller,
     required PlatformViewHitTestBehavior hitTestBehavior,
     required Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-  })   : assert(controller != null &&
+  })  : assert(controller != null &&
             controller.viewId != null &&
             controller.viewId > -1),
         assert(hitTestBehavior != null),

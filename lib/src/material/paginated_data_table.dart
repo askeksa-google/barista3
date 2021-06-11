@@ -90,7 +90,7 @@ class PaginatedDataTable extends StatefulWidget {
     this.onRowsPerPageChanged,
     this.dragStartBehavior = DragStartBehavior.start,
     required this.source,
-  })   : assert(actions == null || (actions != null && header != null)),
+  })  : assert(actions == null || (actions != null && header != null)),
         assert(columns != null),
         assert(dragStartBehavior != null),
         assert(columns.isNotEmpty),

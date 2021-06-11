@@ -620,7 +620,7 @@ abstract class CompoundAnimation<T> extends Animation<T>
   CompoundAnimation({
     required this.first,
     required this.next,
-  })   : assert(first != null),
+  })  : assert(first != null),
         assert(next != null);
 
   /// The first sub-animation. Its status takes precedence if neither are

@@ -350,7 +350,7 @@ class _ScrollableScope extends InheritedWidget {
     required this.scrollable,
     required this.position,
     required Widget child,
-  })   : assert(scrollable != null),
+  })  : assert(scrollable != null),
         assert(child != null),
         super(key: key, child: child);
 
@@ -948,7 +948,7 @@ class ScrollIncrementDetails {
   const ScrollIncrementDetails({
     required this.type,
     required this.metrics,
-  })   : assert(type != null),
+  })  : assert(type != null),
         assert(metrics != null);
 
   /// The type of scroll this is (e.g. line, page, etc.).

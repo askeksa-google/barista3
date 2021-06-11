@@ -28,7 +28,7 @@ class RawKeyEventDataLinux extends RawKeyEventData {
     this.keyCode = 0,
     this.modifiers = 0,
     required this.isDown,
-  })   : assert(scanCode != null),
+  })  : assert(scanCode != null),
         assert(unicodeScalarValues != null),
         assert((unicodeScalarValues & ~LogicalKeyboardKey.valueMask) == 0),
         assert(keyCode != null),

@@ -60,7 +60,7 @@ class RestorationScope extends StatefulWidget {
     Key? key,
     required this.restorationId,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// Returns the [RestorationBucket] inserted into the widget tree by the
@@ -153,7 +153,7 @@ class UnmanagedRestorationScope extends InheritedWidget {
     Key? key,
     this.bucket,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   /// The [RestorationBucket] that this widget will insert into the widget tree.
@@ -228,7 +228,7 @@ class RootRestorationScope extends StatefulWidget {
     Key? key,
     required this.restorationId,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget below this widget in the tree.

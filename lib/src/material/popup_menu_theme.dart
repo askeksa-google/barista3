@@ -144,7 +144,7 @@ class PopupMenuTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         super(key: key, child: child);
 
   /// The properties for descendant popup menu widgets.

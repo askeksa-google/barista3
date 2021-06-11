@@ -221,7 +221,7 @@ class _TabLabelBarRenderer extends RenderFlex {
     required TextDirection textDirection,
     required VerticalDirection verticalDirection,
     required this.onPerformLayout,
-  })   : assert(onPerformLayout != null),
+  })  : assert(onPerformLayout != null),
         assert(textDirection != null),
         super(
           children: children,
@@ -328,7 +328,7 @@ class _IndicatorPainter extends CustomPainter {
     required this.tabKeys,
     required _IndicatorPainter? old,
     required this.indicatorPadding,
-  })   : assert(controller != null),
+  })  : assert(controller != null),
         assert(indicator != null),
         super(repaint: controller.animation) {
     if (old != null)
@@ -1445,7 +1445,7 @@ class TabPageSelectorIndicator extends StatelessWidget {
     required this.backgroundColor,
     required this.borderColor,
     required this.size,
-  })   : assert(backgroundColor != null),
+  })  : assert(backgroundColor != null),
         assert(borderColor != null),
         assert(size != null),
         super(key: key);

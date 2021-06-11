@@ -20,7 +20,7 @@ class _ChildEntry {
     required this.animation,
     required this.transition,
     required this.widgetChild,
-  })   : assert(animation != null),
+  })  : assert(animation != null),
         assert(transition != null),
         assert(controller != null);
 

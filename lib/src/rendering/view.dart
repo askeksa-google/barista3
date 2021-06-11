@@ -59,7 +59,7 @@ class RenderView extends RenderObject
     RenderBox? child,
     required ViewConfiguration configuration,
     required ui.FlutterView window,
-  })   : assert(configuration != null),
+  })  : assert(configuration != null),
         _configuration = configuration,
         _window = window {
     this.child = child;

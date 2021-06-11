@@ -496,7 +496,7 @@ class _RenderSegmentedControl<T> extends RenderBox
     required TextDirection textDirection,
     required List<Color> backgroundColors,
     required Color borderColor,
-  })   : assert(textDirection != null),
+  })  : assert(textDirection != null),
         _textDirection = textDirection,
         _selectedIndex = selectedIndex,
         _pressedIndex = pressedIndex,

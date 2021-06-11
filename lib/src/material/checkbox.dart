@@ -485,7 +485,7 @@ class _CheckboxRenderObjectWidget extends LeafRenderObjectWidget {
     required this.additionalConstraints,
     required this.hasFocus,
     required this.hovering,
-  })   : assert(tristate != null),
+  })  : assert(tristate != null),
         assert(tristate || value != null),
         assert(activeColor != null),
         assert(inactiveColor != null),
@@ -571,7 +571,7 @@ class _RenderCheckbox extends RenderToggleable {
     required bool hasFocus,
     required bool hovering,
     required TickerProvider vsync,
-  })   : _oldValue = value,
+  })  : _oldValue = value,
         super(
           value: value,
           tristate: tristate,

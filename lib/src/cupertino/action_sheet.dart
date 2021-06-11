@@ -334,7 +334,7 @@ class CupertinoActionSheetAction extends StatelessWidget {
     this.isDefaultAction = false,
     this.isDestructiveAction = false,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(onPressed != null),
         super(key: key);
 
@@ -601,7 +601,7 @@ class _RenderCupertinoAlert extends RenderBox {
     RenderBox? actionsSection,
     double dividerThickness = 0.0,
     required Color dividerColor,
-  })   : assert(dividerColor != null),
+  })  : assert(dividerColor != null),
         _contentSection = contentSection,
         _actionsSection = actionsSection,
         _dividerThickness = dividerThickness,
@@ -1198,7 +1198,7 @@ class _RenderCupertinoAlertActions extends RenderBox
     bool hasCancelButton = false,
     required Color backgroundColor,
     required Color pressedColor,
-  })   : _dividerThickness = dividerThickness,
+  })  : _dividerThickness = dividerThickness,
         _hasCancelButton = hasCancelButton,
         _buttonBackgroundPaint = Paint()
           ..style = PaintingStyle.fill

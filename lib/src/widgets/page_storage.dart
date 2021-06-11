@@ -242,7 +242,7 @@ class PageStorage extends StatelessWidget {
     Key? key,
     required this.bucket,
     required this.child,
-  })   : assert(bucket != null),
+  })  : assert(bucket != null),
         super(key: key);
 
   /// The widget below this widget in the tree.

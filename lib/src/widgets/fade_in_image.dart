@@ -280,7 +280,7 @@ class _AnimatedFadeOutFadeIn extends ImplicitlyAnimatedWidget {
     required this.fadeOutCurve,
     required this.fadeInDuration,
     required this.fadeInCurve,
-  })   : assert(target != null),
+  })  : assert(target != null),
         assert(placeholder != null),
         assert(isTargetLoaded != null),
         assert(fadeOutDuration != null),

@@ -23,7 +23,7 @@ class TickerMode extends StatelessWidget {
     Key? key,
     required this.enabled,
     required this.child,
-  })   : assert(enabled != null),
+  })  : assert(enabled != null),
         super(key: key);
 
   /// The requested ticker mode for this subtree.
@@ -87,7 +87,7 @@ class _EffectiveTickerMode extends InheritedWidget {
     Key? key,
     required this.enabled,
     required Widget child,
-  })   : assert(enabled != null),
+  })  : assert(enabled != null),
         super(key: key, child: child);
 
   final bool enabled;

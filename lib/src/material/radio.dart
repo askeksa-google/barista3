@@ -571,7 +571,7 @@ class _RadioRenderObjectWidget extends LeafRenderObjectWidget {
     required this.hasFocus,
     required this.hovering,
     required this.splashRadius,
-  })   : assert(selected != null),
+  })  : assert(selected != null),
         assert(activeColor != null),
         assert(inactiveColor != null),
         assert(vsync != null),

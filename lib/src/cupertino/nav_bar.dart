@@ -773,7 +773,7 @@ class _LargeTitleNavigationBarSliverDelegate
     required this.persistentHeight,
     required this.alwaysShowMiddle,
     required this.stretchConfiguration,
-  })   : assert(persistentHeight != null),
+  })  : assert(persistentHeight != null),
         assert(alwaysShowMiddle != null),
         assert(transitionBetweenRoutes != null);
 
@@ -1046,7 +1046,7 @@ class _NavigationBarStaticComponents {
     required Widget? userLargeTitle,
     required EdgeInsetsDirectional? padding,
     required bool large,
-  })   : leading = createLeading(
+  })  : leading = createLeading(
           leadingKey: keys.leadingKey,
           userLeading: userLeading,
           route: route,
@@ -1521,7 +1521,7 @@ class _TransitionableNavigationBar extends StatelessWidget {
     required this.hasUserMiddle,
     required this.largeExpanded,
     required this.child,
-  })   : assert(componentsKeys != null),
+  })  : assert(componentsKeys != null),
         assert(largeExpanded != null),
         assert(!largeExpanded || largeTitleTextStyle != null),
         super(key: componentsKeys.navBarBoxKey);
@@ -1598,7 +1598,7 @@ class _NavigationBarTransition extends StatelessWidget {
     required this.animation,
     required this.topNavBar,
     required this.bottomNavBar,
-  })   : heightTween = Tween<double>(
+  })  : heightTween = Tween<double>(
           begin: bottomNavBar.renderBox.size.height,
           end: topNavBar.renderBox.size.height,
         ),
@@ -1718,7 +1718,7 @@ class _NavigationBarComponentsTransition {
     required _TransitionableNavigationBar bottomNavBar,
     required _TransitionableNavigationBar topNavBar,
     required TextDirection directionality,
-  })   : bottomComponents = bottomNavBar.componentsKeys,
+  })  : bottomComponents = bottomNavBar.componentsKeys,
         topComponents = topNavBar.componentsKeys,
         bottomNavBarBox = bottomNavBar.renderBox,
         topNavBarBox = topNavBar.renderBox,

@@ -136,7 +136,7 @@ typedef MouseDetectorAnnotationFinder = HitTestResult Function(Offset offset);
 class _MouseState {
   _MouseState({
     required PointerEvent initialEvent,
-  })   : assert(initialEvent != null),
+  })  : assert(initialEvent != null),
         _latestEvent = initialEvent;
 
   // The list of annotations that contains this device.
@@ -195,7 +195,7 @@ class MouseTrackerUpdateDetails with Diagnosticable {
     required this.lastAnnotations,
     required this.nextAnnotations,
     required PointerEvent this.previousEvent,
-  })   : assert(previousEvent != null),
+  })  : assert(previousEvent != null),
         assert(lastAnnotations != null),
         assert(nextAnnotations != null),
         triggeringEvent = null;
@@ -209,7 +209,7 @@ class MouseTrackerUpdateDetails with Diagnosticable {
     required this.nextAnnotations,
     this.previousEvent,
     required PointerEvent this.triggeringEvent,
-  })   : assert(triggeringEvent != null),
+  })  : assert(triggeringEvent != null),
         assert(lastAnnotations != null),
         assert(nextAnnotations != null);
 

@@ -80,7 +80,7 @@ class InteractiveViewer extends StatefulWidget {
     this.scaleEnabled = true,
     this.transformationController,
     required this.child,
-  })   : assert(alignPanAxis != null),
+  })  : assert(alignPanAxis != null),
         assert(child != null),
         assert(constrained != null),
         assert(minScale != null),

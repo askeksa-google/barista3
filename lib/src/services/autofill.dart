@@ -631,7 +631,7 @@ class AutofillConfiguration {
     required this.uniqueIdentifier,
     required this.autofillHints,
     required this.currentEditingValue,
-  })   : assert(uniqueIdentifier != null),
+  })  : assert(uniqueIdentifier != null),
         assert(autofillHints != null);
 
   /// A string that uniquely identifies the current [AutofillClient].
@@ -769,7 +769,7 @@ class _AutofillScopeTextInputConfiguration extends TextInputConfiguration {
   _AutofillScopeTextInputConfiguration({
     required this.allConfigurations,
     required TextInputConfiguration currentClientConfiguration,
-  })   : assert(allConfigurations != null),
+  })  : assert(allConfigurations != null),
         assert(currentClientConfiguration != null),
         super(
           inputType: currentClientConfiguration.inputType,

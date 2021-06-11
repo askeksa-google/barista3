@@ -612,7 +612,7 @@ class _RailDestination extends StatelessWidget {
     required this.labelTextStyle,
     required this.onTap,
     required this.indexLabel,
-  })   : assert(minWidth != null),
+  })  : assert(minWidth != null),
         assert(minExtendedWidth != null),
         assert(icon != null),
         assert(label != null),
@@ -896,7 +896,7 @@ class _ExtendedNavigationRailAnimation extends InheritedWidget {
     Key? key,
     required this.animation,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   final Animation<double> animation;

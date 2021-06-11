@@ -168,7 +168,7 @@ class TabController extends ChangeNotifier {
     required int previousIndex,
     required AnimationController? animationController,
     required this.length,
-  })   : _index = index,
+  })  : _index = index,
         _previousIndex = previousIndex,
         _animationController = animationController;
 
@@ -377,7 +377,7 @@ class DefaultTabController extends StatefulWidget {
     required this.length,
     this.initialIndex = 0,
     required this.child,
-  })   : assert(initialIndex != null),
+  })  : assert(initialIndex != null),
         assert(length >= 0),
         assert(length == 0 || (initialIndex >= 0 && initialIndex < length)),
         super(key: key);

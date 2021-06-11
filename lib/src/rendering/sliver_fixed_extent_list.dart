@@ -368,7 +368,7 @@ class RenderSliverFixedExtentList extends RenderSliverFixedExtentBoxAdaptor {
   RenderSliverFixedExtentList({
     required RenderSliverBoxChildManager childManager,
     required double itemExtent,
-  })   : _itemExtent = itemExtent,
+  })  : _itemExtent = itemExtent,
         super(childManager: childManager);
 
   @override

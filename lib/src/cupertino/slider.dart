@@ -335,7 +335,7 @@ class _RenderCupertinoSlider extends RenderConstrainedBox {
     this.onChangeEnd,
     required TickerProvider vsync,
     required TextDirection textDirection,
-  })   : assert(value != null && value >= 0.0 && value <= 1.0),
+  })  : assert(value != null && value >= 0.0 && value <= 1.0),
         assert(textDirection != null),
         _value = value,
         _divisions = divisions,

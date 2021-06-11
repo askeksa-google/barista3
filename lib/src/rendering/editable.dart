@@ -223,7 +223,7 @@ class RenderEditable extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     Color? promptRectColor,
     Clip clipBehavior = Clip.hardEdge,
     required this.textSelectionDelegate,
-  })   : assert(textAlign != null),
+  })  : assert(textAlign != null),
         assert(textDirection != null,
             'RenderEditable created without a textDirection.'),
         assert(maxLines == null || maxLines > 0),

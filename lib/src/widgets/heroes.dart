@@ -162,7 +162,7 @@ class Hero extends StatefulWidget {
     this.placeholderBuilder,
     this.transitionOnUserGestures = false,
     required this.child,
-  })   : assert(tag != null),
+  })  : assert(tag != null),
         assert(transitionOnUserGestures != null),
         assert(child != null),
         super(key: key);

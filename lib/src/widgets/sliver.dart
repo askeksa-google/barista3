@@ -774,7 +774,7 @@ abstract class SliverMultiBoxAdaptorWidget extends SliverWithKeepAliveWidget {
   const SliverMultiBoxAdaptorWidget({
     Key? key,
     required this.delegate,
-  })   : assert(delegate != null),
+  })  : assert(delegate != null),
         super(key: key);
 
   /// {@template flutter.widgets.SliverMultiBoxAdaptorWidget.delegate}
@@ -1739,7 +1739,7 @@ class KeepAlive extends ParentDataWidget<KeepAliveParentDataMixin> {
     Key? key,
     required this.keepAlive,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(keepAlive != null),
         super(key: key, child: child);
 

@@ -104,7 +104,7 @@ class _CupertinoTextFieldSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _CupertinoTextFieldSelectionGestureDetectorBuilder({
     required _CupertinoTextFieldState state,
-  })   : _state = state,
+  })  : _state = state,
         super(delegate: state);
 
   final _CupertinoTextFieldState _state;

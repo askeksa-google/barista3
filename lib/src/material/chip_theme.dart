@@ -48,7 +48,7 @@ class ChipTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         assert(data != null),
         super(key: key, child: child);
 

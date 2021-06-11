@@ -157,7 +157,7 @@ class _RoundedRectangleToCircleBorder extends OutlinedBorder {
     BorderSide side = BorderSide.none,
     this.borderRadius = BorderRadius.zero,
     required this.circleness,
-  })   : assert(side != null),
+  })  : assert(side != null),
         assert(borderRadius != null),
         assert(circleness != null),
         super(side: side);

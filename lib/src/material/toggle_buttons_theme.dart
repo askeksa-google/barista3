@@ -261,7 +261,7 @@ class ToggleButtonsTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })   : assert(data != null),
+  })  : assert(data != null),
         super(key: key, child: child);
 
   /// Specifies the color and border values for descendant [ToggleButtons] widgets.

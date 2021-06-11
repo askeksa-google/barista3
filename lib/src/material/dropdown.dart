@@ -46,7 +46,7 @@ class _DropdownMenuPainter extends CustomPainter {
     this.selectedIndex,
     required this.resize,
     required this.getSelectedItemOffset,
-  })   : _painter = BoxDecoration(
+  })  : _painter = BoxDecoration(
           // If you add an image here, you must provide a real
           // configuration in the paint() function and you must provide some sort
           // of onChanged callback here.
@@ -632,7 +632,7 @@ class _MenuItem<T> extends SingleChildRenderObjectWidget {
     Key? key,
     required this.onLayout,
     required this.item,
-  })   : assert(onLayout != null),
+  })  : assert(onLayout != null),
         super(key: key, child: item);
 
   final ValueChanged<Size> onLayout;
@@ -674,7 +674,7 @@ class _DropdownMenuItemContainer extends StatelessWidget {
   const _DropdownMenuItemContainer({
     Key? key,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -705,7 +705,7 @@ class DropdownMenuItem<T> extends _DropdownMenuItemContainer {
     this.onTap,
     this.value,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   /// Called when the dropdown menu item is tapped.
@@ -729,7 +729,7 @@ class DropdownButtonHideUnderline extends InheritedWidget {
   const DropdownButtonHideUnderline({
     Key? key,
     required Widget child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   /// Returns whether the underline of [DropdownButton] widgets should

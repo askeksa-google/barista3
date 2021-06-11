@@ -388,7 +388,7 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     ValueChanged<bool>? onChanged,
     required TextDirection textDirection,
     required _CupertinoSwitchState state,
-  })   : assert(value != null),
+  })  : assert(value != null),
         assert(activeColor != null),
         assert(state != null),
         _value = value,

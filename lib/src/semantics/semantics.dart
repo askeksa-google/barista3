@@ -1230,7 +1230,7 @@ class SemanticsNode extends AbstractNode with DiagnosticableTreeMixin {
     this.key,
     VoidCallback? showOnScreen,
     required SemanticsOwner owner,
-  })   : id = 0,
+  })  : id = 0,
         _showOnScreen = showOnScreen {
     attach(owner);
   }
@@ -2397,7 +2397,7 @@ class _BoxEdge implements Comparable<_BoxEdge> {
     required this.isLeadingEdge,
     required this.offset,
     required this.node,
-  })   : assert(isLeadingEdge != null),
+  })  : assert(isLeadingEdge != null),
         assert(offset != null),
         assert(offset.isFinite),
         assert(node != null);
@@ -2665,7 +2665,7 @@ class _TraversalSortNode implements Comparable<_TraversalSortNode> {
     required this.node,
     this.sortKey,
     required this.position,
-  })   : assert(node != null),
+  })  : assert(node != null),
         assert(position != null);
 
   /// The node whose position this sort node determines.

@@ -100,7 +100,7 @@ class VelocityEstimate {
     required this.confidence,
     required this.duration,
     required this.offset,
-  })   : assert(pixelsPerSecond != null),
+  })  : assert(pixelsPerSecond != null),
         assert(confidence != null),
         assert(duration != null),
         assert(offset != null);

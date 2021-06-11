@@ -535,7 +535,7 @@ class _DatePickerHeader extends StatelessWidget {
     required this.icon,
     required this.iconTooltip,
     required this.onIconPressed,
-  })   : assert(helpText != null),
+  })  : assert(helpText != null),
         assert(orientation != null),
         assert(isShort != null),
         super(key: key);
@@ -1305,7 +1305,7 @@ class _CalendarDateRangePicker extends StatefulWidget {
     DateTime? currentDate,
     required this.onStartDateChanged,
     required this.onEndDateChanged,
-  })   : initialStartDate = initialStartDate != null
+  })  : initialStartDate = initialStartDate != null
             ? DateUtils.dateOnly(initialStartDate)
             : null,
         initialEndDate =
@@ -1775,7 +1775,7 @@ class _MonthSliverGridLayout extends SliverGridLayout {
     required this.dayChildWidth,
     required this.edgeChildWidth,
     required this.reverseCrossAxis,
-  })   : assert(crossAxisCount != null && crossAxisCount > 0),
+  })  : assert(crossAxisCount != null && crossAxisCount > 0),
         assert(dayChildWidth != null && dayChildWidth >= 0),
         assert(edgeChildWidth != null && edgeChildWidth >= 0),
         assert(reverseCrossAxis != null);

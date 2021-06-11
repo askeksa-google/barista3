@@ -81,7 +81,7 @@ class BottomSheet extends StatefulWidget {
     this.clipBehavior,
     required this.onClosing,
     required this.builder,
-  })   : assert(enableDrag != null),
+  })  : assert(enableDrag != null),
         assert(onClosing != null),
         assert(builder != null),
         assert(elevation == null || elevation >= 0.0),

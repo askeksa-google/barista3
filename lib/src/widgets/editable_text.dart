@@ -2857,7 +2857,7 @@ class _Editable extends LeafRenderObjectWidget {
     this.promptRectRange,
     this.promptRectColor,
     required this.clipBehavior,
-  })   : assert(textDirection != null),
+  })  : assert(textDirection != null),
         assert(rendererIgnoresPointer != null),
         super(key: key);
 

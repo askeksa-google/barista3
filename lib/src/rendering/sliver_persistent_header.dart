@@ -569,7 +569,7 @@ abstract class RenderSliverFloatingPersistentHeader
     this.snapConfiguration,
     OverScrollHeaderStretchConfiguration? stretchConfiguration,
     required this.showOnScreenConfiguration,
-  })   : _vsync = vsync,
+  })  : _vsync = vsync,
         super(
           child: child,
           stretchConfiguration: stretchConfiguration,

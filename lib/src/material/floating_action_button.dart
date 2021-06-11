@@ -191,7 +191,7 @@ class FloatingActionButton extends StatelessWidget {
     this.autofocus = false,
     Widget? icon,
     required Widget label,
-  })   : assert(elevation == null || elevation >= 0.0),
+  })  : assert(elevation == null || elevation >= 0.0),
         assert(focusElevation == null || focusElevation >= 0.0),
         assert(hoverElevation == null || hoverElevation >= 0.0),
         assert(highlightElevation == null || highlightElevation >= 0.0),

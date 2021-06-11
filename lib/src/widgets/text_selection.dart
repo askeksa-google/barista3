@@ -1212,7 +1212,7 @@ class TextSelectionGestureDetector extends StatefulWidget {
     this.onDragSelectionEnd,
     this.behavior,
     required this.child,
-  })   : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// Called for every tap down including every tap down that's part of a
