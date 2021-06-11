@@ -2354,7 +2354,6 @@ void _sendFontChangeMessage() {
   if (PlatformDispatcher.instance.onPlatformMessage != null) {
     _invoke3<String, ByteData?, PlatformMessageResponseCallback>(
       PlatformDispatcher.instance.onPlatformMessage,
-      PlatformDispatcher.instance._onPlatformMessageZone,
       kSystemChannelName,
       _fontChangeMessage,
       (ByteData? responseData) {},

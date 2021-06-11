@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async' show Zone, ZoneDelegate, ZoneSpecification;
+import 'package:flute/fake_async.dart' show runZonedGuarded;
 
 import 'dart:typed_data';
 import 'package:flute/ui.dart' as ui show Codec;
@@ -436,12 +436,7 @@ abstract class ImageProvider<T extends Object> {
     // zone mechanism to intercept the uncaught error and deliver it to the
     // image stream's error handler. Note that these errors may be duplicated,
     // hence the need for the `didError` flag.
-    final Zone dangerZone = Zone.current.fork(specification: ZoneSpecification(
-        handleUncaughtError: (Zone zone, ZoneDelegate delegate, Zone parent,
-            Object error, StackTrace stackTrace) {
-      handleError(error, stackTrace);
-    }));
-    dangerZone.runGuarded(() {
+    runZonedGuarded(() {
       T key;
       try {
         key = obtainKey(configuration);
@@ -455,7 +450,7 @@ abstract class ImageProvider<T extends Object> {
       } catch (error, stackTrace) {
         handleError(error, stackTrace);
       }
-    });
+    }, handleError);
   }
 
   /// Called by [resolve] with the key returned by [obtainKey].

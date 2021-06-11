@@ -111,10 +111,8 @@ class PlatformDispatcher {
   VoidCallback? get onPlatformConfigurationChanged =>
       _onPlatformConfigurationChanged;
   VoidCallback? _onPlatformConfigurationChanged;
-  Zone _onPlatformConfigurationChangedZone = Zone.root;
   set onPlatformConfigurationChanged(VoidCallback? callback) {
     _onPlatformConfigurationChanged = callback;
-    _onPlatformConfigurationChangedZone = Zone.current;
   }
 
   /// The current list of views, including top level platform windows used by
@@ -148,10 +146,8 @@ class PlatformDispatcher {
   /// * [MediaQuery.of], a simpler mechanism for the same.
   VoidCallback? get onMetricsChanged => _onMetricsChanged;
   VoidCallback? _onMetricsChanged;
-  Zone _onMetricsChangedZone = Zone.root;
   set onMetricsChanged(VoidCallback? callback) {
     _onMetricsChanged = callback;
-    _onMetricsChangedZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -209,7 +205,7 @@ class PlatformDispatcher {
         left: math.max(0.0, systemGestureInsetLeft),
       ),
     );
-    _invoke(onMetricsChanged, _onMetricsChangedZone);
+    _invoke(onMetricsChanged);
   }
 
   /// A callback invoked when any view begins a frame.
@@ -224,17 +220,14 @@ class PlatformDispatcher {
   /// this callback was invoked.
   FrameCallback? get onBeginFrame => _onBeginFrame;
   FrameCallback? _onBeginFrame;
-  Zone _onBeginFrameZone = Zone.root;
   set onBeginFrame(FrameCallback? callback) {
     _onBeginFrame = callback;
-    _onBeginFrameZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
   void _beginFrame(int microseconds) {
     _invoke1<Duration>(
       onBeginFrame,
-      _onBeginFrameZone,
       Duration(microseconds: microseconds),
     );
   }
@@ -246,15 +239,13 @@ class PlatformDispatcher {
   /// happens after any deferred work queued by the [onBeginFrame] phase.
   VoidCallback? get onDrawFrame => _onDrawFrame;
   VoidCallback? _onDrawFrame;
-  Zone _onDrawFrameZone = Zone.root;
   set onDrawFrame(VoidCallback? callback) {
     _onDrawFrame = callback;
-    _onDrawFrameZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
   void _drawFrame() {
-    _invoke(onDrawFrame, _onDrawFrameZone);
+    _invoke(onDrawFrame);
   }
 
   /// A callback that is invoked when pointer data is available.
@@ -268,10 +259,8 @@ class PlatformDispatcher {
   ///    events.
   PointerDataPacketCallback? get onPointerDataPacket => _onPointerDataPacket;
   PointerDataPacketCallback? _onPointerDataPacket;
-  Zone _onPointerDataPacketZone = Zone.root;
   set onPointerDataPacket(PointerDataPacketCallback? callback) {
     _onPointerDataPacket = callback;
-    _onPointerDataPacketZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -279,7 +268,6 @@ class PlatformDispatcher {
     if (onPointerDataPacket != null) {
       _invoke1<PointerDataPacket>(
         onPointerDataPacket,
-        _onPointerDataPacketZone,
         _unpackPointerDataPacket(packet),
       );
     }
@@ -365,13 +353,11 @@ class PlatformDispatcher {
   /// 60fps), or 0.01% CPU usage per second.
   TimingsCallback? get onReportTimings => _onReportTimings;
   TimingsCallback? _onReportTimings;
-  Zone _onReportTimingsZone = Zone.root;
   set onReportTimings(TimingsCallback? callback) {
     if ((callback == null) != (_onReportTimings == null)) {
       _setNeedsReportTimings(callback != null);
     }
     _onReportTimings = callback;
-    _onReportTimingsZone = Zone.current;
   }
 
   late _SetNeedsReportTimingsFunc _setNeedsReportTimings;
@@ -386,7 +372,7 @@ class PlatformDispatcher {
       frameTimings
           .add(FrameTiming._(timings.sublist(i, i + FramePhase.values.length)));
     }
-    _invoke1(onReportTimings, _onReportTimingsZone, frameTimings);
+    _invoke1(onReportTimings, frameTimings);
   }
 
   /// Sends a message to a platform-specific plugin.
@@ -427,10 +413,8 @@ class PlatformDispatcher {
   // to using channel buffers exclusively.
   PlatformMessageCallback? get onPlatformMessage => _onPlatformMessage;
   PlatformMessageCallback? _onPlatformMessage;
-  Zone _onPlatformMessageZone = Zone.root;
   set onPlatformMessage(PlatformMessageCallback? callback) {
     _onPlatformMessage = callback;
-    _onPlatformMessageZone = Zone.current;
   }
 
   /// Called by [_dispatchPlatformMessage].
@@ -447,11 +431,8 @@ class PlatformDispatcher {
       return null;
     }
 
-    // Store the zone in which the callback is being registered.
-    final Zone registrationZone = Zone.current;
-
     return (ByteData? data) {
-      registrationZone.runUnaryGuarded(callback, data);
+      callback(data);
     };
   }
 
@@ -470,7 +451,6 @@ class PlatformDispatcher {
     } else if (onPlatformMessage != null) {
       _invoke3<String, ByteData?, PlatformMessageResponseCallback>(
         onPlatformMessage,
-        _onPlatformMessageZone,
         name,
         data,
         (ByteData? responseData) {
@@ -549,10 +529,8 @@ class PlatformDispatcher {
   VoidCallback? get onAccessibilityFeaturesChanged =>
       _onAccessibilityFeaturesChanged;
   VoidCallback? _onAccessibilityFeaturesChanged;
-  Zone _onAccessibilityFeaturesChangedZone = Zone.root;
   set onAccessibilityFeaturesChanged(VoidCallback? callback) {
     _onAccessibilityFeaturesChanged = callback;
-    _onAccessibilityFeaturesChangedZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -565,14 +543,8 @@ class PlatformDispatcher {
     _configuration = previousConfiguration.copyWith(
       accessibilityFeatures: newFeatures,
     );
-    _invoke(
-      onPlatformConfigurationChanged,
-      _onPlatformConfigurationChangedZone,
-    );
-    _invoke(
-      onAccessibilityFeaturesChanged,
-      _onAccessibilityFeaturesChangedZone,
-    );
+    _invoke(onPlatformConfigurationChanged);
+    _invoke(onAccessibilityFeaturesChanged);
   }
 
   /// Change the retained semantics data about this platform dispatcher.
@@ -662,10 +634,8 @@ class PlatformDispatcher {
   ///    observe when this callback is invoked.
   VoidCallback? get onLocaleChanged => _onLocaleChanged;
   VoidCallback? _onLocaleChanged;
-  Zone _onLocaleChangedZone = Zone.root; // ignore: unused_field
   set onLocaleChanged(VoidCallback? callback) {
     _onLocaleChanged = callback;
-    _onLocaleChangedZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -694,9 +664,8 @@ class PlatformDispatcher {
       return;
     }
     _configuration = previousConfiguration.copyWith(locales: newLocales);
-    _invoke(
-        onPlatformConfigurationChanged, _onPlatformConfigurationChangedZone);
-    _invoke(onLocaleChanged, _onLocaleChangedZone);
+    _invoke(onPlatformConfigurationChanged);
+    _invoke(onLocaleChanged);
   }
 
   // Called from the engine, via hooks.dart
@@ -758,10 +727,8 @@ class PlatformDispatcher {
   ///    observe when this callback is invoked.
   VoidCallback? get onTextScaleFactorChanged => _onTextScaleFactorChanged;
   VoidCallback? _onTextScaleFactorChanged;
-  Zone _onTextScaleFactorChangedZone = Zone.root;
   set onTextScaleFactorChanged(VoidCallback? callback) {
     _onTextScaleFactorChanged = callback;
-    _onTextScaleFactorChangedZone = Zone.current;
   }
 
   /// The setting indicating the current brightness mode of the host platform.
@@ -780,10 +747,8 @@ class PlatformDispatcher {
   ///    observe when this callback is invoked.
   VoidCallback? get onPlatformBrightnessChanged => _onPlatformBrightnessChanged;
   VoidCallback? _onPlatformBrightnessChanged;
-  Zone _onPlatformBrightnessChangedZone = Zone.root;
   set onPlatformBrightnessChanged(VoidCallback? callback) {
     _onPlatformBrightnessChanged = callback;
-    _onPlatformBrightnessChangedZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -817,13 +782,12 @@ class PlatformDispatcher {
       alwaysUse24HourFormat: alwaysUse24HourFormat,
       platformBrightness: platformBrightness,
     );
-    _invoke(
-        onPlatformConfigurationChanged, _onPlatformConfigurationChangedZone);
+    _invoke(onPlatformConfigurationChanged);
     if (textScaleFactorChanged) {
-      _invoke(onTextScaleFactorChanged, _onTextScaleFactorChangedZone);
+      _invoke(onTextScaleFactorChanged);
     }
     if (platformBrightnessChanged) {
-      _invoke(onPlatformBrightnessChanged, _onPlatformBrightnessChangedZone);
+      _invoke(onPlatformBrightnessChanged);
     }
   }
 
@@ -840,10 +804,8 @@ class PlatformDispatcher {
   /// callback was set.
   VoidCallback? get onSemanticsEnabledChanged => _onSemanticsEnabledChanged;
   VoidCallback? _onSemanticsEnabledChanged;
-  Zone _onSemanticsEnabledChangedZone = Zone.root;
   set onSemanticsEnabledChanged(VoidCallback? callback) {
     _onSemanticsEnabledChanged = callback;
-    _onSemanticsEnabledChangedZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
@@ -855,9 +817,8 @@ class PlatformDispatcher {
     _configuration = previousConfiguration.copyWith(
       semanticsEnabled: enabled,
     );
-    _invoke(
-        onPlatformConfigurationChanged, _onPlatformConfigurationChangedZone);
-    _invoke(onSemanticsEnabledChanged, _onSemanticsEnabledChangedZone);
+    _invoke(onPlatformConfigurationChanged);
+    _invoke(onSemanticsEnabledChanged);
   }
 
   /// A callback that is invoked whenever the user requests an action to be
@@ -870,17 +831,14 @@ class PlatformDispatcher {
   /// callback was set.
   SemanticsActionCallback? get onSemanticsAction => _onSemanticsAction;
   SemanticsActionCallback? _onSemanticsAction;
-  Zone _onSemanticsActionZone = Zone.root;
   set onSemanticsAction(SemanticsActionCallback? callback) {
     _onSemanticsAction = callback;
-    _onSemanticsActionZone = Zone.current;
   }
 
   // Called from the engine, via hooks.dart
   void _dispatchSemanticsAction(int id, int action, ByteData? args) {
     _invoke3<int, SemanticsAction, ByteData?>(
       onSemanticsAction,
-      _onSemanticsActionZone,
       id,
       SemanticsAction.values[action]!,
       args,

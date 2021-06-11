@@ -1,33 +1,19 @@
 // @dart=2.12
 
-import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:flute/ui.dart' as ui;
 import 'package:flute/cupertino.dart';
 import 'package:flute/material.dart';
 
-int _last = 0;
-int get now => _last = DateTime.now().millisecondsSinceEpoch;
-int get since => -(_last - now);
-
-int frame = 0;
+import 'time_app.dart';
 
 const int maxDepth = 6;
-final math.Random random = math.Random(0);
+final Random random = Random(16307);
 
 void main() {
-  int _in = now;
   ui.setScreenSize(3840, 2160); // 4k
-  runApp(MyApp());
-  int _since = since;
-  print("Into main:   $_in");
-  print("main:     ${"$_since".padLeft(4)}");
-  WidgetsBinding.instance?.addPersistentFrameCallback((_) {
-    if (++frame <= 25) {
-      print("frame ${"$frame".padLeft(2)}: ${"$since".padLeft(4)}");
-    }
-    WidgetsBinding.instance!.scheduleFrame();
-  });
+  timeApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -349,7 +349,7 @@ abstract class TransitionRoute<T> extends OverlayRoute<T> {
   }
 
   void _setSecondaryAnimation(Animation<double>? animation,
-      [dynamic? disposed]) {
+      [dynamic disposed]) {
     _secondaryAnimation.parent = animation;
     // Releases the reference to the next route's animation when that route
     // is disposed.

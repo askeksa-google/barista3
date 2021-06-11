@@ -1,6 +1,7 @@
 library dart.ui;
 
-import 'dart:async' show runZonedGuarded, scheduleMicrotask, Timer, Zone;
+import 'package:flute/fake_async.dart'
+    show runZonedGuarded, scheduleMicrotask, Timer;
 
 import 'dart:collection' as collection;
 import 'dart:convert';

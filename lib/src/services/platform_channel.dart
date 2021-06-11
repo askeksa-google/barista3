@@ -426,7 +426,7 @@ class MethodChannel {
   /// return value of the call. The value will be encoded using
   /// [MethodCodec.encodeSuccessEnvelope], to act as if platform plugin had
   /// returned that value.
-  void setMockMethodCallHandler(dynamic? Function(MethodCall call)? handler) {
+  void setMockMethodCallHandler(dynamic Function(MethodCall call)? handler) {
     _methodChannelMockHandlers[this] = handler;
     binaryMessenger.setMockMessageHandler(
       name,
@@ -448,7 +448,7 @@ class MethodChannel {
       _methodChannelMockHandlers[this] == handler;
 
   ByteData? _handleAsMethodCall(
-      ByteData? message, dynamic? handler(MethodCall call)) {
+      ByteData? message, dynamic handler(MethodCall call)) {
     final MethodCall call = codec.decodeMethodCall(message);
     try {
       return codec.encodeSuccessEnvelope(handler(call));

@@ -33,14 +33,13 @@ typedef ChannelCallback = void Function(
 ///
 /// This tracks (and applies) the [Zone].
 class _ChannelCallbackRecord {
-  _ChannelCallbackRecord(this._callback) : _zone = Zone.current;
+  _ChannelCallbackRecord(this._callback);
   final ChannelCallback _callback;
-  final Zone _zone;
 
   /// Call [callback] in [zone], using the given arguments.
   void invoke(ByteData? dataArg, PlatformMessageResponseCallback callbackArg) {
     _invoke2<ByteData?, PlatformMessageResponseCallback>(
-        _callback, _zone, dataArg, callbackArg);
+        _callback, dataArg, callbackArg);
   }
 }
 
@@ -53,7 +52,7 @@ class _StoredMessage {
   /// payload of the message and a [PlatformMessageResponseCallback]
   /// that represents the callback that will be called when the message
   /// is handled.
-  _StoredMessage(this.data, this._callback) : _zone = Zone.current;
+  _StoredMessage(this.data, this._callback);
 
   /// Representation of the message's payload.
   final ByteData? data;
@@ -61,10 +60,8 @@ class _StoredMessage {
   /// Callback to be used when replying to the message.
   final PlatformMessageResponseCallback _callback;
 
-  final Zone _zone;
-
   void invoke(ByteData? dataArg) {
-    _invoke1(_callback, _zone, dataArg);
+    _invoke1(_callback, dataArg);
   }
 }
 
