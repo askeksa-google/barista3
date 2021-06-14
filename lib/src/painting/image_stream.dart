@@ -678,11 +678,11 @@ abstract class ImageStreamCompleter with Diagnosticable {
     );
 
     // Make a copy to allow for concurrent modification.
-    final List<ImageErrorListener> localErrorListeners = _listeners
-        .map<ImageErrorListener?>(
-            (ImageStreamListener listener) => listener.onError)
-        .whereType<ImageErrorListener>()
-        .toList();
+    final List<ImageErrorListener> localErrorListeners =
+        List<ImageErrorListener>.from(_listeners
+            .map<ImageErrorListener?>(
+                (ImageStreamListener listener) => listener.onError)
+            .where((e) => e is ImageErrorListener));
 
     if (localErrorListeners.isEmpty) {
       FlutterError.reportError(_currentError!);
@@ -713,11 +713,11 @@ abstract class ImageStreamCompleter with Diagnosticable {
     _checkDisposed();
     if (hasListeners) {
       // Make a copy to allow for concurrent modification.
-      final List<ImageChunkListener> localListeners = _listeners
-          .map<ImageChunkListener?>(
-              (ImageStreamListener listener) => listener.onChunk)
-          .whereType<ImageChunkListener>()
-          .toList();
+      final List<ImageChunkListener> localListeners =
+          List<ImageChunkListener>.from(_listeners
+              .map<ImageChunkListener?>(
+                  (ImageStreamListener listener) => listener.onChunk)
+              .where((e) => e is ImageChunkListener));
       for (final ImageChunkListener listener in localListeners) {
         listener(event);
       }

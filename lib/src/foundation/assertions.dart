@@ -1121,8 +1121,8 @@ class FlutterError extends Error
   @override
   String toString2({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     if (kReleaseMode) {
-      final Iterable<_ErrorDiagnostic> errors =
-          diagnostics.whereType<_ErrorDiagnostic>();
+      final errors = List<_ErrorDiagnostic>.from(
+          diagnostics.where((e) => e is _ErrorDiagnostic));
       return errors.isNotEmpty ? errors.first.valueToString() : toStringShort();
     }
     // Avoid wrapping lines.

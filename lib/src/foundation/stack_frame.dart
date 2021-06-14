@@ -83,7 +83,7 @@ class StackFrame {
   /// Parses a list of [StackFrame]s from the [StackTrace.toString] method.
   static List<StackFrame> fromStackString(String stack) {
     assert(stack != null);
-    return stack
+    return List<StackFrame>.from(stack
         .trim()
         .split('\n')
         .where((String line) => line.isNotEmpty)
@@ -91,8 +91,7 @@ class StackFrame {
         // On the Web in non-debug builds the stack trace includes the exception
         // message that precedes the stack trace itself. fromStackTraceLine will
         // return null in that case. We will skip it here.
-        .whereType<StackFrame>()
-        .toList();
+        .where((e) => e is StackFrame));
   }
 
   static StackFrame? _parseWebFrame(String line) {

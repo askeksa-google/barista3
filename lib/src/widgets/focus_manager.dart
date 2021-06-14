@@ -1159,8 +1159,9 @@ class FocusNode with DiagnosticableTreeMixin, ChangeNotifier {
   /// child in that scope is removed, the previous focus returns.
   void _setAsFocusedChildForScope() {
     FocusNode scopeFocus = this;
-    for (final FocusScopeNode ancestor
-        in ancestors.whereType<FocusScopeNode>()) {
+    for (final FocusNode _ancestor
+        in ancestors.where((e) => e is FocusScopeNode)) {
+      FocusScopeNode ancestor = _ancestor as FocusScopeNode;
       assert(scopeFocus != ancestor,
           'Somehow made a loop by setting focusedChild to its scope.');
       assert(_focusDebug('Setting $scopeFocus as focused child for scope:',

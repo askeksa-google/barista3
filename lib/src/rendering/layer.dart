@@ -872,7 +872,8 @@ class ContainerLayer extends Layer {
   /// [Scene].
   List<PictureLayer> _debugCheckElevations() {
     final List<PhysicalModelLayer> physicalModelLayers =
-        depthFirstIterateChildren().whereType<PhysicalModelLayer>().toList();
+        List<PhysicalModelLayer>.from(
+            depthFirstIterateChildren().where((e) => e is PhysicalModelLayer));
     final List<PictureLayer> addedLayers = <PictureLayer>[];
 
     for (int i = 0; i < physicalModelLayers.length; i++) {
