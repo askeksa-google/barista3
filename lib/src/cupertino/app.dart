@@ -422,8 +422,9 @@ class _CupertinoAppState extends State<CupertinoApp> {
       key: GlobalObjectKey(this),
       navigatorKey: widget.navigatorKey,
       navigatorObservers: widget.navigatorObservers!,
-      pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) {
-        return CupertinoPageRoute<T>(settings: settings, builder: builder);
+      pageRouteBuilder: (RouteSettings settings, WidgetBuilder builder) {
+        return CupertinoPageRoute<dynamic>(
+            settings: settings, builder: builder);
       },
       home: widget.home,
       routes: widget.routes!,

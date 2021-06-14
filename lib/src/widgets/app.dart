@@ -95,7 +95,7 @@ typedef GenerateAppTitle = String Function(BuildContext context);
 /// The signature of [WidgetsApp.pageRouteBuilder].
 ///
 /// Creates a [PageRoute] using the given [RouteSettings] and [WidgetBuilder].
-typedef PageRouteFactory = PageRoute<T> Function<T>(
+typedef PageRouteFactory = PageRoute<dynamic> Function(
     RouteSettings settings, WidgetBuilder builder);
 
 /// The signature of [WidgetsApp.onGenerateInitialRoutes].
@@ -1238,7 +1238,7 @@ class _WidgetsAppState extends State<WidgetsApp> with WidgetsBindingObserver {
           widget.pageRouteBuilder != null,
           'The default onGenerateRoute handler for WidgetsApp must have a '
           'pageRouteBuilder set if the home or routes properties are set.');
-      final Route<dynamic> route = widget.pageRouteBuilder!<dynamic>(
+      final Route<dynamic> route = widget.pageRouteBuilder!(
         settings,
         pageContentBuilder,
       );
