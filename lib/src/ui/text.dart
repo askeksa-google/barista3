@@ -2288,13 +2288,11 @@ class ParagraphBuilder {
     _currentStyle = _styleStack.removeLast();
   }
 
-  static final RegExp _whitespace = RegExp(r'\s+');
-
   /// Adds the given text to the paragraph.
   ///
   /// The text will be styled according to the current stack of text styles.
   void addText(String text) {
-    for (String span in text.split(_whitespace)) {
+    for (String span in text.split(' ')) {
       _spans.add(_TextSpan(_currentStyle, span));
     }
   }

@@ -341,7 +341,7 @@ abstract class GlobalKey<T extends State<StatefulWidget>> extends Key {
     if (element is StatefulElement) {
       final StatefulElement statefulElement = element;
       final State state = statefulElement.state;
-      if (state is T) return state;
+      if (state.runtimeType == T) return state as T;
     }
     return null;
   }
@@ -4129,7 +4129,7 @@ abstract class Element extends DiagnosticableTree implements BuildContext {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element? ancestor = _parent;
     while (ancestor != null) {
-      if (ancestor is StatefulElement && ancestor.state is T) break;
+      if (ancestor is StatefulElement && ancestor.state.runtimeType == T) break;
       ancestor = ancestor._parent;
     }
     final StatefulElement? statefulAncestor = ancestor as StatefulElement?;
