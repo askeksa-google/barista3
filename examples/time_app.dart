@@ -1,4 +1,5 @@
 import 'package:flute/fake_async.dart';
+import 'package:flute/ui.dart';
 
 import 'package:flute/widgets.dart';
 
@@ -15,12 +16,15 @@ void timeApp(StatelessWidget app) {
   runApp(app);
   int _since = since;
   int frameTotal = 0;
+  String firstFrameHash = "";
   print("main:               ${"$_since".padLeft(6)}");
   WidgetsBinding.instance?.addPersistentFrameCallback((_) {
+    String hash = globalSceneHash.toRadixString(16).padLeft(7, '0');
     if (++frame <= 1100) {
       if (frame == 1) {
         String s = "$since".padLeft(6);
         print("First frame:        $s");
+        firstFrameHash = hash;
       }
       if (frame > 100) {
         frameTotal += since;
@@ -34,6 +38,9 @@ void timeApp(StatelessWidget app) {
           "." +
           "${frameTotal % 1000}".padLeft(3, '0');
       print("Frame average:      $s");
+      print("");
+      print("First frame hash:  $firstFrameHash");
+      print("Last frame hash:   $hash");
     }
   });
 

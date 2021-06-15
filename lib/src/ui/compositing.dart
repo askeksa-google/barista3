@@ -4,6 +4,8 @@
 
 part of dart.ui;
 
+int globalSceneHash = 0;
+
 /// An opaque object representing a composited scene.
 ///
 /// To create a Scene object, use a [SceneBuilder].
@@ -68,6 +70,8 @@ abstract class _EngineLayerWrapper implements EngineLayer {
         'frames.');
     return true;
   }
+
+  int get id;
 }
 
 class _PictureLayer extends _EngineLayerWrapper {
@@ -77,6 +81,8 @@ class _PictureLayer extends _EngineLayerWrapper {
   final double dy;
   final Picture picture;
   final int hints;
+
+  int get id => 1;
 }
 
 /// An opaque handle to a transform engine layer.
@@ -94,6 +100,8 @@ class TransformEngineLayer extends _EngineLayerWrapper {
         super._();
 
   final Float64List matrix4;
+
+  int get id => 2;
 }
 
 /// An opaque handle to an offset engine layer.
@@ -106,6 +114,8 @@ class OffsetEngineLayer extends _EngineLayerWrapper {
 
   final double dx;
   final double dy;
+
+  int get id => 3;
 }
 
 /// An opaque handle to a clip rect engine layer.
@@ -123,6 +133,8 @@ class ClipRectEngineLayer extends _EngineLayerWrapper {
   final double right;
   final double bottom;
   final int clipBehavior;
+
+  int get id => 4;
 }
 
 /// An opaque handle to a clip rounded rect engine layer.
@@ -135,6 +147,8 @@ class ClipRRectEngineLayer extends _EngineLayerWrapper {
 
   final Float32List rrect;
   final int clipBehavior;
+
+  int get id => 5;
 }
 
 /// An opaque handle to a clip path engine layer.
@@ -146,6 +160,8 @@ class ClipPathEngineLayer extends _EngineLayerWrapper {
   ClipPathEngineLayer._(this.path) : super._();
 
   final Path path;
+
+  int get id => 6;
 }
 
 /// An opaque handle to an opacity engine layer.
@@ -159,6 +175,8 @@ class OpacityEngineLayer extends _EngineLayerWrapper {
   final int alpha;
   final double dx;
   final double dy;
+
+  int get id => 7;
 }
 
 /// An opaque handle to a color filter engine layer.
@@ -170,6 +188,8 @@ class ColorFilterEngineLayer extends _EngineLayerWrapper {
   ColorFilterEngineLayer._(this.filter) : super._();
 
   final _ColorFilter filter;
+
+  int get id => 8;
 }
 
 /// An opaque handle to an image filter engine layer.
@@ -181,6 +201,8 @@ class ImageFilterEngineLayer extends _EngineLayerWrapper {
   ImageFilterEngineLayer._(this.filter) : super._();
 
   final _ImageFilter filter;
+
+  int get id => 9;
 }
 
 /// An opaque handle to a backdrop filter engine layer.
@@ -192,6 +214,8 @@ class BackdropFilterEngineLayer extends _EngineLayerWrapper {
   BackdropFilterEngineLayer._(this.filter) : super._();
 
   final _ImageFilter filter;
+
+  int get id => 10;
 }
 
 /// An opaque handle to a shader mask engine layer.
@@ -215,6 +239,8 @@ class ShaderMaskEngineLayer extends _EngineLayerWrapper {
   final double right;
   final double bottom;
   final int blendMode;
+
+  int get id => 11;
 }
 
 /// An opaque handle to a physical shape engine layer.
@@ -236,6 +262,8 @@ class PhysicalShapeEngineLayer extends _EngineLayerWrapper {
   final int colorValue;
   final int shadowColorValue;
   final int clipBehavior;
+
+  int get id => 12;
 }
 
 /// Builds a [Scene] containing the given visuals.
@@ -247,7 +275,11 @@ class PhysicalShapeEngineLayer extends _EngineLayerWrapper {
 /// it to the scene using [addPicture].
 class SceneBuilder {
   /// Creates an empty [SceneBuilder] object.
-  SceneBuilder();
+  SceneBuilder() {
+    globalSceneHash = 0;
+  }
+
+  int sceneHash = 12345;
 
   // Layers used in this scene.
   //
@@ -289,6 +321,8 @@ class SceneBuilder {
   final List<_EngineLayerWrapper> _layerStack = <_EngineLayerWrapper>[];
 
   void _pushLayer(_EngineLayerWrapper layer) {
+    sceneHash = ((sceneHash * 0xDEED) ^ layer.id) & 0xFFFFFFF;
+
     _rootLayer ??= layer;
     if (_layerStack.isNotEmpty) {
       final _EngineLayerWrapper currentLayer = _layerStack.last;
@@ -812,6 +846,7 @@ class SceneBuilder {
   /// After calling this function, the scene builder object is invalid and
   /// cannot be used further.
   Scene build() {
+    globalSceneHash = sceneHash;
     final Scene scene = Scene._();
     return scene;
   }
