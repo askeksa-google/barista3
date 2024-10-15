@@ -1,3 +1,3 @@
-# flute
+# barista3
 
-A stipped down Flutter that has all the framework functionality but doesn't render anything. Good for benchmarking various Dart build modes (AOT vs dart2js vs JIT vs debug vs profile vs release...) on various hardware profiles (browser vs desktop vs mobile) such that performance is only affected by the language runtime and not by graphics or any other external systems.
+This is a fork of https://github.com/dart-lang/flute which was modified to work with a very early version of the Dart-to-WebAssembly compiler. For the full, up-to-date version of Flute (stand-alone benchmark of Flutter framework code), please see the upstream repository. Thanks!
